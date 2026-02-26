@@ -44,6 +44,7 @@ export async function GET() {
                         String(today.getDate()).padStart(2, '0')
     
     console.log('[STATS] Local date string:', localDateStr)
+    console.log('[STATS] Current time:', today.toLocaleTimeString('sr-RS'))
     
     const { count: checkedInTodayCount } = await supabaseAdmin
       .from('bookings')
@@ -54,15 +55,26 @@ export async function GET() {
     const checkedInToday = checkedInTodayCount || 0
     console.log('[STATS] Checked in today (from DB):', checkedInToday)
     
-    // Check-outs today: Use local date (Serbia timezone)
-    const { count: checkedOutTodayCount } = await supabaseAdmin
-      .from('bookings')
-      .select('*', { count: 'exact', head: true })
-      .eq('check_out', localDateStr)
-      .neq('status', 'cancelled')
+    // Check-outs today: Only count if current time is BEFORE 10:00 AM
+    // After 10:00 AM, guests should have already checked out
+    const currentHour = today.getHours()
+    let checkedOutToday = 0
     
-    const checkedOutToday = checkedOutTodayCount || 0
-    console.log('[STATS] Checked out today (from DB):', checkedOutToday)
+    if (currentHour < 10) {
+      // Before 10 AM - show scheduled checkouts for today
+      const { count: checkedOutTodayCount } = await supabaseAdmin
+        .from('bookings')
+        .select('*', { count: 'exact', head: true })
+        .eq('check_out', localDateStr)
+        .neq('status', 'cancelled')
+      
+      checkedOutToday = checkedOutTodayCount || 0
+      console.log('[STATS] Checked out today (scheduled, before 10 AM):', checkedOutToday)
+    } else {
+      // After 10 AM - don't show today's checkouts as they should be done
+      checkedOutToday = 0
+      console.log('[STATS] Checked out today (after 10 AM, not showing):', checkedOutToday)
+    }
 
     // Calculate total revenue (only checked_in and checked_out = paid bookings)
     const totalRevenue = bookings
