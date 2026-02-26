@@ -20,7 +20,6 @@ import {
 } from 'lucide-react'
 import { 
   validateContentStructure, 
-  validateRequiredFields 
 } from '../../lib/validations/content'
 
 type Language = 'en' | 'de' | 'it' | 'sr'
@@ -212,7 +211,7 @@ export default function ContentEditor() {
   }
 
   // Fetch content from database
-  const fetchContent = useCallback(async (forceRefresh = false) => {
+  const fetchContent = useCallback(async () => {
     try {
       setLoading(true)
       setError(null)
@@ -336,7 +335,7 @@ export default function ContentEditor() {
       setRetryCount(0)
       
       // Refresh content to get latest data
-      await fetchContent(true)
+      await fetchContent()
     } catch (err) {
       console.error('Error saving content:', err)
       setError(
@@ -415,7 +414,7 @@ export default function ContentEditor() {
     
     await sleep(delay)
     setRetryCount(prev => prev + 1)
-    await fetchContent(true)
+    await fetchContent()
   }
 
   const currentSection = SECTIONS.find(s => s.id === selectedSection)
@@ -611,7 +610,7 @@ export default function ContentEditor() {
             <div className="flex justify-end gap-3 pt-4 border-t">
               <Button
                 variant="outline"
-                onClick={() => fetchContent(true)}
+                onClick={() => fetchContent()}
                 disabled={saving}
               >
                 <RefreshCw className="w-4 h-4 mr-2" />

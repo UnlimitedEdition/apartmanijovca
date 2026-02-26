@@ -1,8 +1,8 @@
 'use client'
 
 import { useState, useCallback, useEffect } from 'react'
-import { Card, CardContent } from '../../components/ui/card'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../components/ui/tabs'
+import { Card } from '../../components/ui/card'
+import { Tabs, TabsContent } from '../../components/ui/tabs'
 import { Button } from '../../components/ui/button'
 import StatsCards from '../../components/admin/StatsCards'
 import BookingList from '../../components/admin/BookingList'
@@ -45,7 +45,7 @@ interface AdminDashboardProps {
 
 export default function AdminDashboard({ stats: initialStats }: AdminDashboardProps) {
   const [activeTab, setActiveTab] = useState('dashboard')
-  const [stats, setStats] = useState<Stats>(initialStats)
+  const [currentStats, setCurrentStats] = useState<Stats>(initialStats)
   const [refreshing, setRefreshing] = useState(false)
   const [statsKey, setStatsKey] = useState(0) // Key to force StatsCards refresh
 
@@ -55,7 +55,7 @@ export default function AdminDashboard({ stats: initialStats }: AdminDashboardPr
       const response = await fetch('/api/admin/stats')
       if (response.ok) {
         const data = await response.json()
-        setStats(prev => ({ ...prev, ...data }))
+        setCurrentStats(prev => ({ ...prev, ...data }))
         setStatsKey(prev => prev + 1) // Force StatsCards to refresh
       }
     } catch (error) {

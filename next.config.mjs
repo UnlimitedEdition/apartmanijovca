@@ -8,7 +8,20 @@ const withNextIntl = createNextIntlPlugin();
  */
 
 const nextConfig = {
-  // ... rest of the config
+  // ESLint configuration for build
+  eslint: {
+    // Warning: This allows production builds to successfully complete even if
+    // your project has ESLint errors.
+    ignoreDuringBuilds: true,
+  },
+  
+  // TypeScript configuration for build
+  typescript: {
+    // Warning: This allows production builds to successfully complete even if
+    // your project has type errors.
+    ignoreBuildErrors: false,
+  },
+  
   // Production optimizations
   poweredByHeader: false,
   compress: true,

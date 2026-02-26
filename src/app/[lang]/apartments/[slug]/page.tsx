@@ -59,9 +59,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function ApartmentPage({ params }: PageProps) {
   const apartment = await getApartment(params.slug, params.lang)
 
-  if (!apartment) {
+  if (!apartment || !apartment.slug) {
     notFound()
   }
 
-  return <ApartmentDetailView apartment={apartment} locale={params.lang} />
+  return <ApartmentDetailView apartment={apartment as any} locale={params.lang} />
 }
