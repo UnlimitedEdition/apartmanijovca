@@ -1,5 +1,18 @@
 # Vercel Deployment Guide - Apartmani Jovča
 
+## ⚠️ SIGURNOSNO UPOZORENJE
+
+**NIKAD ne commit-uj sledeće u git:**
+- `.env.local` fajl
+- API keys, tokens, ili secrets
+- Supabase Service Role Key
+- Database passwords
+- Email API keys
+
+Sve secrets moraju biti dodati direktno u Vercel Dashboard kao Environment Variables!
+
+---
+
 ## Korak po korak uputstvo za deployment na Vercel
 
 ### 1. Priprema projekta
@@ -23,24 +36,24 @@ Projekat je već pripremljen i push-ovan na GitHub:
 
 ```bash
 # Supabase Configuration
-NEXT_PUBLIC_SUPABASE_URL=https://aeyctgzddvxhpxymcetf.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_1Qn2pyK3Z83rfGNOjlDhBA_yoTERgJL
-SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFleWN0Z3pkZHZ4aHB4eW1jZXRmIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MDk4NjA1OCwiZXhwIjoyMDg2NTYyMDU4fQ.ztpQkwG36ZQ4H6lhSxKToTFyR9PpnxNbhIxglLmKa1E
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key-here
 
 # Site Configuration
 NEXT_PUBLIC_SITE_URL=https://apartmanijovca.vercel.app
 NEXT_PUBLIC_APP_NAME=Apartmani Jovca
 
 # Email Configuration (Resend)
-RESEND_API_KEY=re_your_resend_api_key_placeholder
+RESEND_API_KEY=your-resend-api-key-here
 
 # Admin Configuration
 ADMIN_EMAIL=admin@example.com
 ADMIN_PASSWORD_HASH=placeholder_will_be_generated
 
 # Image Upload APIs
-IMGBB_API_KEY=515c43cd7809d05f69766a2681db332d
-POSTIMAGES_API_KEY=257f64d4d608fcd58e72a6b8b2d50e3c
+IMGBB_API_KEY=your-imgbb-api-key-here
+POSTIMAGES_API_KEY=your-postimages-api-key-here
 ```
 
 #### Opcione promenljive (za WhatsApp):
@@ -57,9 +70,11 @@ WHATSAPP_ACCESS_TOKEN=placeholder
 2. Idi na **Settings** → **Environment Variables**
 3. Za svaku promenljivu:
    - Unesi **Key** (npr. `NEXT_PUBLIC_SUPABASE_URL`)
-   - Unesi **Value** (npr. `https://aeyctgzddvxhpxymcetf.supabase.co`)
+   - Unesi **Value** (kopiraj iz svog `.env.local` fajla)
    - Selektuj **Production**, **Preview**, i **Development**
    - Klikni **Save**
+
+**VAŽNO:** Nikad ne deli javno svoje API keys i secrets!
 
 ### 5. Build Settings
 
