@@ -35,6 +35,7 @@ yarn-error.log*
 
 # Security incident documentation (internal only)
 SECURITY_INCIDENT_RESPONSE.md
+HITNO_PROCITAJ.md
 
 # vercel
 .vercel
