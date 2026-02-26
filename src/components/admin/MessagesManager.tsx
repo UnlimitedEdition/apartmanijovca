@@ -5,10 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { Badge } from '../ui/badge'
 import { Button } from '../ui/button'
 import { Loader2, Mail, Phone, Calendar, Eye, Archive, Trash2 } from 'lucide-react'
-import { createClient } from '@supabase/supabase-js'
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
 interface Message {
   id: string
@@ -34,23 +30,25 @@ export default function MessagesManager() {
   const fetchMessages = async () => {
     setLoading(true)
     try {
-      const supabase = createClient(supabaseUrl, supabaseAnonKey)
+      // Use API route instead of direct Supabase call to bypass RLS
+      const response = await fetch('/api/admin/messages')
       
-      let query = supabase
-        .from('messages')
-        .select('*')
-        .order('created_at', { ascending: false })
-
-      if (filter !== 'all') {
-        query = query.eq('status', filter)
+      if (!response.ok) {
+        throw new Error('Failed to fetch messages')
       }
 
-      const { data, error } = await query
+      const data = await response.json()
+      
+      let filteredMessages = data.messages || []
+      
+      if (filter !== 'all') {
+        filteredMessages = filteredMessages.filter((m: Message) => m.status === filter)
+      }
 
-      if (error) throw error
-      setMessages(data || [])
+      setMessages(filteredMessages)
     } catch (error) {
       console.error('Error fetching messages:', error)
+      setMessages([])
     } finally {
       setLoading(false)
     }
@@ -58,13 +56,13 @@ export default function MessagesManager() {
 
   const updateMessageStatus = async (id: string, status: Message['status']) => {
     try {
-      const supabase = createClient(supabaseUrl, supabaseAnonKey)
-      const { error } = await supabase
-        .from('messages')
-        .update({ status })
-        .eq('id', id)
+      const response = await fetch(`/api/admin/messages/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status })
+      })
 
-      if (error) throw error
+      if (!response.ok) throw new Error('Failed to update message')
       
       fetchMessages()
       if (selectedMessage?.id === id) {
@@ -79,13 +77,11 @@ export default function MessagesManager() {
     if (!confirm('Da li ste sigurni da želite da obrišete ovu poruku?')) return
 
     try {
-      const supabase = createClient(supabaseUrl, supabaseAnonKey)
-      const { error } = await supabase
-        .from('messages')
-        .delete()
-        .eq('id', id)
+      const response = await fetch(`/api/admin/messages/${id}`, {
+        method: 'DELETE'
+      })
 
-      if (error) throw error
+      if (!response.ok) throw new Error('Failed to delete message')
       
       fetchMessages()
       if (selectedMessage?.id === id) {
