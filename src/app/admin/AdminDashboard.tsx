@@ -379,11 +379,6 @@ export default function AdminDashboard({ stats: initialStats }: AdminDashboardPr
             <ContentEditor />
           </TabsContent>
 
-          {/* Content Tab */}
-          <TabsContent value="content">
-            <ContentEditor />
-          </TabsContent>
-
           {/* Messages Tab */}
           <TabsContent value="messages">
             <MessagesManager />
