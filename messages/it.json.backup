@@ -1,0 +1,512 @@
+{
+  "app": {
+    "title": "Appartamenti Jovča",
+    "description": "Sistemazione confortevole in un ambiente bellissimo"
+  },
+  "header": {
+    "home": "Home",
+    "apartments": "Appartamenti",
+    "gallery": "Galleria",
+    "location": "Posizione",
+    "contact": "Contatto",
+    "book": "Prenota ora",
+    "prices": "Prezzi",
+    "attractions": "Attrazioni"
+  },
+  "nav": {
+    "home": "Home",
+    "gallery": "Galleria",
+    "prices": "Prezzi",
+    "attractions": "Attrazioni",
+    "contact": "Contatto"
+  },
+  "footer": {
+    "rights": "Tutti i diritti riservati",
+    "privacy": "Informativa sulla privacy",
+    "terms": "Termini di servizio",
+    "contactUs": "Contattaci",
+    "followUs": "Seguici"
+  },
+  "language": {
+    "en": "Inglese",
+    "sr": "Serbo",
+    "de": "Tedesco",
+    "it": "Italiano",
+    "select": "Seleziona lingua"
+  },
+  "common": {
+    "loading": "Caricamento in corso...",
+    "error": "Si è verificato un errore",
+    "success": "Successo",
+    "save": "Salva",
+    "cancel": "Annulla",
+    "edit": "Modifica",
+    "delete": "Elimina",
+    "retry": "Riprova",
+    "close": "Chiudi",
+    "submit": "Invia",
+    "send": "Invia",
+    "back": "Indietro",
+    "next": "Avanti",
+    "previous": "Precedente",
+    "errorOccurred": "Si è verificato un errore. Riprova.",
+    "errorLoadingContent": "Errore nel caricamento del contenuto. Riprova più tardi.",
+    "required": "Obbligatorio",
+    "optional": "Opzionale",
+    "guest": "Ospite",
+    "contactUs": "Contattaci"
+  },
+  "home": {
+    "title": "Benvenuti negli Appartamenti Jovča",
+    "description": "Goditi un soggiorno confortevole nel cuore della natura.",
+    "subtitle": "La tua perfetta fuga nel cuore della natura",
+    "trust": {
+      "secure": "Prenotazione Sicura",
+      "flexible": "Cancellazione Flessibile",
+      "prime": "Posizione Premium",
+      "bestPrice": "Miglior Prezzo"
+    },
+    "featured": {
+      "title": "Scegli la tua vista perfetta",
+      "subtitle": "I nostri appartamenti più moderni sul Lago Bovan",
+      "viewAll": "Vedi tutti gli appartamenti",
+      "checkAvailability": "Verifica disponibilità",
+      "badge": "In primo piano"
+    },
+    "hero": {
+      "title": "Vivi Comfort e Natura",
+      "subtitle": "Prenota il tuo soggiorno nei nostri appartamenti moderni",
+      "whatsApp": "Inviaci un messaggio",
+      "book": "Prenota ora"
+    },
+    "features": {
+      "title": "Tutto il necessario per un soggiorno perfetto",
+      "description": "I nostri appartamenti sono arredati con attenzione ai dettagli per offrirvi il massimo comfort.",
+      "wiFi": "WiFi ad alta velocità",
+      "climate": "Aria condizionata",
+      "parking": "Parcheggio privato",
+      "kitchen": "Cucina completa",
+      "tv": "Smart TV",
+      "linens": "Lenzuola e asciugamani",
+      "lakeAccess": "Accesso alla spiaggia",
+      "bbq": "Area barbecue"
+    },
+    "faq": {
+      "title": "Domande Frequenti",
+      "q1": "Quali sono gli orari di check-in e check-out?",
+      "a1": "Il check-in è disponibile dalle 14:00 e il check-out entro le 10:00.",
+      "q2": "C'è un parcheggio disponibile?",
+      "a2": "Sì, offriamo un parcheggio privato gratuito per tutti i nostri ospiti direttamente presso la struttura.",
+      "q3": "Sono ammessi animali domestici?",
+      "a3": "Vi preghiamo di contattarci in anticipo per gli animali domestici, poiché dipende dall'appartamento specifico.",
+      "q4": "Quanto dista la spiaggia?",
+      "a4": "La spiaggia più vicina del Lago Bovan dista solo 2-3 minuti a piedi (circa 150 m).",
+      "q5": "C'è il WiFi disponibile?",
+      "a5": "Sì, offriamo WiFi ad alta velocità gratuito in tutti i nostri appartamenti.",
+      "q6": "Gli appartamenti hanno l'aria condizionata?",
+      "a6": "Sì, tutte le unità sono completamente climatizzate per il vostro comfort durante l'estate.",
+      "q7": "Si può nuotare nel lago?",
+      "a7": "Assolutamente sì! Il Lago Bovan è noto per le sue acque pulite e gli ottimi punti per nuotare.",
+      "q8": "C'è un'area barbecue?",
+      "a8": "Sì, abbiamo un'area comune con barbecue a disposizione di tutti i nostri ospiti.",
+      "q9": "Lenzuola e asciugamani sono forniti?",
+      "a9": "Sì, lenzuola e asciugamani puliti sono pronti per voi al vostro arrivo.",
+      "q10": "Ci sono negozi nelle vicinanze?",
+      "a10": "Ci sono piccoli negozi nelle vicinanze per le necessità quotidiane, i supermercati più grandi si trovano a Sokobanja (10 minuti in auto).",
+      "moreQuestions": "Hai altre domande? Contattaci direttamente tramite WhatsApp"
+    },
+    "testimonials": {
+      "title": "Recensioni dei nostri ospiti",
+      "guestFrom": "Ospite da",
+      "readMore": "Leggi altre recensioni",
+      "sampleQuote": "La migliore vacanza che abbiamo mai fatto! Gli appartamenti sono immacolati e la vista sul lago è incredibile.",
+      "sampleLocation": "Roma",
+      "sampleName": "Marko D.",
+      "sampleInitials": "MD"
+    },
+    "cta": {
+      "ready": "Pronto per la tua vacanza perfetta?",
+      "subtitle": "Prenota ora e assicurati il tuo posto sul Lago Bovan.",
+      "book": "Prenota ora",
+      "call": "Chiamaci"
+    }
+  },
+  "gallery": {
+    "title": "Galleria",
+    "description": "Uno sguardo al nostro piccolo paradiso",
+    "viewImage": "Visualizza immagine",
+    "imageAlt": "Immagine della galleria {{number}}",
+    "enlargedView": "Vista ingrandita",
+    "imageModal": "Anteprima immagine",
+    "noImages": {
+      "title": "Nessuna immagine ancora",
+      "message": "Controlla più tardi per aggiornamenti alla nostra galleria."
+    },
+    "errors": {
+      "loadFailed": "Impossibile caricare la galleria. Riprova più tardi."
+    },
+    "categories": {
+      "nature": "Natura",
+      "interior": "Interni",
+      "view": "Vista",
+      "apartment": "Appartamento"
+    }
+  },
+  "prices": {
+    "title": "Prezzi",
+    "description": "I nostri appartamenti alle migliori tariffe",
+    "allInclusive": "Prezzi tutto compreso. Nessun costo nascosto.",
+    "amenitiesWiFi": "WiFi ad alta velocità gratuito e parcheggio",
+    "realExperiences": "Esperienze reali",
+    "guestExperiencesDesc": "Non crederci sulla parola. Ecco cosa dicono i nostri ospiti del loro soggiorno presso Apartmani Jovča.",
+    "overallRating": "Valutazione complessiva",
+    "happyGuests": "Ospiti felici",
+    "verifiedStay": "Soggiorno verificato",
+    "guestFrom": "Ospite da {country}",
+    "bed": "Tipo di letto",
+    "capacity": "Capacità",
+    "included": "Incluso in tutti i prezzi:",
+    "perNight": "a notte",
+    "totalPrice": "Prezzo totale",
+    "selectDates": "Seleziona le date per vedere i prezzi",
+    "noPrices": {
+      "title": "Nessuna informazione sui prezzi disponibile",
+      "message": "Controlla più tardi o contattaci per ulteriori informazioni."
+    },
+    "errors": {
+      "loadFailed": "Impossibile caricare le informazioni sui prezzi. Riprova più tardi."
+    }
+  },
+  "attractions": {
+    "title": "Attrazioni",
+    "description": "Scopri le bellezze nei dintorni del Lago di Bovan",
+    "distance": "{{distance}} km di distanza",
+    "readMore": "Leggi di più",
+    "viewOnMap": "Visualizza sulla mappa",
+    "noAttractions": {
+      "title": "Nessuna attrazione elencata",
+      "message": "Controlla più tardi per aggiornamenti sulle attrazioni locali."
+    }
+  },
+  "contact": {
+    "title": "Contattaci",
+    "description": "Ci piacerebbe sentire da te",
+    "form": {
+      "name": "Il tuo nome",
+      "email": "Indirizzo email",
+      "phone": "Numero di telefono",
+      "message": "Il tuo messaggio",
+      "submit": "Invia messaggio",
+      "subtitle": "Compila il modulo, risponderemo entro 30 minuti.",
+      "success": "Messaggio inviato! Risponderemo presto.",
+      "error": "Errore nell'invio. Per favore riprova."
+    },
+    "info": {
+      "title": "Informazioni di contatto",
+      "subtitle": "Linee dirette con il nostro team",
+      "phone": "Telefono",
+      "email": "Email",
+      "address": "Indirizzo",
+      "addressValue": "Lago Bovan, Aleksinac",
+      "whatsapp": "Chat WhatsApp"
+    },
+    "host": {
+      "title": "Jovča",
+      "since": "Host dedicato dal 2015",
+      "available": "Siamo a vostra disposizione 24/7"
+    },
+    "languages": {
+      "title": "Lingue parlate",
+      "sr": "Serbo",
+      "en": "Inglese",
+      "de": "Tedesco"
+    },
+    "hours": {
+      "title": "Orari di lavoro",
+      "weekdays": "Lunedì - Venerdì",
+      "weekend": "Sabato - Domenica",
+      "always": "Disponibile 24/7"
+    }
+  },
+  "booking": {
+    "title": "Prenota il tuo soggiorno",
+    "description": "Prenota la tua sistemazione perfetta",
+    "step": {
+      "dates": "Seleziona date",
+      "apartment": "Scegli appartamento",
+      "details": "I tuoi dati",
+      "confirm": "Conferma"
+    },
+    "form": {
+      "checkIn": "Data check-in",
+      "checkOut": "Data check-out",
+      "guests": "Numero di ospiti",
+      "apartment": "Seleziona appartamento",
+      "firstName": "Nome",
+      "lastName": "Cognome",
+      "email": "Indirizzo email",
+      "phone": "Numero di telefono",
+      "specialRequests": "Richieste speciali",
+      "submit": "Invia richiesta di prenotazione",
+      "success": "Richiesta inviata con successo!",
+      "successSubtitle": "Abbiamo ricevuto la tua richiesta e ti contatteremo a breve.",
+      "acceptTerms": "Accetto i",
+      "termsLink": "termini di servizio",
+      "and": "e la",
+      "privacyLink": "politica sulla privacy"
+    },
+    "summary": {
+      "title": "Riepilogo prenotazione",
+      "dates": "Date soggiorno",
+      "guests": "Ospiti",
+      "total": "Prezzo totale",
+      "nights": "{count} notte",
+      "nights_plural": "{count} notti",
+      "stay": "Soggiorno"
+    },
+    "instruction": "Seleziona il tuo periodo preferito e trova uno spazio disponibile.",
+    "detailsInstruction": "Dettagli finali per assicurare la tua prenotazione.",
+    "options": {
+      "title": "Opzioni di prenotazione",
+      "crib": "Culla per bambini",
+      "parking": "Parcheggio riservato",
+      "earlyCheckIn": "Check-in anticipato",
+      "cribDesc": "Servizio gratuito",
+      "parkingDesc": "Posto privato sicuro",
+      "earlyCheckInDesc": "Dalle 12:00"
+    },
+    "status": {
+      "pending": "In attesa",
+      "confirmed": "Confermato",
+      "cancelled": "Cancellato",
+      "completed": "Completato"
+    },
+    "messages": {
+      "success": "Richiesta di prenotazione inviata! Ti contatteremo a breve.",
+      "successSubtitle": "Abbiamo ricevuto la tua richiesta e ti contatteremo a breve.",
+      "error": "Errore nell'invio della prenotazione. Riprova.",
+      "selectDates": "Seleziona le date di check-in e check-out",
+      "selectApartment": "Seleziona un appartamento",
+      "acceptTermsRequired": "Devi accettare i termini di servizio per continuare",
+      "instructionsTitle": "Cosa succede dopo?",
+      "instructionsStep1": "Riceverai un'email di conferma della tua richiesta",
+      "instructionsStep2": "Ti contatteremo entro 24 ore per confermare",
+      "instructionsStep3": "Dopo la conferma, riceverai le istruzioni per il pagamento e l'arrivo"
+    },
+    "calendar": {
+      "available": "Disponibile",
+      "booked": "Prenotato",
+      "pending": "In attesa",
+      "selected": "Selezionato",
+      "today": "Oggi",
+      "clear": "Cancella selezione",
+      "prev": "Mese precedente",
+      "next": "Mese successivo",
+      "realtime": "Aggiornamenti in tempo reale attivi",
+      "connecting": "Connessione...",
+      "loadError": "Errore nel caricamento dei dati di disponibilità",
+      "selectCheckOut": "Seleziona la data di check-out"
+    }
+  },
+  "apartments": {
+    "title": "I nostri appartamenti",
+    "description": "Trova la tua sistemazione perfetta",
+    "amenities": "Servizi",
+    "size": "Dimensione",
+    "beds": "Letti",
+    "capacity": "Capacità",
+    "viewDetails": "Vedi dettagli",
+    "bookNow": "Prenota ora",
+    "bedroomLong": "Camera da letto",
+    "amenitiesWiFi": "WiFi",
+    "amenitiesAC": "Aria condizionata",
+    "amenitiesKitchen": "Cucina",
+    "amenitiesTV": "TV",
+    "available": "Disponibile",
+    "booked": "Prenotato",
+    "perNight": "a notte",
+    "guests": "Ospiti",
+    "bedroomsShort": "Cam.",
+    "noApartments": {
+      "title": "Nessun appartamento disponibile",
+      "message": "Controlla più tardi o contattaci per la disponibilità."
+    }
+  },
+  "location": {
+    "title": "Posizione",
+    "description": "Come trovarci",
+    "address": "Indirizzo",
+    "directions": "Ottieni indicazioni",
+    "reachTitle": "Come raggiungerci",
+    "byCarTitle": "In auto",
+    "byCarDesc": "Da Belgrado/Niš (autostrada E75): uscire ad Aleksinac e seguire le indicazioni per il Lago Bovan. Ci troviamo nella zona \"Vikend naselje\".",
+    "byBusTitle": "In autobus",
+    "byBusDesc": "Prendere un autobus per Aleksinac. Dalla stazione, un taxi per il Lago Bovan impiega circa 15 minuti (circa 10€).",
+    "googleMaps": "Apri in Google Maps",
+    "callDirections": "Chiama per indicazioni",
+    "addressName": "Appartamenti Jovča",
+    "addressStreet": "Residenza estiva (Jovča)",
+    "addressLake": "Lago di Bovan",
+    "addressCity": "18230 Aleksinac, Serbia",
+    "nearbyTitle": "Attrazioni vicine",
+    "bovanLake": "Lago Bovan",
+    "bovanLakeDesc": "Proprio a portata di mano - nuoto, pesca e sport acquatici",
+    "sokolica": "Fortezza di Sokolica",
+    "sokolicaDesc": "Fortezza medievale con vista panoramica - a 20 km",
+    "nis": "Niš",
+    "nisDesc": "Città storica con molte attrazioni - a 30 km"
+  },
+  "reviews": {
+    "title": "Recensioni degli ospiti",
+    "writeReview": "Scrivi una recensione",
+    "rating": "Valutazione",
+    "date": "Date",
+    "noReviews": {
+      "title": "Nessuna recensione ancora",
+      "message": "Sii il primo a condividere la tua esperienza!"
+    },
+    "form": {
+      "title": "Titolo recensione",
+      "comment": "La tua recensione",
+      "rating": "La tua valutazione",
+      "submit": "Invia recensione",
+      "success": "Grazie per la tua recensione!",
+      "error": "Errore nell'invio della recensione. Riprova."
+    }
+  },
+  "admin": {
+    "title": "Dashboard Admin",
+    "welcome": "Benvenuto, Admin",
+    "login": {
+      "title": "Login Admin",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Accedi",
+      "error": "Credenziali non valide",
+      "unauthorized": "Accesso non autorizzato"
+    },
+    "nav": {
+      "dashboard": "Dashboard",
+      "bookings": "Prenotazioni",
+      "apartments": "Appartamenti",
+      "content": "Contenuti",
+      "reviews": "Recensioni",
+      "analytics": "Analitiche",
+      "settings": "Impostazioni",
+      "logout": "Esci"
+    },
+    "dashboard": {
+      "title": "Panoramica Dashboard",
+      "totalBookings": "Prenotazioni totali",
+      "pendingBookings": "Prenotazioni in attesa",
+      "totalRevenue": "Ricavi totali",
+      "occupancyRate": "Tasso di occupazione",
+      "recentBookings": "Prenotazioni recenti",
+      "recentReviews": "Recensioni recenti"
+    },
+    "bookings": {
+      "title": "Gestisci prenotazioni",
+      "filter": "Filtra per stato",
+      "search": "Cerca prenotazioni...",
+      "actions": "Azioni",
+      "confirm": "Conferma prenotazione",
+      "cancel": "Cancella prenotazione",
+      "viewDetails": "Vedi dettagli"
+    },
+    "content": {
+      "title": "Gestisci contenuti",
+      "pages": "Pagine",
+      "attractions": "Attrazioni",
+      "gallery": "Galleria",
+      "save": "Salva modifiche",
+      "success": "Contenuto aggiornato con successo",
+      "error": "Errore nell'aggiornamento del contenuto"
+    }
+  },
+  "portal": {
+    "title": "Portale Ospiti",
+    "welcome": "Bentornato",
+    "login": {
+      "title": "Login Ospiti",
+      "email": "Indirizzo email",
+      "submit": "Accedi",
+      "magicLink": "Invia link magico",
+      "success": "Controlla la tua email per il link di accesso",
+      "error": "Errore nell'invio del link"
+    },
+    "dashboard": {
+      "title": "Le tue prenotazioni",
+      "upcoming": "Soggiorni imminenti",
+      "past": "Soggiorni passati",
+      "noBookings": "Nessuna prenotazione trovata"
+    },
+    "booking": {
+      "details": "Dettagli prenotazione",
+      "downloadTicket": "Scarica biglietto",
+      "contactHost": "Contatta l'host",
+      "directions": "Ottieni indicazioni"
+    }
+  },
+  "pwa": {
+    "install": {
+      "title": "Installa app",
+      "message": "Installa Apartmani Jovča per un'esperienza migliore",
+      "accept": "Installa",
+      "dismiss": "Non ora"
+    }
+  },
+  "errors": {
+    "404": {
+      "title": "Pagina non trovata",
+      "message": "La pagina che stai cercando non esiste.",
+      "home": "Vai alla homepage"
+    },
+    "500": {
+      "title": "Errore del server",
+      "message": "Qualcosa è andato storto. Riprova più tardi.",
+      "retry": "Riprova"
+    }
+  },
+  "legal": {
+    "privacy": {
+      "title": "Informativa sulla Privacy",
+      "intro": "La tua privacy è importante. Questa policy spiega come raccogliamo, usiamo e proteggiamo i tuoi dati.",
+      "s1": {
+        "title": "1. Raccolta Informazioni",
+        "content": "Raccogliamo i dati forniti direttamente al momento della prenotazione (nome, email, telefono)."
+      },
+      "s2": {
+        "title": "2. Uso delle Informazioni",
+        "content": "Usiamo i dati per gestire le prenotazioni, comunicare con voi e migliorare i nostri servizi."
+      },
+      "s3": {
+        "title": "3. Protezione Dati",
+        "content": "Implementiamo misure di sicurezza per proteggere le tue informazioni personali in ogni fase."
+      },
+      "s4": {
+        "title": "4. Cookie",
+        "content": "Usiamo i cookie per salvare le tue preferenze e raccogliere dati aggregati sul traffico del sito."
+      }
+    },
+    "terms": {
+      "title": "Termini di Servizio",
+      "intro": "Usando il sito e i servizi, accetti i seguenti termini e condizioni.",
+      "s1": {
+        "title": "1. Prenotazione",
+        "content": "Le prenotazioni sono soggette a disponibilità. Può essere richiesto un acconto per confermare."
+      },
+      "s2": {
+        "title": "2. Cancellazione",
+        "content": "Le cancellazioni devono avvenire entro i tempi stabiliti per evitare penali."
+      },
+      "s3": {
+        "title": "3. Regole della Casa",
+        "content": "Gli ospiti devono rispettare le regole, inclusi orari di silenzio e limiti di occupazione."
+      },
+      "s4": {
+        "title": "4. Responsabilità",
+        "content": "Apartmani Jovča non è responsabile per infortuni o smarrimenti, pur garantendo un ambiente sicuro."
+      }
+    }
+  }
+}

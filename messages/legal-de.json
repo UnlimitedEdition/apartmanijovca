@@ -1,0 +1,112 @@
+{
+  "legal": {
+    "privacy": {
+      "title": "Datenschutzerklärung",
+      "intro": "Apartmani Jovča respektiert Ihre Privatsphäre und verpflichtet sich zum Schutz Ihrer persönlichen Daten. Diese Richtlinie erklärt, wie wir Ihre Informationen gemäß den Gesetzen der Republik Serbien sammeln, verwenden, speichern und schützen.",
+      "lastUpdated": "Zuletzt aktualisiert: Februar 2026",
+      "s1": {
+        "title": "1. Welche Daten wir sammeln",
+        "content": "Bei der Buchung und während Ihres Aufenthalts in unseren Apartments sammeln wir folgende Daten:",
+        "dataTitle": "Gesammelte Daten:",
+        "item1": "Persönliche Daten: Vollständiger Name, Telefonnummer, E-Mail-Adresse",
+        "item2": "Identifikationsdaten: Personalausweis- oder Reisepassnummer (gesetzlich vorgeschrieben für Gästeregistrierung)",
+        "item3": "Buchungsdaten: Aufenthaltsdaten, Anzahl der Gäste, ausgewähltes Apartment",
+        "item4": "Finanzdaten: Zahlungs- und Kautionsinformationen",
+        "item5": "Kommunikation: Korrespondenz per E-Mail, WhatsApp oder Telefon"
+      },
+      "s2": {
+        "title": "2. Wie wir Ihre Daten verwenden",
+        "content": "Wir verwenden Ihre persönlichen Daten ausschließlich für folgende Zwecke:",
+        "item1": "Bearbeitung von Buchungen und Aufenthaltsbestätigungen",
+        "item2": "Gästeregistrierung bei Behörden (gesetzliche Pflicht)",
+        "item3": "Kommunikation über Ihren Aufenthalt, Anreiseinformationen und zusätzliche Dienstleistungen",
+        "item4": "Zahlungsabwicklung und Kautionsrückerstattung"
+      },
+      "s3": {
+        "title": "3. Datenschutz",
+        "content": "Wir setzen strenge Maßnahmen zum Schutz Ihrer persönlichen Daten um:",
+        "item1": "Daten werden auf sicheren Servern mit Verschlüsselung gespeichert",
+        "item2": "Nur autorisiertes Personal (Eigentümer und Administratoren) hat Zugriff auf Daten",
+        "item3": "Wir geben Ihre Daten nicht an Dritte weiter, außer wenn gesetzlich vorgeschrieben (Polizei, Tourismusinspektion)"
+      },
+      "s4": {
+        "title": "4. Cookies",
+        "content": "Unsere Website verwendet Cookies für:",
+        "item1": "Speicherung Ihrer Spracheinstellungen",
+        "item2": "Website-Traffic-Analyse (anonyme Daten)",
+        "item3": "Verbesserung der Benutzererfahrung"
+      },
+      "s5": {
+        "title": "5. Ihre Rechte",
+        "content": "Gemäß den Datenschutzgesetzen haben Sie das Recht:",
+        "item1": "Zugang zu Ihren von uns gespeicherten persönlichen Daten zu verlangen",
+        "item2": "Korrektur ungenauer Daten zu verlangen",
+        "item3": "Löschung von Daten nach Ablauf der gesetzlichen Aufbewahrungsfrist zu verlangen",
+        "item4": "Einwilligung zur Datenverarbeitung zu widerrufen (außer gesetzlich vorgeschrieben)"
+      },
+      "s6": {
+        "title": "6. Datenaufbewahrungsfrist",
+        "content": "Wir speichern Ihre Daten gemäß gesetzlichen Verpflichtungen: Gästeregistrierungsdaten werden 1 Jahr aufbewahrt, Finanzdaten 5 Jahre, und andere Daten werden 2 Jahre nach Ihrem letzten Aufenthalt gelöscht."
+      },
+      "contact": {
+        "title": "Datenschutz-Kontakt",
+        "content": "Für alle Fragen zum Schutz Ihrer persönlichen Daten können Sie uns kontaktieren:"
+      }
+    },
+    "terms": {
+      "title": "Nutzungsbedingungen & Hausordnung",
+      "intro": "Mit der Buchung und dem Aufenthalt in Apartmani Jovča akzeptieren Sie die folgenden Nutzungsbedingungen und Hausregeln. Bitte lesen Sie diese Regeln sorgfältig durch, um einen angenehmen Aufenthalt ohne Missverständnisse zu gewährleisten.",
+      "lastUpdated": "Zuletzt aktualisiert: Februar 2026",
+      "s1": {
+        "title": "1. Buchung und Bestätigung",
+        "content": "Buchungsprozess und Bestätigungsbedingungen:",
+        "item1": "Eine Buchung gilt erst nach unserer schriftlichen Bestätigung per E-Mail oder WhatsApp als gültig",
+        "item2": "Eine Kaution von 50€ ist zur Bestätigung der Buchung erforderlich und wird nach Objektinspektion bei Abreise zurückerstattet",
+        "item3": "Die vollständige Zahlung muss spätestens 7 Tage vor Anreise oder bei Ankunft erfolgen (Bargeld oder Banküberweisung)",
+        "item4": "Die Buchung verpflichtet beide Parteien - Gast und Eigentümer - zur Einhaltung der vereinbarten Bedingungen"
+      },
+      "s2": {
+        "title": "2. Check-in und Check-out",
+        "content": "Check-in- und Check-out-Regeln:",
+        "item1": "Check-in: ab 14:00 Uhr. Früher Check-in nach vorheriger Ankündigung und Verfügbarkeit möglich (10€/Stunde Aufpreis)",
+        "item2": "Check-out: bis 10:00 Uhr. Später Check-out nach vorheriger Ankündigung und Verfügbarkeit möglich (10€/Stunde Aufpreis)",
+        "item3": "Gästeregistrierung ist gesetzlich vorgeschrieben - ein gültiger Ausweis (Personalausweis oder Reisepass) ist für alle Gäste erforderlich"
+      },
+      "s3": {
+        "title": "3. Stornierungsbedingungen",
+        "content": "Buchungsstornierungsbedingungen:",
+        "cancellationTitle": "Stornierungsregeln:",
+        "item1": "Stornierung mehr als 14 Tage vor Anreise: 100% Rückerstattung des gezahlten Betrags (außer 30€ Kaution)",
+        "item2": "Stornierung 7-14 Tage vor Anreise: 50% Rückerstattung des gezahlten Betrags",
+        "item3": "Stornierung weniger als 7 Tage vor Anreise: keine Rückerstattung (100% Gebühr)"
+      },
+      "s4": {
+        "title": "4. Hausordnung - Grundregeln",
+        "content": "Verhaltensregeln in der Unterkunft für einen angenehmen Aufenthalt aller Gäste:",
+        "item1": "Ruhezeiten: 22:00 - 08:00 Uhr. Laute Musik, Schreien und Lärm sind streng verboten. Verstöße können zur Beendigung des Aufenthalts ohne Rückerstattung führen.",
+        "item2": "Maximale Gästezahl: gemäß Apartment-Kapazität. Zusätzliche Gäste sind ohne vorherige Ankündigung und Aufpreis (20€/Person/Nacht) nicht erlaubt.",
+        "item3": "Rauchen ist in Innenräumen streng verboten. Nur auf der ausgewiesenen Terrasse erlaubt. Strafe für Rauchen in Innenräumen: 100€.",
+        "item4": "Haustiere sind mit vorheriger Ankündigung und einem Aufpreis von 15€/Tag erlaubt. Der Eigentümer ist für Verhalten und Sauberkeit verantwortlich."
+      },
+      "s5": {
+        "title": "5. Verbote und Sicherheit",
+        "content": "Streng verbotene Aktivitäten:",
+        "item1": "Organisation von Partys, Feiern oder Versammlungen mit mehr als 2 zusätzlichen nicht registrierten Gästen. Strafe: 200€.",
+        "item2": "Entfernung von Inventar (Handtücher, Bettwäsche, Küchengeräte) aus der Unterkunft. Strafe: Entschädigung zum Marktwert.",
+        "item3": "Jede Nutzung der Räumlichkeiten für illegale Aktivitäten (Drogen, Prostitution) wird der Polizei gemeldet und führt zur sofortigen Vertragsbeendigung."
+      },
+      "s6": {
+        "title": "6. Schäden und Haftung",
+        "content": "Jeder vorsätzliche oder fahrlässige Schaden an Inventar oder Eigentum wird zu den tatsächlichen Reparatur- oder Ersatzkosten berechnet. Die 50€ Kaution dient als Garantie und wird innerhalb von 24 Stunden nach Objektinspektion zurückerstattet."
+      },
+      "s7": {
+        "title": "7. Zusätzliche Pflichten",
+        "content": "Gäste sind verpflichtet: die Unterkunft ordentlich zu hinterlassen, Müll in ausgewiesenen Containern zu entsorgen, alle Geräte (Klimaanlage, Heizung, Lichter) bei Abreise auszuschalten. Für außergewöhnlich verschmutzte Räumlichkeiten wird eine zusätzliche Reinigung von 30€ berechnet. Schlüsselverlust führt zu einer Strafe von 50€."
+      },
+      "contact": {
+        "title": "Kontakt für Fragen",
+        "content": "Für alle Fragen zu Nutzungsbedingungen und Hausordnung kontaktieren Sie uns:"
+      }
+    }
+  }
+}

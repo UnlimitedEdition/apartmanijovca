@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "supabase-apartmani-jovca": {
+      "url": "https://mcp.supabase.com/mcp?project_ref=aeyctgzddvxhpxymcetf&features=docs%2Caccount%2Cdatabase%2Cdebugging%2Cdevelopment%2Cfunctions%2Cbranching%2Cstorage",
+      "disabled": false,
+      "autoApprove": [
+        "list_tables",
+        "list_migrations",
+        "execute_sql",
+        "generate_typescript_types",
+        "apply_migration"
+      ]
+    }
+  }
+}

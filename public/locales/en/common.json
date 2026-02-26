@@ -1,0 +1,326 @@
+{
+  "app": {
+    "title": "Jovča Apartments",
+    "description": "Comfortable accommodation in a beautiful setting"
+  },
+  "header": {
+    "home": "Home",
+    "apartments": "Apartments",
+    "gallery": "Gallery",
+    "location": "Location",
+    "contact": "Contact",
+    "book": "Book Now",
+    "prices": "Prices",
+    "attractions": "Attractions"
+  },
+  "nav": {
+    "home": "Home",
+    "gallery": "Gallery",
+    "prices": "Prices",
+    "attractions": "Attractions",
+    "contact": "Contact"
+  },
+  "footer": {
+    "rights": "All rights reserved",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "contactUs": "Contact Us",
+    "followUs": "Follow Us"
+  },
+  "language": {
+    "en": "English",
+    "sr": "Serbian",
+    "de": "German",
+    "it": "Italian",
+    "select": "Select Language"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "retry": "Retry",
+    "close": "Close",
+    "submit": "Submit",
+    "send": "Send",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "errorOccurred": "An error occurred. Please try again.",
+    "errorLoadingContent": "Failed to load content. Please try again later.",
+    "required": "Required",
+    "optional": "Optional"
+  },
+  "home": {
+    "title": "Welcome to Jovča Apartments",
+    "description": "Enjoy comfortable accommodation in a beautiful setting.",
+    "subtitle": "Your perfect getaway in the heart of nature",
+    "hero": {
+      "title": "Experience Comfort & Nature",
+      "subtitle": "Book your stay at our modern apartments",
+      "cta": "Book Now"
+    },
+    "features": {
+      "title": "Our Features",
+      "amenities": "Modernly equipped apartments",
+      "location": "Great location near attractions",
+      "parking": "Free parking",
+      "wifi": "Free WiFi",
+      "breakfast": "Breakfast available",
+      "petFriendly": "Pet friendly"
+    },
+    "contact": {
+      "title": "Contact Us",
+      "available": "We are available 24/7 for all your needs."
+    },
+    "testimonials": {
+      "title": "What Our Guests Say",
+      "readMore": "Read more reviews"
+    }
+  },
+  "gallery": {
+    "title": "Gallery",
+    "description": "View our beautiful apartments and facilities",
+    "viewImage": "View image",
+    "imageAlt": "Gallery image {{number}}",
+    "enlargedView": "Enlarged view",
+    "imageModal": "Image preview",
+    "noImages": {
+      "title": "No images yet",
+      "message": "Check back later for updates to our gallery."
+    },
+    "errors": {
+      "loadFailed": "Failed to load gallery. Please try again later."
+    }
+  },
+  "prices": {
+    "title": "Prices & Accommodation",
+    "description": "Transparent prices without hidden costs",
+    "bed": "Bed Type",
+    "capacity": "Capacity",
+    "included": "Included in all prices:",
+    "perNight": "per night",
+    "totalPrice": "Total Price",
+    "selectDates": "Select dates to see prices",
+    "noPrices": {
+      "title": "No pricing information available",
+      "message": "Please check back later or contact us for more information."
+    },
+    "errors": {
+      "loadFailed": "Failed to load pricing information. Please try again later."
+    }
+  },
+  "attractions": {
+    "title": "Local Attractions",
+    "description": "Discover the beauty of the surrounding area",
+    "distance": "{{distance}} km away",
+    "readMore": "Read more",
+    "noAttractions": {
+      "title": "No attractions listed",
+      "message": "Check back later for updates on local attractions."
+    }
+  },
+  "contact": {
+    "title": "Contact Us",
+    "description": "We'd love to hear from you",
+    "form": {
+      "name": "Your Name",
+      "email": "Email Address",
+      "phone": "Phone Number",
+      "message": "Your Message",
+      "submit": "Send Message",
+      "success": "Message sent successfully! We'll get back to you soon.",
+      "error": "Failed to send message. Please try again."
+    },
+    "info": {
+      "title": "Contact Information",
+      "address": "Address",
+      "phone": "Phone",
+      "email": "Email",
+      "whatsapp": "WhatsApp"
+    },
+    "hours": {
+      "title": "Working Hours",
+      "weekdays": "Monday - Friday",
+      "weekend": "Saturday - Sunday",
+      "always": "Available 24/7"
+    }
+  },
+  "booking": {
+    "title": "Book Your Stay",
+    "description": "Reserve your perfect accommodation",
+    "step": {
+      "dates": "Select Dates",
+      "apartment": "Choose Apartment",
+      "details": "Your Details",
+      "confirm": "Confirmation"
+    },
+    "form": {
+      "checkIn": "Check-in Date",
+      "checkOut": "Check-out Date",
+      "guests": "Number of Guests",
+      "apartment": "Select Apartment",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email Address",
+      "phone": "Phone Number",
+      "specialRequests": "Special Requests",
+      "submit": "Submit Booking Request"
+    },
+    "summary": {
+      "title": "Booking Summary",
+      "dates": "Stay Dates",
+      "guests": "Guests",
+      "total": "Total Price",
+      "nights": "{{count}} night",
+      "nights_plural": "{{count}} nights"
+    },
+    "status": {
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "cancelled": "Cancelled",
+      "completed": "Completed"
+    },
+    "messages": {
+      "success": "Booking request submitted! We'll contact you shortly.",
+      "error": "Failed to submit booking. Please try again.",
+      "selectDates": "Please select your check-in and check-out dates",
+      "selectApartment": "Please select an apartment"
+    }
+  },
+  "apartments": {
+    "title": "Our Apartments",
+    "description": "Find your perfect accommodation",
+    "amenities": "Amenities",
+    "size": "Size",
+    "beds": "Beds",
+    "capacity": "Capacity",
+    "viewDetails": "View Details",
+    "bookNow": "Book Now",
+    "noApartments": {
+      "title": "No apartments available",
+      "message": "Please check back later or contact us for availability."
+    }
+  },
+  "location": {
+    "title": "Location",
+    "description": "How to find us",
+    "address": "Address",
+    "directions": "Get Directions",
+    "nearby": "Nearby Attractions"
+  },
+  "reviews": {
+    "title": "Guest Reviews",
+    "writeReview": "Write a Review",
+    "rating": "Rating",
+    "date": "Date",
+    "noReviews": {
+      "title": "No reviews yet",
+      "message": "Be the first to share your experience!"
+    },
+    "form": {
+      "title": "Review Title",
+      "comment": "Your Review",
+      "rating": "Your Rating",
+      "submit": "Submit Review",
+      "success": "Thank you for your review!",
+      "error": "Failed to submit review. Please try again."
+    }
+  },
+  "admin": {
+    "title": "Admin Dashboard",
+    "welcome": "Welcome, Admin",
+    "login": {
+      "title": "Admin Login",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign In",
+      "error": "Invalid credentials",
+      "unauthorized": "Unauthorized access"
+    },
+    "nav": {
+      "dashboard": "Dashboard",
+      "bookings": "Bookings",
+      "apartments": "Apartments",
+      "content": "Content",
+      "reviews": "Reviews",
+      "analytics": "Analytics",
+      "settings": "Settings",
+      "logout": "Logout"
+    },
+    "dashboard": {
+      "title": "Dashboard Overview",
+      "totalBookings": "Total Bookings",
+      "pendingBookings": "Pending Bookings",
+      "totalRevenue": "Total Revenue",
+      "occupancyRate": "Occupancy Rate",
+      "recentBookings": "Recent Bookings",
+      "recentReviews": "Recent Reviews"
+    },
+    "bookings": {
+      "title": "Manage Bookings",
+      "filter": "Filter by Status",
+      "search": "Search bookings...",
+      "actions": "Actions",
+      "confirm": "Confirm Booking",
+      "cancel": "Cancel Booking",
+      "viewDetails": "View Details"
+    },
+    "content": {
+      "title": "Manage Content",
+      "pages": "Pages",
+      "attractions": "Attractions",
+      "gallery": "Gallery",
+      "save": "Save Changes",
+      "success": "Content updated successfully",
+      "error": "Failed to update content"
+    }
+  },
+  "portal": {
+    "title": "Guest Portal",
+    "welcome": "Welcome back",
+    "login": {
+      "title": "Guest Login",
+      "email": "Email Address",
+      "submit": "Sign In",
+      "magicLink": "Send Magic Link",
+      "success": "Check your email for the login link",
+      "error": "Failed to send login link"
+    },
+    "dashboard": {
+      "title": "Your Bookings",
+      "upcoming": "Upcoming Stays",
+      "past": "Past Stays",
+      "noBookings": "No bookings found"
+    },
+    "booking": {
+      "details": "Booking Details",
+      "downloadTicket": "Download Ticket",
+      "contactHost": "Contact Host",
+      "directions": "Get Directions"
+    }
+  },
+  "pwa": {
+    "install": {
+      "title": "Install App",
+      "message": "Install Apartmani Jovča for a better experience",
+      "accept": "Install",
+      "dismiss": "Not now"
+    }
+  },
+  "errors": {
+    "404": {
+      "title": "Page Not Found",
+      "message": "The page you're looking for doesn't exist.",
+      "home": "Go to Homepage"
+    },
+    "500": {
+      "title": "Server Error",
+      "message": "Something went wrong. Please try again later.",
+      "retry": "Try Again"
+    }
+  }
+}

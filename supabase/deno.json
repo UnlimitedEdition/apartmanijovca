@@ -1,0 +1,30 @@
+{
+  "tasks": {
+    "start": "deno run --allow-net --allow-env --allow-read server.ts"
+  },
+  "imports": {
+    "$supabase/": "https://esm.sh/@supabase/",
+    "supabase": "https://esm.sh/@supabase/supabase-js@2.39.0"
+  },
+  "compilerOptions": {
+    "allowJs": true,
+    "lib": ["deno.window"],
+    "strict": true
+  },
+  "fmt": {
+    "options": {
+      "useTabs": false,
+      "lineWidth": 100,
+      "indentWidth": 2,
+      "semi": true,
+      "singleQuote": true,
+      "proseWrap": "preserve"
+    }
+  },
+  "lint": {
+    "include": ["functions/"],
+    "rules": {
+      "tags": ["recommended"]
+    }
+  }
+}

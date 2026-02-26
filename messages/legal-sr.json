@@ -1,0 +1,112 @@
+{
+  "legal": {
+    "privacy": {
+      "title": "Politika privatnosti",
+      "intro": "Apartmani Jovča poštuju vašu privatnost i posvećeni su zaštiti vaših ličnih podataka. Ova politika objašnjava kako prikupljamo, koristimo, čuvamo i štitimo vaše informacije u skladu sa zakonima Republike Srbije.",
+      "lastUpdated": "Poslednje ažurirano: Februar 2026",
+      "s1": {
+        "title": "1. Koje podatke prikupljamo",
+        "content": "Prilikom rezervacije i boravka u našim apartmanima, prikupljamo sledeće podatke:",
+        "dataTitle": "Podaci koje prikupljamo:",
+        "item1": "Lični podaci: Ime i prezime, broj telefona, email adresa",
+        "item2": "Identifikacioni podaci: Broj lične karte ili pasoša (obavezno po zakonu za prijavu gostiju)",
+        "item3": "Podaci o rezervaciji: Datumi boravka, broj gostiju, izabrani apartman",
+        "item4": "Finansijski podaci: Informacije o plaćanju i depozitu",
+        "item5": "Komunikacija: Prepiska putem email-a, WhatsApp-a ili telefona"
+      },
+      "s2": {
+        "title": "2. Kako koristimo vaše podatke",
+        "content": "Vaše lične podatke koristimo isključivo u sledeće svrhe:",
+        "item1": "Obrada rezervacija i potvrda boravka",
+        "item2": "Prijava gostiju nadležnim organima (zakonska obaveza)",
+        "item3": "Komunikacija o vašem boravku, instrukcijama za dolazak i dodatnim uslugama",
+        "item4": "Obrada plaćanja i povraćaj depozita"
+      },
+      "s3": {
+        "title": "3. Zaštita podataka",
+        "content": "Primenjujemo stroge mere zaštite vaših ličnih podataka:",
+        "item1": "Podaci se čuvaju na sigurnim serverima sa enkripcijom",
+        "item2": "Pristup podacima imaju samo ovlašćena lica (vlasnik i administratori)",
+        "item3": "Ne delimo vaše podatke sa trećim stranama osim kada je to zakonski obavezno (policija, turistička inspekcija)"
+      },
+      "s4": {
+        "title": "4. Kolačići (Cookies)",
+        "content": "Naš veb sajt koristi kolačiće za:",
+        "item1": "Pamćenje vaših jezičkih podešavanja",
+        "item2": "Analizu posećenosti sajta (anonimni podaci)",
+        "item3": "Poboljšanje korisničkog iskustva"
+      },
+      "s5": {
+        "title": "5. Vaša prava",
+        "content": "U skladu sa zakonima o zaštiti podataka, imate pravo da:",
+        "item1": "Zatražite uvid u svoje lične podatke koje čuvamo",
+        "item2": "Zatražite ispravku netačnih podataka",
+        "item3": "Zatražite brisanje podataka nakon isteka zakonskog roka čuvanja",
+        "item4": "Povučete saglasnost za obradu podataka (osim zakonski obaveznih)"
+      },
+      "s6": {
+        "title": "6. Rok čuvanja podataka",
+        "content": "Vaše podatke čuvamo u skladu sa zakonskim obavezama: podaci o prijavama gostiju se čuvaju 1 godinu, finansijski podaci 5 godina, a ostali podaci se brišu nakon 2 godine od poslednjeg boravka."
+      },
+      "contact": {
+        "title": "Kontakt za pitanja o privatnosti",
+        "content": "Za sva pitanja o zaštiti vaših ličnih podataka, možete nas kontaktirati:"
+      }
+    },
+    "terms": {
+      "title": "Uslovi korišćenja i Kućni red",
+      "intro": "Rezervacijom i boravkom u Apartmanima Jovča, prihvatate sledeće uslove korišćenja i kućni red. Molimo vas da pažljivo pročitate ova pravila kako bi vaš boravak bio prijatan i bez nesp orazuma.",
+      "lastUpdated": "Poslednje ažurirano: Februar 2026",
+      "s1": {
+        "title": "1. Rezervacija i potvrda",
+        "content": "Proces rezervacije i uslovi potvrde:",
+        "item1": "Rezervacija se smatra važećom tek nakon naše pisane potvrde putem email-a ili WhatsApp-a",
+        "item2": "Depozit od 50€ je obavezan za potvrdu rezervacije i vraća se nakon provere stanja objekta pri odlasku",
+        "item3": "Puna uplata se vrši najkasnije 7 dana pre dolaska ili po dolasku (gotovina ili bankovna transakcija)",
+        "item4": "Rezervacija obavezuje obe strane - gosta i vlasnika - na poštovanje dogovorenih uslova"
+      },
+      "s2": {
+        "title": "2. Prijava i odjava",
+        "content": "Pravila za check-in i check-out:",
+        "item1": "Prijava (check-in): od 14:00 časova. Ranija prijava moguća uz prethodnu najavu i dostupnost (dopl ata 10€/sat)",
+        "item2": "Odjava (check-out): do 10:00 časova. Kasnija odjava moguća uz prethodnu najavu i dostupnost (doplata 10€/sat)",
+        "item3": "Prijava gostiju je zakonski obavezna - potreban je važeći lični dokument (lična karta ili pasoš) za sve goste"
+      },
+      "s3": {
+        "title": "3. Politika otkazivanja",
+        "content": "Uslovi otkazivanja rezervacije:",
+        "cancellationTitle": "Pravila otkazivanja:",
+        "item1": "Otkazivanje više od 14 dana pre dolaska: povraćaj 100% uplaćenog iznosa (osim depozita od 30€)",
+        "item2": "Otkazivanje 7-14 dana pre dolaska: povraćaj 50% uplaćenog iznosa",
+        "item3": "Otkazivanje manje od 7 dana pre dolaska: bez povraćaja novca (100% naknada)"
+      },
+      "s4": {
+        "title": "4. Kućni red - Osnovna pravila",
+        "content": "Pravila ponašanja u objektu za prijatan boravak svih gostiju:",
+        "item1": "Vreme tišine: 22:00 - 08:00. Glasna muzika, vikanje i buka su strogo zabranjeni. Kršenje može dovesti do preke ida boravka bez povraćaja novca.",
+        "item2": "Maksimalan broj gostiju: prema kapacitetu apartmana. Dodatni gosti nisu dozvoljeni bez prethodne najave i dop late (20€/osoba/noć).",
+        "item3": "Pušenje je strogo zabranjeno u zatvorenom prostoru. Dozvoljeno je samo na označenoj terasi. Kazna za pušenje u objektu: 100€.",
+        "item4": "Kućni ljubimci su dozvoljeni uz prethodnu najavu i doplatu od 15€/dan. Vlasnik je odgovoran za ponašanje i čistoću."
+      },
+      "s5": {
+        "title": "5. Zabrane i bezbednost",
+        "content": "Strogo zabranjene aktivnosti:",
+        "item1": "Organizovanje žurki, proslava ili okupljanja sa više od 2 dodatna gosta koji nisu registrovani. Kazna: 200€.",
+        "item2": "Iznošenje inventara (peškiri, posteljina, kuhinjski aparati) iz objekta. Kazna: naknada po tržišnoj vrednosti.",
+        "item3": "Svaka upotreba prostora za ilegalne aktivnosti (droga, prostitucija) biće prijavljena policiji i dovesti će do trenutnog prekida ugovora."
+      },
+      "s6": {
+        "title": "6. Šteta i odgovornost",
+        "content": "Svaka namerna ili nehatna šteta na inventaru ili objektu biće naplaćena po stvarnoj vrednosti popravke ili zamene. Depozit od 50€ služi kao garancija i vraća se u roku od 24 sata nakon provere stanja objekta."
+      },
+      "s7": {
+        "title": "7. Dodatne obaveze",
+        "content": "Gosti su dužni da: ostave objekat urednim, odlože smeće u označene kontejnere, isključe sve uređaje (klima, grejanje, svetla) pri odlasku. Za izuzetno zagađene prostore naplaćuje se dodatno čišćenje od 30€. Gubitak ključa nosi kaznu od 50€."
+      },
+      "contact": {
+        "title": "Kontakt za pitanja",
+        "content": "Za sva pitanja o uslovima korišćenja i kućnom redu, kontaktirajte nas:"
+      }
+    }
+  }
+}

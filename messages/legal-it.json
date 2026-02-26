@@ -1,0 +1,112 @@
+{
+  "legal": {
+    "privacy": {
+      "title": "Informativa sulla Privacy",
+      "intro": "Apartmani Jovča rispetta la vostra privacy ed è impegnato nella protezione dei vostri dati personali. Questa politica spiega come raccogliamo, utilizziamo, conserviamo e proteggiamo le vostre informazioni in conformità con le leggi della Repubblica di Serbia.",
+      "lastUpdated": "Ultimo aggiornamento: Febbraio 2026",
+      "s1": {
+        "title": "1. Quali Dati Raccogliamo",
+        "content": "Durante la prenotazione e il soggiorno nei nostri appartamenti, raccogliamo i seguenti dati:",
+        "dataTitle": "Dati raccolti:",
+        "item1": "Dati personali: Nome completo, numero di telefono, indirizzo email",
+        "item2": "Dati di identificazione: Numero di carta d'identità o passaporto (richiesto per legge per la registrazione degli ospiti)",
+        "item3": "Dati di prenotazione: Date di soggiorno, numero di ospiti, appartamento selezionato",
+        "item4": "Dati finanziari: Informazioni su pagamento e deposito",
+        "item5": "Comunicazioni: Corrispondenza via email, WhatsApp o telefono"
+      },
+      "s2": {
+        "title": "2. Come Utilizziamo i Vostri Dati",
+        "content": "Utilizziamo i vostri dati personali esclusivamente per i seguenti scopi:",
+        "item1": "Elaborazione di prenotazioni e conferme di soggiorno",
+        "item2": "Registrazione degli ospiti presso le autorità (obbligo legale)",
+        "item3": "Comunicazione sul vostro soggiorno, istruzioni per l'arrivo e servizi aggiuntivi",
+        "item4": "Elaborazione pagamenti e rimborso depositi"
+      },
+      "s3": {
+        "title": "3. Protezione dei Dati",
+        "content": "Implementiamo misure rigorose per proteggere i vostri dati personali:",
+        "item1": "I dati sono conservati su server sicuri con crittografia",
+        "item2": "Solo il personale autorizzato (proprietario e amministratori) ha accesso ai dati",
+        "item3": "Non condividiamo i vostri dati con terze parti tranne quando richiesto per legge (polizia, ispezione turistica)"
+      },
+      "s4": {
+        "title": "4. Cookie",
+        "content": "Il nostro sito web utilizza cookie per:",
+        "item1": "Ricordare le vostre preferenze linguistiche",
+        "item2": "Analisi del traffico del sito web (dati anonimi)",
+        "item3": "Miglioramento dell'esperienza utente"
+      },
+      "s5": {
+        "title": "5. I Vostri Diritti",
+        "content": "In conformità con le leggi sulla protezione dei dati, avete il diritto di:",
+        "item1": "Richiedere l'accesso ai vostri dati personali che conserviamo",
+        "item2": "Richiedere la correzione di dati inesatti",
+        "item3": "Richiedere la cancellazione dei dati dopo la scadenza del periodo di conservazione legale",
+        "item4": "Revocare il consenso al trattamento dei dati (tranne quando richiesto per legge)"
+      },
+      "s6": {
+        "title": "6. Periodo di Conservazione dei Dati",
+        "content": "Conserviamo i vostri dati in conformità con gli obblighi legali: i dati di registrazione degli ospiti sono conservati per 1 anno, i dati finanziari per 5 anni, e altri dati vengono cancellati 2 anni dopo il vostro ultimo soggiorno."
+      },
+      "contact": {
+        "title": "Contatto Privacy",
+        "content": "Per tutte le domande sulla protezione dei vostri dati personali, potete contattarci:"
+      }
+    },
+    "terms": {
+      "title": "Termini di Servizio e Regolamento Interno",
+      "intro": "Effettuando una prenotazione e soggiornando presso Apartmani Jovča, accettate i seguenti termini di servizio e regolamento interno. Si prega di leggere attentamente queste regole per garantire un soggiorno piacevole senza incomprensioni.",
+      "lastUpdated": "Ultimo aggiornamento: Febbraio 2026",
+      "s1": {
+        "title": "1. Prenotazione e Conferma",
+        "content": "Processo di prenotazione e termini di conferma:",
+        "item1": "Una prenotazione è considerata valida solo dopo la nostra conferma scritta via email o WhatsApp",
+        "item2": "È richiesto un deposito di 50€ per confermare la prenotazione e verrà rimborsato dopo l'ispezione della proprietà alla partenza",
+        "item3": "Il pagamento completo deve essere effettuato entro 7 giorni prima dell'arrivo o all'arrivo (contanti o bonifico bancario)",
+        "item4": "La prenotazione vincola entrambe le parti - ospite e proprietario - al rispetto dei termini concordati"
+      },
+      "s2": {
+        "title": "2. Check-in e Check-out",
+        "content": "Regole di check-in e check-out:",
+        "item1": "Check-in: dalle 14:00. Check-in anticipato possibile con preavviso e disponibilità (supplemento di 10€/ora)",
+        "item2": "Check-out: entro le 10:00. Check-out posticipato possibile con preavviso e disponibilità (supplemento di 10€/ora)",
+        "item3": "La registrazione degli ospiti è obbligatoria per legge - è richiesto un documento d'identità valido (carta d'identità o passaporto) per tutti gli ospiti"
+      },
+      "s3": {
+        "title": "3. Politica di Cancellazione",
+        "content": "Termini di cancellazione della prenotazione:",
+        "cancellationTitle": "Regole di cancellazione:",
+        "item1": "Cancellazione più di 14 giorni prima dell'arrivo: rimborso del 100% dell'importo pagato (tranne 30€ di deposito)",
+        "item2": "Cancellazione 7-14 giorni prima dell'arrivo: rimborso del 50% dell'importo pagato",
+        "item3": "Cancellazione meno di 7 giorni prima dell'arrivo: nessun rimborso (addebito del 100%)"
+      },
+      "s4": {
+        "title": "4. Regolamento Interno - Regole Base",
+        "content": "Regole di comportamento nella proprietà per un soggiorno piacevole per tutti gli ospiti:",
+        "item1": "Orario di silenzio: 22:00 - 08:00. Musica ad alto volume, urla e rumori sono severamente vietati. La violazione può comportare la cessazione del soggiorno senza rimborso.",
+        "item2": "Numero massimo di ospiti: secondo la capacità dell'appartamento. Ospiti aggiuntivi non sono ammessi senza preavviso e supplemento (20€/persona/notte).",
+        "item3": "È severamente vietato fumare all'interno. Consentito solo sulla terrazza designata. Penale per fumare all'interno: 100€.",
+        "item4": "Gli animali domestici sono ammessi con preavviso e un supplemento di 15€/giorno. Il proprietario è responsabile del comportamento e della pulizia."
+      },
+      "s5": {
+        "title": "5. Divieti e Sicurezza",
+        "content": "Attività severamente vietate:",
+        "item1": "Organizzazione di feste, celebrazioni o riunioni con più di 2 ospiti aggiuntivi non registrati. Penale: 200€.",
+        "item2": "Rimozione di inventario (asciugamani, biancheria, elettrodomestici da cucina) dalla proprietà. Penale: compensazione al valore di mercato.",
+        "item3": "Qualsiasi uso dei locali per attività illegali (droga, prostituzione) sarà segnalato alla polizia e comporterà la cessazione immediata del contratto."
+      },
+      "s6": {
+        "title": "6. Danni e Responsabilità",
+        "content": "Qualsiasi danno intenzionale o negligente all'inventario o alla proprietà sarà addebitato al costo effettivo di riparazione o sostituzione. Il deposito di 50€ funge da garanzia e verrà rimborsato entro 24 ore dopo l'ispezione della proprietà."
+      },
+      "s7": {
+        "title": "7. Obblighi Aggiuntivi",
+        "content": "Gli ospiti sono tenuti a: lasciare la proprietà in ordine, smaltire i rifiuti nei contenitori designati, spegnere tutti i dispositivi (aria condizionata, riscaldamento, luci) alla partenza. Per locali eccezionalmente sporchi verrà addebitata una pulizia aggiuntiva di 30€. La perdita della chiave comporta una penale di 50€."
+      },
+      "contact": {
+        "title": "Contatto per Domande",
+        "content": "Per tutte le domande sui termini di servizio e regolamento interno, contattateci:"
+      }
+    }
+  }
+}
