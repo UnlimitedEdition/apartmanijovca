@@ -76,22 +76,10 @@ const nextConfig = {
   // Redirects for SEO and user experience
   async redirects() {
     return [
-      // Redirect root to default language (SR)
-      {
-        source: '/',
-        destination: '/sr',
-        permanent: false,
-      },
-      // Redirect old paths without locale prefix to SR
-      {
-        source: '/:path((?!sr|en|de|it|api|_next|admin|favicon.ico|sw.js|manifest.json).*)',
-        destination: '/sr/:path*',
-        permanent: false,
-      },
       // Old home redirect
       {
         source: '/home',
-        destination: '/sr',
+        destination: '/',
         permanent: true,
       },
     ];

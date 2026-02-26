@@ -7,17 +7,27 @@ import createIntlMiddleware from 'next-intl/middleware'
 const intlMiddleware = createIntlMiddleware({
   locales: ['en', 'sr', 'de', 'it'],
   defaultLocale: 'sr',
-  localePrefix: 'always' // Changed from 'as-needed' to 'always' for consistent behavior
+  localePrefix: 'always'
 })
 
 export default async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  // 1. OBAVEZNO: Potpuno preskoči i18n za admin rute
+  // Skip middleware for static files and API routes
+  if (
+    pathname.startsWith('/_next') ||
+    pathname.startsWith('/api') ||
+    pathname.startsWith('/favicon.ico') ||
+    pathname.startsWith('/sw.js') ||
+    pathname.startsWith('/manifest.json')
+  ) {
+    return NextResponse.next()
+  }
+
+  // 1. Admin routes - bypass i18n completely
   if (pathname.startsWith('/admin')) {
     const res = NextResponse.next()
     
-    // Provera sesije samo za zaštitu, ne za routing jezika
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -36,27 +46,14 @@ export default async function middleware(request: NextRequest) {
 
     const { data: { session } } = await supabase.auth.getSession()
 
-    console.log('🔒 Middleware check:', { 
-      path: pathname, 
-      hasSession: !!session,
-      email: session?.user?.email,
-      cookieHeader: request.headers.get('cookie')?.substring(0, 50) + '...'
-    })
-
     if (!session && pathname !== '/admin/login') {
-      console.log('🚩 No session, redirecting to login from middleware')
       return NextResponse.redirect(new URL('/admin/login', request.url))
     }
 
     return res
   }
 
-  // 2. Handle root path - redirect to default locale
-  if (pathname === '/') {
-    return NextResponse.redirect(new URL('/sr', request.url))
-  }
-
-  // 3. Sve ostale rute idu kroz prevode
+  // 2. Let next-intl handle all other routes (including root)
   return intlMiddleware(request)
 }
 
