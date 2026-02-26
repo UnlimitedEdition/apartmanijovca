@@ -108,34 +108,6 @@
     }
   ],
   
-  "redirects": [
-    {
-      "source": "/home",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/en",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/sr",
-      "destination": "/sr",
-      "permanent": true
-    },
-    {
-      "source": "/de",
-      "destination": "/de",
-      "permanent": true
-    },
-    {
-      "source": "/it",
-      "destination": "/it",
-      "permanent": true
-    }
-  ],
-  
   "crons": [
     {
       "path": "/api/cron/cleanup",
