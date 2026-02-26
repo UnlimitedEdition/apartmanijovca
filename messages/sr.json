@@ -1,0 +1,656 @@
+{
+  "app": {
+    "title": "Apartmani Jovča",
+    "description": "Udoban smeštaj u prelepom okruženju"
+  },
+  "header": {
+    "home": "Početna",
+    "apartments": "Apartmani",
+    "gallery": "Galerija",
+    "location": "Lokacija",
+    "contact": "Kontakt",
+    "book": "Rezerviši",
+    "prices": "Cene",
+    "attractions": "Atrakcije"
+  },
+  "nav": {
+    "home": "Početna",
+    "gallery": "Galerija",
+    "prices": "Cene",
+    "attractions": "Atrakcije",
+    "contact": "Kontakt"
+  },
+  "footer": {
+    "rights": "Sva prava zadržana",
+    "privacy": "Politika privatnosti",
+    "terms": "Uslovi korišćenja",
+    "contactUs": "Kontaktirajte nas",
+    "followUs": "Pratite nas"
+  },
+  "language": {
+    "en": "Engleski",
+    "sr": "Srpski",
+    "de": "Nemački",
+    "it": "Italijanski",
+    "select": "Izaberi jezik"
+  },
+  "common": {
+    "loading": "Učitavanje...",
+    "error": "Došlo je do greške",
+    "success": "Uspešno",
+    "save": "Sačuvaj",
+    "cancel": "Otkaži",
+    "edit": "Izmeni",
+    "delete": "Obriši",
+    "retry": "Pokušaj ponovo",
+    "close": "Zatvori",
+    "submit": "Pošalji",
+    "send": "Pošalji",
+    "back": "Nazad",
+    "next": "Sledeće",
+    "previous": "Prethodno",
+    "errorOccurred": "Došlo je do greške. Molimo pokušajte ponovo.",
+    "errorLoadingContent": "Greška pri učitavanju sadržaja. Molimo pokušajte kasnije.",
+    "required": "Obavezno",
+    "optional": "Opciono",
+    "contactUs": "Kontaktirajte nas",
+    "guest": "Gost"
+  },
+  "home": {
+    "title": "Dobrodošli u Apartmane Jovča",
+    "description": "Uživajte u udobnom smeštaju u prelepom okruženju.",
+    "subtitle": "Vaš savršeni odmor u srcu prirode",
+    "hero": {
+      "title": "Doživite udobnost i prirodu",
+      "subtitle": "Rezervišite svoj boravak u modernim apartmanima",
+      "cta": "Rezerviši",
+      "whatsApp": "Pišite na WhatsApp",
+      "book": "Rezervišite smeštaj"
+    },
+    "trust": {
+      "secure": "Sigurna rezervacija",
+      "flexible": "Fleksibilno otkazivanje",
+      "prime": "Lokacija na samom jezeru",
+      "bestPrice": "Najbolja cena zagarantovana"
+    },
+    "featured": {
+      "title": "Izaberite svoj savršen pogled",
+      "subtitle": "Svaki apartman je jedinstveno dizajniran za udobnost i opuštanje.",
+      "viewAll": "Pogledaj sve apartmane",
+      "checkAvailability": "Proveri dostupnost",
+      "badge": "Izdvajamo"
+    },
+    "features": {
+      "title": "Sve što vam je potrebno za savršen boravak",
+      "description": "Pružamo sve osnovne stvari kako biste se mogli fokusirati na stvaranje uspomena. Od brzog interneta do sigurnog parkinga, naš cilj je vaša potpuna udobnost.",
+      "amenities": "Moderno opremljeni apartmani",
+      "location": "Odlična lokacija u blizini atrakcija",
+      "parking": "Besplatan parking",
+      "wifi": "Besplatan WiFi",
+      "breakfast": "Dostupan doručak",
+      "petFriendly": "Dozvoljeni ljubimci",
+      "wiFi": "Brzi WiFi",
+      "climate": "Klima uređaj",
+      "kitchen": "Moderna kuhinja",
+      "tv": "Smart TV",
+      "linens": "Sveža posteljina",
+      "lakeAccess": "Pristup jezeru",
+      "bbq": "Roštilj zona"
+    },
+    "contact": {
+      "title": "Kontaktirajte nas",
+      "available": "Dostupni smo 24/7 za sve vaše potrebe."
+    },
+    "testimonials": {
+      "title": "Šta kažu naši gosti",
+      "readMore": "Pročitaj više recenzija",
+      "averageRating": "Prosečna ocena",
+      "guestFrom": "Gost iz",
+      "sampleQuote": "Najbolji odmor koji smo ikada imali! Apartmani su besprekorni, a pogled na jezero je neverovatan.",
+      "sampleLocation": "Beograda",
+      "sampleName": "Marko D.",
+      "sampleInitials": "MD"
+    },
+    "faq": {
+      "title": "Često postavljana pitanja",
+      "q1": "Koje je vreme prijave i odjave?",
+      "a1": "Prijava je moguća od 14:00, a odjava je do 10:00. Ranija prijava ili kasnija odjava se mogu organizovati na upit, zavisno od dostupnosti.",
+      "q2": "Da li imate obezbeđen parking?",
+      "a2": "Da, obezbeđujemo besplatan, siguran parking za sve naše goste unutar poseda.",
+      "q3": "Koliko je brz WiFi?",
+      "a3": "Nudimo brzi optički WiFi u celom objektu, pogodan za rad na daljinu i strimovanje sadržaja visoke definicije.",
+      "q4": "Da li dozvoljavate kućne ljubimce?",
+      "a4": "Kako bismo osigurali udobnost svih gostiju, ljubimci generalno nisu dozvoljeni. Ipak, kontaktirajte nas za posebne zahteve.",
+      "q5": "Da li je plaža blizu?",
+      "a5": "Da, naši gosti imaju privatan pristup obali jezera, samo 2 minuta hoda od apartmana.",
+      "q6": "Da li su apartmani klimatizovani?",
+      "a6": "Da, svaki apartman je opremljen modernim, tihim klima uređajima za vaš savršen boravak tokom leta.",
+      "q7": "Gde je najbliža prodavnica?",
+      "a7": "Najbliža prodavnica je u selu Bovan (500m), a veći supermarketi su u Aleksincu (15km).",
+      "q8": "Da li obezbeđujete peškire i posteljinu?",
+      "a8": "Da, sveži peškiri i kvalitetna posteljina su obezbeđeni za svakog gosta i menjaju se nedeljno ili po potrebi.",
+      "q9": "Kakva je politika otkazivanja?",
+      "a9": "Nudimo besplatno otkazivanje do 7 dana pre dolaska. Za kasno otkazivanje, depozit za prvu noć je nepovratan.",
+      "q10": "Mogu li platiti karticom?",
+      "a10": "Trenutno prihvatamo gotovinsko plaćanje po dolasku ili bankovni transfer. Radimo na uvođenju online plaćanja karticama.",
+      "moreQuestions": "Imate još pitanja? Kontaktirajte nas direktno putem WhatsApp-a"
+    },
+    "cta": {
+      "ready": "Spremni za vaš savršen odmor?",
+      "subtitle": "Rezervišite svoj boravak danas i otkrijte zašto je Apartmani Jovča izbor broj 1 na Bovanskom jezeru.",
+      "book": "Rezerviši odmah",
+      "call": "Pozovite nas"
+    }
+  },
+  "gallery": {
+    "title": "Galerija",
+    "description": "Zavirite u naš mali raj",
+    "viewImage": "Pogledaj sliku",
+    "imageAlt": "Slika u galeriji {{number}}",
+    "enlargedView": "Uvećani prikaz",
+    "imageModal": "Pregled slike",
+    "noImages": {
+      "title": "Još uvek nema slika",
+      "message": "Vratite se kasnije kako biste videli ažuriranu galeriju."
+    },
+    "errors": {
+      "loadFailed": "Greška pri učitavanju galerije. Molimo pokušajte ponovo kasnije."
+    },
+    "categories": {
+      "nature": "Priroda",
+      "interior": "Enterijer",
+      "view": "Pogled",
+      "apartment": "Apartman"
+    }
+  },
+  "prices": {
+    "title": "Cene",
+    "description": "Naši apartmani po najboljim cenama",
+    "allInclusive": "Sve uključeno u cenu. Bez dodatnih troškova.",
+    "amenitiesWiFi": "Besplatan brzi WiFi i parking",
+    "realExperiences": "Prava iskustva",
+    "guestExperiencesDesc": "Ne verujte nam na reč. Evo šta naši gosti kažu o svom boravku u Apartmanima Jovča.",
+    "overallRating": "Ukupna ocena",
+    "happyGuests": "Zadovoljni gosti",
+    "verifiedStay": "Potvrđen boravak",
+    "guestFrom": "Gost iz {country}",
+    "bed": "Tip kreveta",
+    "capacity": "Kapacitet",
+    "included": "U cenu je uključeno:",
+    "perNight": "po noćenju",
+    "totalPrice": "Ukupna cena",
+    "selectDates": "Izaberite datume da vidite cene",
+    "noPrices": {
+      "title": "Trenutno nema dostupnih cena",
+      "message": "Molimo proverite kasnije ili nas kontaktirajte za više informacija."
+    },
+    "errors": {
+      "loadFailed": "Greška pri učitavanju cena. Molimo pokušajte ponovo kasnije."
+    }
+  },
+  "attractions": {
+    "title": "Atrakcije",
+    "description": "Otkrijte lepotu okoline Bovanskog jezera",
+    "distance": "{{distance}} km udaljeno",
+    "readMore": "Pročitaj više",
+    "viewOnMap": "Pogledaj na mapi",
+    "noAttractions": {
+      "title": "Nema navedenih atrakcija",
+      "message": "Proverite kasnije za ažuriranja o lokalnim atrakcijama."
+    }
+  },
+  "contact": {
+    "title": "Kontaktirajte nas",
+    "description": "Rado ćemo vam odgovoriti",
+    "form": {
+      "name": "Vaše ime",
+      "email": "Email adresa",
+      "phone": "Broj telefona",
+      "message": "Vaša poruka",
+      "submit": "Pošalji poruku",
+      "subtitle": "Popunite formu ispod i javićemo vam se u roku od 30 minuta.",
+      "success": "Poruka uspešno poslata! Javićemo vam se uskoro.",
+      "error": "Greška pri slanju poruke. Molimo pokušajte ponovo."
+    },
+    "info": {
+      "title": "Kontakt informacije",
+      "subtitle": "Direktne linije do našeg tima",
+      "phone": "Telefon",
+      "email": "Email",
+      "address": "Adresa",
+      "addressValue": "Bovansko jezero, Aleksinac",
+      "whatsapp": "WhatsApp Čet"
+    },
+    "host": {
+      "title": "Jovča",
+      "since": "Domaćin od 2015. godine",
+      "available": "Dostupni smo 24/7 za sve vaše potrebe"
+    },
+    "languages": {
+      "title": "Jezici koje govorimo",
+      "sr": "Srpski",
+      "en": "Engleski",
+      "de": "Nemački"
+    },
+    "hours": {
+      "title": "Radno vreme",
+      "weekdays": "Ponedeljak - Petak",
+      "weekend": "Subota - Nedelja",
+      "always": "Dostupni 24/7"
+    }
+  },
+  "booking": {
+    "title": "Rezervišite svoj boravak",
+    "description": "Rezervišite savršen smeštaj",
+    "step": {
+      "dates": "Izaberite datume",
+      "apartment": "Izaberite apartman",
+      "details": "Vaši podaci",
+      "confirm": "Potvrda",
+      "requests": "Zahtevi"
+    },
+    "form": {
+      "checkIn": "Datum dolaska",
+      "checkOut": "Datum odlaska",
+      "guests": "Broj gostiju",
+      "apartment": "Izaberite apartman",
+      "firstName": "Ime",
+      "lastName": "Prezime",
+      "email": "Email adresa",
+      "phone": "Broj telefona",
+      "specialRequests": "Posebni zahtevi",
+      "submit": "Pošalji zahtev za rezervaciju",
+      "acceptTerms": "Prihvatam",
+      "termsLink": "uslove korišćenja",
+      "and": "i",
+      "privacyLink": "politiku privatnosti"
+    },
+    "summary": {
+      "title": "Rezime rezervacije",
+      "dates": "Datumi boravka",
+      "guests": "Gosti",
+      "total": "Ukupna cena",
+      "nights": "{count} noć",
+      "nights_plural": "{count} noći",
+      "stay": "Boravak",
+      "preview": "Pregled rezervacije"
+    },
+    "instruction": "Izaberite željeni period i pronađite slobodan termin.",
+    "detailsInstruction": "Finalni detalji za potvrdu vaše rezervacije.",
+    "requestsTitle": "Posebni zahtevi",
+    "requestsDescription": "Imate li neke posebne zahteve ili pitanja?",
+    "requestsPlaceholder": "Npr: Rani dolazak, kasni odlazak, dodatne informacije...",
+    "requestsNote": "Kontaktiraćemo vas u vezi vaših zahteva nakon rezervacije.",
+    "included": {
+      "title": "Šta je uključeno:",
+      "parking": "Besplatan parking",
+      "wifi": "WiFi",
+      "linens": "Posteljina i peškiri",
+      "kitchen": "Osnovna kuhinjska oprema"
+    },
+    "night": "noć",
+    "nights": "noći",
+    "options": {
+      "title": "Opcije rezervacije",
+      "crib": "Krevetac za bebu",
+      "parking": "Rezervisan parking",
+      "earlyCheckIn": "Rani check-in",
+      "cribDesc": "Besplatna usluga",
+      "parkingDesc": "Sigurno privatno mesto",
+      "earlyCheckInDesc": "Od 12:00 č"
+    },
+    "status": {
+      "pending": "Na čekanju",
+      "confirmed": "Potvrđeno",
+      "cancelled": "Otkazano",
+      "completed": "Završeno"
+    },
+    "messages": {
+      "success": "Zahtev za rezervaciju je uspešno poslat! Kontaktiraćemo vas ubrzo.",
+      "successSubtitle": "Kontaktiraćemo vas uskoro sa potvrdom.",
+      "error": "Došlo je do greške prilikom slanja zahteva. Molimo pokušajte ponovo.",
+      "selectDates": "Molimo izaberite datume dolaska i odlaska",
+      "selectApartment": "Molimo izaberite apartman",
+      "acceptTermsRequired": "Morate prihvatiti uslove korišćenja da biste nastavili",
+      "instructionsTitle": "Šta sledi?",
+      "instructionsStep1": "Primićete email potvrdu vašeg zahteva",
+      "instructionsStep2": "Kontaktiraćemo vas u roku od 24h radi potvrde",
+      "instructionsStep3": "Nakon potvrde, dobićete instrukcije za plaćanje i dolazak"
+    },
+    "calendar": {
+      "available": "Dostupno",
+      "booked": "Zauzeto",
+      "pending": "Na čekanju",
+      "selected": "Izabrano",
+      "today": "Danas",
+      "clear": "Poništi izbor",
+      "prev": "Prethodni mesec",
+      "next": "Sledeći mesec",
+      "realtime": "Ažuriranje u realnom vremenu je aktivno",
+      "connecting": "Povezivanje...",
+      "loadError": "Greška pri učitavanju podataka o dostupnosti",
+      "selectCheckOut": "Izaberite datum odlaska"
+    }
+  },
+  "apartments": {
+    "title": "Naši apartmani",
+    "description": "Pronađite savršen smeštaj",
+    "amenities": "Sadržaji",
+    "size": "Veličina",
+    "beds": "Kreveti",
+    "capacity": "Kapacitet",
+    "viewDetails": "Vidi detalje",
+    "bookNow": "Rezerviši",
+    "bedroomLong": "Spavaća soba",
+    "amenitiesWiFi": "WiFi",
+    "amenitiesAC": "Klima",
+    "amenitiesKitchen": "Kuhinja",
+    "amenitiesTV": "TV",
+    "available": "Dostupno",
+    "booked": "Rezervisano",
+    "perNight": "po noćenju",
+    "guests": "Gosti",
+    "bedroomsShort": "Sp.",
+    "noApartments": {
+      "title": "Nema dostupnih apartmana",
+      "message": "Proverite kasnije ili nas kontaktirajte za dostupnost."
+    },
+    "detail": {
+      "breadcrumb": {
+        "home": "Početna",
+        "apartments": "Apartmani"
+      },
+      "basicInfo": "Osnovne informacije",
+      "guests": "gostiju",
+      "bathroom": "kupatilo",
+      "bathrooms": "kupatila",
+      "floor": "Sprat",
+      "balcony": "Balkon/Terasa",
+      "bedDetails": "Detalji kreveta",
+      "doubleBed": "Bračni krevet",
+      "singleBed": "Pojedinačni krevet",
+      "sofaBed": "Kauč na razvlačenje",
+      "bunkBed": "Krevet na sprat",
+      "about": "O apartmanu",
+      "amenitiesTitle": "Sadržaji",
+      "basicAmenities": "Osnovni sadržaji",
+      "kitchenTitle": "Kuhinja",
+      "additionalFeatures": "Dodatne karakteristike",
+      "viewTitle": "Pogled",
+      "houseRules": "Pravila kuće",
+      "checkIn": "Prijava",
+      "checkOut": "Odjava: do",
+      "minStay": "Minimalan boravak",
+      "maxStay": "Maksimalan boravak",
+      "night": "noć",
+      "nights": "noći",
+      "noSmoking": "Pušenje nije dozvoljeno",
+      "petsAllowed": "Kućni ljubimci su dozvoljeni",
+      "quietHours": "Noćni mir od 22:00",
+      "cancellationPolicy": "Politika otkazivanja",
+      "videoTour": "Video i virtuelna tura",
+      "videoPresentation": "Video prezentacija",
+      "virtualTour": "Virtuelna tura",
+      "location": "Lokacija",
+      "pricePerNight": "/ noć",
+      "weekend": "Vikend",
+      "discounts": "Popusti",
+      "weeklyDiscount": "7+ noći",
+      "monthlyDiscount": "30+ noći",
+      "seasonalPrices": "Sezonske cene",
+      "checkAvailability": "Proveri dostupnost i rezerviši",
+      "selectDates": "Izaberite datume da vidite tačnu cenu i dostupnost",
+      "showAllImages": "Prikaži sve slike",
+      "imageAlt": "slika"
+    }
+  },
+  "location": {
+    "title": "Lokacija",
+    "description": "Kako do nas",
+    "address": "Adresa",
+    "directions": "Uputstva za dolazak",
+    "reachTitle": "Kako do nas",
+    "byCarTitle": "Automobilom",
+    "byCarDesc": "Iz pravca Beograda/Niša (autoput E75): Isključite se kod Aleksinca i pratite znakove za Bovansko jezero. Nalazimo se u naselju \"Vikend naselje\".",
+    "byBusTitle": "Autobusom",
+    "byBusDesc": "Idite autobusom do Aleksinca. Sa stanice, taksi do jezera Bovan traje oko 15 minuta (oko 10€).",
+    "googleMaps": "Otvori u Google Mapama",
+    "callDirections": "Pozovite za instrukcije",
+    "addressName": "Apartmani Jovča",
+    "addressStreet": "Vikend naselje (Jovča)",
+    "addressLake": "Bovansko jezero",
+    "addressCity": "18230 Aleksinac, Srbija",
+    "nearbyTitle": "U blizini",
+    "bovanLake": "Bovansko jezero",
+    "bovanLakeDesc": "Na samom pragu - kupanje, ribolov i sportovi na vodi",
+    "sokolica": "Tvrđava Sokolica",
+    "sokolicaDesc": "Srednjovekovna tvrđava sa panoramskim pogledom - 20 km udaljena",
+    "nis": "Niš",
+    "nisDesc": "Istorijski grad sa many atrakcijama - 30 km udaljen"
+  },
+  "reviews": {
+    "title": "Recenzije gostiju",
+    "writeReview": "Napišite recenziju",
+    "rating": "Ocena",
+    "date": "Datum",
+    "noReviews": {
+      "title": "Još nema recenzija",
+      "message": "Budite prvi koji će podeliti iskustvo!"
+    },
+    "form": {
+      "title": "Naslov recenzije",
+      "comment": "Vaša recenzija",
+      "rating": "Vaša ocena",
+      "submit": "Pošalji recenziju",
+      "success": "Hvala na vašoj recenziji!",
+      "error": "Greška pri slanju recenzije. Molimo pokušajte ponovo."
+    }
+  },
+  "portal": {
+    "title": "Portal za goste",
+    "welcome": "Dobrodošli nazad",
+    "login": {
+      "title": "Prijava za goste",
+      "email": "Email adresa",
+      "submit": "Prijavi se",
+      "magicLink": "Pošalji magic link",
+      "success": "Proverite email za link za prijavu",
+      "error": "Greška pri slanju linka"
+    },
+    "dashboard": {
+      "title": "Vaše rezervacije",
+      "upcoming": "Predstojeći boravci",
+      "past": "Prošli boravci",
+      "noBookings": "Nema pronađenih rezervacija"
+    },
+    "booking": {
+      "details": "Detalji rezervacije",
+      "downloadTicket": "Preuzmi kartu",
+      "contactHost": "Kontaktirajte domaćina",
+      "directions": "Uputstva za dolazak"
+    }
+  },
+  "pwa": {
+    "install": {
+      "title": "Instaliraj aplikaciju",
+      "message": "Instaliraj Apartmani Jovča za bolje iskustvo",
+      "accept": "Instaliraj",
+      "dismiss": "Ne sada"
+    }
+  },
+  "errors": {
+    "404": {
+      "title": "Stranica nije pronađena",
+      "message": "Stranica koju tražite ne postoji.",
+      "home": "Idi na početnu",
+      "success": "Upit uspesno poslat!",
+      "successSubtitle": "Primili smo vaš zahtev i kontaktiraćemo vas ubrzo."
+    },
+    "500": {
+      "title": "Greška servera",
+      "message": "Nešto je pošlo po zlu. Molimo pokušajte kasnije.",
+      "retry": "Pokušaj ponovo"
+    }
+  },
+  "legal": {
+    "privacy": {
+      "title": "Politika privatnosti",
+      "intro": "Apartmani Jovča poštuju vašu privatnost i posvećeni su zaštiti vaših ličnih podataka. Ova politika objašnjava kako prikupljamo, koristimo, čuvamo i štitimo vaše informacije u skladu sa zakonima Republike Srbije.",
+      "lastUpdated": "Poslednje ažurirano: Februar 2026",
+      "s1": {
+        "title": "1. Koje podatke prikupljamo",
+        "content": "Prilikom rezervacije i boravka u našim apartmanima, prikupljamo sledeće podatke:",
+        "dataTitle": "Podaci koje prikupljamo:",
+        "item1": "Lični podaci: Ime i prezime, broj telefona, email adresa",
+        "item2": "Identifikacioni podaci: Broj lične karte ili pasoša (obavezno po zakonu za prijavu gostiju)",
+        "item3": "Podaci o rezervaciji: Datumi boravka, broj gostiju, izabrani apartman",
+        "item4": "Finansijski podaci: Informacije o plaćanju i depozitu",
+        "item5": "Komunikacija: Prepiska putem email-a, WhatsApp-a ili telefona"
+      },
+      "s2": {
+        "title": "2. Kako koristimo vaše podatke",
+        "content": "Vaše lične podatke koristimo isključivo u sledeće svrhe:",
+        "item1": "Obrada rezervacija i potvrda boravka",
+        "item2": "Prijava gostiju nadležnim organima (zakonska obaveza)",
+        "item3": "Komunikacija o vašem boravku, instrukcijama za dolazak i dodatnim uslugama",
+        "item4": "Obrada plaćanja i povraćaj depozita"
+      },
+      "s3": {
+        "title": "3. Zaštita podataka",
+        "content": "Primenjujemo stroge mere zaštite vaših ličnih podataka:",
+        "item1": "Podaci se čuvaju na sigurnim serverima sa enkripcijom",
+        "item2": "Pristup podacima imaju samo ovlašćena lica (vlasnik i administratori)",
+        "item3": "Ne delimo vaše podatke sa trećim stranama osim kada je to zakonski obavezno (policija, turistička inspekcija)"
+      },
+      "s4": {
+        "title": "4. Kolačići (Cookies)",
+        "content": "Naš veb sajt koristi kolačiće za:",
+        "item1": "Pamćenje vaših jezičkih podešavanja",
+        "item2": "Analizu posećenosti sajta (anonimni podaci)",
+        "item3": "Poboljšanje korisničkog iskustva"
+      },
+      "s5": {
+        "title": "5. Vaša prava",
+        "content": "U skladu sa zakonima o zaštiti podataka, imate pravo da:",
+        "item1": "Zatražite uvid u svoje lične podatke koje čuvamo",
+        "item2": "Zatražite ispravku netačnih podataka",
+        "item3": "Zatražite brisanje podataka nakon isteka zakonskog roka čuvanja",
+        "item4": "Povučete saglasnost za obradu podataka (osim zakonski obaveznih)"
+      },
+      "s6": {
+        "title": "6. Rok čuvanja podataka",
+        "content": "Vaše podatke čuvamo u skladu sa zakonskim obavezama: podaci o prijavama gostiju se čuvaju 1 godinu, finansijski podaci 5 godina, a ostali podaci se brišu nakon 2 godine od poslednjeg boravka."
+      },
+      "contact": {
+        "title": "Kontakt za pitanja o privatnosti",
+        "content": "Za sva pitanja o zaštiti vaših ličnih podataka, možete nas kontaktirati:"
+      }
+    },
+    "terms": {
+      "title": "Uslovi korišćenja i Kućni red",
+      "intro": "Rezervacijom i boravkom u Apartmanima Jovča, prihvatate sledeće uslove korišćenja i kućni red. Molimo vas da pažljivo pročitate ova pravila kako bi vaš boravak bio prijatan i bez nesp orazuma.",
+      "lastUpdated": "Poslednje ažurirano: Februar 2026",
+      "s1": {
+        "title": "1. Rezervacija i potvrda",
+        "content": "Proces rezervacije i uslovi potvrde:",
+        "item1": "Rezervacija se smatra važećom tek nakon naše pisane potvrde putem email-a ili WhatsApp-a",
+        "item2": "Depozit od 50€ je obavezan za potvrdu rezervacije i vraća se nakon provere stanja objekta pri odlasku",
+        "item3": "Puna uplata se vrši najkasnije 7 dana pre dolaska ili po dolasku (gotovina ili bankovna transakcija)",
+        "item4": "Rezervacija obavezuje obe strane - gosta i vlasnika - na poštovanje dogovorenih uslova"
+      },
+      "s2": {
+        "title": "2. Prijava i odjava",
+        "content": "Pravila za check-in i check-out:",
+        "item1": "Prijava (check-in): od 14:00 časova. Ranija prijava moguća uz prethodnu najavu i dostupnost (dopl ata 10€/sat)",
+        "item2": "Odjava (check-out): do 10:00 časova. Kasnija odjava moguća uz prethodnu najavu i dostupnost (doplata 10€/sat)",
+        "item3": "Prijava gostiju je zakonski obavezna - potreban je važeći lični dokument (lična karta ili pasoš) za sve goste"
+      },
+      "s3": {
+        "title": "3. Politika otkazivanja",
+        "content": "Uslovi otkazivanja rezervacije:",
+        "cancellationTitle": "Pravila otkazivanja:",
+        "item1": "Otkazivanje više od 14 dana pre dolaska: povraćaj 100% uplaćenog iznosa (osim depozita od 30€)",
+        "item2": "Otkazivanje 7-14 dana pre dolaska: povraćaj 50% uplaćenog iznosa",
+        "item3": "Otkazivanje manje od 7 dana pre dolaska: bez povraćaja novca (100% naknada)"
+      },
+      "s4": {
+        "title": "4. Kućni red - Osnovna pravila",
+        "content": "Pravila ponašanja u objektu za prijatan boravak svih gostiju:",
+        "item1": "Vreme tišine: 22:00 - 08:00. Glasna muzika, vikanje i buka su strogo zabranjeni. Kršenje može dovesti do preke ida boravka bez povraćaja novca.",
+        "item2": "Maksimalan broj gostiju: prema kapacitetu apartmana. Dodatni gosti nisu dozvoljeni bez prethodne najave i dop late (20€/osoba/noć).",
+        "item3": "Pušenje je strogo zabranjeno u zatvorenom prostoru. Dozvoljeno je samo na označenoj terasi. Kazna za pušenje u objektu: 100€.",
+        "item4": "Kućni ljubimci su dozvoljeni uz prethodnu najavu i doplatu od 15€/dan. Vlasnik je odgovoran za ponašanje i čistoću."
+      },
+      "s5": {
+        "title": "5. Zabrane i bezbednost",
+        "content": "Strogo zabranjene aktivnosti:",
+        "item1": "Organizovanje žurki, proslava ili okupljanja sa više od 2 dodatna gosta koji nisu registrovani. Kazna: 200€.",
+        "item2": "Iznošenje inventara (peškiri, posteljina, kuhinjski aparati) iz objekta. Kazna: naknada po tržišnoj vrednosti.",
+        "item3": "Svaka upotreba prostora za ilegalne aktivnosti (droga, prostitucija) biće prijavljena policiji i dovesti će do trenutnog prekida ugovora."
+      },
+      "s6": {
+        "title": "6. Šteta i odgovornost",
+        "content": "Svaka namerna ili nehatna šteta na inventaru ili objektu biće naplaćena po stvarnoj vrednosti popravke ili zamene. Depozit od 50€ služi kao garancija i vraća se u roku od 24 sata nakon provere stanja objekta."
+      },
+      "s7": {
+        "title": "7. Dodatne obaveze",
+        "content": "Gosti su dužni da: ostave objekat urednim, odlože smeće u označene kontejnere, isključe sve uređaje (klima, grejanje, svetla) pri odlasku. Za izuzetno zagađene prostore naplaćuje se dodatno čišćenje od 30€. Gubitak ključa nosi kaznu od 50€."
+      },
+      "contact": {
+        "title": "Kontakt za pitanja",
+        "content": "Za sva pitanja o uslovima korišćenja i kućnom redu, kontaktirajte nas:"
+      }
+    }
+  },
+  "admin": {
+    "dashboard": "Kontrolna tabla",
+    "bookings": "Rezervacije",
+    "apartments": "Apartmani",
+    "content": "Sadržaj",
+    "analytics": "Analitika",
+    "settings": "Podešavanja",
+    "logout": "Odjavi se",
+    "refresh": "Osveži",
+    "stats": {
+      "checkins": "Današnji dolasci",
+      "checkouts": "Današnji odlasci",
+      "pending": "Na čekanju",
+      "confirmed": "Potvrđeno",
+      "occupancy": "Popunjenost",
+      "revenue": "Prihod ovog meseca",
+      "totalBookings": "Ukupno rezervacija",
+      "totalApartments": "Ukupno apartmana"
+    },
+    "apartments_mgr": {
+      "title": "Upravljanje apartmanima",
+      "add_new": "Dodaj novi apartman",
+      "edit": "Izmeni apartman",
+      "name": "Naziv apartmana",
+      "type": "Tip",
+      "capacity": "Kapacitet (gosti)",
+      "price": "Cena po noćenju (EUR)",
+      "description": "Opis",
+      "images": "Slike (URL-ovi)",
+      "save": "Sačuvaj apartman",
+      "delete_confirm": "Da li ste sigurni da želite da obrišete ovaj apartman?"
+    },
+    "content_editor": {
+      "title": "Uređivač sadržaja",
+      "sections": "Sekcije",
+      "edit_section": "Uredi sekciju",
+      "language": "Jezik",
+      "save_draft": "Sačuvaj nacrt",
+      "publish": "Objavi na svim jezicima",
+      "import_json": "Uvezi iz JSON-a",
+      "coverage": "Pokrivenost jezicima"
+    },
+    "analytics_view": {
+      "title": "Analitika poseta",
+      "views": "Pregledi stranica",
+      "visitors": "Jedinstveni posetioci",
+      "top_pages": "Najposećenije stranice",
+      "devices": "Uređaji",
+      "locations": "Lokacije"
+    }
+  }
+}

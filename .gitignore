@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# firebase
+functions/node_modules
+functions/package-lock.json
+.firebase/
+*.cache

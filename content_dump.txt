@@ -1,0 +1,1 @@
+[ { lang: 'en', section: 'home' }, { lang: 'en', section: 'prices' } ]

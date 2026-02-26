@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://apartmani-jovca.com/sitemap.xml

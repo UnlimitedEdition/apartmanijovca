@@ -1,0 +1,643 @@
+{
+  "app": {
+    "title": "Apartments Jovča",
+    "description": "Komfortable Unterkunft in schöner Umgebung"
+  },
+  "header": {
+    "home": "Startseite",
+    "apartments": "Apartments",
+    "gallery": "Galerie",
+    "location": "Lage",
+    "contact": "Kontakt",
+    "book": "Jetzt buchen",
+    "prices": "Preise",
+    "attractions": "Sehenswürdigkeiten"
+  },
+  "nav": {
+    "home": "Startseite",
+    "gallery": "Galerie",
+    "prices": "Preise",
+    "attractions": "Sehenswürdigkeiten",
+    "contact": "Kontakt"
+  },
+  "footer": {
+    "rights": "Alle Rechte vorbehalten",
+    "privacy": "Datenschutz",
+    "terms": "Nutzungsbedingungen",
+    "contactUs": "Kontaktieren Sie uns",
+    "followUs": "Folgen Sie uns"
+  },
+  "language": {
+    "en": "Englisch",
+    "sr": "Serbisch",
+    "de": "Deutsch",
+    "it": "Italienisch",
+    "select": "Sprache wählen"
+  },
+  "common": {
+    "loading": "Lädt...",
+    "error": "Ein Fehler ist aufgetreten",
+    "success": "Erfolg",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "retry": "Erneut versuchen",
+    "close": "Schließen",
+    "submit": "Absenden",
+    "send": "Senden",
+    "back": "Zurück",
+    "next": "Weiter",
+    "previous": "Zurück",
+    "errorOccurred": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.",
+    "errorLoadingContent": "Fehler beim Laden des Inhalts. Bitte versuchen Sie es später erneut.",
+    "required": "Erforderlich",
+    "optional": "Optional",
+    "guest": "Gast",
+    "contactUs": "Kontaktieren Sie uns"
+  },
+  "home": {
+    "title": "Willkommen in den Apartments Jovča",
+    "description": "Genießen Sie komfortable Unterkunft im Herzen der Natur.",
+    "subtitle": "Ihr perfekter Urlaub im Herzen der Natur",
+    "trust": {
+      "secure": "Sichere Buchung",
+      "flexible": "Flexible Stornierung",
+      "prime": "Beste Lage",
+      "bestPrice": "Bestpreisgarantie"
+    },
+    "featured": {
+      "title": "Wählen Sie Ihren perfekten Ausblick",
+      "subtitle": "Unsere modernsten Apartments am Bovan-See",
+      "viewAll": "Alle Apartments ansehen",
+      "checkAvailability": "Verfügbarkeit prüfen",
+      "badge": "Empfohlen"
+    },
+    "hero": {
+      "title": "Erleben Sie Komfort & Natur",
+      "subtitle": "Buchen Sie Ihren Aufenthalt in unseren modernen Apartments",
+      "whatsApp": "Senden Sie uns eine Nachricht",
+      "book": "Jetzt buchen"
+    },
+    "features": {
+      "title": "Alles für Ihren perfekten Aufenthalt",
+      "description": "Unsere Apartments sind mit Liebe zum Detail eingerichtet, um Ihnen maximalen Komfort zu bieten.",
+      "wiFi": "High-Speed WLAN",
+      "climate": "Klimaanlage",
+      "parking": "Privater Parkplatz",
+      "kitchen": "Voll ausgestattet",
+      "tv": "Smart TV",
+      "linens": "Bettwäsche & Handtücher",
+      "lakeAccess": "Strandzugang",
+      "bbq": "Grillplatz"
+    },
+    "faq": {
+      "title": "Häufig gestellte Fragen",
+      "q1": "Wann ist der Check-in und Check-out?",
+      "a1": "Der Check-in ist ab 14:00 Uhr und der Check-out bis 10:00 Uhr möglich.",
+      "q2": "Gibt es Parkplätze vor Ort?",
+      "a2": "Ja, wir bieten kostenlose Privatparkplätze für alle unsere Gäste direkt am Haus.",
+      "q3": "Sind Haustiere erlaubt?",
+      "a3": "Bitte kontaktieren Sie uns vorab bezüglich Haustieren, da dies vom jeweiligen Apartment abhängt.",
+      "q4": "Wie weit ist der Strand entfernt?",
+      "a4": "Der nächste Strand am Bovan-See ist nur 2-3 Gehminuten (ca. 150m) entfernt.",
+      "q5": "Ist WLAN verfügbar?",
+      "a5": "Ja, wir bieten kostenloses High-Speed-WLAN in allen unseren Apartments.",
+      "q6": "Haben die Apartments eine Klimaanlage?",
+      "a6": "Ja, alle Einheiten sind für Ihren Komfort im Sommer voll klimatisiert.",
+      "q7": "Können wir im See schwimmen?",
+      "a7": "Auf jeden Fall! Der Bovan-See ist bekannt für sein sauberes Wasser und tolle Schwimmstellen.",
+      "q8": "Gibt es einen Grillplatz?",
+      "a8": "Ja, wir haben einen Gemeinschaftsbereich mit Grill, den alle Gäste nutzen können.",
+      "q9": "Sind Bettwäsche und Handtücher vorhanden?",
+      "a9": "Ja, frische Bettwäsche und Handtücher liegen bei Ihrer Ankunft für Sie bereit.",
+      "q10": "Gibt es Geschäfte in der Nähe?",
+      "a10": "Es gibt kleine Geschäfte in der Nähe für den täglichen Bedarf, größere Supermärkte sind in Sokobanja (10 Min. Fahrt).",
+      "moreQuestions": "Haben Sie weitere Fragen? Kontaktieren Sie uns direkt über WhatsApp"
+    },
+    "testimonials": {
+      "title": "Bewertungen unserer Gäste",
+      "guestFrom": "Gast aus",
+      "readMore": "Weitere Bewertungen lesen",
+      "sampleQuote": "Der beste Urlaub, den wir je hatten! Die Apartments sind makellos und der Seeblick ist unglaublich.",
+      "sampleLocation": "Berlin",
+      "sampleName": "Marko D.",
+      "sampleInitials": "MD"
+    },
+    "cta": {
+      "ready": "Bereit für Ihren perfekten Urlaub?",
+      "subtitle": "Buchen Sie jetzt und sichern Sie sich Ihren Platz am Bovan-See.",
+      "book": "Jetzt buchen",
+      "call": "Rufen Sie uns an"
+    }
+  },
+  "gallery": {
+    "title": "Galerie",
+    "description": "Ein Blick in unser kleines Paradies",
+    "viewImage": "Bild ansehen",
+    "imageAlt": "Galeriebild {{number}}",
+    "enlargedView": "Vergrößerte Ansicht",
+    "imageModal": "Bildvorschau",
+    "noImages": {
+      "title": "Noch keine Bilder",
+      "message": "Schauen Sie später für Updates in unserer Galerie vorbei."
+    },
+    "errors": {
+      "loadFailed": "Galerie konnte nicht geladen werden. Bitte versuchen Sie es später erneut."
+    },
+    "categories": {
+      "nature": "Natur",
+      "interior": "Innenbereich",
+      "view": "Aussicht",
+      "apartment": "Apartment"
+    }
+  },
+  "prices": {
+    "title": "Preise",
+    "description": "Unsere Apartments zu den besten Preisen",
+    "allInclusive": "All-Inclusive-Preise. Keine versteckten Gebühren.",
+    "amenitiesWiFi": "Kostenloses Highspeed-WiFi & Parken",
+    "realExperiences": "Echte Erfahrungen",
+    "guestExperiencesDesc": "Glauben Sie uns nicht einfach. Hier ist, was unsere Gäste über ihren Aufenthalt bei Apartmani Jovča sagen.",
+    "overallRating": "Gesamtbewertung",
+    "happyGuests": "Zufriedene Gäste",
+    "verifiedStay": "Verifizierter Aufenthalt",
+    "guestFrom": "Gast aus {country}",
+    "bed": "Betttyp",
+    "capacity": "Kapazität",
+    "included": "In allen Preisen enthalten:",
+    "perNight": "pro Nacht",
+    "totalPrice": "Gesamtpreis",
+    "selectDates": "Wählen Sie Daten, um Preise zu sehen",
+    "noPrices": {
+      "title": "Keine Preisinformationen verfügbar",
+      "message": "Bitte schauen Sie später vorbei oder kontaktieren Sie uns für weitere Informationen."
+    },
+    "errors": {
+      "loadFailed": "Preisinformationen konnten nicht geladen werden. Bitte versuchen Sie es später erneut."
+    }
+  },
+  "attractions": {
+    "title": "Attraktionen",
+    "description": "Entdecken Sie die Schönheiten in der Umgebung des Bovaner Sees",
+    "distance": "{{distance}} km entfernt",
+    "readMore": "Mehr lesen",
+    "viewOnMap": "Auf Karte ansehen",
+    "noAttractions": {
+      "title": "Keine Sehenswürdigkeiten gelistet",
+      "message": "Schauen Sie später für Updates zu lokalen Sehenswürdigkeiten vorbei."
+    }
+  },
+  "contact": {
+    "title": "Kontaktieren Sie uns",
+    "description": "Wir freuen uns von Ihnen zu hören",
+    "form": {
+      "name": "Ihr Name",
+      "email": "E-Mail-Adresse",
+      "phone": "Telefonnummer",
+      "message": "Ihre Nachricht",
+      "submit": "Nachricht senden",
+      "subtitle": "Füllen Sie das Formular aus, wir melden uns in 30 Min.",
+      "success": "Nachricht gesendet! Wir melden uns bald.",
+      "error": "Versand fehlgeschlagen. Bitte erneut versuchen."
+    },
+    "info": {
+      "title": "Kontaktinformationen",
+      "subtitle": "Direkter Kontakt zu unserem Team",
+      "phone": "Telefon",
+      "email": "E-Mail",
+      "address": "Adresse",
+      "addressValue": "Bovan See, Aleksinac",
+      "whatsapp": "WhatsApp Chat"
+    },
+    "host": {
+      "title": "Jovča",
+      "since": "Engagierter Gastgeber seit 2015",
+      "available": "Wir sind rund um die Uhr für Sie da"
+    },
+    "languages": {
+      "title": "Gesprochene Sprachen",
+      "sr": "Serbisch",
+      "en": "Englisch",
+      "de": "Deutsch"
+    },
+    "hours": {
+      "title": "Öffnungszeiten",
+      "weekdays": "Montag - Freitag",
+      "weekend": "Samstag - Sonntag",
+      "always": "24/7 verfügbar"
+    }
+  },
+  "booking": {
+    "title": "Buchen Sie Ihren Aufenthalt",
+    "description": "Reservieren Sie Ihre perfekte Unterkunft",
+    "step": {
+      "dates": "Daten wählen",
+      "apartment": "Apartment wählen",
+      "details": "Ihre Daten",
+      "confirm": "Bestätigung",
+      "requests": "Anfragen"
+    },
+    "form": {
+      "checkIn": "Anreisedatum",
+      "checkOut": "Abreisedatum",
+      "guests": "Anzahl der Gäste",
+      "apartment": "Apartment wählen",
+      "firstName": "Vorname",
+      "lastName": "Nachname",
+      "email": "E-Mail-Adresse",
+      "phone": "Telefonnummer",
+      "specialRequests": "Besondere Wünsche",
+      "submit": "Buchungsanfrage senden",
+      "success": "Anfrage erfolgreich gesendet!",
+      "successSubtitle": "Wir haben Ihre Anfrage erhalten und werden uns in Kürze bei Ihnen melden.",
+      "acceptTerms": "Ich akzeptiere die",
+      "termsLink": "Nutzungsbedingungen",
+      "and": "und",
+      "privacyLink": "Datenschutzerklärung"
+    },
+    "summary": {
+      "title": "Buchungsübersicht",
+      "dates": "Aufenthaltsdaten",
+      "guests": "Gäste",
+      "total": "Gesamtpreis",
+      "nights": "{count} Nacht",
+      "nights_plural": "{count} Nächte",
+      "stay": "Aufenthalt",
+      "preview": "Buchungsvorschau"
+    },
+    "instruction": "Wählen Sie Ihren bevorzugten Zeitraum und finden Sie einen verfügbaren Platz.",
+    "detailsInstruction": "Abschließende Details zur Sicherung Ihrer Reservierung.",
+    "requestsTitle": "Besondere Wünsche",
+    "requestsDescription": "Haben Sie besondere Wünsche oder Fragen?",
+    "requestsPlaceholder": "Z.B.: Frühe Ankunft, späte Abreise, zusätzliche Informationen...",
+    "requestsNote": "Wir werden Sie nach der Buchung bezüglich Ihrer Wünsche kontaktieren.",
+    "included": {
+      "title": "Was ist inbegriffen:",
+      "parking": "Kostenloser Parkplatz",
+      "wifi": "WLAN",
+      "linens": "Bettwäsche und Handtücher",
+      "kitchen": "Grundlegende Küchenausstattung"
+    },
+    "night": "Nacht",
+    "nights": "Nächte",
+    "options": {
+      "title": "Buchungsoptionen",
+      "crib": "Babybett",
+      "parking": "Reservierter Parkplatz",
+      "earlyCheckIn": "Früher Check-in",
+      "cribDesc": "Kostenloser Service",
+      "parkingDesc": "Sicherer Privatplatz",
+      "earlyCheckInDesc": "Ab 12:00 Uhr"
+    },
+    "status": {
+      "pending": "Ausstehend",
+      "confirmed": "Bestätigt",
+      "cancelled": "Storniert",
+      "completed": "Abgeschlossen"
+    },
+    "messages": {
+      "success": "Buchungsanfrage gesendet! Wir kontaktieren Sie in Kürze.",
+      "successSubtitle": "Wir haben Ihre Anfrage erhalten und werden uns in Kürze bei Ihnen melden.",
+      "error": "Fehler beim Senden der Buchung. Bitte versuchen Sie es erneut.",
+      "selectDates": "Bitte wählen Sie Ihre An- und Abreisedaten",
+      "selectApartment": "Bitte wählen Sie ein Apartment",
+      "acceptTermsRequired": "Sie müssen die Nutzungsbedingungen akzeptieren, um fortzufahren",
+      "instructionsTitle": "Was kommt als Nächstes?",
+      "instructionsStep1": "Sie erhalten eine E-Mail-Bestätigung Ihrer Anfrage",
+      "instructionsStep2": "Wir kontaktieren Sie innerhalb von 24 Stunden zur Bestätigung",
+      "instructionsStep3": "Nach der Bestätigung erhalten Sie Zahlungs- und Anreiseinformationen"
+    },
+    "calendar": {
+      "available": "Verfügbar",
+      "booked": "Gebucht",
+      "pending": "Ausstehend",
+      "selected": "Ausgewählt",
+      "today": "Heute",
+      "clear": "Auswahl löschen",
+      "prev": "Vorheriger Monat",
+      "next": "Nächster Monat",
+      "realtime": "Echtzeit-Updates aktiv",
+      "connecting": "Verbinden...",
+      "loadError": "Fehler beim Laden der Verfügbarkeitsdaten",
+      "selectCheckOut": "Abreisedatum wählen"
+    }
+  },
+  "apartments": {
+    "title": "Unsere Apartments",
+    "description": "Finden Sie Ihre perfekte Unterkunft",
+    "amenities": "Ausstattung",
+    "size": "Größe",
+    "beds": "Betten",
+    "capacity": "Kapazität",
+    "viewDetails": "Details ansehen",
+    "bookNow": "Jetzt buchen",
+    "bedroomLong": "Schlafzimmer",
+    "amenitiesWiFi": "WiFi",
+    "amenitiesAC": "Klimaanlage",
+    "amenitiesKitchen": "Küche",
+    "amenitiesTV": "TV",
+    "available": "Verfügbar",
+    "booked": "Gebucht",
+    "perNight": "pro Nacht",
+    "guests": "Gäste",
+    "bedroomsShort": "Zi.",
+    "noApartments": {
+      "title": "Keine Apartments verfügbar",
+      "message": "Bitte schauen Sie später vorbei oder kontaktieren Sie uns für Verfügbarkeit."
+    },
+    "detail": {
+      "breadcrumb": {
+        "home": "Startseite",
+        "apartments": "Apartments"
+      },
+      "basicInfo": "Grundinformationen",
+      "guests": "Gäste",
+      "bathroom": "Badezimmer",
+      "bathrooms": "Badezimmer",
+      "floor": "Etage",
+      "balcony": "Balkon/Terrasse",
+      "bedDetails": "Bett-Details",
+      "doubleBed": "Doppelbett",
+      "singleBed": "Einzelbett",
+      "sofaBed": "Schlafsofa",
+      "bunkBed": "Etagenbett",
+      "about": "Über das Apartment",
+      "amenitiesTitle": "Ausstattung",
+      "basicAmenities": "Grundausstattung",
+      "kitchenTitle": "Küche",
+      "additionalFeatures": "Zusätzliche Merkmale",
+      "viewTitle": "Aussicht",
+      "houseRules": "Hausregeln",
+      "checkIn": "Check-in",
+      "checkOut": "Check-out: bis",
+      "minStay": "Mindestaufenthalt",
+      "maxStay": "Maximaler Aufenthalt",
+      "night": "Nacht",
+      "nights": "Nächte",
+      "noSmoking": "Rauchen ist nicht erlaubt",
+      "petsAllowed": "Haustiere sind erlaubt",
+      "quietHours": "Ruhezeit ab 22:00 Uhr",
+      "cancellationPolicy": "Stornierungsbedingungen",
+      "videoTour": "Video und virtuelle Tour",
+      "videoPresentation": "Video-Präsentation",
+      "virtualTour": "Virtuelle Tour",
+      "location": "Standort",
+      "pricePerNight": "/ Nacht",
+      "weekend": "Wochenende",
+      "discounts": "Rabatte",
+      "weeklyDiscount": "7+ Nächte",
+      "monthlyDiscount": "30+ Nächte",
+      "seasonalPrices": "Saisonpreise",
+      "checkAvailability": "Verfügbarkeit prüfen und buchen",
+      "selectDates": "Wählen Sie Daten für genauen Preis und Verfügbarkeit",
+      "showAllImages": "Alle Bilder anzeigen",
+      "imageAlt": "Bild"
+    }
+  },
+  "location": {
+    "title": "Lage",
+    "description": "So finden Sie uns",
+    "address": "Adresse",
+    "directions": "Wegbeschreibung",
+    "reachTitle": "So erreichen Sie uns",
+    "byCarTitle": "Mit dem Auto",
+    "byCarDesc": "Aus Richtung Belgrad/Niš (Autobahn E75): Nehmen Sie die Ausfahrt Aleksinac und folgen Sie der Beschilderung zum Bovan-See. Wir befinden uns im Bereich \"Vikend naselje\".",
+    "byBusTitle": "Mit dem Bus",
+    "byBusDesc": "Nehmen Sie einen Bus nach Aleksinac. Vom Bahnhof dauert ein Taxi zum Bovan-See ca. 15 Minuten (ca. 10€).",
+    "googleMaps": "In Google Maps öffnen",
+    "callDirections": "Anrufen für Wegbeschreibung",
+    "addressName": "Apartments Jovča",
+    "addressStreet": "Wochenendsiedlung (Jovča)",
+    "addressLake": "Bovan See",
+    "addressCity": "18230 Aleksinac, Serbien",
+    "nearbyTitle": "In der Nähe",
+    "bovanLake": "Bovan See",
+    "bovanLakeDesc": "Direkt vor der Haustür - Schwimmen, Angeln und Wassersport",
+    "sokolica": "Festung Sokolica",
+    "sokolicaDesc": "Mittelalterliche Festung mit Panoramablick - 20 km entfernt",
+    "nis": "Niš",
+    "nisDesc": "Historische Stadt mit vielen Sehenswürdigkeiten - 30 km entfernt"
+  },
+  "reviews": {
+    "title": "Gästebewertungen",
+    "writeReview": "Bewertung schreiben",
+    "rating": "Bewertung",
+    "date": "Datum",
+    "noReviews": {
+      "title": "Noch keine Bewertungen",
+      "message": "Seien Sie der Erste, der seine Erfahrung teilt!"
+    },
+    "form": {
+      "title": "Bewertungstitel",
+      "comment": "Ihre Bewertung",
+      "rating": "Ihre Bewertung",
+      "submit": "Bewertung absenden",
+      "success": "Vielen Dank für Ihre Bewertung!",
+      "error": "Fehler beim Senden der Bewertung. Bitte versuchen Sie es erneut."
+    }
+  },
+  "admin": {
+    "title": "Admin-Dashboard",
+    "welcome": "Willkommen, Admin",
+    "login": {
+      "title": "Admin-Login",
+      "email": "E-Mail",
+      "password": "Passwort",
+      "submit": "Anmelden",
+      "error": "Ungültige Anmeldedaten",
+      "unauthorized": "Unautorisierter Zugriff"
+    },
+    "nav": {
+      "dashboard": "Dashboard",
+      "bookings": "Buchungen",
+      "apartments": "Apartments",
+      "content": "Inhalt",
+      "reviews": "Bewertungen",
+      "analytics": "Analitik",
+      "settings": "Einstellungen",
+      "logout": "Abmelden"
+    },
+    "dashboard": {
+      "title": "Dashboard-Übersicht",
+      "totalBookings": "Gesamtbuchungen",
+      "pendingBookings": "Ausstehende Buchungen",
+      "totalRevenue": "Gesamtumsatz",
+      "occupancyRate": "Belegungsrate",
+      "recentBookings": "Aktuelle Buchungen",
+      "recentReviews": "Aktuelle Bewertungen"
+    },
+    "bookings": {
+      "title": "Buchungen verwalten",
+      "filter": "Nach Status filtern",
+      "search": "Buchungen suchen...",
+      "actions": "Aktionen",
+      "confirm": "Buchung bestätigen",
+      "cancel": "Buchung stornieren",
+      "viewDetails": "Details ansehen"
+    },
+    "content": {
+      "title": "Inhalt verwalten",
+      "pages": "Seiten",
+      "attractions": "Sehenswürdigkeiten",
+      "gallery": "Galerie",
+      "save": "Änderungen speichern",
+      "success": "Inhalt erfolgreich aktualisiert",
+      "error": "Fehler beim Aktualisieren des Inhalts"
+    }
+  },
+  "portal": {
+    "title": "Gästeportal",
+    "welcome": "Willkommen zurück",
+    "login": {
+      "title": "Gäste-Login",
+      "email": "E-Mail-Adresse",
+      "submit": "Anmelden",
+      "magicLink": "Magischen Link senden",
+      "success": "Überprüfen Sie Ihre E-Mail für den Anmelde-Link",
+      "error": "Fehler beim Senden des Links"
+    },
+    "dashboard": {
+      "title": "Ihre Buchungen",
+      "upcoming": "Kommende Aufenthalte",
+      "past": "Vergangene Aufenthalte",
+      "noBookings": "Keine Buchungen gefunden"
+    },
+    "booking": {
+      "details": "Buchungsdetails",
+      "downloadTicket": "Ticket herunterladen",
+      "contactHost": "Gastgeber kontaktieren",
+      "directions": "Wegbeschreibung"
+    }
+  },
+  "pwa": {
+    "install": {
+      "title": "App installieren",
+      "message": "Installieren Sie Apartmani Jovča für ein besseres Erlebnis",
+      "accept": "Installieren",
+      "dismiss": "Nicht jetzt"
+    }
+  },
+  "errors": {
+    "404": {
+      "title": "Seite nicht gefunden",
+      "message": "Die gesuchte Seite existiert nicht.",
+      "home": "Zur Startseite"
+    },
+    "500": {
+      "title": "Serverfehler",
+      "message": "Etwas ist schief gelaufen. Bitte versuchen Sie es später erneut.",
+      "retry": "Erneut versuchen"
+    }
+  },
+  "legal": {
+    "privacy": {
+      "title": "Datenschutzerklärung",
+      "intro": "Apartmani Jovča respektiert Ihre Privatsphäre und verpflichtet sich zum Schutz Ihrer persönlichen Daten. Diese Richtlinie erklärt, wie wir Ihre Informationen gemäß den Gesetzen der Republik Serbien sammeln, verwenden, speichern und schützen.",
+      "lastUpdated": "Zuletzt aktualisiert: Februar 2026",
+      "s1": {
+        "title": "1. Welche Daten wir sammeln",
+        "content": "Bei der Buchung und während Ihres Aufenthalts in unseren Apartments sammeln wir folgende Daten:",
+        "dataTitle": "Gesammelte Daten:",
+        "item1": "Persönliche Daten: Vollständiger Name, Telefonnummer, E-Mail-Adresse",
+        "item2": "Identifikationsdaten: Personalausweis- oder Reisepassnummer (gesetzlich vorgeschrieben für Gästeregistrierung)",
+        "item3": "Buchungsdaten: Aufenthaltsdaten, Anzahl der Gäste, ausgewähltes Apartment",
+        "item4": "Finanzdaten: Zahlungs- und Kautionsinformationen",
+        "item5": "Kommunikation: Korrespondenz per E-Mail, WhatsApp oder Telefon"
+      },
+      "s2": {
+        "title": "2. Wie wir Ihre Daten verwenden",
+        "content": "Wir verwenden Ihre persönlichen Daten ausschließlich für folgende Zwecke:",
+        "item1": "Bearbeitung von Buchungen und Aufenthaltsbestätigungen",
+        "item2": "Gästeregistrierung bei Behörden (gesetzliche Pflicht)",
+        "item3": "Kommunikation über Ihren Aufenthalt, Anreiseinformationen und zusätzliche Dienstleistungen",
+        "item4": "Zahlungsabwicklung und Kautionsrückerstattung"
+      },
+      "s3": {
+        "title": "3. Datenschutz",
+        "content": "Wir setzen strenge Maßnahmen zum Schutz Ihrer persönlichen Daten um:",
+        "item1": "Daten werden auf sicheren Servern mit Verschlüsselung gespeichert",
+        "item2": "Nur autorisiertes Personal (Eigentümer und Administratoren) hat Zugriff auf Daten",
+        "item3": "Wir geben Ihre Daten nicht an Dritte weiter, außer wenn gesetzlich vorgeschrieben (Polizei, Tourismusinspektion)"
+      },
+      "s4": {
+        "title": "4. Cookies",
+        "content": "Unsere Website verwendet Cookies für:",
+        "item1": "Speicherung Ihrer Spracheinstellungen",
+        "item2": "Website-Traffic-Analyse (anonyme Daten)",
+        "item3": "Verbesserung der Benutzererfahrung"
+      },
+      "s5": {
+        "title": "5. Ihre Rechte",
+        "content": "Gemäß den Datenschutzgesetzen haben Sie das Recht:",
+        "item1": "Zugang zu Ihren von uns gespeicherten persönlichen Daten zu verlangen",
+        "item2": "Korrektur ungenauer Daten zu verlangen",
+        "item3": "Löschung von Daten nach Ablauf der gesetzlichen Aufbewahrungsfrist zu verlangen",
+        "item4": "Einwilligung zur Datenverarbeitung zu widerrufen (außer gesetzlich vorgeschrieben)"
+      },
+      "s6": {
+        "title": "6. Datenaufbewahrungsfrist",
+        "content": "Wir speichern Ihre Daten gemäß gesetzlichen Verpflichtungen: Gästeregistrierungsdaten werden 1 Jahr aufbewahrt, Finanzdaten 5 Jahre, und andere Daten werden 2 Jahre nach Ihrem letzten Aufenthalt gelöscht."
+      },
+      "contact": {
+        "title": "Datenschutz-Kontakt",
+        "content": "Für alle Fragen zum Schutz Ihrer persönlichen Daten können Sie uns kontaktieren:"
+      }
+    },
+    "terms": {
+      "title": "Nutzungsbedingungen & Hausordnung",
+      "intro": "Mit der Buchung und dem Aufenthalt in Apartmani Jovča akzeptieren Sie die folgenden Nutzungsbedingungen und Hausregeln. Bitte lesen Sie diese Regeln sorgfältig durch, um einen angenehmen Aufenthalt ohne Missverständnisse zu gewährleisten.",
+      "lastUpdated": "Zuletzt aktualisiert: Februar 2026",
+      "s1": {
+        "title": "1. Buchung und Bestätigung",
+        "content": "Buchungsprozess und Bestätigungsbedingungen:",
+        "item1": "Eine Buchung gilt erst nach unserer schriftlichen Bestätigung per E-Mail oder WhatsApp als gültig",
+        "item2": "Eine Kaution von 50€ ist zur Bestätigung der Buchung erforderlich und wird nach Objektinspektion bei Abreise zurückerstattet",
+        "item3": "Die vollständige Zahlung muss spätestens 7 Tage vor Anreise oder bei Ankunft erfolgen (Bargeld oder Banküberweisung)",
+        "item4": "Die Buchung verpflichtet beide Parteien - Gast und Eigentümer - zur Einhaltung der vereinbarten Bedingungen"
+      },
+      "s2": {
+        "title": "2. Check-in und Check-out",
+        "content": "Check-in- und Check-out-Regeln:",
+        "item1": "Check-in: ab 14:00 Uhr. Früher Check-in nach vorheriger Ankündigung und Verfügbarkeit möglich (10€/Stunde Aufpreis)",
+        "item2": "Check-out: bis 10:00 Uhr. Später Check-out nach vorheriger Ankündigung und Verfügbarkeit möglich (10€/Stunde Aufpreis)",
+        "item3": "Gästeregistrierung ist gesetzlich vorgeschrieben - ein gültiger Ausweis (Personalausweis oder Reisepass) ist für alle Gäste erforderlich"
+      },
+      "s3": {
+        "title": "3. Stornierungsbedingungen",
+        "content": "Buchungsstornierungsbedingungen:",
+        "cancellationTitle": "Stornierungsregeln:",
+        "item1": "Stornierung mehr als 14 Tage vor Anreise: 100% Rückerstattung des gezahlten Betrags (außer 30€ Kaution)",
+        "item2": "Stornierung 7-14 Tage vor Anreise: 50% Rückerstattung des gezahlten Betrags",
+        "item3": "Stornierung weniger als 7 Tage vor Anreise: keine Rückerstattung (100% Gebühr)"
+      },
+      "s4": {
+        "title": "4. Hausordnung - Grundregeln",
+        "content": "Verhaltensregeln in der Unterkunft für einen angenehmen Aufenthalt aller Gäste:",
+        "item1": "Ruhezeiten: 22:00 - 08:00 Uhr. Laute Musik, Schreien und Lärm sind streng verboten. Verstöße können zur Beendigung des Aufenthalts ohne Rückerstattung führen.",
+        "item2": "Maximale Gästezahl: gemäß Apartment-Kapazität. Zusätzliche Gäste sind ohne vorherige Ankündigung und Aufpreis (20€/Person/Nacht) nicht erlaubt.",
+        "item3": "Rauchen ist in Innenräumen streng verboten. Nur auf der ausgewiesenen Terrasse erlaubt. Strafe für Rauchen in Innenräumen: 100€.",
+        "item4": "Haustiere sind mit vorheriger Ankündigung und einem Aufpreis von 15€/Tag erlaubt. Der Eigentümer ist für Verhalten und Sauberkeit verantwortlich."
+      },
+      "s5": {
+        "title": "5. Verbote und Sicherheit",
+        "content": "Streng verbotene Aktivitäten:",
+        "item1": "Organisation von Partys, Feiern oder Versammlungen mit mehr als 2 zusätzlichen nicht registrierten Gästen. Strafe: 200€.",
+        "item2": "Entfernung von Inventar (Handtücher, Bettwäsche, Küchengeräte) aus der Unterkunft. Strafe: Entschädigung zum Marktwert.",
+        "item3": "Jede Nutzung der Räumlichkeiten für illegale Aktivitäten (Drogen, Prostitution) wird der Polizei gemeldet und führt zur sofortigen Vertragsbeendigung."
+      },
+      "s6": {
+        "title": "6. Schäden und Haftung",
+        "content": "Jeder vorsätzliche oder fahrlässige Schaden an Inventar oder Eigentum wird zu den tatsächlichen Reparatur- oder Ersatzkosten berechnet. Die 50€ Kaution dient als Garantie und wird innerhalb von 24 Stunden nach Objektinspektion zurückerstattet."
+      },
+      "s7": {
+        "title": "7. Zusätzliche Pflichten",
+        "content": "Gäste sind verpflichtet: die Unterkunft ordentlich zu hinterlassen, Müll in ausgewiesenen Containern zu entsorgen, alle Geräte (Klimaanlage, Heizung, Lichter) bei Abreise auszuschalten. Für außergewöhnlich verschmutzte Räumlichkeiten wird eine zusätzliche Reinigung von 30€ berechnet. Schlüsselverlust führt zu einer Strafe von 50€."
+      },
+      "contact": {
+        "title": "Kontakt für Fragen",
+        "content": "Für alle Fragen zu Nutzungsbedingungen und Hausordnung kontaktieren Sie uns:"
+      }
+    }
+  }
+}

@@ -1,0 +1,326 @@
+{
+  "app": {
+    "title": "Appartamenti Jovča",
+    "description": "Sistemazione confortevole in un ambiente bellissimo"
+  },
+  "header": {
+    "home": "Home",
+    "apartments": "Appartamenti",
+    "gallery": "Galleria",
+    "location": "Posizione",
+    "contact": "Contatto",
+    "book": "Prenota ora",
+    "prices": "Prezzi",
+    "attractions": "Attrazioni"
+  },
+  "nav": {
+    "home": "Home",
+    "gallery": "Galleria",
+    "prices": "Prezzi",
+    "attractions": "Attrazioni",
+    "contact": "Contatto"
+  },
+  "footer": {
+    "rights": "Tutti i diritti riservati",
+    "privacy": "Informativa sulla privacy",
+    "terms": "Termini di servizio",
+    "contactUs": "Contattaci",
+    "followUs": "Seguici"
+  },
+  "language": {
+    "en": "Inglese",
+    "sr": "Serbo",
+    "de": "Tedesco",
+    "it": "Italiano",
+    "select": "Seleziona lingua"
+  },
+  "common": {
+    "loading": "Caricamento in corso...",
+    "error": "Si è verificato un errore",
+    "success": "Successo",
+    "save": "Salva",
+    "cancel": "Annulla",
+    "edit": "Modifica",
+    "delete": "Elimina",
+    "retry": "Riprova",
+    "close": "Chiudi",
+    "submit": "Invia",
+    "send": "Invia",
+    "back": "Indietro",
+    "next": "Avanti",
+    "previous": "Precedente",
+    "errorOccurred": "Si è verificato un errore. Riprova.",
+    "errorLoadingContent": "Errore nel caricamento del contenuto. Riprova più tardi.",
+    "required": "Obbligatorio",
+    "optional": "Opzionale"
+  },
+  "home": {
+    "title": "Benvenuti negli Appartamenti Jovča",
+    "description": "Goditi un soggiorno confortevole nel cuore della natura.",
+    "subtitle": "La tua perfetta fuga nel cuore della natura",
+    "hero": {
+      "title": "Vivi Comfort e Natura",
+      "subtitle": "Prenota il tuo soggiorno nei nostri appartamenti moderni",
+      "cta": "Prenota ora"
+    },
+    "features": {
+      "title": "Le nostre caratteristiche",
+      "amenities": "Appartamenti arredati modernamente",
+      "location": "Ottima posizione vicino alle attrazioni",
+      "parking": "Parcheggio gratuito",
+      "wifi": "WiFi gratuito",
+      "breakfast": "Colazione disponibile",
+      "petFriendly": "Animali ammessi"
+    },
+    "contact": {
+      "title": "Contattaci",
+      "available": "Siamo disponibili 24/7 per tutte le tue esigenze."
+    },
+    "testimonials": {
+      "title": "Cosa dicono i nostri ospiti",
+      "readMore": "Leggi altre recensioni"
+    }
+  },
+  "gallery": {
+    "title": "Galleria",
+    "description": "Visualizza i nostri bellissimi appartamenti e strutture",
+    "viewImage": "Visualizza immagine",
+    "imageAlt": "Immagine della galleria {{number}}",
+    "enlargedView": "Vista ingrandita",
+    "imageModal": "Anteprima immagine",
+    "noImages": {
+      "title": "Nessuna immagine ancora",
+      "message": "Controlla più tardi per aggiornamenti alla nostra galleria."
+    },
+    "errors": {
+      "loadFailed": "Impossibile caricare la galleria. Riprova più tardi."
+    }
+  },
+  "prices": {
+    "title": "Prezzi e Sistemazioni",
+    "description": "Prezzi trasparenti senza costi nascosti",
+    "bed": "Tipo di letto",
+    "capacity": "Capacità",
+    "included": "Incluso in tutti i prezzi:",
+    "perNight": "a notte",
+    "totalPrice": "Prezzo totale",
+    "selectDates": "Seleziona le date per vedere i prezzi",
+    "noPrices": {
+      "title": "Nessuna informazione sui prezzi disponibile",
+      "message": "Controlla più tardi o contattaci per ulteriori informazioni."
+    },
+    "errors": {
+      "loadFailed": "Impossibile caricare le informazioni sui prezzi. Riprova più tardi."
+    }
+  },
+  "attractions": {
+    "title": "Attrazioni locali",
+    "description": "Scopri la bellezza della zona circostante",
+    "distance": "{{distance}} km di distanza",
+    "readMore": "Leggi di più",
+    "noAttractions": {
+      "title": "Nessuna attrazione elencata",
+      "message": "Controlla più tardi per aggiornamenti sulle attrazioni locali."
+    }
+  },
+  "contact": {
+    "title": "Contattaci",
+    "description": "Ci piacerebbe sentire da te",
+    "form": {
+      "name": "Il tuo nome",
+      "email": "Indirizzo email",
+      "phone": "Numero di telefono",
+      "message": "Il tuo messaggio",
+      "submit": "Invia messaggio",
+      "success": "Messaggio inviato con successo! Ti risponderemo presto.",
+      "error": "Errore nell'invio del messaggio. Riprova."
+    },
+    "info": {
+      "title": "Informazioni di contatto",
+      "address": "Indirizzo",
+      "phone": "Telefono",
+      "email": "Email",
+      "whatsapp": "WhatsApp"
+    },
+    "hours": {
+      "title": "Orari di lavoro",
+      "weekdays": "Lunedì - Venerdì",
+      "weekend": "Sabato - Domenica",
+      "always": "Disponibile 24/7"
+    }
+  },
+  "booking": {
+    "title": "Prenota il tuo soggiorno",
+    "description": "Prenota la tua sistemazione perfetta",
+    "step": {
+      "dates": "Seleziona date",
+      "apartment": "Scegli appartamento",
+      "details": "I tuoi dati",
+      "confirm": "Conferma"
+    },
+    "form": {
+      "checkIn": "Data check-in",
+      "checkOut": "Data check-out",
+      "guests": "Numero di ospiti",
+      "apartment": "Seleziona appartamento",
+      "firstName": "Nome",
+      "lastName": "Cognome",
+      "email": "Indirizzo email",
+      "phone": "Numero di telefono",
+      "specialRequests": "Richieste speciali",
+      "submit": "Invia richiesta di prenotazione"
+    },
+    "summary": {
+      "title": "Riepilogo prenotazione",
+      "dates": "Date soggiorno",
+      "guests": "Ospiti",
+      "total": "Prezzo totale",
+      "nights": "{{count}} notte",
+      "nights_plural": "{{count}} notti"
+    },
+    "status": {
+      "pending": "In attesa",
+      "confirmed": "Confermato",
+      "cancelled": "Cancellato",
+      "completed": "Completato"
+    },
+    "messages": {
+      "success": "Richiesta di prenotazione inviata! Ti contatteremo a breve.",
+      "error": "Errore nell'invio della prenotazione. Riprova.",
+      "selectDates": "Seleziona le date di check-in e check-out",
+      "selectApartment": "Seleziona un appartamento"
+    }
+  },
+  "apartments": {
+    "title": "I nostri appartamenti",
+    "description": "Trova la tua sistemazione perfetta",
+    "amenities": "Servizi",
+    "size": "Dimensione",
+    "beds": "Letti",
+    "capacity": "Capacità",
+    "viewDetails": "Vedi dettagli",
+    "bookNow": "Prenota ora",
+    "noApartments": {
+      "title": "Nessun appartamento disponibile",
+      "message": "Controlla più tardi o contattaci per la disponibilità."
+    }
+  },
+  "location": {
+    "title": "Posizione",
+    "description": "Come trovarci",
+    "address": "Indirizzo",
+    "directions": "Ottieni indicazioni",
+    "nearby": "Attrazioni vicine"
+  },
+  "reviews": {
+    "title": "Recensioni degli ospiti",
+    "writeReview": "Scrivi una recensione",
+    "rating": "Valutazione",
+    "date": "Data",
+    "noReviews": {
+      "title": "Nessuna recensione ancora",
+      "message": "Sii il primo a condividere la tua esperienza!"
+    },
+    "form": {
+      "title": "Titolo recensione",
+      "comment": "La tua recensione",
+      "rating": "La tua valutazione",
+      "submit": "Invia recensione",
+      "success": "Grazie per la tua recensione!",
+      "error": "Errore nell'invio della recensione. Riprova."
+    }
+  },
+  "admin": {
+    "title": "Dashboard Admin",
+    "welcome": "Benvenuto, Admin",
+    "login": {
+      "title": "Login Admin",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Accedi",
+      "error": "Credenziali non valide",
+      "unauthorized": "Accesso non autorizzato"
+    },
+    "nav": {
+      "dashboard": "Dashboard",
+      "bookings": "Prenotazioni",
+      "apartments": "Appartamenti",
+      "content": "Contenuti",
+      "reviews": "Recensioni",
+      "analytics": "Analitiche",
+      "settings": "Impostazioni",
+      "logout": "Esci"
+    },
+    "dashboard": {
+      "title": "Panoramica Dashboard",
+      "totalBookings": "Prenotazioni totali",
+      "pendingBookings": "Prenotazioni in attesa",
+      "totalRevenue": "Ricavi totali",
+      "occupancyRate": "Tasso di occupazione",
+      "recentBookings": "Prenotazioni recenti",
+      "recentReviews": "Recensioni recenti"
+    },
+    "bookings": {
+      "title": "Gestisci prenotazioni",
+      "filter": "Filtra per stato",
+      "search": "Cerca prenotazioni...",
+      "actions": "Azioni",
+      "confirm": "Conferma prenotazione",
+      "cancel": "Cancella prenotazione",
+      "viewDetails": "Vedi dettagli"
+    },
+    "content": {
+      "title": "Gestisci contenuti",
+      "pages": "Pagine",
+      "attractions": "Attrazioni",
+      "gallery": "Galleria",
+      "save": "Salva modifiche",
+      "success": "Contenuto aggiornato con successo",
+      "error": "Errore nell'aggiornamento del contenuto"
+    }
+  },
+  "portal": {
+    "title": "Portale Ospiti",
+    "welcome": "Bentornato",
+    "login": {
+      "title": "Login Ospiti",
+      "email": "Indirizzo email",
+      "submit": "Accedi",
+      "magicLink": "Invia link magico",
+      "success": "Controlla la tua email per il link di accesso",
+      "error": "Errore nell'invio del link"
+    },
+    "dashboard": {
+      "title": "Le tue prenotazioni",
+      "upcoming": "Soggiorni imminenti",
+      "past": "Soggiorni passati",
+      "noBookings": "Nessuna prenotazione trovata"
+    },
+    "booking": {
+      "details": "Dettagli prenotazione",
+      "downloadTicket": "Scarica biglietto",
+      "contactHost": "Contatta l'host",
+      "directions": "Ottieni indicazioni"
+    }
+  },
+  "pwa": {
+    "install": {
+      "title": "Installa app",
+      "message": "Installa Apartmani Jovča per un'esperienza migliore",
+      "accept": "Installa",
+      "dismiss": "Non ora"
+    }
+  },
+  "errors": {
+    "404": {
+      "title": "Pagina non trovata",
+      "message": "La pagina che stai cercando non esiste.",
+      "home": "Vai alla homepage"
+    },
+    "500": {
+      "title": "Errore del server",
+      "message": "Qualcosa è andato storto. Riprova più tardi.",
+      "retry": "Riprova"
+    }
+  }
+}

@@ -1,0 +1,112 @@
+# Implementation Plan
+
+- [ ] 1. Write bug condition exploration test
+  - **Property 1: Fault Condition** - Admin Panel API and Component Bugs
+  - **CRITICAL**: This test MUST FAIL on unfixed code - failure confirms the bugs exist
+  - **DO NOT attempt to fix the test or the code when it fails**
+  - **NOTE**: This test encodes the expected behavior - it will validate the fix when it passes after implementation
+  - **GOAL**: Surface counterexamples that demonstrate the three bugs exist
+  - **Scoped PBT Approach**: Scope the property to the concrete failing cases:
+    - Content API with section parameter: `GET /api/admin/content?section=home`
+    - Content API section save: `POST /api/admin/content` with `{ section: 'home', lang: 'en', data: { title: 'Test' } }`
+    - Bookings API with localization: `GET /api/admin/bookings`
+    - Admin Dashboard rendering with child components
+  - Test that content API returns 500 or empty results when 'section' parameter is used
+  - Test that bookings API returns 500 error when calling getLocalizedValue
+  - Test that AdminDashboard throws "invalid element type" React error
+  - Run test on UNFIXED code
+  - **EXPECTED OUTCOME**: Test FAILS (this is correct - it proves the bugs exist)
+  - Document counterexamples found to understand root cause:
+    - Content API error message and response
+    - Bookings API error message and stack trace
+    - AdminDashboard React error details
+  - Mark task complete when test is written, run, and failures are documented
+  - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 2.6_
+
+- [ ] 2. Write preservation property tests (BEFORE implementing fix)
+  - **Property 2: Preservation** - Non-Buggy API and Component Behavior
+  - **IMPORTANT**: Follow observation-first methodology
+  - Observe behavior on UNFIXED code for non-buggy inputs:
+    - Key-based content queries: `GET /api/admin/content?key=home.hero.title`
+    - Content POST with 'key' parameter: `POST /api/admin/content` with `{ key: 'home.hero.title', language: 'en', value: 'Test' }`
+    - Content DELETE with 'key' parameter: `DELETE /api/admin/content?key=X&language=Y`
+    - Bookings API filtering by status, apartment_id, date ranges
+    - Bookings API pagination metadata (total, page, limit, totalPages)
+    - Individual component rendering (StatsCards, AnalyticsView, GalleryManager)
+  - Write property-based tests capturing observed behavior patterns:
+    - Direct key-based content operations return correct single entries
+    - Content POST with 'key' creates single database row
+    - Content DELETE removes specific entry
+    - Bookings filtering produces correct filtered results
+    - Bookings pagination metadata is accurate
+    - Individual components render without errors when used independently
+  - Property-based testing generates many test cases for stronger guarantees
+  - Run tests on UNFIXED code
+  - **EXPECTED OUTCOME**: Tests PASS (this confirms baseline behavior to preserve)
+  - Mark task complete when tests are written, run, and passing on unfixed code
+  - _Requirements: 3.1, 3.2, 3.3, 3.5, 3.6, 3.7_
+
+- [x] 3. Fix for admin panel API and component bugs
+
+  - [x] 3.1 Fix content API to support section-based queries
+    - Add section parameter support to GET handler
+    - Query all keys matching 'section.%' pattern using SQL LIKE
+    - Group results by language for ContentEditor consumption
+    - Transform flat key-value pairs into nested section structure
+    - Add section-based save support to POST handler
+    - Iterate through 'data' object and construct full keys as 'section.field'
+    - Create or update individual database rows for each key-value pair
+    - Maintain backward compatibility with existing 'key' + 'language' logic
+    - _Bug_Condition: isBugCondition(input) where input.endpoint == '/api/admin/content' AND input.params.has('section')_
+    - _Expected_Behavior: Content API returns all entries matching 'section.*' pattern, grouped by language, with status 200_
+    - _Preservation: Direct key-based content queries (GET, POST, DELETE with 'key' parameter) must continue to work exactly as before_
+    - _Requirements: 2.1, 2.2, 2.5, 2.6, 3.1, 3.2, 3.5_
+
+  - [x] 3.2 Fix bookings API localization issue
+    - Verify getLocalizedValue import from '@/lib/localization/helpers'
+    - Add error handling with try-catch around localization call
+    - Add null safety checks before calling getLocalizedValue
+    - Verify booking.apartments exists
+    - Verify booking.apartments.name exists and is an object
+    - Fall back to raw value or 'Unknown' if localization fails
+    - Log errors for debugging
+    - _Bug_Condition: isBugCondition(input) where input.endpoint == '/api/admin/bookings' AND input.method == 'GET'_
+    - _Expected_Behavior: Bookings API successfully extracts localized apartment names using 'sr' locale and returns status 200_
+    - _Preservation: Bookings filtering by status, apartment_id, date ranges and pagination metadata must continue to work correctly_
+    - _Requirements: 2.3, 2.6, 3.3, 3.6_
+
+  - [x] 3.3 Fix admin dashboard component rendering
+    - Verify all component exports (StatsCards, AnalyticsView, GalleryManager)
+    - Ensure components have proper default exports or fix import statements
+    - Check for typos in import paths
+    - Fix mismatched imports (named vs default exports)
+    - Add defensive rendering with null checks if needed
+    - _Bug_Condition: isBugCondition(input) where input.component == 'AdminDashboard' AND input.childComponents.some(c => c.export == undefined)_
+    - _Expected_Behavior: AdminDashboard renders all child components without React "invalid element type" errors_
+    - _Preservation: StatsCards, AnalyticsView, GalleryManager must continue to function independently with existing props_
+    - _Requirements: 2.4, 3.7_
+
+  - [x] 3.4 Verify bug condition exploration test now passes
+    - **Property 1: Expected Behavior** - Admin Panel APIs and Components Work Correctly
+    - **IMPORTANT**: Re-run the SAME test from task 1 - do NOT write a new test
+    - The test from task 1 encodes the expected behavior
+    - When this test passes, it confirms the expected behavior is satisfied
+    - Run bug condition exploration test from step 1
+    - **EXPECTED OUTCOME**: Test PASSES (confirms bugs are fixed)
+    - Verify content API with section parameter returns 200 and correct data
+    - Verify bookings API returns 200 with localized apartment names
+    - Verify AdminDashboard renders without React errors
+    - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 2.6_
+
+  - [x] 3.5 Verify preservation tests still pass
+    - **Property 2: Preservation** - Non-Buggy Behavior Unchanged
+    - **IMPORTANT**: Re-run the SAME tests from task 2 - do NOT write new tests
+    - Run preservation property tests from step 2
+    - **EXPECTED OUTCOME**: Tests PASS (confirms no regressions)
+    - Confirm key-based content operations still work
+    - Confirm bookings filtering and pagination still work
+    - Confirm individual components still render independently
+    - _Requirements: 3.1, 3.2, 3.3, 3.5, 3.6, 3.7_
+
+- [ ] 4. Checkpoint - Ensure all tests pass
+  - Ensure all tests pass, ask the user if questions arise.

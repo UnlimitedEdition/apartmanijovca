@@ -1,0 +1,266 @@
+
+> apartmani-jovca-next@0.1.0 lint
+> next lint
+
+
+./src/app/admin/AdminDashboard.tsx
+4:29  Error: 'CardHeader' is defined but never used.  @typescript-eslint/no-unused-vars
+4:41  Error: 'CardTitle' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/admin/login/AdminLoginForm.tsx
+12:9  Error: 'router' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/admin/page.tsx
+51:17  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/admin/analytics/route.ts
+67:19  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/admin/apartments/route.ts
+8:11  Error: 'Apartment' is defined but never used.  @typescript-eslint/no-unused-vars
+21:27  Error: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+81:27  Error: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+89:30  Error: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/api/admin/bookings/route.ts
+8:11  Error: 'Booking' is defined but never used.  @typescript-eslint/no-unused-vars
+113:28  Error: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/api/admin/content/route.ts
+54:34  Error: 'published' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/api/admin/setup/route.ts
+9:28  Error: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+87:19  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/admin/stats/route.ts
+19:27  Error: 'request' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/api/analytics/route.ts
+19:7  Error: 'screen_width' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+20:7  Error: 'screen_height' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+31:11  Error: 'region' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/api/booking/route.ts
+9:8  Error: 'CreateBookingInput' is defined but never used.  @typescript-eslint/no-unused-vars
+14:3  Error: 'calculateNights' is defined but never used.  @typescript-eslint/no-unused-vars
+15:3  Error: 'generateBookingNumber' is defined but never used.  @typescript-eslint/no-unused-vars
+16:3  Error: 'checkAvailability' is defined but never used.  @typescript-eslint/no-unused-vars
+17:3  Error: 'createOrGetGuest' is defined but never used.  @typescript-eslint/no-unused-vars
+18:3  Error: 'calculateTotalPrice' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/api/booking/[id]/route.ts
+5:8  Error: 'UpdateBookingInput' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/api/email/route.ts
+10:64  Error: 'customMessage' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+56:11  Error: 'emailLanguage' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/api/portal/profile/route.ts
+35:37  Error: 'authError' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/api/whatsapp/route.ts
+17:3  Error: 'verifyWebhookToken' is defined but never used.  @typescript-eslint/no-unused-vars
+202:27  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+203:23  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+206:60  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+217:74  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+227:69  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+239:24  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+253:24  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+265:74  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+265:90  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+275:71  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+287:24  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+301:24  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+315:24  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/portal/auth/callback/route.ts
+19:56  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+22:34  Error: 'options' is defined but never used.  @typescript-eslint/no-unused-vars
+22:44  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/portal/login/page.tsx
+9:10  Error: 'Tabs' is defined but never used.  @typescript-eslint/no-unused-vars
+9:16  Error: 'TabsContent' is defined but never used.  @typescript-eslint/no-unused-vars
+9:29  Error: 'TabsList' is defined but never used.  @typescript-eslint/no-unused-vars
+9:39  Error: 'TabsTrigger' is defined but never used.  @typescript-eslint/no-unused-vars
+87:14  Error: 'err' is defined but never used.  @typescript-eslint/no-unused-vars
+114:14  Error: 'err' is defined but never used.  @typescript-eslint/no-unused-vars
+175:14  Error: 'err' is defined but never used.  @typescript-eslint/no-unused-vars
+340:48  Error: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
+
+./src/app/portal/page.tsx
+20:54  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+23:32  Error: 'options' is defined but never used.  @typescript-eslint/no-unused-vars
+23:42  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/portal/PortalDashboard.tsx
+3:20  Error: 'useEffect' is defined but never used.  @typescript-eslint/no-unused-vars
+16:3  Error: 'Clock' is defined but never used.  @typescript-eslint/no-unused-vars
+17:3  Error: 'Settings' is defined but never used.  @typescript-eslint/no-unused-vars
+19:3  Error: 'Loader2' is defined but never used.  @typescript-eslint/no-unused-vars
+32:11  Error: An interface declaring no members is equivalent to its supertype.  @typescript-eslint/no-empty-object-type
+41:20  Error: 'setBookings' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+43:10  Error: 'isLoading' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+43:21  Error: 'setIsLoading' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+201:41  Error: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
+232:41  Error: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
+
+./src/app/[lang]/apartments/page.tsx
+49:15  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/app/[lang]/attractions/page.tsx
+4:29  Error: 'CardDescription' is defined but never used.  @typescript-eslint/no-unused-vars
+60:50  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/[lang]/booking/BookingFlow.tsx
+14:10  Error: 'Badge' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/[lang]/components/layout/header.tsx
+18:9  Error: 'navT' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/app/[lang]/components/PWAInstall.tsx
+6:56  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+13:15  Error: 'registration' is defined but never used.  @typescript-eslint/no-unused-vars
+14:16  Error: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
+18:25  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+30:53  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/[lang]/components/ui/input.tsx
+5:18  Error: An interface declaring no members is equivalent to its supertype.  @typescript-eslint/no-empty-object-type
+
+./src/app/[lang]/components/ui/label.tsx
+5:18  Error: An interface declaring no members is equivalent to its supertype.  @typescript-eslint/no-empty-object-type
+
+./src/app/[lang]/components/ui/textarea.tsx
+5:18  Error: An interface declaring no members is equivalent to its supertype.  @typescript-eslint/no-empty-object-type
+
+./src/app/[lang]/contact/page.tsx
+100:15  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+110:17  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+110:46  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+
+./src/app/[lang]/gallery/page.tsx
+82:13  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/app/[lang]/page.tsx
+7:29  Error: 'CardDescription' is defined but never used.  @typescript-eslint/no-unused-vars
+7:46  Error: 'CardHeader' is defined but never used.  @typescript-eslint/no-unused-vars
+7:58  Error: 'CardTitle' is defined but never used.  @typescript-eslint/no-unused-vars
+89:7  Error: 'totalReviews' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+107:11  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+184:19  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+251:17  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+258:62  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+258:94  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+320:49  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+327:70  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+327:87  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+347:11  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/app/[lang]/prices/page.tsx
+143:17  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+143:128  Error: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+147:19  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/components/admin/ApartmentManager.tsx
+352:23  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/components/AnalyticsTracker.tsx
+22:6  Warning: React Hook useEffect has a missing dependency: 'pathname'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/components/booking/AvailabilityCalendar.tsx
+304:9  Error: 'availableApartments' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/portal/BookingCard.tsx
+91:9  Error: 'isActive' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/components/portal/BookingDetails.tsx
+5:10  Error: 'Badge' is defined but never used.  @typescript-eslint/no-unused-vars
+78:9  Error: 'isActive' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+240:35  Error: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
+
+./src/components/portal/ProfileSettings.tsx
+73:6  Warning: React Hook useEffect has a missing dependency: 'fetchProfile'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/components/PWAInstall.tsx
+6:56  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+13:15  Error: 'registration' is defined but never used.  @typescript-eslint/no-unused-vars
+14:16  Error: 'error' is defined but never used.  @typescript-eslint/no-unused-vars
+18:25  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+30:53  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/components/ui/input.tsx
+5:18  Error: An interface declaring no members is equivalent to its supertype.  @typescript-eslint/no-empty-object-type
+
+./src/components/ui/label.tsx
+5:18  Error: An interface declaring no members is equivalent to its supertype.  @typescript-eslint/no-empty-object-type
+
+./src/components/ui/textarea.tsx
+5:18  Error: An interface declaring no members is equivalent to its supertype.  @typescript-eslint/no-empty-object-type
+
+./src/components/WhatsAppStatus.tsx
+4:31  Error: 'isWhatsAppConfigured' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/emails/PreArrivalReminderEmail.tsx
+59:21  Error: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
+
+./src/hooks/useAnalytics.ts
+28:14  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+34:11  Error: 'device' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/hooks/useAvailability.ts
+1:1  Error: Do not use "@ts-nocheck" because it alters compilation errors.  @typescript-eslint/ban-ts-comment
+183:53  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/lib/bookings/service.ts
+1:1  Error: Do not use "@ts-nocheck" because it alters compilation errors.  @typescript-eslint/ban-ts-comment
+15:3  Error: 'triggerCheckInInstructions' is defined but never used.  @typescript-eslint/no-unused-vars
+166:41  Error: 'fetchError' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+360:42  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+360:73  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+361:44  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+361:77  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+362:34  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+362:61  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+363:36  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+363:65  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+364:37  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+364:67  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+365:37  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+365:67  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+688:3  Error: 'reason' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/lib/email/service.ts
+215:3  Error: 'options' is defined but never used.  @typescript-eslint/no-unused-vars
+462:75  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/lib/email/templates.ts
+6:10  Error: 'formatCurrency' is defined but never used.  @typescript-eslint/no-unused-vars
+394:37  Error: 'reviewUrl' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/lib/email/triggers.ts
+4:1  Error: Do not use "@ts-nocheck" because it alters compilation errors.  @typescript-eslint/ban-ts-comment
+16:10  Error: 'daysBetween' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/lib/whatsapp/service.ts
+1:1  Error: Do not use "@ts-nocheck" because it alters compilation errors.  @typescript-eslint/ban-ts-comment
+6:30  Error: 'getTemplateStrings' is defined but never used.  @typescript-eslint/no-unused-vars
+189:70  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+390:103  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/lib/whatsapp/templates.ts
+7:3  Error: 'WhatsAppTemplateComponent' is defined but never used.  @typescript-eslint/no-unused-vars
+245:9  Error: 'strings' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+417:39  Error: 'key' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./src/lib/__tests__/email/service.test.ts
+254:62  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/middleware.ts
+26:56  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+29:34  Error: 'options' is defined but never used.  @typescript-eslint/no-unused-vars
+29:44  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/basic-features/eslint#disabling-rules

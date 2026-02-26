@@ -1,0 +1,327 @@
+{
+  "app": {
+    "title": "Apartmani Jovča",
+    "description": "Udoban smeštaj u prelepom okruženju"
+  },
+  "header": {
+    "home": "Početna",
+    "apartments": "Apartmani",
+    "gallery": "Galerija",
+    "location": "Lokacija",
+    "contact": "Kontakt",
+    "book": "Rezerviši",
+    "prices": "Cene",
+    "attractions": "Atrakcije"
+  },
+  "nav": {
+    "home": "Početna",
+    "gallery": "Galerija",
+    "prices": "Cene",
+    "attractions": "Atrakcije",
+    "contact": "Kontakt"
+  },
+  "footer": {
+    "rights": "Sva prava zadržana",
+    "privacy": "Politika privatnosti",
+    "terms": "Uslovi korišćenja",
+    "contactUs": "Kontaktirajte nas",
+    "followUs": "Pratite nas"
+  },
+  "language": {
+    "en": "Engleski",
+    "sr": "Srpski",
+    "de": "Nemački",
+    "it": "Italijanski",
+    "select": "Izaberi jezik"
+  },
+  "common": {
+    "loading": "Učitavanje...",
+    "error": "Došlo je do greške",
+    "success": "Uspešno",
+    "save": "Sačuvaj",
+    "cancel": "Otkaži",
+    "edit": "Izmeni",
+    "delete": "Obriši",
+    "retry": "Pokušaj ponovo",
+    "close": "Zatvori",
+    "submit": "Pošalji",
+    "send": "Pošalji",
+    "back": "Nazad",
+    "next": "Sledeće",
+    "previous": "Prethodno",
+    "errorOccurred": "Došlo je do greške. Molimo pokušajte ponovo.",
+    "errorLoadingContent": "Greška pri učitavanju sadržaja. Molimo pokušajte kasnije.",
+    "required": "Obavezno",
+    "optional": "Opciono"
+  },
+  "home": {
+    "title": "Dobrodošli u Apartmane Jovča",
+    "description": "Uživajte u udobnom smeštaju u prelepom okruženju.",
+    "subtitle": "Vaš savršeni odmor u srcu prirode",
+    "hero": {
+      "title": "Doživite udobnost i prirodu",
+      "subtitle": "Rezervišite svoj boravak u modernim apartmanima",
+      "cta": "Rezerviši"
+    },
+    "features": {
+      "title": "Naše prednosti",
+      "amenities": "Moderno opremljeni apartmani",
+      "location": "Odlična lokacija u blizini atrakcija",
+      "parking": "Besplatan parking",
+      "wifi": "Besplatan WiFi",
+      "breakfast": "Dostupan doručak",
+      "petFriendly": "Dozvoljeni ljubimci"
+    },
+    "contact": {
+      "title": "Kontaktirajte nas",
+      "available": "Dostupni smo 24/7 za sve vaše potrebe."
+    },
+    "testimonials": {
+      "title": "Šta kažu naši gosti",
+      "readMore": "Pročitaj više recenzija"
+    }
+  },
+  "gallery": {
+    "title": "Galerija",
+    "description": "Pogledajte naše predivne apartmane i sadržaje",
+    "viewImage": "Pogledaj sliku",
+    "imageAlt": "Slika u galeriji {{number}}",
+    "enlargedView": "Uvećani prikaz",
+    "imageModal": "Pregled slike",
+    "noImages": {
+      "title": "Još uvek nema slika",
+      "message": "Vratite se kasnije kako biste videli ažuriranu galeriju."
+    },
+    "errors": {
+      "loadFailed": "Greška pri učitavanju galerije. Molimo pokušajte ponovo kasnije."
+    }
+  },
+  "prices": {
+    "title": "Cene i Smještaj",
+    "description": "Transparentne cene bez skrivenih troškova",
+    "bed": "Tip kreveta",
+    "capacity": "Kapacitet",
+    "included": "U cenu je uključeno:",
+    "perNight": "po noćenju",
+    "totalPrice": "Ukupna cena",
+    "selectDates": "Izaberite datume da vidite cene",
+    "noPrices": {
+      "title": "Trenutno nema dostupnih cena",
+      "message": "Molimo proverite kasnije ili nas kontaktirajte za više informacija."
+    },
+    "errors": {
+      "loadFailed": "Greška pri učitavanju cena. Molimo pokušajte ponovo kasnije."
+    }
+  },
+  "attractions": {
+    "title": "Lokalne atrakcije",
+    "description": "Otkrijte lepotu okolnog područja",
+    "distance": "{{distance}} km udaljeno",
+    "readMore": "Pročitaj više",
+    "noAttractions": {
+      "title": "Nema navedenih atrakcija",
+      "message": "Proverite kasnije za ažuriranja o lokalnim atrakcijama."
+    }
+  },
+  "contact": {
+    "title": "Kontaktirajte nas",
+    "description": "Rado ćemo vam odgovoriti",
+    "form": {
+      "name": "Vaše ime",
+      "email": "Email adresa",
+      "phone": "Broj telefona",
+      "message": "Vaša poruka",
+      "submit": "Pošalji poruku",
+      "success": "Poruka uspešno poslata! Javićemo vam se uskoro.",
+      "error": "Greška pri slanju poruke. Molimo pokušajte ponovo."
+    },
+    "info": {
+      "title": "Kontakt informacije",
+      "address": "Adresa",
+      "phone": "Telefon",
+      "email": "Email",
+      "whatsapp": "WhatsApp"
+    },
+    "hours": {
+      "title": "Radno vreme",
+      "weekdays": "Ponedeljak - Petak",
+      "weekend": "Subota - Nedelja",
+      "always": "Dostupni 24/7"
+    }
+  },
+  "booking": {
+    "title": "Rezervišite svoj boravak",
+    "description": "Rezervišite savršen smeštaj",
+    "step": {
+      "dates": "Izaberite datume",
+      "apartment": "Izaberite apartman",
+      "details": "Vaši podaci",
+      "confirm": "Potvrda"
+    },
+    "form": {
+      "checkIn": "Datum dolaska",
+      "checkOut": "Datum odlaska",
+      "guests": "Broj gostiju",
+      "apartment": "Izaberite apartman",
+      "firstName": "Ime",
+      "lastName": "Prezime",
+      "email": "Email adresa",
+      "phone": "Broj telefona",
+      "specialRequests": "Posebni zahtevi",
+      "submit": "Pošalji zahtev za rezervaciju"
+    },
+    "summary": {
+      "title": "Rezime rezervacije",
+      "dates": "Datumi boravka",
+      "guests": "Gosti",
+      "total": "Ukupna cena",
+      "nights": "{{count}} noć",
+      "nights_plural": "{{count}} noći"
+    },
+    "status": {
+      "pending": "Na čekanju",
+      "confirmed": "Potvrđeno",
+      "cancelled": "Otkazano",
+      "completed": "Završeno"
+    },
+    "messages": {
+      "success": "Zahtev za rezervaciju poslat! Kontaktiraćemo vas uskoro.",
+      "successSubtitle": "Kontaktiraćemo vas uskoro sa potvrdom.",
+      "error": "Greška pri slanju rezervacije. Molimo pokušajte ponovo.",
+      "selectDates": "Molimo izaberite datume dolaska i odlaska",
+      "selectApartment": "Molimo izaberite apartman"
+    }
+  },
+  "apartments": {
+    "title": "Naši apartmani",
+    "description": "Pronađite savršen smeštaj",
+    "amenities": "Sadržaji",
+    "size": "Veličina",
+    "beds": "Kreveti",
+    "capacity": "Kapacitet",
+    "viewDetails": "Vidi detalje",
+    "bookNow": "Rezerviši",
+    "noApartments": {
+      "title": "Nema dostupnih apartmana",
+      "message": "Proverite kasnije ili nas kontaktirajte za dostupnost."
+    }
+  },
+  "location": {
+    "title": "Lokacija",
+    "description": "Kako do nas",
+    "address": "Adresa",
+    "directions": "Uputstva za dolazak",
+    "nearby": "Obližnje atrakcije"
+  },
+  "reviews": {
+    "title": "Recenzije gostiju",
+    "writeReview": "Napišite recenziju",
+    "rating": "Ocena",
+    "date": "Datum",
+    "noReviews": {
+      "title": "Još nema recenzija",
+      "message": "Budite prvi koji će podeliti iskustvo!"
+    },
+    "form": {
+      "title": "Naslov recenzije",
+      "comment": "Vaša recenzija",
+      "rating": "Vaša ocena",
+      "submit": "Pošalji recenziju",
+      "success": "Hvala na vašoj recenziji!",
+      "error": "Greška pri slanju recenzije. Molimo pokušajte ponovo."
+    }
+  },
+  "admin": {
+    "title": "Admin panel",
+    "welcome": "Dobrodošli, Admine",
+    "login": {
+      "title": "Admin prijava",
+      "email": "Email",
+      "password": "Lozinka",
+      "submit": "Prijavi se",
+      "error": "Neispravni podaci",
+      "unauthorized": "Neovlašćen pristup"
+    },
+    "nav": {
+      "dashboard": "Kontrolna tabla",
+      "bookings": "Rezervacije",
+      "apartments": "Apartmani",
+      "content": "Sadržaj",
+      "reviews": "Recenzije",
+      "analytics": "Analitika",
+      "settings": "Podešavanja",
+      "logout": "Odjavi se"
+    },
+    "dashboard": {
+      "title": "Pregled",
+      "totalBookings": "Ukupno rezervacija",
+      "pendingBookings": "Rezervacije na čekanju",
+      "totalRevenue": "Ukupan prihod",
+      "occupancyRate": "Stopa popunjenosti",
+      "recentBookings": "Nedavne rezervacije",
+      "recentReviews": "Nedavne recenzije"
+    },
+    "bookings": {
+      "title": "Upravljanje rezervacijama",
+      "filter": "Filtriraj po statusu",
+      "search": "Pretraži rezervacije...",
+      "actions": "Akcije",
+      "confirm": "Potvrdi rezervaciju",
+      "cancel": "Otkaži rezervaciju",
+      "viewDetails": "Vidi detalje"
+    },
+    "content": {
+      "title": "Upravljanje sadržajem",
+      "pages": "Stranice",
+      "attractions": "Atrakcije",
+      "gallery": "Galerija",
+      "save": "Sačuvaj izmene",
+      "success": "Sadržaj uspešno ažuriran",
+      "error": "Greška pri ažuriranju sadržaja"
+    }
+  },
+  "portal": {
+    "title": "Portal za goste",
+    "welcome": "Dobrodošli nazad",
+    "login": {
+      "title": "Prijava za goste",
+      "email": "Email adresa",
+      "submit": "Prijavi se",
+      "magicLink": "Pošalji magic link",
+      "success": "Proverite email za link za prijavu",
+      "error": "Greška pri slanju linka"
+    },
+    "dashboard": {
+      "title": "Vaše rezervacije",
+      "upcoming": "Predstojeći boravci",
+      "past": "Prošli boravci",
+      "noBookings": "Nema pronađenih rezervacija"
+    },
+    "booking": {
+      "details": "Detalji rezervacije",
+      "downloadTicket": "Preuzmi kartu",
+      "contactHost": "Kontaktirajte domaćina",
+      "directions": "Uputstva za dolazak"
+    }
+  },
+  "pwa": {
+    "install": {
+      "title": "Instaliraj aplikaciju",
+      "message": "Instaliraj Apartmani Jovča za bolje iskustvo",
+      "accept": "Instaliraj",
+      "dismiss": "Ne sada"
+    }
+  },
+  "errors": {
+    "404": {
+      "title": "Stranica nije pronađena",
+      "message": "Stranica koju tražite ne postoji.",
+      "home": "Idi na početnu"
+    },
+    "500": {
+      "title": "Greška servera",
+      "message": "Nešto je pošlo po zlu. Molimo pokušajte kasnije.",
+      "retry": "Pokušaj ponovo"
+    }
+  }
+}

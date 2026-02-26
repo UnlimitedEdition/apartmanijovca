@@ -1,0 +1,326 @@
+{
+  "app": {
+    "title": "Apartments Jovča",
+    "description": "Komfortable Unterkunft in schöner Umgebung"
+  },
+  "header": {
+    "home": "Startseite",
+    "apartments": "Apartments",
+    "gallery": "Galerie",
+    "location": "Lage",
+    "contact": "Kontakt",
+    "book": "Jetzt buchen",
+    "prices": "Preise",
+    "attractions": "Sehenswürdigkeiten"
+  },
+  "nav": {
+    "home": "Startseite",
+    "gallery": "Galerie",
+    "prices": "Preise",
+    "attractions": "Sehenswürdigkeiten",
+    "contact": "Kontakt"
+  },
+  "footer": {
+    "rights": "Alle Rechte vorbehalten",
+    "privacy": "Datenschutz",
+    "terms": "Nutzungsbedingungen",
+    "contactUs": "Kontaktieren Sie uns",
+    "followUs": "Folgen Sie uns"
+  },
+  "language": {
+    "en": "Englisch",
+    "sr": "Serbisch",
+    "de": "Deutsch",
+    "it": "Italienisch",
+    "select": "Sprache wählen"
+  },
+  "common": {
+    "loading": "Lädt...",
+    "error": "Ein Fehler ist aufgetreten",
+    "success": "Erfolg",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "edit": "Bearbeiten",
+    "delete": "Löschen",
+    "retry": "Erneut versuchen",
+    "close": "Schließen",
+    "submit": "Absenden",
+    "send": "Senden",
+    "back": "Zurück",
+    "next": "Weiter",
+    "previous": "Zurück",
+    "errorOccurred": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.",
+    "errorLoadingContent": "Fehler beim Laden des Inhalts. Bitte versuchen Sie es später erneut.",
+    "required": "Erforderlich",
+    "optional": "Optional"
+  },
+  "home": {
+    "title": "Willkommen in den Apartments Jovča",
+    "description": "Genießen Sie komfortable Unterkunft im Herzen der Natur.",
+    "subtitle": "Ihr perfekter Urlaub im Herzen der Natur",
+    "hero": {
+      "title": "Erleben Sie Komfort & Natur",
+      "subtitle": "Buchen Sie Ihren Aufenthalt in unseren modernen Apartments",
+      "cta": "Jetzt buchen"
+    },
+    "features": {
+      "title": "Unsere Merkmale",
+      "amenities": "Modern eingerichtete Apartments",
+      "location": "Großartige Lage nahe Attraktionen",
+      "parking": "Kostenloser Parkplatz",
+      "wifi": "Kostenloses WLAN",
+      "breakfast": "Frühstück verfügbar",
+      "petFriendly": "Haustiere willkommen"
+    },
+    "contact": {
+      "title": "Kontaktieren Sie uns",
+      "available": "Wir sind 24/7 für alle Ihre Bedürfnisse verfügbar."
+    },
+    "testimonials": {
+      "title": "Was unsere Gäste sagen",
+      "readMore": "Weitere Bewertungen lesen"
+    }
+  },
+  "gallery": {
+    "title": "Galerie",
+    "description": "Sehen Sie sich unsere schönen Apartments und Einrichtungen an",
+    "viewImage": "Bild ansehen",
+    "imageAlt": "Galeriebild {{number}}",
+    "enlargedView": "Vergrößerte Ansicht",
+    "imageModal": "Bildvorschau",
+    "noImages": {
+      "title": "Noch keine Bilder",
+      "message": "Schauen Sie später für Updates in unserer Galerie vorbei."
+    },
+    "errors": {
+      "loadFailed": "Galerie konnte nicht geladen werden. Bitte versuchen Sie es später erneut."
+    }
+  },
+  "prices": {
+    "title": "Preise und Unterkunft",
+    "description": "Transparente Preise ohne versteckte Kosten",
+    "bed": "Betttyp",
+    "capacity": "Kapazität",
+    "included": "In allen Preisen enthalten:",
+    "perNight": "pro Nacht",
+    "totalPrice": "Gesamtpreis",
+    "selectDates": "Wählen Sie Daten, um Preise zu sehen",
+    "noPrices": {
+      "title": "Keine Preisinformationen verfügbar",
+      "message": "Bitte schauen Sie später vorbei oder kontaktieren Sie uns für weitere Informationen."
+    },
+    "errors": {
+      "loadFailed": "Preisinformationen konnten nicht geladen werden. Bitte versuchen Sie es später erneut."
+    }
+  },
+  "attractions": {
+    "title": "Lokale Sehenswürdigkeiten",
+    "description": "Entdecken Sie die Schönheit der Umgebung",
+    "distance": "{{distance}} km entfernt",
+    "readMore": "Mehr lesen",
+    "noAttractions": {
+      "title": "Keine Sehenswürdigkeiten gelistet",
+      "message": "Schauen Sie später für Updates zu lokalen Sehenswürdigkeiten vorbei."
+    }
+  },
+  "contact": {
+    "title": "Kontaktieren Sie uns",
+    "description": "Wir freuen uns von Ihnen zu hören",
+    "form": {
+      "name": "Ihr Name",
+      "email": "E-Mail-Adresse",
+      "phone": "Telefonnummer",
+      "message": "Ihre Nachricht",
+      "submit": "Nachricht senden",
+      "success": "Nachricht erfolgreich gesendet! Wir melden uns bald bei Ihnen.",
+      "error": "Fehler beim Senden der Nachricht. Bitte versuchen Sie es erneut."
+    },
+    "info": {
+      "title": "Kontaktinformationen",
+      "address": "Adresse",
+      "phone": "Telefon",
+      "email": "E-Mail",
+      "whatsapp": "WhatsApp"
+    },
+    "hours": {
+      "title": "Öffnungszeiten",
+      "weekdays": "Montag - Freitag",
+      "weekend": "Samstag - Sonntag",
+      "always": "24/7 verfügbar"
+    }
+  },
+  "booking": {
+    "title": "Buchen Sie Ihren Aufenthalt",
+    "description": "Reservieren Sie Ihre perfekte Unterkunft",
+    "step": {
+      "dates": "Daten wählen",
+      "apartment": "Apartment wählen",
+      "details": "Ihre Daten",
+      "confirm": "Bestätigung"
+    },
+    "form": {
+      "checkIn": "Anreisedatum",
+      "checkOut": "Abreisedatum",
+      "guests": "Anzahl der Gäste",
+      "apartment": "Apartment wählen",
+      "firstName": "Vorname",
+      "lastName": "Nachname",
+      "email": "E-Mail-Adresse",
+      "phone": "Telefonnummer",
+      "specialRequests": "Besondere Wünsche",
+      "submit": "Buchungsanfrage senden"
+    },
+    "summary": {
+      "title": "Buchungsübersicht",
+      "dates": "Aufenthaltsdaten",
+      "guests": "Gäste",
+      "total": "Gesamtpreis",
+      "nights": "{{count}} Nacht",
+      "nights_plural": "{{count}} Nächte"
+    },
+    "status": {
+      "pending": "Ausstehend",
+      "confirmed": "Bestätigt",
+      "cancelled": "Storniert",
+      "completed": "Abgeschlossen"
+    },
+    "messages": {
+      "success": "Buchungsanfrage gesendet! Wir kontaktieren Sie in Kürze.",
+      "error": "Fehler beim Senden der Buchung. Bitte versuchen Sie es erneut.",
+      "selectDates": "Bitte wählen Sie Ihre An- und Abreisedaten",
+      "selectApartment": "Bitte wählen Sie ein Apartment"
+    }
+  },
+  "apartments": {
+    "title": "Unsere Apartments",
+    "description": "Finden Sie Ihre perfekte Unterkunft",
+    "amenities": "Ausstattung",
+    "size": "Größe",
+    "beds": "Betten",
+    "capacity": "Kapazität",
+    "viewDetails": "Details ansehen",
+    "bookNow": "Jetzt buchen",
+    "noApartments": {
+      "title": "Keine Apartments verfügbar",
+      "message": "Bitte schauen Sie später vorbei oder kontaktieren Sie uns für Verfügbarkeit."
+    }
+  },
+  "location": {
+    "title": "Lage",
+    "description": "So finden Sie uns",
+    "address": "Adresse",
+    "directions": "Wegbeschreibung",
+    "nearby": "Nahegelegene Sehenswürdigkeiten"
+  },
+  "reviews": {
+    "title": "Gästebewertungen",
+    "writeReview": "Bewertung schreiben",
+    "rating": "Bewertung",
+    "date": "Datum",
+    "noReviews": {
+      "title": "Noch keine Bewertungen",
+      "message": "Seien Sie der Erste, der seine Erfahrung teilt!"
+    },
+    "form": {
+      "title": "Bewertungstitel",
+      "comment": "Ihre Bewertung",
+      "rating": "Ihre Bewertung",
+      "submit": "Bewertung absenden",
+      "success": "Vielen Dank für Ihre Bewertung!",
+      "error": "Fehler beim Senden der Bewertung. Bitte versuchen Sie es erneut."
+    }
+  },
+  "admin": {
+    "title": "Admin-Dashboard",
+    "welcome": "Willkommen, Admin",
+    "login": {
+      "title": "Admin-Login",
+      "email": "E-Mail",
+      "password": "Passwort",
+      "submit": "Anmelden",
+      "error": "Ungültige Anmeldedaten",
+      "unauthorized": "Unautorisierter Zugriff"
+    },
+    "nav": {
+      "dashboard": "Dashboard",
+      "bookings": "Buchungen",
+      "apartments": "Apartments",
+      "content": "Inhalt",
+      "reviews": "Bewertungen",
+      "analytics": "Analytik",
+      "settings": "Einstellungen",
+      "logout": "Abmelden"
+    },
+    "dashboard": {
+      "title": "Dashboard-Übersicht",
+      "totalBookings": "Gesamtbuchungen",
+      "pendingBookings": "Ausstehende Buchungen",
+      "totalRevenue": "Gesamtumsatz",
+      "occupancyRate": "Belegungsrate",
+      "recentBookings": "Aktuelle Buchungen",
+      "recentReviews": "Aktuelle Bewertungen"
+    },
+    "bookings": {
+      "title": "Buchungen verwalten",
+      "filter": "Nach Status filtern",
+      "search": "Buchungen suchen...",
+      "actions": "Aktionen",
+      "confirm": "Buchung bestätigen",
+      "cancel": "Buchung stornieren",
+      "viewDetails": "Details ansehen"
+    },
+    "content": {
+      "title": "Inhalt verwalten",
+      "pages": "Seiten",
+      "attractions": "Sehenswürdigkeiten",
+      "gallery": "Galerie",
+      "save": "Änderungen speichern",
+      "success": "Inhalt erfolgreich aktualisiert",
+      "error": "Fehler beim Aktualisieren des Inhalts"
+    }
+  },
+  "portal": {
+    "title": "Gästeportal",
+    "welcome": "Willkommen zurück",
+    "login": {
+      "title": "Gäste-Login",
+      "email": "E-Mail-Adresse",
+      "submit": "Anmelden",
+      "magicLink": "Magischen Link senden",
+      "success": "Überprüfen Sie Ihre E-Mail für den Anmelde-Link",
+      "error": "Fehler beim Senden des Links"
+    },
+    "dashboard": {
+      "title": "Ihre Buchungen",
+      "upcoming": "Kommende Aufenthalte",
+      "past": "Vergangene Aufenthalte",
+      "noBookings": "Keine Buchungen gefunden"
+    },
+    "booking": {
+      "details": "Buchungsdetails",
+      "downloadTicket": "Ticket herunterladen",
+      "contactHost": "Gastgeber kontaktieren",
+      "directions": "Wegbeschreibung"
+    }
+  },
+  "pwa": {
+    "install": {
+      "title": "App installieren",
+      "message": "Installieren Sie Apartmani Jovča für ein besseres Erlebnis",
+      "accept": "Installieren",
+      "dismiss": "Nicht jetzt"
+    }
+  },
+  "errors": {
+    "404": {
+      "title": "Seite nicht gefunden",
+      "message": "Die gesuchte Seite existiert nicht.",
+      "home": "Zur Startseite"
+    },
+    "500": {
+      "title": "Serverfehler",
+      "message": "Etwas ist schief gelaufen. Bitte versuchen Sie es später erneut.",
+      "retry": "Erneut versuchen"
+    }
+  }
+}

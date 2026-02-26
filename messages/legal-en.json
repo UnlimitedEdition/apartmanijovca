@@ -1,0 +1,112 @@
+{
+  "legal": {
+    "privacy": {
+      "title": "Privacy Policy",
+      "intro": "Apartmani Jovča respects your privacy and is committed to protecting your personal data. This policy explains how we collect, use, store, and protect your information in accordance with the laws of the Republic of Serbia.",
+      "lastUpdated": "Last updated: February 2026",
+      "s1": {
+        "title": "1. What Data We Collect",
+        "content": "When making a reservation and during your stay at our apartments, we collect the following data:",
+        "dataTitle": "Data we collect:",
+        "item1": "Personal data: Full name, phone number, email address",
+        "item2": "Identification data: ID card or passport number (legally required for guest registration)",
+        "item3": "Reservation data: Stay dates, number of guests, selected apartment",
+        "item4": "Financial data: Payment and deposit information",
+        "item5": "Communication: Correspondence via email, WhatsApp, or phone"
+      },
+      "s2": {
+        "title": "2. How We Use Your Data",
+        "content": "We use your personal data exclusively for the following purposes:",
+        "item1": "Processing reservations and stay confirmations",
+        "item2": "Guest registration with authorities (legal obligation)",
+        "item3": "Communication about your stay, arrival instructions, and additional services",
+        "item4": "Payment processing and deposit refunds"
+      },
+      "s3": {
+        "title": "3. Data Protection",
+        "content": "We implement strict measures to protect your personal data:",
+        "item1": "Data is stored on secure servers with encryption",
+        "item2": "Only authorized personnel (owner and administrators) have access to data",
+        "item3": "We do not share your data with third parties except when legally required (police, tourism inspection)"
+      },
+      "s4": {
+        "title": "4. Cookies",
+        "content": "Our website uses cookies for:",
+        "item1": "Remembering your language preferences",
+        "item2": "Website traffic analysis (anonymous data)",
+        "item3": "Improving user experience"
+      },
+      "s5": {
+        "title": "5. Your Rights",
+        "content": "In accordance with data protection laws, you have the right to:",
+        "item1": "Request access to your personal data that we store",
+        "item2": "Request correction of inaccurate data",
+        "item3": "Request deletion of data after the legal retention period expires",
+        "item4": "Withdraw consent for data processing (except legally required)"
+      },
+      "s6": {
+        "title": "6. Data Retention Period",
+        "content": "We store your data in accordance with legal obligations: guest registration data is kept for 1 year, financial data for 5 years, and other data is deleted 2 years after your last stay."
+      },
+      "contact": {
+        "title": "Privacy Contact",
+        "content": "For all questions about the protection of your personal data, you can contact us:"
+      }
+    },
+    "terms": {
+      "title": "Terms of Service & House Rules",
+      "intro": "By making a reservation and staying at Apartmani Jovča, you accept the following terms of service and house rules. Please read these rules carefully to ensure a pleasant stay without misunderstandings.",
+      "lastUpdated": "Last updated: February 2026",
+      "s1": {
+        "title": "1. Reservation and Confirmation",
+        "content": "Reservation process and confirmation terms:",
+        "item1": "A reservation is considered valid only after our written confirmation via email or WhatsApp",
+        "item2": "A deposit of €50 is required to confirm the reservation and will be refunded after property inspection upon departure",
+        "item3": "Full payment must be made no later than 7 days before arrival or upon arrival (cash or bank transfer)",
+        "item4": "The reservation binds both parties - guest and owner - to respect the agreed terms"
+      },
+      "s2": {
+        "title": "2. Check-in and Check-out",
+        "content": "Check-in and check-out rules:",
+        "item1": "Check-in: from 2:00 PM. Early check-in possible with prior notice and availability (€10/hour surcharge)",
+        "item2": "Check-out: by 10:00 AM. Late check-out possible with prior notice and availability (€10/hour surcharge)",
+        "item3": "Guest registration is legally mandatory - a valid ID (ID card or passport) is required for all guests"
+      },
+      "s3": {
+        "title": "3. Cancellation Policy",
+        "content": "Reservation cancellation terms:",
+        "cancellationTitle": "Cancellation rules:",
+        "item1": "Cancellation more than 14 days before arrival: 100% refund of paid amount (except €30 deposit)",
+        "item2": "Cancellation 7-14 days before arrival: 50% refund of paid amount",
+        "item3": "Cancellation less than 7 days before arrival: no refund (100% charge)"
+      },
+      "s4": {
+        "title": "4. House Rules - Basic Rules",
+        "content": "Behavior rules in the property for a pleasant stay for all guests:",
+        "item1": "Quiet hours: 10:00 PM - 8:00 AM. Loud music, shouting, and noise are strictly prohibited. Violation may result in termination of stay without refund.",
+        "item2": "Maximum number of guests: according to apartment capacity. Additional guests are not allowed without prior notice and surcharge (€20/person/night).",
+        "item3": "Smoking is strictly prohibited indoors. Allowed only on designated terrace. Penalty for indoor smoking: €100.",
+        "item4": "Pets are allowed with prior notice and a surcharge of €15/day. Owner is responsible for behavior and cleanliness."
+      },
+      "s5": {
+        "title": "5. Prohibitions and Safety",
+        "content": "Strictly prohibited activities:",
+        "item1": "Organizing parties, celebrations, or gatherings with more than 2 additional unregistered guests. Penalty: €200.",
+        "item2": "Removing inventory (towels, linens, kitchen appliances) from the property. Penalty: compensation at market value.",
+        "item3": "Any use of the premises for illegal activities (drugs, prostitution) will be reported to police and result in immediate contract termination."
+      },
+      "s6": {
+        "title": "6. Damage and Liability",
+        "content": "Any intentional or negligent damage to inventory or property will be charged at the actual repair or replacement cost. The €50 deposit serves as a guarantee and will be refunded within 24 hours after property inspection."
+      },
+      "s7": {
+        "title": "7. Additional Obligations",
+        "content": "Guests are required to: leave the property tidy, dispose of trash in designated containers, turn off all devices (AC, heating, lights) upon departure. For exceptionally dirty premises, additional cleaning of €30 will be charged. Loss of key carries a €50 penalty."
+      },
+      "contact": {
+        "title": "Contact for Questions",
+        "content": "For all questions about terms of service and house rules, contact us:"
+      }
+    }
+  }
+}
