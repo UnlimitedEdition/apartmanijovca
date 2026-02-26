@@ -46,6 +46,7 @@ DEPLOYMENT_CHECKLIST.md
 next-env.d.ts
 
 # firebase
+functions/
 functions/node_modules
 functions/package-lock.json
 .firebase/
