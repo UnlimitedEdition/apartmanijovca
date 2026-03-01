@@ -97,12 +97,15 @@ export async function POST(request: NextRequest) {
 
     // Parse request body
     const body = await request.json()
+    
+    // LOG: What we received
+    console.log('[Booking API] Received body:', JSON.stringify(body, null, 2))
 
     // Validate input
     const parseResult = CreateBookingSchema.safeParse(body)
 
     if (!parseResult.success) {
-      console.error('[Booking API] Validation failed:', parseResult.error.flatten())
+      console.error('[Booking API] Validation failed:', JSON.stringify(parseResult.error.flatten(), null, 2))
       return NextResponse.json(
         { 
           error: 'Neispravni podaci', 
