@@ -2,11 +2,17 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import crypto from 'crypto'
 
-// Initialize Supabase client with service role key for admin operations
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_SERVICE_ROLE_KEY!
-)
+// Helper function to get Supabase client (lazy initialization)
+function getSupabaseClient() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseKey = process.env.NEXT_SERVICE_ROLE_KEY
+
+  if (!supabaseUrl || !supabaseKey) {
+    throw new Error('Missing Supabase environment variables')
+  }
+
+  return createClient(supabaseUrl, supabaseKey)
+}
 
 // Resend webhook event types
 type ResendEventType =
@@ -113,6 +119,9 @@ export async function POST(request: NextRequest) {
 
     // Extract booking ID if available
     const bookingId = extractBookingId(payload)
+
+    // Get Supabase client
+    const supabase = getSupabaseClient()
 
     // Store the event in the database
     const { data, error } = await supabase
