@@ -6,6 +6,12 @@ import { Button } from '../components/ui/button'
 import { Badge } from '../components/ui/badge'
 import { getLocalizedValue } from '@/lib/localization/helpers'
 import { Locale, ApartmentRecord, MultiLanguageText } from '@/lib/types/database'
+import { getBaseUrl } from '@/lib/seo/config'
+import { generateMetaTags } from '@/lib/seo/meta-generator'
+import { generateHreflangTags } from '@/lib/seo/hreflang'
+import { generateOpenGraphTags, generateTwitterCardTags } from '@/lib/seo/social-media'
+import { generateBreadcrumbSchema } from '@/lib/seo/structured-data'
+import { getKeywordsString } from '@/lib/seo/keywords'
 
 interface PageProps {
   params: { lang: string }
@@ -17,10 +23,76 @@ interface PricesData {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const t = await getTranslations({ locale: params.lang, namespace: 'prices' })
+  const locale = params.lang as Locale
+  const t = await getTranslations({ locale, namespace: 'seo' })
+  const baseUrl = getBaseUrl()
+  
+  const metaTags = generateMetaTags({
+    title: t('prices.title'),
+    description: t('prices.description'),
+    keywords: getKeywordsString('prices', locale),
+    path: `/${locale}/prices`,
+    locale,
+    type: 'website'
+  })
+
+  const hreflangTags = generateHreflangTags({
+    path: '/prices',
+    locale
+  })
+
+  const ogTags = generateOpenGraphTags({
+    title: t('prices.title'),
+    description: t('prices.description'),
+    url: `${baseUrl}/${locale}/prices`,
+    type: 'website',
+    locale,
+    siteName: 'Apartmani Jovča',
+    images: [{
+      url: `${baseUrl}/images/background.jpg`,
+      width: 1200,
+      height: 630,
+      alt: t('prices.ogImageAlt')
+    }]
+  })
+
+  const breadcrumbSchema = generateBreadcrumbSchema('/prices', locale)
+
   return {
-    title: `${t('title')} | Apartmani Jovča`,
-    description: t('description'),
+    title: metaTags.title,
+    description: metaTags.description,
+    keywords: metaTags.keywords,
+    robots: metaTags.robots,
+    alternates: {
+      canonical: metaTags.canonical,
+      languages: hreflangTags.reduce((acc, tag) => {
+        if (tag.hreflang !== 'x-default') {
+          acc[tag.hreflang] = tag.href
+        }
+        return acc
+      }, {} as Record<string, string>)
+    },
+    openGraph: {
+      title: t('prices.title'),
+      description: t('prices.description'),
+      url: `${baseUrl}/${locale}/prices`,
+      type: 'website',
+      locale,
+      siteName: 'Apartmani Jovča',
+      images: [{
+        url: `${baseUrl}/images/background.jpg`,
+        alt: t('prices.ogImageAlt')
+      }]
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: t('prices.title'),
+      description: t('prices.description'),
+      images: [`${baseUrl}/images/background.jpg`]
+    },
+    other: {
+      'application/ld+json': JSON.stringify(breadcrumbSchema)
+    }
   }
 }
 
@@ -37,10 +109,11 @@ export default async function PricesPage({ params }: PageProps) {
 
   const pricesData: PricesData = content || {}
 
-  // Fetch apartments for dynamic prices
+  // Fetch apartments for dynamic prices - only active apartments
   const { data: apartments } = (await supabase
     ?.from('apartments')
     .select('*')
+    .eq('status', 'active')
     .order('base_price_eur', { ascending: true })) as { data: ApartmentRecord[] | null } || { data: [] }
 
   // Transform JSONB fields to localized strings
@@ -53,9 +126,9 @@ export default async function PricesPage({ params }: PageProps) {
   }))
 
   return (
-    <div className="container py-8 sm:py-12 lg:py-16 max-w-7xl px-4">
-      <div className="text-center mb-12 sm:mb-16 lg:mb-20">
-        <Badge className="mb-3 sm:mb-4 px-2 sm:px-3 py-0.5 sm:py-1 bg-primary/10 text-primary border-0 font-bold uppercase tracking-widest text-[10px] sm:text-xs">
+    <div className="container py-8 sm:py-12 lg:py-16 3xl:py-20 4xl:py-24 max-w-7xl 3xl:max-w-[2000px] 4xl:max-w-[2800px] px-4">
+      <div className="text-center mb-12 sm:mb-16 lg:mb-20 3xl:mb-24 4xl:mb-28">
+        <Badge className="mb-3 sm:mb-4 3xl:mb-6 px-2 sm:px-3 3xl:px-4 py-0.5 sm:py-1 3xl:py-1.5 bg-primary/10 text-primary border-0 font-bold uppercase tracking-widest text-[10px] sm:text-xs 3xl:text-sm 4xl:text-base">
           {t('title')}
         </Badge>
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black tracking-tighter mb-4 sm:mb-6 bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/70">
@@ -77,10 +150,10 @@ export default async function PricesPage({ params }: PageProps) {
                   {apt.bed_type}
                 </Badge>
               </div>
-              <CardTitle className="text-xl sm:text-2xl lg:text-3xl font-black tracking-tight mb-2">{apt.name}</CardTitle>
-              <CardDescription className="text-base font-medium line-clamp-2">
+              <h2 className="text-xl sm:text-2xl lg:text-3xl font-black tracking-tight mb-2">{apt.name}</h2>
+              <p className="text-base font-medium line-clamp-2">
                 {apt.description || aptT('description')}
-              </CardDescription>
+              </p>
             </CardHeader>
             <CardContent className="p-8 pt-0 flex-grow">
               <div className="bg-zinc-50 dark:bg-zinc-900 rounded-2xl p-6 mb-6">

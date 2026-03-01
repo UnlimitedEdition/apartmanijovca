@@ -53,9 +53,9 @@
 
 ## 📞 Kontakt Informacije
 
-- **Email**: info@apartmani-jovca.rs
-- **Telefon**: +381 64 123 4567
-- **WhatsApp**: +381 64 123 4567
+- **Email**: apartmanijovca@gmail.com
+- **Telefon**: +381 65 237 8080
+- **WhatsApp**: +381 65 237 8080
 
 ## 🔗 Linkovi
 

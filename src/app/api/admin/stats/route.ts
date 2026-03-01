@@ -104,13 +104,15 @@ export async function GET() {
       .from('apartments')
       .select('*', { count: 'exact', head: true })
 
-    // Calculate occupancy rate (bookings with check_in <= today < check_out / total apartments)
+    // Calculate occupancy rate (only confirmed or checked_in bookings count)
     const now = new Date()
     now.setHours(0, 0, 0, 0)
     const activeBookings = bookings?.filter((b: Booking) => {
       const checkIn = new Date(b.check_in)
       const checkOut = new Date(b.check_out)
-      return checkIn <= now && checkOut > now && b.status !== 'cancelled'
+      return checkIn <= now && 
+             checkOut > now && 
+             (b.status === 'confirmed' || b.status === 'checked_in')
     }).length || 0
 
     const occupancyRate = totalApartments 

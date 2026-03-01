@@ -70,7 +70,7 @@ export default function BookingList({ apartmentId, limit: propLimit, title, onSt
   const [error, setError] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all')
-  const [dateFilter, setDateFilter] = useState<{ start: string; end: string }>({ start: '', end: '' })
+  const [occupiedOnDate, setOccupiedOnDate] = useState<string>('')
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const [updatingStatus, setUpdatingStatus] = useState<string | null>(null)
@@ -95,11 +95,8 @@ export default function BookingList({ apartmentId, limit: propLimit, title, onSt
       if (apartmentId) {
         params.append('apartment_id', apartmentId)
       }
-      if (dateFilter.start) {
-        params.append('start_date', dateFilter.start)
-      }
-      if (dateFilter.end) {
-        params.append('end_date', dateFilter.end)
+      if (occupiedOnDate) {
+        params.append('occupied_on', occupiedOnDate)
       }
       if (searchQuery) {
         params.append('search', searchQuery)
@@ -116,7 +113,7 @@ export default function BookingList({ apartmentId, limit: propLimit, title, onSt
     } finally {
       setLoading(false)
     }
-  }, [page, statusFilter, apartmentId, dateFilter, searchQuery, limit])
+  }, [page, statusFilter, apartmentId, occupiedOnDate, searchQuery, limit])
 
   useEffect(() => {
     fetchBookings()
@@ -243,215 +240,252 @@ export default function BookingList({ apartmentId, limit: propLimit, title, onSt
 
   return (
     <Card>
-      <CardHeader>
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div>
-            <CardTitle>{title || 'Rezervacije'}</CardTitle>
-            <CardDescription>Upravljanje i praćenje svih rezervacija</CardDescription>
-          </div>
+      <CardHeader className="space-y-4">
+        <div>
+          <CardTitle className="text-xl md:text-2xl">{title || 'Rezervacije'}</CardTitle>
+          <CardDescription className="mt-1.5">Upravljanje i praćenje svih rezervacija</CardDescription>
         </div>
         
         {/* Filters */}
-        <div className="flex flex-col md:flex-row gap-4 mt-4">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        <div className="space-y-3">
+          {/* Search Bar - Full Width */}
+          <div className="relative w-full">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
             <Input
-              placeholder="Pretraži po imenu ili email-u..."
+              placeholder="Pretraži po imenu, email-u, telefonu ili apartmanu..."
               value={searchQuery}
               onChange={(e) => {
                 setSearchQuery(e.target.value)
                 setPage(1)
               }}
-              className="pl-9"
+              className="pl-9 h-11"
             />
           </div>
           
-          <div className="flex gap-2 flex-wrap">
-            <select
-              value={statusFilter}
-              onChange={(e) => {
-                setStatusFilter(e.target.value as StatusFilter)
-                setPage(1)
-              }}
-              className="h-10 rounded-md border border-input bg-background px-3 py-2 text-sm"
-            >
-              <option value="all">Svi statusi</option>
-              {statusOrder.map(status => (
-                <option key={status} value={status}>
-                  {statusConfig[status]?.label || status}
-                </option>
-              ))}
-            </select>
+          {/* Filter Controls */}
+          <div className="flex flex-col sm:flex-row gap-3">
+            {/* Status Filter */}
+            <div className="flex-1 min-w-0">
+              <label className="text-xs font-medium text-muted-foreground mb-1.5 block">Status:</label>
+              <select
+                value={statusFilter}
+                onChange={(e) => {
+                  setStatusFilter(e.target.value as StatusFilter)
+                  setPage(1)
+                }}
+                className="w-full h-11 rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+              >
+                <option value="all">Svi statusi</option>
+                {statusOrder.map(status => (
+                  <option key={status} value={status}>
+                    {statusConfig[status]?.label || status}
+                  </option>
+                ))}
+              </select>
+            </div>
             
-            <Input
-              type="date"
-              value={dateFilter.start}
-              onChange={(e) => {
-                setDateFilter(prev => ({ ...prev, start: e.target.value }))
-                setPage(1)
-              }}
-              className="w-40"
-              placeholder="Check-in"
-            />
-            <Input
-              type="date"
-              value={dateFilter.end}
-              onChange={(e) => {
-                setDateFilter(prev => ({ ...prev, end: e.target.value }))
-                setPage(1)
-              }}
-              className="w-40"
-              placeholder="Check-out"
-            />
+            {/* Date Filter */}
+            <div className="flex-1 min-w-0">
+              <label className="text-xs font-medium text-muted-foreground mb-1.5 block">Zauzeto na dan:</label>
+              <div className="flex gap-2">
+                <Input
+                  type="date"
+                  value={occupiedOnDate}
+                  onChange={(e) => {
+                    setOccupiedOnDate(e.target.value)
+                    setPage(1)
+                  }}
+                  className="flex-1 h-11"
+                />
+                {occupiedOnDate && (
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => {
+                      setOccupiedOnDate('')
+                      setPage(1)
+                    }}
+                    className="h-11 w-11 shrink-0"
+                    title="Očisti datum"
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </CardHeader>
       
-      <CardContent>
-        {/* Desktop: Table */}
-        <div className="hidden lg:block rounded-md border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Gost</TableHead>
-                <TableHead>Apartman</TableHead>
-                <TableHead>Dolazak</TableHead>
-                <TableHead>Odlazak</TableHead>
-                <TableHead>Cena</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Kreirano</TableHead>
-                <TableHead className="text-right">Akcije</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {bookings.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
-                    Nema pronađenih rezervacija
-                  </TableCell>
+      <CardContent className="px-3 sm:px-6">
+        {/* Desktop/Tablet: Table */}
+        <div className="hidden md:block rounded-md border overflow-hidden">
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow className="bg-muted/50">
+                  <TableHead className="font-semibold">Gost</TableHead>
+                  <TableHead className="font-semibold">Apartman</TableHead>
+                  <TableHead className="font-semibold">Dolazak</TableHead>
+                  <TableHead className="font-semibold">Odlazak</TableHead>
+                  <TableHead className="font-semibold">Cena</TableHead>
+                  <TableHead className="font-semibold">Status</TableHead>
+                  <TableHead className="font-semibold">Kreirano</TableHead>
+                  <TableHead className="text-right font-semibold">Akcije</TableHead>
                 </TableRow>
-              ) : (
-                bookings.map((booking) => (
-                  <TableRow 
-                    key={booking.id}
-                    className="cursor-pointer hover:bg-muted/50 transition-colors"
-                    onClick={() => handleOpenBookingDetails(booking)}
-                  >
-                    <TableCell>
-                      <div className="font-medium">{booking.guest_name}</div>
-                      <div className="text-sm text-muted-foreground">{booking.guest_email}</div>
-                      {booking.guest_phone && (
-                        <div className="text-sm text-muted-foreground">{booking.guest_phone}</div>
-                      )}
-                    </TableCell>
-                    <TableCell>{booking.apartment_name || 'Unknown'}</TableCell>
-                    <TableCell>{formatDate(booking.checkin)}</TableCell>
-                    <TableCell>{formatDate(booking.checkout)}</TableCell>
-                    <TableCell className="font-medium">{formatCurrency(booking.total_price)}</TableCell>
-                    <TableCell>{getStatusBadge(booking.status)}</TableCell>
-                    <TableCell className="text-muted-foreground">
-                      {formatDate(booking.created_at)}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="relative">
-                        <Button 
-                          variant="ghost" 
-                          size="icon"
-                          disabled={updatingStatus === booking.id}
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            setActiveDropdown(activeDropdown === booking.id ? null : booking.id)
-                          }}
-                        >
-                          {updatingStatus === booking.id ? (
-                            <Loader2 className="h-4 w-4 animate-spin" />
-                          ) : (
-                            <MoreHorizontal className="h-4 w-4" />
-                          )}
-                        </Button>
-                        
-                        {activeDropdown === booking.id && (
-                          <div className="absolute right-0 z-50 mt-1 w-48 rounded-md border bg-popover p-1 shadow-md">
-                            {getAvailableActions(booking).map((action) => (
-                              <button
-                                key={action.value}
-                                onClick={() => handleStatusChange(booking.id, action.value)}
-                                className="flex w-full items-center rounded-sm px-2 py-1.5 text-sm hover:bg-accent"
-                              >
-                                {action.icon}
-                                {action.label}
-                              </button>
-                            ))}
-                          </div>
-                        )}
+              </TableHeader>
+              <TableBody>
+                {bookings.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={8} className="text-center py-12">
+                      <div className="flex flex-col items-center gap-2 text-muted-foreground">
+                        <AlertCircle className="h-8 w-8 opacity-50" />
+                        <p className="text-sm">Nema pronađenih rezervacija</p>
                       </div>
                     </TableCell>
                   </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
+                ) : (
+                  bookings.map((booking) => (
+                    <TableRow 
+                      key={booking.id}
+                      className="cursor-pointer hover:bg-muted/30 transition-colors"
+                      onClick={() => handleOpenBookingDetails(booking)}
+                    >
+                      <TableCell className="py-4">
+                        <div className="space-y-0.5">
+                          <div className="font-medium text-sm">{booking.guest_name}</div>
+                          <div className="text-xs text-muted-foreground">{booking.guest_email}</div>
+                          {booking.guest_phone && (
+                            <div className="text-xs text-muted-foreground">{booking.guest_phone}</div>
+                          )}
+                        </div>
+                      </TableCell>
+                      <TableCell className="font-medium text-sm">{booking.apartment_name || 'Unknown'}</TableCell>
+                      <TableCell className="text-sm whitespace-nowrap">{formatDate(booking.checkin)}</TableCell>
+                      <TableCell className="text-sm whitespace-nowrap">{formatDate(booking.checkout)}</TableCell>
+                      <TableCell className="font-semibold text-sm whitespace-nowrap">{formatCurrency(booking.total_price)}</TableCell>
+                      <TableCell>{getStatusBadge(booking.status)}</TableCell>
+                      <TableCell className="text-xs text-muted-foreground whitespace-nowrap">
+                        {formatDate(booking.created_at)}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <div className="relative inline-block">
+                          <Button 
+                            variant="ghost" 
+                            size="icon"
+                            disabled={updatingStatus === booking.id}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              setActiveDropdown(activeDropdown === booking.id ? null : booking.id)
+                            }}
+                            className="h-9 w-9"
+                          >
+                            {updatingStatus === booking.id ? (
+                              <Loader2 className="h-4 w-4 animate-spin" />
+                            ) : (
+                              <MoreHorizontal className="h-4 w-4" />
+                            )}
+                          </Button>
+                          
+                          {activeDropdown === booking.id && (
+                            <div className="absolute right-0 z-50 mt-1 w-52 rounded-md border bg-popover p-1 shadow-lg">
+                              {getAvailableActions(booking).map((action) => (
+                                <button
+                                  key={action.value}
+                                  onClick={(e) => {
+                                    e.stopPropagation()
+                                    handleStatusChange(booking.id, action.value)
+                                  }}
+                                  className="flex w-full items-center rounded-sm px-3 py-2 text-sm hover:bg-accent transition-colors"
+                                >
+                                  {action.icon}
+                                  {action.label}
+                                </button>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                )}
+              </TableBody>
+            </Table>
+          </div>
         </div>
 
-        {/* Mobile/Tablet: Cards */}
-        <div className="lg:hidden space-y-4">
+        {/* Mobile: Cards */}
+        <div className="md:hidden space-y-3">
           {bookings.length === 0 ? (
-            <div className="text-center py-8 text-muted-foreground text-sm">
-              Nema pronađenih rezervacija
+            <div className="text-center py-12">
+              <div className="flex flex-col items-center gap-2 text-muted-foreground">
+                <AlertCircle className="h-8 w-8 opacity-50" />
+                <p className="text-sm">Nema pronađenih rezervacija</p>
+              </div>
             </div>
           ) : (
             bookings.map((booking) => (
               <Card 
                 key={booking.id} 
-                className="p-4 cursor-pointer hover:bg-muted/50 transition-colors"
+                className="overflow-hidden border-2 hover:border-primary/50 transition-all cursor-pointer active:scale-[0.98]"
                 onClick={() => handleOpenBookingDetails(booking)}
               >
-                <div className="space-y-3">
-                  <div className="flex justify-between items-start gap-3">
+                <div className="p-4 space-y-3">
+                  {/* Header: Guest Name + Status */}
+                  <div className="flex items-start justify-between gap-3">
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-base truncate">{booking.guest_name}</h3>
-                      <p className="text-sm text-muted-foreground truncate">{booking.guest_email}</p>
+                      <h3 className="font-semibold text-base leading-tight truncate">{booking.guest_name}</h3>
+                      <p className="text-sm text-muted-foreground truncate mt-0.5">{booking.guest_email}</p>
                       {booking.guest_phone && (
-                        <p className="text-sm text-muted-foreground">{booking.guest_phone}</p>
+                        <p className="text-sm text-muted-foreground mt-0.5">{booking.guest_phone}</p>
                       )}
                     </div>
-                    {getStatusBadge(booking.status)}
-                  </div>
-                  
-                  <div className="text-sm text-muted-foreground">
-                    <span className="font-medium text-foreground">{booking.apartment_name || 'Unknown'}</span>
-                  </div>
-                  
-                  <div className="grid grid-cols-2 gap-2 text-sm">
-                    <div>
-                      <span className="text-muted-foreground">Dolazak:</span>
-                      <span className="ml-2 font-medium">{formatDate(booking.checkin)}</span>
-                    </div>
-                    <div>
-                      <span className="text-muted-foreground">Odlazak:</span>
-                      <span className="ml-2 font-medium">{formatDate(booking.checkout)}</span>
+                    <div className="shrink-0">
+                      {getStatusBadge(booking.status)}
                     </div>
                   </div>
                   
+                  {/* Apartment Name */}
+                  <div className="flex items-center gap-2 text-sm">
+                    <span className="text-muted-foreground">Apartman:</span>
+                    <span className="font-medium">{booking.apartment_name || 'Unknown'}</span>
+                  </div>
+                  
+                  {/* Dates Grid */}
+                  <div className="grid grid-cols-2 gap-3 py-2 px-3 bg-muted/30 rounded-md">
+                    <div>
+                      <div className="text-xs text-muted-foreground mb-1">Dolazak</div>
+                      <div className="font-medium text-sm">{formatDate(booking.checkin)}</div>
+                    </div>
+                    <div>
+                      <div className="text-xs text-muted-foreground mb-1">Odlazak</div>
+                      <div className="font-medium text-sm">{formatDate(booking.checkout)}</div>
+                    </div>
+                  </div>
+                  
+                  {/* Footer: Price + Actions */}
                   <div className="flex items-center justify-between pt-2 border-t">
-                    <div className="font-semibold text-base">{formatCurrency(booking.total_price)}</div>
+                    <div className="font-bold text-lg text-primary">{formatCurrency(booking.total_price)}</div>
                     <div className="flex gap-2">
                       {getAvailableActions(booking).map((action) => (
                         <Button
                           key={action.value}
                           size="sm"
                           variant="outline"
-                          className="h-10"
                           disabled={updatingStatus === booking.id}
                           onClick={(e) => {
                             e.stopPropagation()
                             handleStatusChange(booking.id, action.value)
                           }}
+                          className="h-9 px-3"
                         >
                           {updatingStatus === booking.id ? (
                             <Loader2 className="h-4 w-4 animate-spin" />
                           ) : (
-                            action.icon
+                            <>
+                              {action.icon}
+                              <span className="sr-only">{action.label}</span>
+                            </>
                           )}
                         </Button>
                       ))}
@@ -465,30 +499,34 @@ export default function BookingList({ apartmentId, limit: propLimit, title, onSt
         
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="flex items-center justify-between mt-4">
-          <div className="text-sm text-muted-foreground">
-            Stranica {page} od {totalPages}
-          </div>
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setPage(p => Math.max(1, p - 1))}
-              disabled={page === 1}
-            >
-              <ChevronLeft className="h-4 w-4 mr-2" />
-              Prethodna
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setPage(p => Math.min(totalPages, p + 1))}
-              disabled={page === totalPages}
-            >
-              Sledeća
-              <ChevronRight className="h-4 w-4 ml-2" />
-            </Button>
-          </div>
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6 pt-4 border-t">
+            <div className="text-sm text-muted-foreground order-2 sm:order-1">
+              Stranica <span className="font-medium text-foreground">{page}</span> od <span className="font-medium text-foreground">{totalPages}</span>
+            </div>
+            <div className="flex gap-2 order-1 sm:order-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setPage(p => Math.max(1, p - 1))}
+                disabled={page === 1}
+                className="h-10 px-4"
+              >
+                <ChevronLeft className="h-4 w-4 mr-1" />
+                <span className="hidden sm:inline">Prethodna</span>
+                <span className="sm:hidden">Nazad</span>
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+                disabled={page === totalPages}
+                className="h-10 px-4"
+              >
+                <span className="hidden sm:inline">Sledeća</span>
+                <span className="sm:hidden">Dalje</span>
+                <ChevronRight className="h-4 w-4 ml-1" />
+              </Button>
+            </div>
           </div>
         )}
       </CardContent>

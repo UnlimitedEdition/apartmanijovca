@@ -100,18 +100,26 @@ export function Header({ className }: HeaderProps) {
       <div className="container flex h-14 sm:h-16 lg:h-20 items-center justify-between px-3 sm:px-4">
         <div className="flex items-center gap-4 sm:gap-6 lg:gap-8">
           <Link href={`/${currentLang}`} className="flex items-center space-x-2">
-            <span className="text-lg sm:text-xl lg:text-2xl font-black tracking-tighter text-primary">JOVČA</span>
+            {/* Logo - simple img tag for testing */}
+            <img 
+              src="/images/logo2.png" 
+              alt="Apartmani Jovča Logo" 
+              className="h-10 w-auto"
+            />
           </Link>
-          <nav className="hidden md:flex gap-3 lg:gap-6">
-            {navigationItems.map((item) => (
-              <Link
-                key={item.href}
-                href={getLocalizedHref(item.href)}
-                className="text-xs lg:text-sm font-bold text-muted-foreground transition-colors hover:text-primary"
-              >
-                {item.label}
-              </Link>
-            ))}
+          <nav aria-label="Main navigation" className="hidden md:flex gap-3 lg:gap-6">
+            <ul className="flex gap-3 lg:gap-6 list-none m-0 p-0">
+              {navigationItems.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={getLocalizedHref(item.href)}
+                    className="text-xs lg:text-sm font-bold text-muted-foreground transition-colors hover:text-primary"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </nav>
         </div>
 
@@ -165,20 +173,25 @@ export function Header({ className }: HeaderProps) {
 
       {menuOpen && (
         <div className="absolute top-20 left-0 right-0 bg-background border-b md:hidden z-50 animate-in slide-in-from-top duration-300">
-          <nav className="flex flex-col space-y-4 p-6">
-            {navigationItems.map((item) => (
-              <Link 
-                key={item.href}
-                href={getLocalizedHref(item.href)} 
-                onClick={() => setMenuOpen(false)}
-                className="text-lg font-bold text-foreground hover:text-primary transition-colors"
-              >
-                {item.label}
-              </Link>
-            ))}
-            <Link href={`/${currentLang}/booking`} onClick={() => setMenuOpen(false)}>
-              <Button className="w-full bg-primary text-primary-foreground font-bold">{t('book')}</Button>
-            </Link>
+          <nav aria-label="Mobile navigation" className="flex flex-col space-y-4 p-6">
+            <ul className="flex flex-col space-y-4 list-none m-0 p-0">
+              {navigationItems.map((item) => (
+                <li key={item.href}>
+                  <Link 
+                    href={getLocalizedHref(item.href)} 
+                    onClick={() => setMenuOpen(false)}
+                    className="text-lg font-bold text-foreground hover:text-primary transition-colors"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+              <li>
+                <Link href={`/${currentLang}/booking`} onClick={() => setMenuOpen(false)}>
+                  <Button className="w-full bg-primary text-primary-foreground font-bold">{t('book')}</Button>
+                </Link>
+              </li>
+            </ul>
           </nav>
         </div>
       )}

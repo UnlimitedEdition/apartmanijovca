@@ -15,6 +15,7 @@ interface AvailabilityData {
     is_available: boolean
     booking_id: string | null
     price_override: number | null
+    reason: string | null
   }
 }
 
@@ -68,7 +69,8 @@ export default function AvailabilityCalendarView() {
         availMap[record.date] = {
           is_available: record.is_available,
           booking_id: record.booking_id,
-          price_override: record.price_override
+          price_override: record.price_override,
+          reason: record.reason
         }
       })
       
@@ -130,13 +132,18 @@ export default function AvailabilityCalendarView() {
     
     if (!avail) return 'unknown'
     if (avail.booking_id) return 'booked'
-    if (!avail.is_available) return 'blocked'
+    if (!avail.is_available) {
+      // Check reason to determine specific blocked status
+      if (avail.reason === 'maintenance') return 'maintenance'
+      return 'blocked'
+    }
     return 'available'
   }
 
   const getDayColor = (status: string | null) => {
     switch (status) {
       case 'booked': return 'bg-red-100 text-red-900 border-red-300'
+      case 'maintenance': return 'bg-yellow-100 text-yellow-900 border-yellow-300'
       case 'blocked': return 'bg-gray-200 text-gray-600 border-gray-300'
       case 'available': return 'bg-green-100 text-green-900 border-green-300'
       default: return 'bg-white text-gray-400 border-gray-200'
@@ -242,6 +249,10 @@ export default function AvailabilityCalendarView() {
                 <div className="flex items-center gap-1">
                   <div className="w-3 h-3 sm:w-4 sm:h-4 rounded border bg-red-100 border-red-300 flex-shrink-0"></div>
                   <span className="truncate">Rezervisano</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <div className="w-3 h-3 sm:w-4 sm:h-4 rounded border bg-yellow-100 border-yellow-300 flex-shrink-0"></div>
+                  <span className="truncate">Održavanje</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <div className="w-3 h-3 sm:w-4 sm:h-4 rounded border bg-gray-200 border-gray-300 flex-shrink-0"></div>

@@ -1,31 +1,124 @@
 import { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
+import { Locale } from '@/lib/types/database'
+import { getBaseUrl } from '@/lib/seo/config'
+import { generateMetaTags } from '@/lib/seo/meta-generator'
+import { generateHreflangTags } from '@/lib/seo/hreflang'
+import { generateOpenGraphTags, generateTwitterCardTags } from '@/lib/seo/social-media'
+import { generateLocalBusinessSchema, generateBreadcrumbSchema } from '@/lib/seo/structured-data'
+import { getKeywordsString } from '@/lib/seo/keywords'
+import Breadcrumb from '@/components/Breadcrumb'
 
 interface PageProps {
   params: { lang: string }
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const t = await getTranslations({ locale: params.lang, namespace: 'location' })
+  const locale = params.lang as Locale
+  const t = await getTranslations({ locale, namespace: 'seo' })
+  const baseUrl = getBaseUrl()
+  
+  // Generate meta tags
+  const metaTags = generateMetaTags({
+    title: t('location.title'),
+    description: t('location.description'),
+    keywords: getKeywordsString('location', locale),
+    path: `/${locale}/location`,
+    locale,
+    type: 'website'
+  })
+
+  // Generate hreflang tags
+  const hreflangTags = generateHreflangTags({
+    path: '/location',
+    locale
+  })
+
+  // Generate Open Graph tags
+  const ogTags = generateOpenGraphTags({
+    title: t('location.title'),
+    description: t('location.description'),
+    url: `${baseUrl}/${locale}/location`,
+    type: 'website',
+    locale,
+    siteName: 'Apartmani Jovča',
+    images: [{
+      url: `${baseUrl}/images/background.jpg`,
+      width: 1200,
+      height: 630,
+      alt: t('location.ogImageAlt')
+    }]
+  })
+
+  // Generate LocalBusiness schema with geo coordinates
+  const localBusinessSchema = generateLocalBusinessSchema(locale)
+
+  // Generate Breadcrumb schema
+  const breadcrumbSchema = generateBreadcrumbSchema('/location', locale)
+
   return {
-    title: `${t('title')} | Apartmani Jovča`,
-    description: t('description'),
+    title: metaTags.title,
+    description: metaTags.description,
+    keywords: metaTags.keywords,
+    robots: metaTags.robots,
+    alternates: {
+      canonical: metaTags.canonical,
+      languages: hreflangTags.reduce((acc, tag) => {
+        if (tag.hreflang !== 'x-default') {
+          acc[tag.hreflang] = tag.href
+        }
+        return acc
+      }, {} as Record<string, string>)
+    },
+    openGraph: {
+      title: t('location.title'),
+      description: t('location.description'),
+      url: `${baseUrl}/${locale}/location`,
+      type: 'website',
+      locale,
+      siteName: 'Apartmani Jovča',
+      images: [{
+        url: `${baseUrl}/images/background.jpg`,
+        alt: t('location.ogImageAlt')
+      }]
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: t('location.title'),
+      description: t('location.description'),
+      images: [`${baseUrl}/images/background.jpg`]
+    },
+    other: {
+      'application/ld+json': JSON.stringify([
+        localBusinessSchema,
+        breadcrumbSchema
+      ])
+    }
   }
 }
 
 export default async function LocationPage({ params }: PageProps) {
   const t = await getTranslations({ locale: params.lang, namespace: 'location' })
+  const commonT = await getTranslations({ locale: params.lang, namespace: 'common' })
+
+  // Breadcrumb items
+  const breadcrumbItems = [
+    { label: commonT('home'), href: `/${params.lang}` },
+    { label: t('title'), current: true }
+  ]
 
   return (
-    <div className="container py-10">
-      <div className="mb-8 text-center">
-        <h1 className="text-4xl font-bold mb-4">{t('title')}</h1>
-        <p className="text-muted-foreground text-lg">
+    <div className="container py-10 3xl:py-14 4xl:py-16">
+      <Breadcrumb items={breadcrumbItems} />
+      
+      <div className="mb-8 3xl:mb-12 4xl:mb-16 text-center">
+        <h1 className="text-4xl 3xl:text-5xl 4xl:text-6xl font-bold mb-4 3xl:mb-6">{t('title')}</h1>
+        <p className="text-muted-foreground text-lg 3xl:text-xl 4xl:text-2xl">
           {t('description')}
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 3xl:gap-16 4xl:gap-20 items-start">
         <div className="lg:col-span-1 space-y-10">
           <div className="bg-white p-8 rounded-2xl border shadow-sm">
             <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">

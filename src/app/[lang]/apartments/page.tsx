@@ -7,21 +7,112 @@ import { Button } from '../components/ui/button'
 import { Badge } from '../components/ui/badge'
 import { getLocalizedValue } from '@/lib/localization/helpers'
 import type { Locale, ApartmentRecord, MultiLanguageText } from '@/lib/types/database'
+import { getBaseUrl } from '@/lib/seo/config'
+import { generateMetaTags } from '@/lib/seo/meta-generator'
+import { generateHreflangTags } from '@/lib/seo/hreflang'
+import { generateOpenGraphTags, generateTwitterCardTags } from '@/lib/seo/social-media'
+import { generateBreadcrumbSchema } from '@/lib/seo/structured-data'
+import { getKeywordsString } from '@/lib/seo/keywords'
+import Breadcrumb from '@/components/Breadcrumb'
 
 interface PageProps {
   params: { lang: string }
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const t = await getTranslations({ locale: params.lang, namespace: 'apartments' })
+  const locale = params.lang as Locale
+  const t = await getTranslations({ locale, namespace: 'seo' })
+  const baseUrl = getBaseUrl()
+  
+  // Generate meta tags
+  const metaTags = generateMetaTags({
+    title: t('apartments.title'),
+    description: t('apartments.description'),
+    keywords: getKeywordsString('apartment-list', locale),
+    path: `/${locale}/apartments`,
+    locale,
+    type: 'website'
+  })
+
+  // Generate hreflang tags
+  const hreflangTags = generateHreflangTags({
+    path: '/apartments',
+    locale
+  })
+
+  // Generate Open Graph tags
+  const ogTags = generateOpenGraphTags({
+    title: t('apartments.title'),
+    description: t('apartments.description'),
+    url: `${baseUrl}/${locale}/apartments`,
+    type: 'website',
+    locale,
+    siteName: 'Apartmani Jovča',
+    images: [{
+      url: `${baseUrl}/images/background.jpg`,
+      width: 1200,
+      height: 630,
+      alt: t('apartments.ogImageAlt')
+    }]
+  })
+
+  // Generate Twitter Card tags
+  const twitterTags = generateTwitterCardTags({
+    url: `${baseUrl}/${locale}/apartments`,
+    locale,
+    title: t('apartments.title'),
+    description: t('apartments.description'),
+    card: 'summary_large_image',
+    images: [{
+      url: `${baseUrl}/images/background.jpg`,
+      alt: t('apartments.ogImageAlt')
+    }]
+  })
+
+  // Generate Breadcrumb schema
+  const breadcrumbSchema = generateBreadcrumbSchema('/apartments', locale)
+
   return {
-    title: `${t('title')} | Apartmani Jovča`,
-    description: t('description'),
+    title: metaTags.title,
+    description: metaTags.description,
+    keywords: metaTags.keywords,
+    robots: metaTags.robots,
+    alternates: {
+      canonical: metaTags.canonical,
+      languages: hreflangTags.reduce((acc, tag) => {
+        if (tag.hreflang !== 'x-default') {
+          acc[tag.hreflang] = tag.href
+        }
+        return acc
+      }, {} as Record<string, string>)
+    },
+    openGraph: {
+      title: t('apartments.title'),
+      description: t('apartments.description'),
+      url: `${baseUrl}/${locale}/apartments`,
+      type: 'website',
+      locale,
+      siteName: 'Apartmani Jovča',
+      images: [{
+        url: `${baseUrl}/images/background.jpg`,
+        alt: t('apartments.ogImageAlt')
+      }]
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: t('apartments.title'),
+      description: t('apartments.description'),
+      images: [`${baseUrl}/images/background.jpg`]
+    },
+    other: {
+      'application/ld+json': JSON.stringify(breadcrumbSchema)
+    }
   }
 }
 
 export default async function ApartmentsPage({ params }: PageProps) {
   const t = await getTranslations({ locale: params.lang, namespace: 'apartments' })
+  const commonT = await getTranslations({ locale: params.lang, namespace: 'common' })
   const locale = params.lang as Locale
 
   // Fetch apartments from Supabase
@@ -32,25 +123,51 @@ export default async function ApartmentsPage({ params }: PageProps) {
     .order('base_price_eur', { ascending: true }) || { data: [] }
 
   // Transform JSONB fields to localized strings
-  const localizedApartments = apartments?.map((apartment: ApartmentRecord) => ({
-    ...apartment,
-    slug: apartment.slug as string | null,
-    name: getLocalizedValue(apartment.name as unknown as MultiLanguageText, locale),
-    description: getLocalizedValue(apartment.description as unknown as MultiLanguageText, locale),
-    bed_type: getLocalizedValue(apartment.bed_type as unknown as MultiLanguageText, locale),
-    images: Array.isArray(apartment.images) ? apartment.images as string[] : []
-  }))
+  const localizedApartments = apartments?.map((apartment: ApartmentRecord) => {
+    // Handle images - support both string[] and object[] formats
+    let imageUrls: string[] = []
+    if (Array.isArray(apartment.images)) {
+      imageUrls = apartment.images.map((img: any) => {
+        // If it's an object with url property, extract url
+        if (typeof img === 'object' && img !== null && 'url' in img) {
+          return img.url as string
+        }
+        // If it's already a string, use it directly
+        if (typeof img === 'string') {
+          return img
+        }
+        return ''
+      }).filter(Boolean) // Remove empty strings
+    }
+
+    return {
+      ...apartment,
+      slug: apartment.slug as string | null,
+      name: getLocalizedValue(apartment.name as unknown as MultiLanguageText, locale),
+      description: getLocalizedValue(apartment.description as unknown as MultiLanguageText, locale),
+      bed_type: getLocalizedValue(apartment.bed_type as unknown as MultiLanguageText, locale),
+      images: imageUrls
+    }
+  })
+
+  // Breadcrumb items
+  const breadcrumbItems = [
+    { label: commonT('home'), href: `/${params.lang}` },
+    { label: t('title'), current: true }
+  ]
 
   return (
-    <div className="container py-6 sm:py-10">
-      <div className="mb-8 sm:mb-12 text-center px-4">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 tracking-tight">{t('title')}</h1>
-        <p className="text-muted-foreground text-sm sm:text-base md:text-lg lg:text-xl max-w-2xl mx-auto">
+    <div className="container py-6 sm:py-10 3xl:py-14 4xl:py-16">
+      <Breadcrumb items={breadcrumbItems} />
+      
+      <div className="mb-8 sm:mb-12 3xl:mb-16 4xl:mb-20 text-center px-4">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl 3xl:text-6xl 4xl:text-7xl font-bold mb-3 sm:mb-4 3xl:mb-6 tracking-tight">{t('title')}</h1>
+        <p className="text-muted-foreground text-sm sm:text-base md:text-lg lg:text-xl 3xl:text-2xl 4xl:text-3xl max-w-2xl 3xl:max-w-4xl 4xl:max-w-6xl mx-auto">
           {t('description')}
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 px-3 sm:px-4 md:px-0">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 3xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 3xl:gap-10 4xl:gap-12 px-3 sm:px-4 md:px-0">
         {localizedApartments?.map((apartment) => {
           // Get first image from database or use fallback
           const firstImage = Array.isArray(apartment.images) && apartment.images.length > 0 

@@ -879,120 +879,153 @@ export default function EnhancedApartmentManager() {
               {/* Tab 3: Gallery */}
               <TabsContent value="gallery" className="space-y-4 sm:space-y-6">
                 <div className="space-y-3 sm:space-y-4">
-                  {/* Image URLs */}
-                  <div>
-                    <label className="block text-xs sm:text-sm font-semibold mb-2">Slike (URL-ovi)</label>
-                    <p className="text-[10px] sm:text-xs text-gray-600 mb-2 sm:mb-3">Dodajte URL-ove slika. Prva slika će biti glavna.</p>
-                    
-                    <div className="space-y-2">
-                      {(selectedApartment.images || []).map((url, index) => (
-                        <div key={index} className="flex gap-2">
-                          <Input
-                            value={url}
-                            onChange={(e) => {
-                              const newImages = [...(selectedApartment.images || [])]
-                              newImages[index] = e.target.value
-                              setSelectedApartment({ ...selectedApartment, images: newImages })
-                            }}
-                            placeholder="https://example.com/image.jpg"
-                            className="text-xs sm:text-sm h-8 sm:h-9"
-                          />
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => {
-                              const newImages = (selectedApartment.images || []).filter((_, i) => i !== index)
-                              setSelectedApartment({ ...selectedApartment, images: newImages })
-                            }}
-                            className="h-8 sm:h-9 w-8 sm:w-9 p-0 flex-shrink-0"
-                          >
-                            <X className="h-3 w-3 sm:h-4 sm:w-4" />
-                          </Button>
-                        </div>
-                      ))}
-                      
+                  {/* Simplified Gallery Section */}
+                  <div className="border rounded-lg p-4 bg-gradient-to-br from-blue-50 to-indigo-50">
+                    <div className="flex items-center justify-between mb-3">
+                      <div>
+                        <label className="block text-sm font-bold text-blue-900">📸 Galerija slika</label>
+                        <p className="text-xs text-gray-600 mt-1">Upload slike ili dodaj URL. Prva slika je glavna.</p>
+                      </div>
                       <Button
-                        variant="outline"
+                        variant="default"
+                        size="sm"
                         onClick={() => {
-                          setSelectedApartment({ 
-                            ...selectedApartment, 
-                            images: [...(selectedApartment.images || []), '']
-                          })
+                          const input = document.createElement('input')
+                          input.type = 'file'
+                          input.accept = 'image/*'
+                          input.onchange = async (e) => {
+                            const file = (e.target as HTMLInputElement).files?.[0]
+                            if (!file) return
+                            
+                            const formData = new FormData()
+                            formData.append('file', file)
+                            formData.append('folder', 'apartmani-jovca/apartments')
+                            
+                            try {
+                              const response = await fetch('/api/upload', {
+                                method: 'POST',
+                                body: formData
+                              })
+                              
+                              if (!response.ok) {
+                                const errorData = await response.json()
+                                throw new Error(errorData.error || 'Upload failed')
+                              }
+                              
+                              const data = await response.json()
+                              setSelectedApartment({
+                                ...selectedApartment,
+                                images: [...(selectedApartment.images || []), data.url]
+                              })
+                            } catch (err) {
+                              alert('Greška pri upload-u slike: ' + (err instanceof Error ? err.message : 'Unknown error'))
+                            }
+                          }
+                          input.click()
                         }}
-                        className="gap-2 text-xs sm:text-sm h-8 sm:h-9"
+                        className="gap-2"
                       >
-                        <Plus className="h-3 w-3 sm:h-4 sm:w-4" />
-                        Dodaj sliku
+                        <Plus className="h-4 w-4" />
+                        Upload sliku
                       </Button>
+                    </div>
+
+                    {/* Image Grid with Preview */}
+                    <div className="space-y-3">
+                      {(selectedApartment.images || []).length === 0 ? (
+                        <div className="text-center py-8 text-gray-500 text-sm border-2 border-dashed rounded-lg bg-white">
+                          Nema slika. Kliknite "Upload sliku" ili dodajte URL ispod.
+                        </div>
+                      ) : (
+                        <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
+                          {(selectedApartment.images || []).map((url, index) => (
+                            <div key={index} className="relative group">
+                              <div className="aspect-video rounded-lg overflow-hidden border-2 border-white shadow-md bg-gray-100">
+                                <img 
+                                  src={url} 
+                                  alt={`Slika ${index + 1}`}
+                                  className="w-full h-full object-cover"
+                                  onError={(e) => {
+                                    (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100"%3E%3Crect fill="%23ddd" width="100" height="100"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%23999" font-size="12"%3ENo Image%3C/text%3E%3C/svg%3E'
+                                  }}
+                                />
+                              </div>
+                              {index === 0 && (
+                                <div className="absolute top-2 left-2 bg-blue-600 text-white text-xs px-2 py-1 rounded font-bold shadow">
+                                  Glavna slika
+                                </div>
+                              )}
+                              <Button
+                                variant="destructive"
+                                size="sm"
+                                onClick={() => {
+                                  const newImages = selectedApartment.images?.filter((_, i) => i !== index) || []
+                                  setSelectedApartment({ ...selectedApartment, images: newImages })
+                                }}
+                                className="absolute top-2 right-2 h-7 w-7 p-0 opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                              <div className="absolute bottom-2 left-2 right-2 bg-black/70 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                                Slika #{index + 1}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Manual URL Input */}
+                      <div className="pt-2">
+                        <details className="bg-white rounded-lg border">
+                          <summary className="cursor-pointer px-3 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50">
+                            ➕ Dodaj sliku preko URL-a (napredna opcija)
+                          </summary>
+                          <div className="p-3 space-y-2 border-t">
+                            <Input
+                              placeholder="https://res.cloudinary.com/..."
+                              className="text-xs h-8"
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                  const input = e.target as HTMLInputElement
+                                  if (input.value.trim()) {
+                                    setSelectedApartment({
+                                      ...selectedApartment,
+                                      images: [...(selectedApartment.images || []), input.value.trim()]
+                                    })
+                                    input.value = ''
+                                  }
+                                }
+                              }}
+                            />
+                            <p className="text-xs text-gray-500">Pritisnite Enter da dodate</p>
+                          </div>
+                        </details>
+                      </div>
                     </div>
                   </div>
 
                   {/* Video & Virtual Tour */}
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
-                    <div>
-                      <label className="block text-xs sm:text-sm font-semibold mb-2">Video URL</label>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+                    <div className="border rounded-lg p-3 bg-purple-50">
+                      <label className="block text-xs font-bold mb-2 text-purple-900">🎥 Video URL</label>
                       <Input
                         value={selectedApartment.video_url || ''}
                         onChange={(e) => setSelectedApartment({ ...selectedApartment, video_url: e.target.value })}
-                        placeholder="https://youtube.com/..."
-                        className="text-xs sm:text-sm h-8 sm:h-9"
+                        placeholder="https://youtube.com/watch?v=..."
+                        className="text-xs h-8"
                       />
+                      <p className="text-xs text-gray-600 mt-1">YouTube ili Vimeo link</p>
                     </div>
-                    <div>
-                      <label className="block text-xs sm:text-sm font-semibold mb-2">Virtuelna tura</label>
+                    <div className="border rounded-lg p-3 bg-green-50">
+                      <label className="block text-xs font-bold mb-2 text-green-900">🌐 Virtuelna tura</label>
                       <Input
                         value={selectedApartment.virtual_tour_url || ''}
                         onChange={(e) => setSelectedApartment({ ...selectedApartment, virtual_tour_url: e.target.value })}
                         placeholder="https://..."
-                        className="text-xs sm:text-sm h-8 sm:h-9"
+                        className="text-xs h-8"
                       />
+                      <p className="text-xs text-gray-600 mt-1">360° tura ili Matterport</p>
                     </div>
-                  </div>
-
-                  {/* Image Preview */}
-                  {selectedApartment.images && selectedApartment.images.length > 0 && (
-                    <div>
-                      <label className="block text-xs sm:text-sm font-semibold mb-2">Pregled slika</label>
-                      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-3">
-                        {selectedApartment.images.filter(url => url).map((url, index) => (
-                          <div key={index} className="relative aspect-video rounded-lg overflow-hidden border">
-                            <img 
-                              src={url} 
-                              alt={`Slika ${index + 1}`}
-                              className="w-full h-full object-cover"
-                              onError={(e) => {
-                                (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100"%3E%3Crect fill="%23ddd" width="100" height="100"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%23999" font-size="12"%3ENo Image%3C/text%3E%3C/svg%3E'
-                              }}
-                            />
-                            {index === 0 && (
-                              <div className="absolute top-1 left-1 sm:top-2 sm:left-2 bg-blue-600 text-white text-[9px] sm:text-xs px-1.5 sm:px-2 py-0.5 sm:py-1 rounded">
-                                Glavna
-                              </div>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* GALLERY - JSONB with captions */}
-                  <div className="border rounded-lg p-3 sm:p-4 bg-indigo-50">
-                    <label className="block text-xs sm:text-sm font-bold mb-2 sm:mb-3 text-indigo-900">🖼️ Galerija sa opisima</label>
-                    <p className="text-[10px] sm:text-xs text-gray-600 mb-2">JSON format: [{'{'}&#34;url&#34;: &#34;...&#34;, &#34;caption&#34;: {'{'}&#34;sr&#34;: &#34;...&#34;, &#34;en&#34;: &#34;...&#34;, &#34;de&#34;: &#34;...&#34;, &#34;it&#34;: &#34;...&#34;{'}'}, &#34;order&#34;: 1{'}'}]</p>
-                    <Textarea
-                      value={JSON.stringify(selectedApartment.gallery || [], null, 2)}
-                      onChange={(e) => {
-                        try {
-                          const parsed = JSON.parse(e.target.value)
-                          setSelectedApartment({ ...selectedApartment, gallery: parsed })
-                        } catch {
-                          // Invalid JSON, don't update
-                        }
-                      }}
-                      placeholder='[{"url": "https://...", "caption": {"sr": "Dnevna soba", "en": "Living room", "de": "Wohnzimmer", "it": "Soggiorno"}, "order": 1}]'
-                      rows={6}
-                      className="text-xs sm:text-sm font-mono"
-                    />
                   </div>
                 </div>
               </TabsContent>
@@ -1561,47 +1594,226 @@ export default function EnhancedApartmentManager() {
               {apartments.length === 0 ? (
                 <p className="text-center text-gray-600 py-8 text-xs sm:text-sm">Nema apartmana. Dodajte prvi apartman.</p>
               ) : (
-                apartments.map((apt) => (
-                  <div key={apt.id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3 sm:p-4 border rounded-lg hover:bg-gray-50">
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-sm sm:text-base truncate">{apt.name.sr}</h3>
-                      <p className="text-xs sm:text-sm text-gray-600 truncate">
-                        {apt.capacity} gostiju • {apt.size_sqm}m² • €{apt.base_price_eur}/noć
-                      </p>
-                      <p className="text-[10px] sm:text-xs text-gray-500 mt-1 truncate">/{apt.slug}</p>
-                    </div>
-                    <div className="flex gap-2 flex-shrink-0">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleEdit(apt)}
-                        className="flex-1 sm:flex-none text-xs h-8"
-                      >
-                        Izmeni
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => {
-                          const userLang = navigator.language.split('-')[0] || 'sr'
-                          const lang = ['sr', 'en', 'de', 'it'].includes(userLang) ? userLang : 'sr'
-                          window.open(`/${lang}/apartments/${apt.slug}`, '_blank')
-                        }}
-                        className="h-8 w-8 p-0"
-                      >
-                        <Eye className="h-3 w-3 sm:h-4 sm:w-4" />
-                      </Button>
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => apt.id && handleDelete(apt.id)}
-                        className="h-8 w-8 p-0"
-                      >
-                        <Trash2 className="h-3 w-3 sm:h-4 sm:w-4" />
-                      </Button>
-                    </div>
+                <>
+                  {/* Mobile View - Cards with Image */}
+                  <div className="md:hidden space-y-3">
+                    {apartments.map((apt) => (
+                      <div key={apt.id} className="border rounded-lg overflow-hidden hover:bg-gray-50">
+                        <div className="flex gap-3 p-3">
+                          {/* Image Thumbnail */}
+                          <div className="w-20 h-20 flex-shrink-0 bg-gray-100 rounded overflow-hidden">
+                            {apt.images && apt.images.length > 0 ? (
+                              <img 
+                                src={apt.images[0]} 
+                                alt={apt.name.sr}
+                                className="w-full h-full object-cover"
+                                onError={(e) => {
+                                  (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100"%3E%3Crect fill="%23e5e7eb" width="100" height="100"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%239ca3af" font-size="10"%3ENo Image%3C/text%3E%3C/svg%3E'
+                                }}
+                              />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">
+                                Nema
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Content */}
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-start justify-between gap-2 mb-1">
+                              <h3 className="font-semibold text-sm truncate">{apt.name.sr}</h3>
+                              <div className={`px-1.5 py-0.5 rounded text-xs font-semibold flex-shrink-0 ${
+                                apt.status === 'active' ? 'bg-green-100 text-green-800' :
+                                apt.status === 'maintenance' ? 'bg-yellow-100 text-yellow-800' :
+                                'bg-gray-100 text-gray-800'
+                              }`}>
+                                {apt.status === 'active' ? '✓' : apt.status === 'maintenance' ? '⚠' : '✕'}
+                              </div>
+                            </div>
+                            <p className="text-xs text-gray-600 mb-1">
+                              {apt.capacity} gostiju • {apt.size_sqm}m²
+                            </p>
+                            <div className="text-sm font-bold text-primary">€{apt.base_price_eur}/noć</div>
+                          </div>
+                        </div>
+
+                        {/* Actions */}
+                        <div className="flex gap-2 px-3 pb-3">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handleEdit(apt)}
+                            className="flex-1 text-xs h-8"
+                          >
+                            Izmeni
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              const userLang = navigator.language.split('-')[0] || 'sr'
+                              const lang = ['sr', 'en', 'de', 'it'].includes(userLang) ? userLang : 'sr'
+                              window.open(`/${lang}/apartments/${apt.slug}`, '_blank')
+                            }}
+                            className="h-8 w-8 p-0"
+                          >
+                            <Eye className="h-3 w-3" />
+                          </Button>
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            onClick={() => apt.id && handleDelete(apt.id)}
+                            className="h-8 w-8 p-0"
+                          >
+                            <Trash2 className="h-3 w-3" />
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))
+
+                  {/* Desktop View - Enhanced Cards with More Details */}
+                  <div className="hidden md:grid md:grid-cols-1 lg:grid-cols-2 gap-4">
+                    {apartments.map((apt) => (
+                      <Card key={apt.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+                        <div className="flex">
+                          {/* Image Preview */}
+                          <div className="w-32 lg:w-40 flex-shrink-0 bg-gray-100">
+                            {apt.images && apt.images.length > 0 ? (
+                              <img 
+                                src={apt.images[0]} 
+                                alt={apt.name.sr}
+                                className="w-full h-full object-cover"
+                                onError={(e) => {
+                                  (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100"%3E%3Crect fill="%23e5e7eb" width="100" height="100"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%239ca3af" font-size="12"%3ENo Image%3C/text%3E%3C/svg%3E'
+                                }}
+                              />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">
+                                Nema slike
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Content */}
+                          <div className="flex-1 p-4 flex flex-col">
+                            {/* Header */}
+                            <div className="flex items-start justify-between gap-3 mb-3">
+                              <div className="flex-1 min-w-0">
+                                <h3 className="font-bold text-base truncate">{apt.name.sr}</h3>
+                                <p className="text-xs text-gray-500 truncate">/{apt.slug}</p>
+                              </div>
+                              <div className={`px-2 py-1 rounded text-xs font-semibold flex-shrink-0 ${
+                                apt.status === 'active' ? 'bg-green-100 text-green-800' :
+                                apt.status === 'maintenance' ? 'bg-yellow-100 text-yellow-800' :
+                                'bg-gray-100 text-gray-800'
+                              }`}>
+                                {apt.status === 'active' ? 'Aktivan' : apt.status === 'maintenance' ? 'Održavanje' : 'Neaktivan'}
+                              </div>
+                            </div>
+
+                            {/* Details Grid */}
+                            <div className="grid grid-cols-2 gap-x-4 gap-y-2 mb-3 text-xs">
+                              <div className="flex items-center gap-1.5">
+                                <span className="text-gray-500">👥</span>
+                                <span className="font-medium">{apt.capacity} gostiju</span>
+                              </div>
+                              <div className="flex items-center gap-1.5">
+                                <span className="text-gray-500">📐</span>
+                                <span className="font-medium">{apt.size_sqm}m²</span>
+                              </div>
+                              <div className="flex items-center gap-1.5">
+                                <span className="text-gray-500">🛏️</span>
+                                <span className="font-medium">
+                                  {apt.bed_counts && Object.keys(apt.bed_counts).length > 0 
+                                    ? `${Object.values(apt.bed_counts).reduce((a, b) => a + b, 0)} kreveta`
+                                    : 'N/A'}
+                                </span>
+                              </div>
+                              <div className="flex items-center gap-1.5">
+                                <span className="text-gray-500">🚿</span>
+                                <span className="font-medium">{apt.bathroom_count || 1} kupatilo</span>
+                              </div>
+                              {apt.floor !== undefined && (
+                                <div className="flex items-center gap-1.5">
+                                  <span className="text-gray-500">🏢</span>
+                                  <span className="font-medium">Sprat {apt.floor}</span>
+                                </div>
+                              )}
+                              {apt.balcony && (
+                                <div className="flex items-center gap-1.5">
+                                  <span className="text-gray-500">🌿</span>
+                                  <span className="font-medium">Balkon</span>
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Amenities Preview */}
+                            {apt.selected_amenities && apt.selected_amenities.length > 0 && (
+                              <div className="mb-3">
+                                <div className="flex flex-wrap gap-1">
+                                  {apt.selected_amenities.slice(0, 4).map((amenityId) => {
+                                    const amenity = AMENITY_OPTIONS.find(a => a.id === amenityId)
+                                    return amenity ? (
+                                      <span key={amenityId} className="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded">
+                                        {amenity.label.sr}
+                                      </span>
+                                    ) : null
+                                  })}
+                                  {apt.selected_amenities.length > 4 && (
+                                    <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded">
+                                      +{apt.selected_amenities.length - 4}
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Footer */}
+                            <div className="flex items-center justify-between mt-auto pt-3 border-t">
+                              <div>
+                                <div className="text-lg font-bold text-primary">€{apt.base_price_eur}</div>
+                                <div className="text-xs text-gray-500">po noći</div>
+                              </div>
+                              <div className="flex gap-2">
+                                <Button
+                                  variant="default"
+                                  size="sm"
+                                  onClick={() => handleEdit(apt)}
+                                  className="text-xs h-9 px-4"
+                                >
+                                  Izmeni
+                                </Button>
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => {
+                                    const userLang = navigator.language.split('-')[0] || 'sr'
+                                    const lang = ['sr', 'en', 'de', 'it'].includes(userLang) ? userLang : 'sr'
+                                    window.open(`/${lang}/apartments/${apt.slug}`, '_blank')
+                                  }}
+                                  className="h-9 w-9 p-0"
+                                  title="Pregled"
+                                >
+                                  <Eye className="h-4 w-4" />
+                                </Button>
+                                <Button
+                                  variant="destructive"
+                                  size="sm"
+                                  onClick={() => apt.id && handleDelete(apt.id)}
+                                  className="h-9 w-9 p-0"
+                                  title="Obriši"
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </Card>
+                    ))}
+                  </div>
+                </>
               )}
             </div>
           </CardContent>

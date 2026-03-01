@@ -17,8 +17,7 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '20')
     const status = searchParams.get('status')
     const apartmentId = searchParams.get('apartment_id')
-    const startDate = searchParams.get('start_date')
-    const endDate = searchParams.get('end_date')
+    const occupiedOn = searchParams.get('occupied_on')
     const search = searchParams.get('search')
     const sortBy = searchParams.get('sort_by') || 'created_at'
     const sortOrder = searchParams.get('sort_order') || 'desc'
@@ -39,11 +38,10 @@ export async function GET(request: NextRequest) {
     if (apartmentId) {
       query = query.eq('apartment_id', apartmentId)
     }
-    if (startDate) {
-      query = query.gte('check_in', startDate)
-    }
-    if (endDate) {
-      query = query.lte('check_out', endDate)
+    
+    // Filter by occupied on specific date (check_in <= date < check_out)
+    if (occupiedOn) {
+      query = query.lte('check_in', occupiedOn).gt('check_out', occupiedOn)
     }
 
     // Apply sorting
@@ -97,14 +95,16 @@ export async function GET(request: NextRequest) {
       }
     }) || []
 
-    // Filter by search if provided (client-side for guest name/email)
+    // Filter by search if provided (search across guest name, email, phone, and apartment name)
     let filteredBookings = bookings
     if (search) {
       const searchLower = search.toLowerCase()
       filteredBookings = bookings.filter(
         b => 
           b.guest_name?.toLowerCase().includes(searchLower) ||
-          b.guest_email?.toLowerCase().includes(searchLower)
+          b.guest_email?.toLowerCase().includes(searchLower) ||
+          b.guest_phone?.toLowerCase().includes(searchLower) ||
+          b.apartment_name?.toLowerCase().includes(searchLower)
       )
     }
 

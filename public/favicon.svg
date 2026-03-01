@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <!-- Background circle for visibility on any background -->
+  <circle cx="64" cy="64" r="60" fill="#4F46E5" />
+  
+  <!-- White letter "J" for Jovča -->
+  <text x="64" y="90" font-family="Arial, sans-serif" font-size="72" font-weight="bold" fill="white" text-anchor="middle">J</text>
+</svg>

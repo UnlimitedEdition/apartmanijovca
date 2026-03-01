@@ -1553,7 +1553,7 @@ body {
   <div class="contact-info">
     <h3>Imate pitanja?</h3>
     <p>📞 Telefon: +381 69 123 4567</p>
-    <p>📧 Email: info@apartmani-jovca.rs</p>
+    <p>📧 Email: apartmanijovca@gmail.com</p>
     <p>💬 WhatsApp: +381 69 123 4567</p>
     <p style="margin-top:1rem; font-size:0.875rem;">
       Dostupni smo svakog dana od 9-21h

@@ -6,6 +6,7 @@ import { ThemeProvider } from 'next-themes';
 import AnalyticsTracker from '../components/AnalyticsTracker';
 import FloatingCTA from '../components/FloatingCTA';
 import StickyMobileCTA from '../components/StickyMobileCTA';
+import ConsoleWarning from '../components/ConsoleWarning';
 import "./globals.css";
 
 // const geistSans = Geist({
@@ -27,12 +28,14 @@ export const metadata: Metadata = {
     title: "Apartmani Jovča",
     description: "Beautiful apartments in Jovča - Your perfect vacation destination",
     type: 'website',
+    images: ['/images/logo2.png'],
   },
 };
 
 export const generateViewport = () => ({
   width: 'device-width',
   initialScale: 1,
+  themeColor: '#ffffff', // Bela boja za address bar
 });
 
 function RootLayout({
@@ -41,16 +44,23 @@ function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html suppressHydrationWarning>
+    <html lang="sr" suppressHydrationWarning style={{ colorScheme: 'light' }}>
+      <head>
+        <meta name="theme-color" content="#ffffff" />
+        <meta name="color-scheme" content="light" />
+      </head>
       <body
         className="antialiased"
+        style={{ colorScheme: 'light' }}
       >
         <ThemeProvider
           attribute="class"
           defaultTheme="light"
-          enableSystem={true}
+          enableSystem={false}
+          forcedTheme="light"
           disableTransitionOnChange
         >
+          <ConsoleWarning />
           {children}
           {/* <PWAInstall /> */}
           <AnalyticsTracker />
