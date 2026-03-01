@@ -25,6 +25,7 @@ export default async function middleware(request: NextRequest) {
     pathname === '/sw.js' ||
     pathname === '/manifest.json' ||
     pathname === '/robots.txt' ||
+    pathname === '/sitemap.xml' ||
     pathname.match(/\.(ico|png|jpg|jpeg|svg|gif|webp|avif|woff|woff2|ttf|eot)$/)
   ) {
     return NextResponse.next()
