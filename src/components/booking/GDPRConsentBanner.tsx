@@ -159,18 +159,18 @@ export default function GDPRConsentBanner({ onAccept, onDecline, locale = 'sr' }
   }, [])
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+      <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full my-8 flex flex-col max-h-[calc(100vh-4rem)]">
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-6 text-white">
+        <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-6 text-white flex-shrink-0">
           <div className="flex items-center gap-3">
             <Shield className="h-8 w-8" />
             <h2 className="text-2xl font-bold">{t.title}</h2>
           </div>
         </div>
 
-        {/* Content */}
-        <div className="p-6 space-y-6">
+        {/* Content - Scrollable */}
+        <div className="p-6 space-y-6 overflow-y-auto flex-1">
           {/* Warning Banner */}
           <div className="bg-amber-50 border-l-4 border-amber-500 p-4 rounded">
             <div className="flex items-start gap-3">
@@ -235,18 +235,18 @@ export default function GDPRConsentBanner({ onAccept, onDecline, locale = 'sr' }
           </div>
         </div>
 
-        {/* Actions */}
-        <div className="bg-gray-50 p-6 flex flex-col sm:flex-row gap-3 justify-end border-t">
+        {/* Actions - Fixed at bottom */}
+        <div className="bg-gray-50 p-4 sm:p-6 flex flex-col sm:flex-row gap-3 justify-end border-t flex-shrink-0">
           <Button
             variant="outline"
             onClick={onDecline}
-            className="px-6 border-red-300 text-red-700 hover:bg-red-50"
+            className="px-6 border-red-300 text-red-700 hover:bg-red-50 w-full sm:w-auto"
           >
             {t.decline}
           </Button>
           <Button
             onClick={onAccept}
-            className="px-6 bg-green-600 hover:bg-green-700"
+            className="px-6 bg-green-600 hover:bg-green-700 w-full sm:w-auto"
           >
             {t.accept}
           </Button>
