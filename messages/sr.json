@@ -291,6 +291,7 @@
       "apartment": "Izaberite apartman",
       "firstName": "Ime",
       "lastName": "Prezime",
+      "fullName": "Ime i prezime",
       "email": "Email adresa",
       "phone": "Broj telefona",
       "specialRequests": "Posebni zahtevi",
