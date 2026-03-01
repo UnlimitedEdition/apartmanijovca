@@ -12,6 +12,10 @@ export const PRODUCTION_URL = 'https://apartmani-jovca.vercel.app'
 export const CONTACT_EMAIL = 'apartmanijovca@gmail.com'
 export const CONTACT_PHONE = '+381 65 237 8080'
 export const WHATSAPP_NUMBER = '+381 65 237 8080'
+
+// Email sender configuration (for Resend)
+export const EMAIL_FROM = 'noreply@apartmani-jovca.vercel.app'
+export const EMAIL_ADMIN = 'apartmanijovca@gmail.com' // Admin receives booking notifications here
 // ============================================
 
 export type Locale = 'sr' | 'en' | 'de' | 'it'

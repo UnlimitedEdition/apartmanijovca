@@ -1,6 +1,6 @@
 import { Resend } from 'resend'
 import type { EmailLanguage, EmailSendResult, EmailContent } from './email/types'
-import { PRODUCTION_URL, CONTACT_PHONE } from './seo/config'
+import { PRODUCTION_URL, CONTACT_PHONE, EMAIL_FROM, EMAIL_ADMIN } from './seo/config'
 
 // Initialize Resend client with error handling
 const getResendClient = () => {
@@ -19,8 +19,8 @@ export const resend = getResendClient()
 
 // Email configuration constants
 export const EMAIL_CONFIG = {
-  fromEmail: process?.env?.EMAIL_FROM || 'noreply@apartmani-jovca.vercel.app',
-  adminEmail: process?.env?.ADMIN_EMAIL || 'jovca@apartmani-jovca.vercel.app',
+  fromEmail: process?.env?.EMAIL_FROM || EMAIL_FROM,
+  adminEmail: process?.env?.ADMIN_EMAIL || EMAIL_ADMIN,
   companyName: 'Apartmani Jovča',
   websiteUrl: PRODUCTION_URL,
   supportPhone: CONTACT_PHONE,
