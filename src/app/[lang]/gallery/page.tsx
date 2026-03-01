@@ -5,7 +5,7 @@ import { Locale } from '@/lib/types/database'
 import { getBaseUrl } from '@/lib/seo/config'
 import { generateMetaTags } from '@/lib/seo/meta-generator'
 import { generateHreflangTags } from '@/lib/seo/hreflang'
-import { generateOpenGraphTags, generateTwitterCardTags } from '@/lib/seo/social-media'
+import { generateOpenGraphTags } from '@/lib/seo/social-media'
 import { generateBreadcrumbSchema } from '@/lib/seo/structured-data'
 import { getKeywordsString } from '@/lib/seo/keywords'
 import { getTranslations } from 'next-intl/server'
@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     locale
   })
 
-  const ogTags = generateOpenGraphTags({
+  generateOpenGraphTags({
     title: t('gallery.title'),
     description: t('gallery.description'),
     url: `${baseUrl}/${locale}/gallery`,

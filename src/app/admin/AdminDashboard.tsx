@@ -43,19 +43,20 @@ interface AdminDashboardProps {
   stats: Stats
 }
 
-export default function AdminDashboard({ stats: initialStats }: AdminDashboardProps) {
+export default function AdminDashboard({ stats: _initialStats }: AdminDashboardProps) {
   const [activeTab, setActiveTab] = useState('dashboard')
-  const [currentStats, setCurrentStats] = useState<Stats>(initialStats)
   const [refreshing, setRefreshing] = useState(false)
   const [statsKey, setStatsKey] = useState(0) // Key to force StatsCards refresh
+
+  // Suppress unused variable warning
+  void _initialStats
 
   const refreshStats = useCallback(async () => {
     try {
       setRefreshing(true)
       const response = await fetch('/api/admin/stats')
       if (response.ok) {
-        const data = await response.json()
-        setCurrentStats(prev => ({ ...prev, ...data }))
+        await response.json()
         setStatsKey(prev => prev + 1) // Force StatsCards to refresh
       }
     } catch (error) {

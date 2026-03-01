@@ -33,7 +33,7 @@ interface ResendWebhookPayload {
     to: string[]
     subject: string
     created_at: string
-    [key: string]: any
+    [key: string]: unknown
   }
 }
 
@@ -75,7 +75,7 @@ function extractBookingId(payload: ResendWebhookPayload): string | null {
 
   // Try to extract from tags if available
   if (payload.data.tags && Array.isArray(payload.data.tags)) {
-    const bookingTag = payload.data.tags.find((tag: any) => 
+    const bookingTag = payload.data.tags.find((tag: { name: string; value: string }) => 
       tag.name === 'booking_id' || tag.name === 'bookingId'
     )
     if (bookingTag) {
@@ -133,7 +133,7 @@ export async function POST(request: NextRequest) {
         email_from: payload.data.from,
         email_subject: payload.data.subject,
         booking_id: bookingId,
-        payload: payload as any,
+        payload: payload as unknown as Record<string, unknown>,
       })
       .select()
       .single()
@@ -145,7 +145,7 @@ export async function POST(request: NextRequest) {
           .from('email_events')
           .update({
             event_type: payload.type,
-            payload: payload as any,
+            payload: payload as unknown as Record<string, unknown>,
             updated_at: new Date().toISOString(),
           })
           .eq('event_id', payload.data.email_id)

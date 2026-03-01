@@ -35,7 +35,8 @@ if (validateSchema(organizationSchema)) {
 }
 
 // Embed in HTML (for server-side rendering)
-const htmlScript = embedJsonLd(organizationSchema)
+const _htmlScript = embedJsonLd(organizationSchema)
+void _htmlScript // Example variable - suppress unused warning
 // Output: <script type="application/ld+json">{"@context":"https://schema.org",...}</script>
 
 // ============================================================================
@@ -82,7 +83,8 @@ const localBusinessSchema = {
 
 // Validate and embed
 if (validateSchema(localBusinessSchema)) {
-  const script = embedJsonLd(localBusinessSchema)
+  const _script = embedJsonLd(localBusinessSchema)
+  void _script // Example variable - suppress unused warning
   console.log('✓ LocalBusiness schema embedded')
 }
 
@@ -110,7 +112,8 @@ const apartmentPageSchema = {
   priceRange: '€30-€50',
 }
 
-const apartmentPageScript = createJsonLdScript(apartmentPageSchema)
+const _apartmentPageScript = createJsonLdScript(apartmentPageSchema)
+void _apartmentPageScript // Example variable - suppress unused warning
 
 // ============================================================================
 // Example 4: Breadcrumb Schema
@@ -207,7 +210,8 @@ const mergedSchema = mergeSchemas([
 //   ]
 // }
 
-const mergedScript = embedJsonLd(mergedSchema)
+const _mergedScript = embedJsonLd(mergedSchema)
+void _mergedScript // Example variable - suppress unused warning
 
 // ============================================================================
 // Example 8: Error Handling
@@ -274,7 +278,8 @@ const apartmentDataExample = {
 }
 
 const apartmentSchemaExample = generateApartmentSchemaExample(apartmentDataExample)
-const apartmentScriptExample = createJsonLdScript(apartmentSchemaExample)
+const _apartmentScriptExample = createJsonLdScript(apartmentSchemaExample)
+void _apartmentScriptExample // Example variable - suppress unused warning
 
 export {
   organizationSchema,

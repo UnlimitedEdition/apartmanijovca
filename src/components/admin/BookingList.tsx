@@ -560,7 +560,7 @@ export default function BookingList({ apartmentId, limit: propLimit, title, onSt
                     bed_type: '',
                     capacity: 0,
                     base_price_eur: 0
-                  }) as any
+                  }) as { id: string; name: string; bed_type: string; capacity: number; base_price_eur: number }
                 }}
                 onBack={handleCloseModal}
                 onStatusChange={(newStatus: string) => {

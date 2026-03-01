@@ -4,16 +4,16 @@ import {
   transformApartmentRecord,
   transformBookingRecord,
   transformReviewRecord,
-  reverseTransformApartmentData,
-  BookingResponse,
-  ReviewResponse
+  reverseTransformApartmentData
+  // BookingResponse,
+  // ReviewResponse
 } from '@/lib/transformers/database'
 import {
   ApartmentRecord,
   BookingRecord,
   ReviewRecord,
   GuestRecord,
-  Locale,
+  // Locale,
   Json
 } from '@/lib/types/database'
 
@@ -21,6 +21,7 @@ describe('Transformer Functions', () => {
   describe('transformApartmentRecord', () => {
     const mockApartmentRecord: ApartmentRecord = {
       id: 'apt-1',
+      slug: 'apartman-1',
       name: { sr: 'Apartman 1', en: 'Apartment 1', de: 'Wohnung 1', it: 'Appartamento 1' } as Json,
       description: { sr: 'Opis', en: 'Description', de: 'Beschreibung', it: 'Descrizione' } as Json,
       bed_type: { sr: 'Bračni krevet', en: 'Double bed', de: 'Doppelbett', it: 'Letto matrimoniale' } as Json,
@@ -125,6 +126,7 @@ describe('Transformer Functions', () => {
 
     const mockApartment: ApartmentRecord = {
       id: 'apt-1',
+      slug: 'apartman-1',
       name: { sr: 'Apartman 1', en: 'Apartment 1', de: 'Wohnung 1', it: 'Appartamento 1' } as Json,
       description: { sr: 'Opis', en: 'Description', de: 'Beschreibung', it: 'Descrizione' } as Json,
       bed_type: { sr: 'Bračni krevet', en: 'Double bed', de: 'Doppelbett', it: 'Letto matrimoniale' } as Json,
@@ -146,8 +148,10 @@ describe('Transformer Functions', () => {
       check_in: '2024-06-01',
       check_out: '2024-06-05',
       nights: 4,
+      num_guests: 2,
       total_price: 200,
       status: 'confirmed',
+      language: 'sr',
       options: { parking: true, crib: false } as Json,
       created_at: '2024-01-01T00:00:00Z',
       updated_at: '2024-01-01T00:00:00Z',
@@ -203,6 +207,7 @@ describe('Transformer Functions', () => {
 
     const mockApartment: ApartmentRecord = {
       id: 'apt-1',
+      slug: 'apartman-1',
       name: { sr: 'Apartman 1', en: 'Apartment 1', de: 'Wohnung 1', it: 'Appartamento 1' } as Json,
       description: { sr: 'Opis', en: 'Description', de: 'Beschreibung', it: 'Descrizione' } as Json,
       bed_type: { sr: 'Bračni krevet', en: 'Double bed', de: 'Doppelbett', it: 'Letto matrimoniale' } as Json,

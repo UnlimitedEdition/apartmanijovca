@@ -54,8 +54,10 @@ describe('Database Types', () => {
         check_in: '2024-01-01',
         check_out: '2024-01-02',
         nights: 1,
+        num_guests: 2,
         total_price: 100,
         status: 'pending',
+        language: 'sr',
         options: null,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()
@@ -86,8 +88,10 @@ describe('Database Types', () => {
           check_in: '2024-01-01',
           check_out: '2024-01-02',
           nights: 1,
+          num_guests: 2,
           total_price: 100,
           status,
+          language: 'sr',
           options: null,
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString()
@@ -105,8 +109,10 @@ describe('Database Types', () => {
         check_in: '2024-01-01',
         check_out: '2024-01-02',
         nights: 1,
+        num_guests: 2,
         total_price: 100,
         status: 'confirmed',
+        language: 'sr',
         options: { crib: true, parking: false } as Json,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()
@@ -119,6 +125,7 @@ describe('Database Types', () => {
     it('should have ApartmentRecord with Json types for JSONB fields', () => {
       const apartment: ApartmentRecord = {
         id: '123',
+        slug: 'apartman-1',
         name: { sr: 'Apartman 1', en: 'Apartment 1' } as Json,
         description: { sr: 'Opis', en: 'Description' } as Json,
         bed_type: { sr: 'Bračni krevet', en: 'Double bed' } as Json,
@@ -142,6 +149,7 @@ describe('Database Types', () => {
       statuses.forEach(status => {
         const apartment: ApartmentRecord = {
           id: '123',
+          slug: 'test-apartment',
           name: { sr: 'Test' } as Json,
           description: { sr: 'Test' } as Json,
           bed_type: { sr: 'Test' } as Json,

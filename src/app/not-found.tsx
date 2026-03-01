@@ -3,12 +3,33 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Home, Building2, MapPin, Phone, MessageCircle, Search, ArrowLeft } from 'lucide-react';
+import { Home, Building2, MapPin, MessageCircle, Search, ArrowLeft } from 'lucide-react';
 
 export default function NotFound() {
   const router = useRouter();
   const [locale, setLocale] = useState('sr');
-  const [messages, setMessages] = useState<any>(null);
+  const [messages, setMessages] = useState<{ 
+    notFound: { 
+      title: string; 
+      description: string; 
+      goBack: string; 
+      goHome: string; 
+      searchPlaceholder: string; 
+      popularPages: string;
+      quickLinksTitle: string;
+      quickLinks: {
+        home: string;
+        homeDesc: string;
+        apartments: string;
+        apartmentsDesc: string;
+        location: string;
+        locationDesc: string;
+        contact: string;
+        contactDesc: string;
+      }
+    }; 
+    common: Record<string, string> 
+  } | null>(null);
 
   useEffect(() => {
     // Detect locale from URL or default to 'sr'
@@ -29,7 +50,6 @@ export default function NotFound() {
   }
 
   const t = messages.notFound;
-  const common = messages.common;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 flex items-center justify-center px-4 py-12">

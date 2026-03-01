@@ -17,7 +17,8 @@ import type { MetaTagsInput, MetaTagsOutput, Locale } from '../types/seo'
  * @param locale - The current locale
  * @returns Optimized title string
  */
-export function generateTitle(title: string, locale: Locale): string {
+export function generateTitle(title: string, _locale: Locale): string {
+  void _locale // Suppress unused variable warning
   const sanitized = sanitizeMetaContent(title)
   
   // Target 50-60 characters for optimal SERP display
@@ -88,9 +89,11 @@ export function generateMetaTags(input: MetaTagsInput): MetaTagsOutput {
     path,
     canonical,
     locale,
-    pageType,
+    pageType: _pageType,
     noindex = false,
   } = input
+  
+  void _pageType // Suppress unused variable warning
   
   // Generate optimized title and description
   const optimizedTitle = generateTitle(title, locale)

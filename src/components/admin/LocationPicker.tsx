@@ -12,6 +12,7 @@ interface LocationPickerProps {
 export default function LocationPicker({ latitude, longitude, onLocationChange }: LocationPickerProps) {
   const [mounted, setMounted] = useState(false)
   const [showMap, setShowMap] = useState(false)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [MapComponent, setMapComponent] = useState<any>(null)
 
   useEffect(() => {

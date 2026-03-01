@@ -19,7 +19,6 @@ import {
   Upload
 } from 'lucide-react'
 import { 
-  validateContentStructure, 
 } from '../../lib/validations/content'
 
 type Language = 'en' | 'de' | 'it' | 'sr'
@@ -199,7 +198,7 @@ export default function ContentEditor() {
   const fileInputRef = useRef<HTMLInputElement>(null)
   
   // Concurrent edit detection
-  const [lastFetchedAt, setLastFetchedAt] = useState<Record<string, string>>({})
+  const [, setLastFetchedAt] = useState<Record<string, string>>({})
   
   // Retry state for exponential backoff
   const [retryCount, setRetryCount] = useState(0)

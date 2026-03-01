@@ -13,7 +13,7 @@ declare global {
 export const supabase = global.__supabaseClient ?? (() => {
   if (!supabaseUrl || !supabaseAnonKey) {
     console.warn('[Supabase Client] Missing environment variables')
-    return null as any
+    return null as unknown as SupabaseClient<Database>
   }
   const client = createClient<Database>(supabaseUrl, supabaseAnonKey)
   global.__supabaseClient = client

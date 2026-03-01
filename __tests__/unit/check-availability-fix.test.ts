@@ -24,6 +24,7 @@ describe('checkAvailability - Boolean Handling Fix', () => {
 
   it('should return available: true when RPC returns true', async () => {
     // Mock RPC to return true (apartment is available)
+    if (!supabase) throw new Error('Supabase not initialized')
     ;(supabase.rpc as jest.Mock).mockResolvedValue({
       data: true,
       error: null
@@ -41,6 +42,7 @@ describe('checkAvailability - Boolean Handling Fix', () => {
 
   it('should return available: false when RPC returns false', async () => {
     // Mock RPC to return false (apartment is NOT available)
+    if (!supabase) throw new Error('Supabase not initialized')
     ;(supabase.rpc as jest.Mock).mockResolvedValue({
       data: false,
       error: null
@@ -58,6 +60,7 @@ describe('checkAvailability - Boolean Handling Fix', () => {
 
   it('should handle RPC errors correctly', async () => {
     // Mock RPC to return an error
+    if (!supabase) throw new Error('Supabase not initialized')
     ;(supabase.rpc as jest.Mock).mockResolvedValue({
       data: null,
       error: { message: 'Database error' }
