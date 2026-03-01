@@ -12,6 +12,14 @@ const intlMiddleware = createIntlMiddleware({
 
 export default async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
+  const host = request.headers.get('host') || ''
+
+  // Redirect preview URLs to production URL
+  if (host.includes('milans-projects') || host.includes('-git-')) {
+    const productionUrl = new URL(request.url)
+    productionUrl.host = 'apartmani-jovca.vercel.app'
+    return NextResponse.redirect(productionUrl, 308) // Permanent redirect
+  }
 
   // Skip middleware for static files and API routes
   if (
