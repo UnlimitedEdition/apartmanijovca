@@ -10,19 +10,19 @@ export const BookingStatus = z.enum([
   'no_show'
 ])
 
-// Enhanced name validation - must contain first and last name
-const nameRegex = /^[A-Za-zÀ-ÿ\u0400-\u04FF\s'-]{2,}\s+[A-Za-zÀ-ÿ\u0400-\u04FF\s'-]{2,}$/
+// Enhanced name validation - accepts both single name and full name
+const nameRegex = /^[A-Za-zÀ-ÿ\u0400-\u04FF\s'-]{2,}$/
 const phoneRegex = /^[\d\s\-\+\(\)]{8,20}$/
 const sanitizeString = (str: string) => str.trim().replace(/\s+/g, ' ')
 
-// Guest info schema with strict validation
+// Guest info schema with flexible validation
 export const GuestInfoSchema = z.object({
   name: z.string()
-    .min(5, 'Ime mora sadržati ime i prezime (minimum 5 karaktera)')
+    .min(2, 'Ime mora imati minimum 2 karaktera')
     .max(100, 'Ime ne sme biti duže od 100 karaktera')
     .transform(sanitizeString)
     .refine(val => nameRegex.test(val), {
-      message: 'Molimo unesite puno ime i prezime (npr. "Marko Marković")'
+      message: 'Molimo unesite validno ime'
     })
     .refine(val => !val.match(/(.)\1{3,}/), {
       message: 'Ime sadrži previše ponavljajućih karaktera'
