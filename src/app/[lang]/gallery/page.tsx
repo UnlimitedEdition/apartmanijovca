@@ -1,10 +1,97 @@
+import { Metadata } from 'next'
 import { createClient } from '@supabase/supabase-js'
 import GalleryClient from '@/app/[lang]/gallery/GalleryClient'
+import { Locale } from '@/lib/types/database'
+import { getBaseUrl } from '@/lib/seo/config'
+import { generateMetaTags } from '@/lib/seo/meta-generator'
+import { generateHreflangTags } from '@/lib/seo/hreflang'
+import { generateOpenGraphTags, generateTwitterCardTags } from '@/lib/seo/social-media'
+import { generateBreadcrumbSchema } from '@/lib/seo/structured-data'
+import { getKeywordsString } from '@/lib/seo/keywords'
+import { getTranslations } from 'next-intl/server'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
 export const dynamic = 'force-dynamic'
+
+interface PageProps {
+  params: { lang: string }
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const locale = params.lang as Locale
+  const t = await getTranslations({ locale, namespace: 'seo' })
+  const baseUrl = getBaseUrl()
+  
+  const metaTags = generateMetaTags({
+    title: t('gallery.title'),
+    description: t('gallery.description'),
+    keywords: getKeywordsString('gallery', locale),
+    path: `/${locale}/gallery`,
+    locale,
+    type: 'website'
+  })
+
+  const hreflangTags = generateHreflangTags({
+    path: '/gallery',
+    locale
+  })
+
+  const ogTags = generateOpenGraphTags({
+    title: t('gallery.title'),
+    description: t('gallery.description'),
+    url: `${baseUrl}/${locale}/gallery`,
+    type: 'website',
+    locale,
+    siteName: 'Apartmani Jovča',
+    images: [{
+      url: `${baseUrl}/images/background.jpg`,
+      width: 1200,
+      height: 630,
+      alt: t('gallery.ogImageAlt')
+    }]
+  })
+
+  const breadcrumbSchema = generateBreadcrumbSchema('/gallery', locale)
+
+  return {
+    title: metaTags.title,
+    description: metaTags.description,
+    keywords: metaTags.keywords,
+    robots: metaTags.robots,
+    alternates: {
+      canonical: metaTags.canonical,
+      languages: hreflangTags.reduce((acc, tag) => {
+        if (tag.hreflang !== 'x-default') {
+          acc[tag.hreflang] = tag.href
+        }
+        return acc
+      }, {} as Record<string, string>)
+    },
+    openGraph: {
+      title: t('gallery.title'),
+      description: t('gallery.description'),
+      url: `${baseUrl}/${locale}/gallery`,
+      type: 'website',
+      locale,
+      siteName: 'Apartmani Jovča',
+      images: [{
+        url: `${baseUrl}/images/background.jpg`,
+        alt: t('gallery.ogImageAlt')
+      }]
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: t('gallery.title'),
+      description: t('gallery.description'),
+      images: [`${baseUrl}/images/background.jpg`]
+    },
+    other: {
+      'application/ld+json': JSON.stringify(breadcrumbSchema)
+    }
+  }
+}
 
 async function getGalleryItems() {
   const supabase = createClient(supabaseUrl, supabaseAnonKey)
@@ -30,9 +117,9 @@ export default async function GalleryPage({
 
   return (
     <div className="min-h-screen pt-20 pb-12">
-      <div className="container mx-auto px-4">
-        <header className="mb-12 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 uppercase tracking-tight">
+      <div className="container mx-auto px-4 3xl:px-6 4xl:px-8">
+        <header className="mb-12 3xl:mb-16 4xl:mb-20 text-center">
+          <h1 className="text-4xl md:text-5xl 3xl:text-6xl 4xl:text-7xl font-bold mb-4 3xl:mb-6 uppercase tracking-tight">
             {lang === 'sr' ? 'Galerija' : 
              lang === 'en' ? 'Gallery' : 
              lang === 'de' ? 'Galerie' :

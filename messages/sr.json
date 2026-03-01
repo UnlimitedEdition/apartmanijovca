@@ -54,12 +54,47 @@
     "required": "Obavezno",
     "optional": "Opciono",
     "contactUs": "Kontaktirajte nas",
-    "guest": "Gost"
+    "guest": "Gost",
+    "home": "Početna"
+  },
+  "notFound": {
+    "title": "Stranica nije pronađena",
+    "description": "Stranica koju tražite ne postoji ili je premeštena. Ne brinite, pomoći ćemo vam da pronađete ono što tražite!",
+    "backHome": "Nazad na početnu",
+    "viewApartments": "Pogledaj apartmane",
+    "goBack": "Vrati se nazad",
+    "quickLinksTitle": "Gde želite da idete?",
+    "quickLinks": {
+      "home": "Početna",
+      "homeDesc": "Vratite se na početnu stranicu",
+      "apartments": "Apartmani",
+      "apartmentsDesc": "Pogledajte naše smeštajne jedinice",
+      "location": "Lokacija",
+      "locationDesc": "Saznajte gde se nalazimo",
+      "contact": "Kontakt",
+      "contactDesc": "Stupite u kontakt sa nama"
+    },
+    "popularPages": "Popularne stranice",
+    "pages": {
+      "home": "Početna",
+      "apartments": "Apartmani",
+      "gallery": "Galerija",
+      "prices": "Cene",
+      "location": "Lokacija",
+      "attractions": "Atrakcije",
+      "contact": "Kontakt",
+      "booking": "Rezervacija"
+    },
+    "needHelp": "Trebate pomoć? Kontaktirajte nas direktno:"
   },
   "home": {
     "title": "Dobrodošli u Apartmane Jovča",
     "description": "Uživajte u udobnom smeštaju u prelepom okruženju.",
     "subtitle": "Vaš savršeni odmor u srcu prirode",
+    "about": {
+      "title": "O nama – Dobrodošli kod Apartmana Jovča",
+      "content": "Naši apartmani se nalaze na obali prelepo Bovanskog jezera, skrivenog dragulja između tri planine – Bukovika, Ozrena i Rtnja. Jezero je dugačko oko 8 km, a u najširem delu široko 900 metara, okruženo šumama i netaknutom prirodom. Ovo mesto je poznato po ruži vetrova – blagim vazdušnim strujanjima koja osvežavaju i blagotvornodeluju na respiratorni i nervni sistem. Ovde ćete pronaći mir, zdravlje i tišinu koju retko gde možete osetiti. U blizini vas očekuje bogat izbor izleta: Soko Banja (15 km), etno-selo Vrmdža sa malim jezerom (6 km), ergela konja u selu Mozgovo, Akva park u Jagodini (60–70 km) i istorijski spomenici u Nišu – logor Crveni krst, Bubanj, Medijana i Čegar (55 km). Ljubitelji duhovnog mira mogu posetiti crkvu Svetog Romana i brojne manastire na svega 10–15 km odavde. Apartmani Jovča su pravi raj za kupanje, ribolov i vožnju čamcem, a okolna priroda stvara savršenu kulisu za nezaboravne trenutke. Kod nas ćete pronaći idealan spoj odmora, prirode i mogućnosti za istraživanje okoline."
+    },
     "hero": {
       "title": "Doživite udobnost i prirodu",
       "subtitle": "Rezervišite svoj boravak u modernim apartmanima",
@@ -600,6 +635,68 @@
         "title": "Kontakt za pitanja",
         "content": "Za sva pitanja o uslovima korišćenja i kućnom redu, kontaktirajte nas:"
       }
+    }
+  },
+  "seo": {
+    "home": {
+      "title": "Apartmani Jovča - Smeštaj na Bovanskom jezeru | Aleksinac, Srbija",
+      "description": "Rezervišite luksuzne apartmane na Bovanskom jezeru. Moderno opremljen smeštaj sa WiFi, parkingom i pogledom na jezero. Idealno za porodični odmor u prirodi.",
+      "ogImageAlt": "Apartmani Jovča - Pogled na Bovansko jezero"
+    },
+    "apartments": {
+      "title": "Naši Apartmani - Moderni Smeštaj na Bovanskom Jezeru",
+      "description": "Pregledajte naše moderno opremljene apartmane na Bovanskom jezeru. Različiti kapaciteti, svi sa WiFi, klimom i pogledom na jezero. Rezervišite odmah!",
+      "ogImageAlt": "Apartmani Jovča - Moderni smeštaj"
+    },
+    "apartmentDetail": {
+      "titleSuffix": "Apartmani Jovča",
+      "notFound": "Apartman nije pronađen"
+    },
+    "contact": {
+      "title": "Kontakt - Apartmani Jovča | Bovansko Jezero",
+      "description": "Kontaktirajte nas za rezervaciju apartmana na Bovanskom jezeru. Dostupni 24/7 putem telefona, email-a ili WhatsApp-a. Brz odgovor garantovan.",
+      "ogImageAlt": "Kontaktirajte Apartmane Jovča"
+    },
+    "location": {
+      "title": "Lokacija - Kako do Apartmana Jovča | Bovansko Jezero, Aleksinac",
+      "description": "Pronađite nas na Bovanskom jezeru kod Aleksinca. Detaljne uputstva za dolazak automobilom ili autobusom. Mapa i GPS koordinate dostupne.",
+      "ogImageAlt": "Lokacija Apartmana Jovča na Bovanskom jezeru"
+    },
+    "gallery": {
+      "title": "Galerija - Fotografije Apartmana i Bovanskog Jezera",
+      "description": "Pogledajte fotografije naših apartmana, enterijera, pogleda na Bovansko jezero i okoline. Uverite se u kvalitet našeg smeštaja.",
+      "ogImageAlt": "Galerija slika Apartmana Jovča"
+    },
+    "attractions": {
+      "title": "Atrakcije - Šta Posetiti oko Bovanskog Jezera",
+      "description": "Otkrijte atrakcije u okolini Bovanskog jezera: Soko Banja, tvrđava Sokolica, Niš, manastiri. Idealno za izlete i obilazak znamenitosti.",
+      "ogImageAlt": "Atrakcije oko Bovanskog jezera"
+    },
+    "prices": {
+      "title": "Cene - Apartmani Jovča | Najbolje Cene na Bovanskom Jezeru",
+      "description": "Transparentne cene apartmana na Bovanskom jezeru. Bez skrivenih troškova. Popusti za duži boravak. Proverite dostupnost i rezervišite odmah.",
+      "ogImageAlt": "Cenovnik Apartmana Jovča"
+    },
+    "privacy": {
+      "title": "Politika Privatnosti - Apartmani Jovča",
+      "description": "Pročitajte našu politiku privatnosti i saznajte kako štitimo vaše lične podatke u skladu sa zakonima Republike Srbije.",
+      "ogImageAlt": "Politika privatnosti"
+    },
+    "terms": {
+      "title": "Uslovi Korišćenja i Kućni Red - Apartmani Jovča",
+      "description": "Uslovi rezervacije, kućni red, politika otkazivanja i pravila ponašanja u Apartmanima Jovča na Bovanskom jezeru.",
+      "ogImageAlt": "Uslovi korišćenja"
+    },
+    "breadcrumbs": {
+      "home": "Početna",
+      "apartments": "Apartmani",
+      "contact": "Kontakt",
+      "location": "Lokacija",
+      "gallery": "Galerija",
+      "attractions": "Atrakcije",
+      "prices": "Cene",
+      "privacy": "Politika Privatnosti",
+      "terms": "Uslovi Korišćenja"
     }
   },
   "admin": {

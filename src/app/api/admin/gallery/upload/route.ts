@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { uploadImage } from '@/lib/cloudinary'
 
 export async function POST(request: NextRequest) {
   try {
@@ -9,38 +10,34 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Niste izabrali sliku' }, { status: 400 })
     }
 
-    const API_KEY = process.env.IMGBB_API_KEY
-    if (!API_KEY || API_KEY === 'your_imgbb_api_key_here') {
+    // Check Cloudinary configuration
+    if (!process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
       return NextResponse.json({ 
-        error: 'Sistem za otpremanje nije konfigurisan. Molimo unesite IMGBB_API_KEY u .env.local fajl.' 
+        error: 'Cloudinary nije konfigurisan. Proverite .env.local fajl.' 
       }, { status: 500 })
     }
 
-    // Prepare FormData for ImgBB
-    const imgbbFormData = new FormData()
-    imgbbFormData.append('image', image)
+    // Convert file to base64 for Cloudinary upload
+    const bytes = await image.arrayBuffer()
+    const buffer = Buffer.from(bytes)
+    const base64 = `data:${image.type};base64,${buffer.toString('base64')}`
 
-    const response = await fetch(`https://api.imgbb.com/1/upload?key=${API_KEY}`, {
-      method: 'POST',
-      body: imgbbFormData,
-    })
+    // Upload to Cloudinary
+    const result = await uploadImage(base64, 'apartmani-jovca/gallery')
 
-    if (!response.ok) {
-      const errorData = await response.json()
-      throw new Error(errorData.error?.message || 'Neuspešno otpremanje slike na ImgBB')
+    if (!result.success) {
+      throw new Error(result.error || 'Neuspešno otpremanje slike na Cloudinary')
     }
 
-    const result = await response.json()
-    
-    // Return the full data or just the URL
+    // Return the URL
     return NextResponse.json({ 
-      url: result.data.url,
-      delete_url: result.data.delete_url,
-      display_url: result.data.display_url
+      url: result.url,
+      publicId: result.publicId
     })
 
   } catch (err: unknown) {
     const error = err as Error
+    console.error('Gallery upload error:', error)
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 }

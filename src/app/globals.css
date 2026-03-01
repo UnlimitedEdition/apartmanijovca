@@ -4,6 +4,7 @@
 
 @layer base {
   :root {
+    color-scheme: light;
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
@@ -99,5 +100,20 @@
   .touch-target {
     min-height: 44px;
     min-width: 44px;
+  }
+}
+
+/* Ultra-wide responsive scaling utilities */
+@layer utilities {
+  @media (min-width: 2000px) {
+    .container {
+      max-width: 2400px !important;
+    }
+  }
+
+  @media (min-width: 3000px) {
+    .container {
+      max-width: 3000px !important;
+    }
   }
 }

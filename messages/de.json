@@ -54,12 +54,47 @@
     "required": "Erforderlich",
     "optional": "Optional",
     "guest": "Gast",
-    "contactUs": "Kontaktieren Sie uns"
+    "contactUs": "Kontaktieren Sie uns",
+    "home": "Startseite"
+  },
+  "notFound": {
+    "title": "Seite nicht gefunden",
+    "description": "Die gesuchte Seite existiert nicht oder wurde verschoben. Keine Sorge, wir helfen Ihnen, das Gesuchte zu finden!",
+    "backHome": "Zurück zur Startseite",
+    "viewApartments": "Wohnungen ansehen",
+    "goBack": "Zurück",
+    "quickLinksTitle": "Wohin möchten Sie gehen?",
+    "quickLinks": {
+      "home": "Startseite",
+      "homeDesc": "Zurück zur Startseite",
+      "apartments": "Wohnungen",
+      "apartmentsDesc": "Unsere Unterkünfte ansehen",
+      "location": "Standort",
+      "locationDesc": "Erfahren Sie, wo wir sind",
+      "contact": "Kontakt",
+      "contactDesc": "Kontaktieren Sie uns"
+    },
+    "popularPages": "Beliebte Seiten",
+    "pages": {
+      "home": "Startseite",
+      "apartments": "Wohnungen",
+      "gallery": "Galerie",
+      "prices": "Preise",
+      "location": "Standort",
+      "attractions": "Attraktionen",
+      "contact": "Kontakt",
+      "booking": "Buchung"
+    },
+    "needHelp": "Brauchen Sie Hilfe? Kontaktieren Sie uns direkt:"
   },
   "home": {
     "title": "Willkommen in den Apartments Jovča",
     "description": "Genießen Sie komfortable Unterkunft im Herzen der Natur.",
     "subtitle": "Ihr perfekter Urlaub im Herzen der Natur",
+    "about": {
+      "title": "Über uns – Willkommen in den Apartments Jovča",
+      "content": "Unsere Apartments befinden sich am Ufer des wunderschönen Bovan-Sees, einem versteckten Juwel zwischen drei Bergen – Bukovik, Ozren und Rtanj. Der See ist etwa 8 km lang und an seiner breitesten Stelle 900 Meter breit, umgeben von Wäldern und unberührter Natur. Dieser Ort ist bekannt für die 'Rose der Winde' – sanfte Luftströmungen, die erfrischen und sich wohltuend auf das Atem- und Nervensystem auswirken. Hier finden Sie Ruhe, Gesundheit und Stille, die Sie selten anderswo erleben können. In der Nähe erwartet Sie eine reiche Auswahl an Ausflügen: Soko Banja (15 km), das Ethno-Dorf Vrmdža mit einem kleinen See (6 km), ein Pferdegestüt im Dorf Mozgovo, ein Aquapark in Jagodina (60–70 km) und historische Denkmäler in Niš – das Lager Roter Kreuz, Bubanj, Mediana und Čegar (55 km). Liebhaber spiritueller Ruhe können die Kirche des Heiligen Roman und zahlreiche Klöster nur 10–15 km entfernt besuchen. Die Apartments Jovča sind ein wahres Paradies zum Schwimmen, Angeln und Bootfahren, und die umgebende Natur schafft die perfekte Kulisse für unvergessliche Momente. Bei uns finden Sie die ideale Kombination aus Entspannung, Natur und Möglichkeiten zur Erkundung der Umgebung."
+    },
     "trust": {
       "secure": "Sichere Buchung",
       "flexible": "Flexible Stornierung",
@@ -435,6 +470,104 @@
       "submit": "Bewertung absenden",
       "success": "Vielen Dank für Ihre Bewertung!",
       "error": "Fehler beim Senden der Bewertung. Bitte versuchen Sie es erneut."
+    }
+  },
+  "seo": {
+    "meta": {
+      "home": {
+        "title": "Apartments Jovča - Unterkunft am Bovan See | Aleksinac, Serbien",
+        "description": "Buchen Sie luxuriöse Ferienwohnungen am Bovan See. Moderne Unterkunft mit WLAN, Parkplatz und Seeblick. Perfekt für Familienurlaub in der Natur.",
+        "keywords": "Ferienwohnung Bovan See, Unterkunft Aleksinac, Apartments Jovča, Ferienhaus Bovan, Wohnung mieten Serbien, Urlaub am See"
+      },
+      "apartments": {
+        "title": "Unsere Apartments - Moderne Unterkunft am Bovan See",
+        "description": "Entdecken Sie unsere modernen Apartments am Bovan See. Verschiedene Kapazitäten, alle mit WLAN, Klimaanlage und Seeblick. Jetzt buchen!",
+        "keywords": "Bovan Apartments, Bovan See Unterkunft, Studio Apartment, Zwei-Zimmer-Wohnung, Familienwohnung"
+      },
+      "apartmentDetail": {
+        "titleTemplate": "{name} - Ferienwohnung am Bovan See | Apartments Jovča",
+        "descriptionTemplate": "Buchen Sie {name} am Bovan See. {capacity} Gäste, {beds}. Modern ausgestattet mit WLAN, Klimaanlage. Ab {price}€ pro Nacht.",
+        "keywords": "Bovan Apartment, {name}, Aleksinac Unterkunft, Ferienhaus See, Apartment Buchung"
+      },
+      "contact": {
+        "title": "Kontakt - Apartments Jovča | Bovan See",
+        "description": "Kontaktieren Sie uns für Apartment-Buchungen am Bovan See. 24/7 erreichbar per Telefon, E-Mail oder WhatsApp. Schnelle Antwort garantiert.",
+        "keywords": "Kontakt Apartments Jovča, Bovan Buchung, Apartment Telefon, Reservierung E-Mail"
+      },
+      "location": {
+        "title": "Lage - Anfahrt zu Apartments Jovča | Bovan See, Aleksinac",
+        "description": "Finden Sie uns am Bovan See bei Aleksinac. Detaillierte Anfahrtsbeschreibung mit Auto oder Bus. Karte und GPS-Koordinaten verfügbar.",
+        "keywords": "Bovan See Lage, Anfahrt Bovan See, Aleksinac Unterkunft, GPS Koordinaten, Wegbeschreibung"
+      },
+      "gallery": {
+        "title": "Galerie - Fotos der Apartments und des Bovan Sees",
+        "description": "Sehen Sie Fotos unserer Apartments, Innenräume, Bovan See Ausblicke und Umgebung. Überzeugen Sie sich von der Qualität unserer Unterkunft.",
+        "keywords": "Apartments Jovča Galerie, Bovan See Fotos, Apartment Bilder, Unterkunft Interieur"
+      },
+      "attractions": {
+        "title": "Sehenswürdigkeiten - Was man rund um den Bovan See besuchen kann",
+        "description": "Entdecken Sie Sehenswürdigkeiten rund um den Bovan See: Soko Banja, Festung Sokolica, Niš, Klöster. Perfekt für Ausflüge und Besichtigungen.",
+        "keywords": "Bovan Sehenswürdigkeiten, Soko Banja, Festung Sokolica, Niš Attraktionen, Aleksinac Ausflüge, Serbien Klöster"
+      },
+      "prices": {
+        "title": "Preise - Apartments Jovča | Beste Preise am Bovan See",
+        "description": "Transparente Apartment-Preise am Bovan See. Keine versteckten Gebühren. Rabatte für längere Aufenthalte. Verfügbarkeit prüfen und jetzt buchen.",
+        "keywords": "Bovan Apartment Preise, Unterkunft Tarife, Apartment Rabatte, Buchungspreis"
+      },
+      "privacy": {
+        "title": "Datenschutzerklärung - Apartments Jovča",
+        "description": "Lesen Sie unsere Datenschutzerklärung und erfahren Sie, wie wir Ihre persönlichen Daten gemäß serbischen Gesetzen schützen.",
+        "keywords": "Datenschutzerklärung, Datenschutz, DSGVO Serbien"
+      },
+      "terms": {
+        "title": "Nutzungsbedingungen & Hausordnung - Apartments Jovča",
+        "description": "Buchungsbedingungen, Hausordnung, Stornierungsbedingungen und Verhaltensregeln in den Apartments Jovča am Bovan See.",
+        "keywords": "Nutzungsbedingungen, Hausordnung, Stornierungsbedingungen, Apartment Regeln"
+      }
+    },
+    "breadcrumbs": {
+      "home": "Startseite",
+      "apartments": "Apartments",
+      "contact": "Kontakt",
+      "location": "Lage",
+      "gallery": "Galerie",
+      "attractions": "Sehenswürdigkeiten",
+      "prices": "Preise",
+      "privacy": "Datenschutz",
+      "terms": "Nutzungsbedingungen"
+    },
+    "altText": {
+      "apartmentImage": "{name} - Ferienwohnung am Bovan See",
+      "lakeView": "Bovan See Blick vom Apartment",
+      "interior": "Innenraum des Apartments {name}",
+      "exterior": "Außenansicht des Gebäudes Apartments Jovča",
+      "amenity": "{amenity} im Apartment",
+      "logo": "Apartments Jovča Logo - Unterkunft am Bovan See"
+    },
+    "faq": {
+      "title": "Häufig gestellte Fragen - Apartments Jovča",
+      "items": [
+        {
+          "question": "Wann ist der Check-in und Check-out?",
+          "answer": "Der Check-in ist ab 14:00 Uhr und der Check-out bis 10:00 Uhr möglich. Früher Check-in oder später Check-out kann auf Anfrage je nach Verfügbarkeit arrangiert werden."
+        },
+        {
+          "question": "Gibt es Parkplätze vor Ort?",
+          "answer": "Ja, wir bieten kostenlose Privatparkplätze für alle unsere Gäste direkt am Haus."
+        },
+        {
+          "question": "Wie schnell ist das WLAN?",
+          "answer": "Wir bieten Highspeed-Glasfaser-WLAN im gesamten Objekt, geeignet für Remote-Arbeit und Streaming von HD-Inhalten."
+        },
+        {
+          "question": "Sind Haustiere erlaubt?",
+          "answer": "Um den Komfort aller Gäste zu gewährleisten, sind Haustiere generell nicht erlaubt. Bitte kontaktieren Sie uns jedoch für besondere Anfragen."
+        },
+        {
+          "question": "Ist der Strand zugänglich?",
+          "answer": "Ja, unsere Gäste haben privaten Zugang zum Seeufer, nur 2 Gehminuten von den Apartments entfernt."
+        }
+      ]
     }
   },
   "admin": {

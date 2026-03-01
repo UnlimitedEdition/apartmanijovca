@@ -1,13 +1,100 @@
+import { Metadata } from 'next'
 import { useTranslations } from 'next-intl'
+import { getTranslations } from 'next-intl/server'
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card'
+import { Locale } from '@/lib/types/database'
+import { getBaseUrl } from '@/lib/seo/config'
+import { generateMetaTags } from '@/lib/seo/meta-generator'
+import { generateHreflangTags } from '@/lib/seo/hreflang'
+import { generateOpenGraphTags, generateTwitterCardTags } from '@/lib/seo/social-media'
+import { generateBreadcrumbSchema } from '@/lib/seo/structured-data'
+import { getKeywordsString } from '@/lib/seo/keywords'
+
+interface PageProps {
+  params: { lang: string }
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const locale = params.lang as Locale
+  const t = await getTranslations({ locale, namespace: 'seo' })
+  const baseUrl = getBaseUrl()
+  
+  const metaTags = generateMetaTags({
+    title: t('privacy.title'),
+    description: t('privacy.description'),
+    keywords: getKeywordsString('privacy', locale),
+    path: `/${locale}/privacy`,
+    locale,
+    type: 'website'
+  })
+
+  const hreflangTags = generateHreflangTags({
+    path: '/privacy',
+    locale
+  })
+
+  const ogTags = generateOpenGraphTags({
+    title: t('privacy.title'),
+    description: t('privacy.description'),
+    url: `${baseUrl}/${locale}/privacy`,
+    type: 'website',
+    locale,
+    siteName: 'Apartmani Jovča',
+    images: [{
+      url: `${baseUrl}/images/background.jpg`,
+      width: 1200,
+      height: 630,
+      alt: t('privacy.ogImageAlt')
+    }]
+  })
+
+  const breadcrumbSchema = generateBreadcrumbSchema('/privacy', locale)
+
+  return {
+    title: metaTags.title,
+    description: metaTags.description,
+    keywords: metaTags.keywords,
+    robots: metaTags.robots,
+    alternates: {
+      canonical: metaTags.canonical,
+      languages: hreflangTags.reduce((acc, tag) => {
+        if (tag.hreflang !== 'x-default') {
+          acc[tag.hreflang] = tag.href
+        }
+        return acc
+      }, {} as Record<string, string>)
+    },
+    openGraph: {
+      title: t('privacy.title'),
+      description: t('privacy.description'),
+      url: `${baseUrl}/${locale}/privacy`,
+      type: 'website',
+      locale,
+      siteName: 'Apartmani Jovča',
+      images: [{
+        url: `${baseUrl}/images/background.jpg`,
+        alt: t('privacy.ogImageAlt')
+      }]
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: t('privacy.title'),
+      description: t('privacy.description'),
+      images: [`${baseUrl}/images/background.jpg`]
+    },
+    other: {
+      'application/ld+json': JSON.stringify(breadcrumbSchema)
+    }
+  }
+}
 
 export default function PrivacyPage() {
   const t = useTranslations('legal.privacy')
 
   return (
-    <div className="container mx-auto px-4 py-16 max-w-5xl">
-      <div className="mb-12">
-        <h1 className="text-5xl md:text-6xl font-black tracking-tighter mb-4">{t('title')}</h1>
+    <div className="container mx-auto px-4 py-16 3xl:py-20 4xl:py-24 max-w-5xl 3xl:max-w-6xl 4xl:max-w-7xl">
+      <div className="mb-12 3xl:mb-16 4xl:mb-20">
+        <h1 className="text-5xl md:text-6xl 3xl:text-7xl 4xl:text-8xl font-black tracking-tighter mb-4 3xl:mb-6">{t('title')}</h1>
         <p className="text-xl text-muted-foreground">{t('intro')}</p>
         <p className="text-sm text-muted-foreground mt-4">{t('lastUpdated')}</p>
       </div>
@@ -103,9 +190,9 @@ export default function PrivacyPage() {
           <h3 className="font-black text-xl mb-4">{t('contact.title')}</h3>
           <p className="leading-relaxed mb-4">{t('contact.content')}</p>
           <div className="space-y-2">
-            <p className="font-bold">Email: info@apartmani-jovca.rs</p>
-            <p className="font-bold">Telefon: +381 64 123 4567</p>
-            <p className="font-bold">WhatsApp: +381 64 123 4567</p>
+            <p className="font-bold">Email: apartmanijovca@gmail.com</p>
+            <p className="font-bold">Telefon: +381 65 237 8080</p>
+            <p className="font-bold">WhatsApp: +381 65 237 8080</p>
           </div>
         </div>
       </div>

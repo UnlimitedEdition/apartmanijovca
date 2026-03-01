@@ -54,12 +54,47 @@
     "required": "Obbligatorio",
     "optional": "Opzionale",
     "guest": "Ospite",
-    "contactUs": "Contattaci"
+    "contactUs": "Contattaci",
+    "home": "Home"
+  },
+  "notFound": {
+    "title": "Pagina non trovata",
+    "description": "La pagina che stai cercando non esiste o è stata spostata. Non preoccuparti, ti aiuteremo a trovare quello che cerchi!",
+    "backHome": "Torna alla Home",
+    "viewApartments": "Visualizza Appartamenti",
+    "goBack": "Torna Indietro",
+    "quickLinksTitle": "Dove vorresti andare?",
+    "quickLinks": {
+      "home": "Home",
+      "homeDesc": "Torna alla home page",
+      "apartments": "Appartamenti",
+      "apartmentsDesc": "Visualizza le nostre unità abitative",
+      "location": "Posizione",
+      "locationDesc": "Scopri dove siamo",
+      "contact": "Contatto",
+      "contactDesc": "Mettiti in contatto con noi"
+    },
+    "popularPages": "Pagine Popolari",
+    "pages": {
+      "home": "Home",
+      "apartments": "Appartamenti",
+      "gallery": "Galleria",
+      "prices": "Prezzi",
+      "location": "Posizione",
+      "attractions": "Attrazioni",
+      "contact": "Contatto",
+      "booking": "Prenotazione"
+    },
+    "needHelp": "Hai bisogno di aiuto? Contattaci direttamente:"
   },
   "home": {
     "title": "Benvenuti negli Appartamenti Jovča",
     "description": "Goditi un soggiorno confortevole nel cuore della natura.",
     "subtitle": "La tua perfetta fuga nel cuore della natura",
+    "about": {
+      "title": "Chi siamo – Benvenuti negli Appartamenti Jovča",
+      "content": "I nostri appartamenti si trovano sulla riva del bellissimo Lago Bovan, una gemma nascosta tra tre montagne – Bukovik, Ozren e Rtanj. Il lago è lungo circa 8 km e largo 900 metri nel punto più ampio, circondato da foreste e natura incontaminata. Questo luogo è noto per la 'rosa dei venti' – correnti d'aria delicate che rinfrescano e hanno un effetto benefico sui sistemi respiratorio e nervoso. Qui troverete pace, salute e tranquillità che raramente potete sperimentare altrove. Nelle vicinanze vi aspetta una ricca selezione di escursioni: Soko Banja (15 km), il villaggio etnico di Vrmdža con un piccolo lago (6 km), un allevamento di cavalli nel villaggio di Mozgovo, un Aqua Park a Jagodina (60–70 km) e monumenti storici a Niš – il campo della Croce Rossa, Bubanj, Mediana e Čegar (55 km). Gli amanti della pace spirituale possono visitare la Chiesa di San Romano e numerosi monasteri a soli 10–15 km di distanza. Gli Appartamenti Jovča sono un vero paradiso per nuotare, pescare e andare in barca, e la natura circostante crea lo sfondo perfetto per momenti indimenticabili. Con noi troverete la combinazione ideale di relax, natura e opportunità per esplorare la zona."
+    },
     "trust": {
       "secure": "Prenotazione Sicura",
       "flexible": "Cancellazione Flessibile",
@@ -435,6 +470,104 @@
       "submit": "Invia recensione",
       "success": "Grazie per la tua recensione!",
       "error": "Errore nell'invio della recensione. Riprova."
+    }
+  },
+  "seo": {
+    "meta": {
+      "home": {
+        "title": "Appartamenti Jovča - Alloggio al Lago Bovan | Aleksinac, Serbia",
+        "description": "Prenota appartamenti di lusso al Lago Bovan. Alloggio moderno con WiFi, parcheggio e vista lago. Perfetto per vacanze in famiglia nella natura.",
+        "keywords": "appartamenti Lago Bovan, alloggio Aleksinac, appartamenti Jovča, casa vacanze Bovan, affitto appartamenti Serbia, vacanza al lago"
+      },
+      "apartments": {
+        "title": "I Nostri Appartamenti - Alloggio Moderno al Lago Bovan",
+        "description": "Scopri i nostri appartamenti moderni al Lago Bovan. Varie capacità, tutti con WiFi, aria condizionata e vista lago. Prenota ora!",
+        "keywords": "appartamenti Bovan, alloggio Lago Bovan, monolocale, bilocale, appartamento familiare"
+      },
+      "apartmentDetail": {
+        "titleTemplate": "{name} - Appartamento al Lago Bovan | Appartamenti Jovča",
+        "descriptionTemplate": "Prenota {name} al Lago Bovan. {capacity} ospiti, {beds}. Modernamente attrezzato con WiFi, aria condizionata. Da {price}€ a notte.",
+        "keywords": "appartamento Bovan, {name}, alloggio Aleksinac, casa vacanze lago, prenotazione appartamento"
+      },
+      "contact": {
+        "title": "Contatto - Appartamenti Jovča | Lago Bovan",
+        "description": "Contattaci per prenotare appartamenti al Lago Bovan. Disponibili 24/7 via telefono, email o WhatsApp. Risposta rapida garantita.",
+        "keywords": "contatto Appartamenti Jovča, prenotazione Bovan, telefono appartamenti, email prenotazione"
+      },
+      "location": {
+        "title": "Posizione - Come Raggiungere Appartamenti Jovča | Lago Bovan, Aleksinac",
+        "description": "Trovaci al Lago Bovan vicino ad Aleksinac. Indicazioni dettagliate in auto o autobus. Mappa e coordinate GPS disponibili.",
+        "keywords": "posizione Lago Bovan, come raggiungere Lago Bovan, alloggio Aleksinac, coordinate GPS, indicazioni stradali"
+      },
+      "gallery": {
+        "title": "Galleria - Foto degli Appartamenti e del Lago Bovan",
+        "description": "Guarda le foto dei nostri appartamenti, interni, viste sul Lago Bovan e dintorni. Scopri la qualità del nostro alloggio.",
+        "keywords": "galleria Appartamenti Jovča, foto Lago Bovan, immagini appartamenti, interni alloggio"
+      },
+      "attractions": {
+        "title": "Attrazioni - Cosa Visitare Intorno al Lago Bovan",
+        "description": "Scopri le attrazioni intorno al Lago Bovan: Soko Banja, Fortezza Sokolica, Niš, monasteri. Perfetto per escursioni e visite turistiche.",
+        "keywords": "attrazioni Bovan, Soko Banja, Fortezza Sokolica, attrazioni Niš, escursioni Aleksinac, monasteri Serbia"
+      },
+      "prices": {
+        "title": "Prezzi - Appartamenti Jovča | Migliori Tariffe al Lago Bovan",
+        "description": "Prezzi trasparenti per appartamenti al Lago Bovan. Nessun costo nascosto. Sconti per soggiorni più lunghi. Verifica disponibilità e prenota ora.",
+        "keywords": "prezzi appartamenti Bovan, tariffe alloggio, sconti appartamenti, prezzo prenotazione"
+      },
+      "privacy": {
+        "title": "Informativa sulla Privacy - Appartamenti Jovča",
+        "description": "Leggi la nostra informativa sulla privacy e scopri come proteggiamo i tuoi dati personali in conformità con le leggi serbe.",
+        "keywords": "informativa privacy, protezione dati, GDPR Serbia"
+      },
+      "terms": {
+        "title": "Termini di Servizio e Regolamento - Appartamenti Jovča",
+        "description": "Termini di prenotazione, regolamento interno, politica di cancellazione e regole di comportamento negli Appartamenti Jovča al Lago Bovan.",
+        "keywords": "termini di servizio, regolamento interno, politica cancellazione, regole appartamento"
+      }
+    },
+    "breadcrumbs": {
+      "home": "Home",
+      "apartments": "Appartamenti",
+      "contact": "Contatto",
+      "location": "Posizione",
+      "gallery": "Galleria",
+      "attractions": "Attrazioni",
+      "prices": "Prezzi",
+      "privacy": "Privacy",
+      "terms": "Termini di Servizio"
+    },
+    "altText": {
+      "apartmentImage": "{name} - Appartamento al Lago Bovan",
+      "lakeView": "Vista sul Lago Bovan dall'appartamento",
+      "interior": "Interni dell'appartamento {name}",
+      "exterior": "Esterno dell'edificio Appartamenti Jovča",
+      "amenity": "{amenity} nell'appartamento",
+      "logo": "Logo Appartamenti Jovča - Alloggio al Lago Bovan"
+    },
+    "faq": {
+      "title": "Domande Frequenti - Appartamenti Jovča",
+      "items": [
+        {
+          "question": "Quali sono gli orari di check-in e check-out?",
+          "answer": "Il check-in è disponibile dalle 14:00 e il check-out entro le 10:00. Check-in anticipato o check-out posticipato possono essere organizzati su richiesta in base alla disponibilità."
+        },
+        {
+          "question": "C'è un parcheggio disponibile?",
+          "answer": "Sì, offriamo un parcheggio privato gratuito per tutti i nostri ospiti all'interno della proprietà."
+        },
+        {
+          "question": "Quanto è veloce il WiFi?",
+          "answer": "Offriamo WiFi in fibra ottica ad alta velocità in tutta la proprietà, adatto per lavoro remoto e streaming di contenuti HD."
+        },
+        {
+          "question": "Sono ammessi animali domestici?",
+          "answer": "Per garantire il comfort di tutti gli ospiti, gli animali domestici generalmente non sono ammessi. Tuttavia, contattateci per richieste speciali."
+        },
+        {
+          "question": "La spiaggia è accessibile?",
+          "answer": "Sì, i nostri ospiti hanno accesso privato alla riva del lago, a soli 2 minuti a piedi dagli appartamenti."
+        }
+      ]
     }
   },
   "admin": {

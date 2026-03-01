@@ -88,7 +88,7 @@ export async function GET(request: NextRequest) {
         conversionRate
       },
       chartData: Object.entries(viewsByDate).map(([date, count]) => ({ date, count })).sort((a,b) => a.date.localeCompare(b.date)),
-      topPages: Object.entries(pages).map(([name, count]) => ({ name, count })).sort((a,b) => b.count - a.count).slice(0, 10),
+      topPages: Object.entries(pages).map(([name, count]) => ({ name, count })).sort((a,b) => b.count - a.count),
       devices: Object.entries(devices).map(([name, value]) => ({ name, value })),
       countries: Object.entries(countries).map(([name, count]) => ({ name, count })).sort((a,b) => b.count - a.count).slice(0, 5)
     })

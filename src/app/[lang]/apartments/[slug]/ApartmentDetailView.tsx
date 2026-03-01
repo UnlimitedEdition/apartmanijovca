@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { useTranslations } from 'next-intl'
 import { Button } from '../../components/ui/button'
 import ApartmentMap from '@/components/apartments/ApartmentMap'
+import Breadcrumb from '@/components/Breadcrumb'
 import { 
   Users, 
   Bed, 
@@ -98,8 +99,17 @@ interface Props {
 
 export default function ApartmentDetailView({ apartment, locale }: Props) {
   const t = useTranslations('apartments.detail')
+  const commonT = useTranslations('common')
+  const apartmentsT = useTranslations('apartments')
   const [selectedImage, setSelectedImage] = useState(0)
   const [showGallery, setShowGallery] = useState(false)
+
+  // Breadcrumb items
+  const breadcrumbItems = [
+    { label: commonT('home'), href: `/${locale}` },
+    { label: apartmentsT('title'), href: `/${locale}/apartments` },
+    { label: apartment.name, current: true }
+  ]
 
   // Build features from database data
   const features = [
@@ -171,13 +181,7 @@ export default function ApartmentDetailView({ apartment, locale }: Props) {
       <div className="bg-white">
         <div className="container mx-auto px-4 py-6">
           {/* Breadcrumb */}
-          <div className="flex items-center gap-2 text-sm text-gray-600 mb-4">
-            <Link href={`/${locale}`} className="hover:text-blue-600">{t('breadcrumb.home')}</Link>
-            <span>/</span>
-            <Link href={`/${locale}/apartments`} className="hover:text-blue-600">{t('breadcrumb.apartments')}</Link>
-            <span>/</span>
-            <span className="text-gray-900 font-medium">{apartment.name}</span>
-          </div>
+          <Breadcrumb items={breadcrumbItems} />
 
           {/* Title */}
           <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-2">{apartment.name}</h1>
@@ -199,7 +203,7 @@ export default function ApartmentDetailView({ apartment, locale }: Props) {
               onClick={() => setShowGallery(true)}
             >
               <Image
-                src={apartment.images[0] || '/placeholder-apartment.jpg'}
+                src={apartment.images[0] || 'https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=800&q=80'}
                 alt={apartment.name}
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"

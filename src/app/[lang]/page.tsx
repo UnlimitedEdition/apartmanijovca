@@ -6,6 +6,23 @@ import { supabase } from '@/lib/supabase'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Locale } from '@/lib/types/database'
+import { getBaseUrl } from '@/lib/seo/config'
+import { generateMetaTags } from '@/lib/seo/meta-generator'
+import { generateHreflangTags } from '@/lib/seo/hreflang'
+import { generateOpenGraphTags, generateTwitterCardTags } from '@/lib/seo/social-media'
+import { 
+  generateLocalBusinessSchema, 
+  generateOrganizationSchema,
+  generateFAQSchema 
+} from '@/lib/seo/structured-data'
+import { getKeywordsString } from '@/lib/seo/keywords'
+import { 
+  convertOpenGraphToMetadata, 
+  convertTwitterToMetadata, 
+  convertHreflangToMetadata 
+} from '@/lib/seo/metadata-adapter'
+import { generateApartmentImageAlt, generateAltText } from '@/lib/seo/alt-text'
+import LazyImage from '@/components/LazyImage'
 
 type PageProps = {
   params: { lang: string }
@@ -23,29 +40,87 @@ type PageProps = {
 export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const t = await getTranslations({ locale: params.lang, namespace: 'home' })
-  let content = null
+  const locale = params.lang as Locale
+  const t = await getTranslations({ locale, namespace: 'seo' })
+  const baseUrl = getBaseUrl()
   
-  if (supabase) {
-    const { data } = await supabase
-      .from('content')
-      .select('data')
-      .eq('lang', params.lang)
-      .eq('section', 'home')
-      .single()
-    content = data
-  }
+  // Generate meta tags
+  const metaTags = generateMetaTags({
+    title: t('home.title'),
+    description: t('home.description'),
+    keywords: getKeywordsString('home', locale),
+    path: `/${locale}`,
+    locale,
+    type: 'website'
+  })
 
-  const homeData = content?.data || {}
+  // Generate hreflang tags
+  const hreflangTags = generateHreflangTags({
+    path: '/',
+    locale
+  })
+
+  // Generate Open Graph tags
+  const ogTags = generateOpenGraphTags({
+    title: t('home.title'),
+    description: t('home.description'),
+    url: `${baseUrl}/${locale}`,
+    type: 'website',
+    locale,
+    siteName: 'Apartmani Jovča',
+    images: [{
+      url: `${baseUrl}/images/background.jpg`,
+      width: 1200,
+      height: 630,
+      alt: t('home.ogImageAlt')
+    }]
+  })
+
+  // Generate Twitter Card tags
+  const twitterTags = generateTwitterCardTags({
+    title: t('home.title'),
+    description: t('home.description'),
+    url: `${baseUrl}/${locale}`,
+    locale,
+    images: [{
+      url: `${baseUrl}/images/background.jpg`,
+      alt: t('home.ogImageAlt')
+    }]
+  })
+
+  // Generate structured data
+  const localBusinessSchema = generateLocalBusinessSchema(locale)
+  const organizationSchema = generateOrganizationSchema()
+  
+  // Generate FAQ schema if FAQs exist
+  const faqTranslations = await getTranslations({ locale, namespace: 'faq' })
+  const faqs = [
+    { question: faqTranslations('q1'), answer: faqTranslations('a1') },
+    { question: faqTranslations('q2'), answer: faqTranslations('a2') },
+    { question: faqTranslations('q3'), answer: faqTranslations('a3') },
+    { question: faqTranslations('q4'), answer: faqTranslations('a4') },
+    { question: faqTranslations('q5'), answer: faqTranslations('a5') }
+  ]
+  const faqSchema = generateFAQSchema(faqs, locale)
 
   return {
-    title: homeData.title || t('title'),
-    description: homeData.description || t('subtitle'),
-    openGraph: {
-      title: homeData.title || t('title'),
-      description: homeData.description || t('subtitle'),
-      type: 'website',
+    title: metaTags.title,
+    description: metaTags.description,
+    keywords: getKeywordsString('home', locale).split(', '),
+    robots: metaTags.robots,
+    alternates: {
+      canonical: metaTags.canonical,
+      languages: convertHreflangToMetadata(hreflangTags)
     },
+    openGraph: convertOpenGraphToMetadata(ogTags),
+    twitter: convertTwitterToMetadata(twitterTags),
+    other: {
+      'application/ld+json': JSON.stringify([
+        localBusinessSchema,
+        organizationSchema,
+        faqSchema
+      ])
+    }
   }
 }
 
@@ -119,47 +194,49 @@ export default async function HomePage({ params }: PageProps) {
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
       <section className="relative h-[80vh] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-black/40 z-10" />
+        <div className="absolute inset-0 bg-black/20 z-10" />
         <div className="absolute inset-0">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img 
-            src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1600&q=80" 
-            alt={homeData.title || t('title')} 
+            src="/images/background.jpg" 
+            alt={homeData.title || t('title')}
+            fetchPriority="high"
+            decoding="sync"
             className="w-full h-full object-cover"
           />
         </div>
         <div className="container relative z-20 text-center text-white px-4">
-          <h1 className="text-4xl md:text-7xl font-bold mb-6 tracking-tight drop-shadow-lg">
+          <h1 className="text-4xl md:text-7xl 3xl:text-8xl 4xl:text-9xl font-bold mb-6 tracking-tight drop-shadow-lg">
             {homeData.title || t('title')}
           </h1>
-          <p className="text-xl md:text-3xl mb-10 max-w-3xl mx-auto font-medium drop-shadow-md">
+          <p className="text-xl md:text-3xl 3xl:text-4xl 4xl:text-5xl mb-10 max-w-3xl 3xl:max-w-5xl 4xl:max-w-7xl mx-auto font-medium drop-shadow-md">
             {homeData.subtitle || t('subtitle')}
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <div className="flex flex-col sm:flex-row gap-4 3xl:gap-6 4xl:gap-8 justify-center items-center">
             <a
               href={`https://wa.me/381652378080?text=${encodeURIComponent('Zdravo! Interesuje me smeštaj u Apartmanima Jovča.')}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full sm:w-auto inline-flex items-center justify-center bg-[#25D366] hover:bg-[#22c35e] text-white font-bold py-4 px-10 rounded-full text-xl transition-all hover:scale-105 shadow-xl"
+              className="w-full sm:w-auto inline-flex items-center justify-center bg-[#25D366] hover:bg-[#22c35e] text-white font-bold py-4 px-10 3xl:py-6 3xl:px-14 4xl:py-8 4xl:px-16 rounded-full text-xl 3xl:text-2xl 4xl:text-3xl transition-all hover:scale-105 shadow-xl"
             >
               <span className="mr-2">WhatsApp</span>
-              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+              <svg className="w-6 h-6 3xl:w-8 3xl:h-8 4xl:w-10 4xl:h-10" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.742.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.465 3.488"/>
               </svg>
             </a>
 
             <a
               href="viber://chat?number=%2B381652378080"
-              className="w-full sm:w-auto inline-flex items-center justify-center bg-[#7360f2] hover:bg-[#6251d1] text-white font-bold py-4 px-10 rounded-full text-xl transition-all hover:scale-105 shadow-xl"
+              className="w-full sm:w-auto inline-flex items-center justify-center bg-[#7360f2] hover:bg-[#6251d1] text-white font-bold py-4 px-10 3xl:py-6 3xl:px-14 4xl:py-8 4xl:px-16 rounded-full text-xl 3xl:text-2xl 4xl:text-3xl transition-all hover:scale-105 shadow-xl"
             >
               <span className="mr-2">Viber</span>
-              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M19.387 13.985s.013.01.03.01c.42-.053.864.032 1.258.21.75.334 1.15.826 1.154 1.41.006.91-.77 1.838-1.89 2.247-1.12.41-2.45.244-3.41-.453l-.11-.08c-2.43 1.1-6.15-1.56-6.15-1.56s-2.66-3.72-1.56-6.15l.08-.11c.7-1 .87-2.3.46-3.42-.42-1.13-1.34-1.9-2.25-1.9-.59 0-1.08.4-1.42 1.16-.18.4-.264.84-.21 1.26a.04.04 0 0 1 .01.03c.53 4.29 4.29 8.05 8.58 8.58zm3.623-1.905c-.01-4.704-3.824-8.516-8.528-8.528a.5.5 0 1 0-.004 1c4.152.01 7.525 3.38 7.532 7.532a.5.5 0 1 0 1-.004zm-2.002-.002c-.007-3.6-2.924-6.517-6.525-6.524a.5.5 0 1 0-.004 1c3.052.01 5.518 2.477 5.53 5.53a.5.5 0 1 0 1-.006zm-1.998.002c-.004-2.493-2.022-4.512-4.52-4.516a.5.5 0 1 0-.002 1c1.933.004 3.513 1.583 3.522 3.52a.5.5 0 1 0 1-.004z"/>
+              <svg className="w-6 h-6 3xl:w-8 3xl:h-8 4xl:w-10 4xl:h-10" viewBox="0 0 512 512" fill="currentColor">
+                <path d="M444 49.9C431.3 38.2 379.9.9 265.3.4c0 0-135.1-8.1-200.9 52.3C27.8 89.3 14.9 143 13.5 209.5c-1.4 66.5-3.1 191.1 117 224.9h.1l-.1 51.6s-.8 20.9 13 25.1c16.6 5.2 26.4-10.7 42.3-27.8 8.7-9.4 20.7-23.2 29.8-33.7 82.2 6.9 145.3-8.9 152.5-11.2 16.6-5.4 110.5-17.4 125.7-142 15.8-128.6-7.6-209.8-49.8-246.5zM457.9 287c-12.9 104-89 110.6-103 115.1-6 1.9-61.5 15.7-131.2 11.2 0 0-52 62.7-68.2 79-5.3 5.3-11.1 4.8-11-5.7 0-6.9.4-85.7.4-85.7-.1 0-.1 0 0 0-101.8-28.2-95.8-134.3-94.7-189.8 1.1-55.5 11.6-101 42.6-131.6 55.7-50.5 170.4-43 170.4-43 96.9.4 143.3 29.6 154.1 39.4 35.7 30.6 53.9 103.8 40.6 211.1zm-139-80.8c.4 8.6-12.5 9.2-12.9.6-1.1-22-11.4-32.7-32.6-33.9-8.6-.5-7.8-13.4.7-12.9 27.9 1.5 43.4 17.5 44.8 46.2zm20.3 11.3c1-42.4-25.5-75.6-75.8-79.3-8.5-.6-7.6-13.5.9-12.9 58 4.2 88.9 44.1 87.8 92.5-.1 8.6-13.1 8.2-12.9-.3zm47 13.4c.1 8.6-12.9 8.7-12.9.1-.6-81.5-54.9-125.9-120.8-126.4-8.5-.1-8.5-12.9 0-12.9 73.7.5 133 51.4 133.7 139.2zM374.9 329v.2c-10.8 19-31 40-51.8 33.3l-.2-.3c-21.1-5.9-70.8-31.5-102.2-56.5-16.2-12.8-31-27.9-42.4-42.4-10.3-12.9-20.7-28.2-30.8-46.6-21.3-38.5-26-55.7-26-55.7-6.7-20.8 14.2-41 33.3-51.8h.2c9.2-4.8 18-3.2 23.9 3.9 0 0 12.4 14.8 17.7 22.1 5 6.8 11.7 17.7 15.2 23.8 6.1 10.9 2.3 22-3.7 26.6l-12 9.6c-6.1 4.9-5.3 14-5.3 14s17.8 67.3 84.3 84.3c0 0 9.1.8 14-5.3l9.6-12c4.6-6 15.7-9.8 26.6-3.7 14.7 8.3 33.4 21.2 45.8 32.9 7 5.7 8.6 14.4 3.8 23.6z"/>
               </svg>
             </a>
 
             <Link href={`/${params.lang}/booking`}>
-              <Button size="lg" className="w-full sm:w-auto bg-white/10 hover:bg-white/20 text-white backdrop-blur border-white/20 font-bold py-7 px-10 rounded-full text-xl shadow-xl">
+              <Button size="lg" className="w-full sm:w-auto bg-white/10 hover:bg-white/20 text-white backdrop-blur border-white/20 font-bold py-7 px-10 3xl:py-9 3xl:px-14 4xl:py-11 4xl:px-16 rounded-full text-xl 3xl:text-2xl 4xl:text-3xl shadow-xl">
                 {t('hero.book')}
               </Button>
             </Link>
@@ -188,13 +265,27 @@ export default async function HomePage({ params }: PageProps) {
         </div>
       </section>
 
+      {/* About Us Section */}
+      <section className="py-20 bg-background">
+        <div className="container mx-auto px-4 max-w-6xl 3xl:max-w-7xl 4xl:max-w-[90rem]">
+          <div className="text-center mb-12 3xl:mb-16 4xl:mb-20">
+            <h2 className="text-3xl md:text-5xl 3xl:text-6xl 4xl:text-7xl font-bold mb-6 3xl:mb-8 text-foreground">{t('about.title')}</h2>
+          </div>
+          <div className="prose prose-lg 3xl:prose-xl 4xl:prose-2xl max-w-none text-muted-foreground leading-relaxed">
+            <p className="text-base md:text-lg 3xl:text-xl 4xl:text-2xl text-center">
+              {t('about.content')}
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Featured Apartments */}
       <section className="py-20 bg-background">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-end mb-12">
             <div>
-              <h2 className="text-3xl md:text-5xl font-bold mb-4 text-foreground">{t('featured.title')}</h2>
-              <p className="text-xl text-muted-foreground">{t('featured.subtitle')}</p>
+              <h2 className="text-3xl md:text-5xl 3xl:text-6xl 4xl:text-7xl font-bold mb-4 text-foreground">{t('featured.title')}</h2>
+              <p className="text-xl 3xl:text-2xl 4xl:text-3xl text-muted-foreground">{t('featured.subtitle')}</p>
             </div>
             <Link href={`/${params.lang}/apartments`}>
               <Button variant="outline" className="hidden md:flex gap-2 rounded-full px-6">
@@ -203,7 +294,7 @@ export default async function HomePage({ params }: PageProps) {
             </Link>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 3xl:grid-cols-4 gap-10 3xl:gap-12 4xl:gap-16">
             {apartments && Array.isArray(apartments) && apartments.map((apt) => {
               // Get first image from database or use fallback
               const firstImage = Array.isArray(apt.images) && apt.images.length > 0 
@@ -217,10 +308,9 @@ export default async function HomePage({ params }: PageProps) {
                     <div className="absolute top-4 left-4 z-10 bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-bold shadow-sm">
                       {t('featured.badge')}
                     </div>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img 
-                      src={firstImage} 
-                      alt={apt.name} 
+                    <LazyImage
+                      src={firstImage}
+                      alt={generateApartmentImageAlt(apt.name, params.lang as Locale)}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     />
                     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
@@ -257,8 +347,8 @@ export default async function HomePage({ params }: PageProps) {
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row gap-16 items-center">
             <div className="flex-1">
-              <h2 className="text-3xl md:text-5xl font-bold mb-6 text-foreground">{t('features.title')}</h2>
-              <p className="text-xl text-muted-foreground mb-10 leading-relaxed">
+              <h2 className="text-3xl md:text-5xl 3xl:text-6xl 4xl:text-7xl font-bold mb-6 text-foreground">{t('features.title')}</h2>
+              <p className="text-xl 3xl:text-2xl 4xl:text-3xl text-muted-foreground mb-10 leading-relaxed">
                 {t('features.description')}
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -281,10 +371,9 @@ export default async function HomePage({ params }: PageProps) {
             </div>
             <div className="flex-1 relative">
               <div className="aspect-square bg-muted rounded-3xl overflow-hidden shadow-2xl skew-y-3">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img 
-                  src="https://i.ibb.co/xS8Z2xmn/DJI-0150.avif?auto=format&fit=crop&w=1200&q=80" 
-                  alt={t('features.title')} 
+                <LazyImage
+                  src="https://i.ibb.co/xS8Z2xmn/DJI-0150.avif?auto=format&fit=crop&w=1200&q=80"
+                  alt={generateAltText('', 'location', params.lang as Locale, 'Bovansko jezero')}
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -306,7 +395,7 @@ export default async function HomePage({ params }: PageProps) {
       {/* FAQ Section */}
       <section className="py-20 bg-background">
         <div className="container mx-auto px-4 md:px-16">
-          <h2 className="text-3xl md:text-5xl font-bold mb-12 text-center text-foreground">{t('faq.title')}</h2>
+          <h2 className="text-3xl md:text-5xl 3xl:text-6xl 4xl:text-7xl font-bold mb-12 text-center text-foreground">{t('faq.title')}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
             <div className="space-y-6">
               {[
@@ -347,7 +436,7 @@ export default async function HomePage({ params }: PageProps) {
       {Array.isArray(reviews) && reviews.length > 0 && (
         <section className="py-20 bg-background border-y">
           <div className="container mx-auto px-4">
-            <h2 className="text-3xl md:text-5xl font-bold text-center mb-16">
+            <h2 className="text-3xl md:text-5xl 3xl:text-6xl 4xl:text-7xl font-bold text-center mb-16">
               {t('testimonials.title')}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -376,27 +465,24 @@ export default async function HomePage({ params }: PageProps) {
       )}
 
       {/* Final CTA Section */}
-      <section className="relative py-24 bg-black text-white overflow-hidden">
-        <div className="absolute inset-0 opacity-30">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="https://images.unsplash.com/photo-1512918766671-ed6a47ca3573?auto=format&fit=crop&w=1600&q=80" alt={t('cta.ready')} className="w-full h-full object-cover" />
-        </div>
+      <section className="relative py-24 bg-black text-white overflow-hidden bg-fixed" style={{ backgroundImage: 'url(/images/background.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed' }}>
+        <div className="absolute inset-0 bg-black/30" />
         <div className="container relative z-10 mx-auto px-4 text-center">
-          <h2 className="text-4xl md:text-6xl font-bold mb-6">
+          <h2 className="text-4xl md:text-6xl 3xl:text-7xl 4xl:text-8xl font-bold mb-6">
             {t('cta.ready')}
           </h2>
-          <p className="text-xl md:text-2xl mb-12 max-w-2xl mx-auto opacity-90">
+          <p className="text-xl md:text-2xl 3xl:text-3xl 4xl:text-4xl mb-12 max-w-2xl 3xl:max-w-4xl 4xl:max-w-6xl mx-auto opacity-90">
             {t('cta.subtitle')}
           </p>
-          <div className="flex flex-col sm:flex-row gap-6 justify-center">
+          <div className="flex flex-col sm:flex-row gap-6 3xl:gap-8 4xl:gap-10 justify-center">
             <Link href={`/${params.lang}/booking`}>
-              <Button size="lg" className="bg-green-500 hover:bg-green-600 text-white font-bold py-8 px-12 rounded-full text-2xl shadow-2xl transition-transform hover:scale-105">
+              <Button size="lg" className="bg-green-500 hover:bg-green-600 text-white font-bold py-8 px-12 3xl:py-10 3xl:px-16 4xl:py-12 4xl:px-20 rounded-full text-2xl 3xl:text-3xl 4xl:text-4xl shadow-2xl transition-transform hover:scale-105">
                 {t('cta.book')}
               </Button>
             </Link>
             <a 
               href="tel:+381652378080"
-              className="inline-flex items-center justify-center bg-white text-black hover:bg-zinc-100 font-bold py-4 px-12 rounded-full text-2xl shadow-2xl transition-transform hover:scale-105"
+              className="inline-flex items-center justify-center bg-white text-black hover:bg-zinc-100 font-bold py-4 px-12 3xl:py-6 3xl:px-16 4xl:py-8 4xl:px-20 rounded-full text-2xl 3xl:text-3xl 4xl:text-4xl shadow-2xl transition-transform hover:scale-105"
             >
               {t('cta.call')}
             </a>

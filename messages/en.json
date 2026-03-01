@@ -54,12 +54,47 @@
     "required": "Required",
     "optional": "Optional",
     "guest": "Guest",
-    "contactUs": "Contact Us"
+    "contactUs": "Contact Us",
+    "home": "Home"
+  },
+  "notFound": {
+    "title": "Page Not Found",
+    "description": "The page you are looking for does not exist or has been moved. Don't worry, we'll help you find what you're looking for!",
+    "backHome": "Back to Home",
+    "viewApartments": "View Apartments",
+    "goBack": "Go Back",
+    "quickLinksTitle": "Where would you like to go?",
+    "quickLinks": {
+      "home": "Home",
+      "homeDesc": "Return to the home page",
+      "apartments": "Apartments",
+      "apartmentsDesc": "View our accommodation units",
+      "location": "Location",
+      "locationDesc": "Find out where we are",
+      "contact": "Contact",
+      "contactDesc": "Get in touch with us"
+    },
+    "popularPages": "Popular Pages",
+    "pages": {
+      "home": "Home",
+      "apartments": "Apartments",
+      "gallery": "Gallery",
+      "prices": "Prices",
+      "location": "Location",
+      "attractions": "Attractions",
+      "contact": "Contact",
+      "booking": "Booking"
+    },
+    "needHelp": "Need help? Contact us directly:"
   },
   "home": {
     "title": "Welcome to Jovča Apartments",
     "description": "Enjoy comfortable accommodation in a beautiful setting.",
     "subtitle": "Your perfect getaway in the heart of nature",
+    "about": {
+      "title": "About Us – Welcome to Jovča Apartments",
+      "content": "Our apartments are located on the shore of the beautiful Bovan Lake, a hidden gem nestled between three mountains – Bukovik, Ozren, and Rtanj. The lake is about 8 km long and 900 meters wide at its widest point, surrounded by forests and untouched nature. This place is known for the 'rose of winds' – gentle air currents that refresh and have a beneficial effect on the respiratory and nervous systems. Here you will find peace, health, and tranquility that you can rarely experience elsewhere. Nearby, you can enjoy a rich selection of excursions: Soko Banja (15 km), the ethno-village of Vrmdža with a small lake (6 km), a horse stud farm in the village of Mozgovo, an Aqua Park in Jagodina (60–70 km), and historical monuments in Niš – the Red Cross camp, Bubanj, Mediana, and Čegar (55 km). Lovers of spiritual peace can visit the Church of St. Roman and numerous monasteries just 10–15 km away. Jovča Apartments are a true paradise for swimming, fishing, and boating, and the surrounding nature creates the perfect backdrop for unforgettable moments. With us, you will find the ideal combination of relaxation, nature, and opportunities to explore the area."
+    },
     "hero": {
       "title": "Experience Comfort & Nature",
       "subtitle": "Book your stay at our modern apartments",
@@ -446,6 +481,104 @@
       "submit": "Submit Review",
       "success": "Thank you for your review!",
       "error": "Failed to submit review. Please try again."
+    }
+  },
+  "seo": {
+    "meta": {
+      "home": {
+        "title": "Jovča Apartments - Bovan Lake Accommodation | Aleksinac, Serbia",
+        "description": "Book luxury apartments at Bovan Lake. Modern accommodation with WiFi, parking, and lake views. Perfect for family vacation in nature.",
+        "keywords": "Bovan Lake apartments, Aleksinac accommodation, Jovča apartments, Bovan vacation rental, Serbia apartments, lake holiday"
+      },
+      "apartments": {
+        "title": "Our Apartments - Modern Accommodation at Bovan Lake",
+        "description": "Browse our modern apartments at Bovan Lake. Various capacities, all with WiFi, AC, and lake views. Book now!",
+        "keywords": "Bovan apartments, Bovan Lake accommodation, studio apartment, two-bedroom apartment, family apartment"
+      },
+      "apartmentDetail": {
+        "titleTemplate": "{name} - Apartment at Bovan Lake | Jovča Apartments",
+        "descriptionTemplate": "Book {name} at Bovan Lake. {capacity} guests, {beds}. Modern equipped with WiFi, AC. From {price}€ per night.",
+        "keywords": "Bovan apartment, {name}, Aleksinac accommodation, lake cottage, apartment booking"
+      },
+      "contact": {
+        "title": "Contact - Jovča Apartments | Bovan Lake",
+        "description": "Contact us to book apartments at Bovan Lake. Available 24/7 via phone, email, or WhatsApp. Fast response guaranteed.",
+        "keywords": "contact Jovča apartments, Bovan booking, apartment phone, reservation email"
+      },
+      "location": {
+        "title": "Location - How to Reach Jovča Apartments | Bovan Lake, Aleksinac",
+        "description": "Find us at Bovan Lake near Aleksinac. Detailed directions by car or bus. Map and GPS coordinates available.",
+        "keywords": "Bovan Lake location, how to reach Bovan Lake, Aleksinac accommodation, GPS coordinates, directions"
+      },
+      "gallery": {
+        "title": "Gallery - Photos of Apartments and Bovan Lake",
+        "description": "View photos of our apartments, interiors, Bovan Lake views, and surroundings. See the quality of our accommodation.",
+        "keywords": "Jovča apartments gallery, Bovan Lake photos, apartment pictures, accommodation interior"
+      },
+      "attractions": {
+        "title": "Attractions - What to Visit Around Bovan Lake",
+        "description": "Discover attractions around Bovan Lake: Soko Banja, Sokolica Fortress, Niš, monasteries. Perfect for excursions and sightseeing.",
+        "keywords": "Bovan attractions, Soko Banja, Sokolica Fortress, Niš sights, Aleksinac excursions, Serbia monasteries"
+      },
+      "prices": {
+        "title": "Prices - Jovča Apartments | Best Rates at Bovan Lake",
+        "description": "Transparent apartment prices at Bovan Lake. No hidden fees. Discounts for longer stays. Check availability and book now.",
+        "keywords": "Bovan apartment prices, accommodation rates, apartment discounts, booking price"
+      },
+      "privacy": {
+        "title": "Privacy Policy - Jovča Apartments",
+        "description": "Read our privacy policy and learn how we protect your personal data in accordance with Serbian laws.",
+        "keywords": "privacy policy, data protection, GDPR Serbia"
+      },
+      "terms": {
+        "title": "Terms of Service & House Rules - Jovča Apartments",
+        "description": "Booking terms, house rules, cancellation policy, and behavior rules at Jovča Apartments at Bovan Lake.",
+        "keywords": "terms of service, house rules, cancellation policy, apartment rules"
+      }
+    },
+    "breadcrumbs": {
+      "home": "Home",
+      "apartments": "Apartments",
+      "contact": "Contact",
+      "location": "Location",
+      "gallery": "Gallery",
+      "attractions": "Attractions",
+      "prices": "Prices",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service"
+    },
+    "altText": {
+      "apartmentImage": "{name} - Apartment at Bovan Lake",
+      "lakeView": "Bovan Lake view from apartment",
+      "interior": "Interior of {name} apartment",
+      "exterior": "Exterior of Jovča Apartments building",
+      "amenity": "{amenity} in apartment",
+      "logo": "Jovča Apartments logo - Bovan Lake accommodation"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions - Jovča Apartments",
+      "items": [
+        {
+          "question": "What are the check-in and check-out times?",
+          "answer": "Check-in is available from 14:00 (2:00 PM), and check-out is by 10:00 AM. Early check-in or late check-out can be arranged upon request depending on availability."
+        },
+        {
+          "question": "Is there secure parking available?",
+          "answer": "Yes, we provide free, secured parking for all our guests within the property grounds."
+        },
+        {
+          "question": "How fast is the WiFi?",
+          "answer": "We offer high-speed fiber-optic WiFi throughout the property, suitable for remote work and streaming high-definition content."
+        },
+        {
+          "question": "Do you allow pets?",
+          "answer": "To ensure the comfort of all our guests, pets are generally not allowed. However, please contact us for special requests."
+        },
+        {
+          "question": "Is the beach accessible?",
+          "answer": "Yes, our guests have private access to the lake shore, just a 2-minute walk from the apartments."
+        }
+      ]
     }
   },
   "admin": {

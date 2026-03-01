@@ -17,9 +17,15 @@ export default async function middleware(request: NextRequest) {
   if (
     pathname.startsWith('/_next') ||
     pathname.startsWith('/api') ||
-    pathname.startsWith('/favicon.ico') ||
-    pathname.startsWith('/sw.js') ||
-    pathname.startsWith('/manifest.json')
+    pathname.startsWith('/images') ||
+    pathname === '/favicon.ico' ||
+    pathname === '/favicon.svg' ||
+    pathname === '/icon.png' ||
+    pathname === '/apple-icon.png' ||
+    pathname === '/sw.js' ||
+    pathname === '/manifest.json' ||
+    pathname === '/robots.txt' ||
+    pathname.match(/\.(ico|png|jpg|jpeg|svg|gif|webp|avif|woff|woff2|ttf|eot)$/)
   ) {
     return NextResponse.next()
   }
@@ -59,7 +65,7 @@ export default async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    // Preskoči sve interne Next.js putanje i statičke fajlove
-    '/((?!api|_next/static|_next/image|favicon.ico|sw.js|manifest.json).*)'
+    // Skip all internal Next.js paths, static files, and images
+    '/((?!api|_next|images|favicon\\.ico|favicon\\.svg|.*\\.(?:ico|png|jpg|jpeg|svg|gif|webp|avif|woff|woff2|ttf|eot)).*)'
   ]
 }

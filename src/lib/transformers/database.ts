@@ -31,18 +31,27 @@ function transformAmenities(amenities: Json, locale: Locale): string[] {
 
 /**
  * Transform JSONB array images to string array (URLs)
+ * Supports both string[] and object[] formats
  */
 interface ImageRecord {
   url: string
-  alt: Json
+  alt?: Json
 }
 
 function transformImages(images: Json): string[] {
   if (!Array.isArray(images)) return []
   return images.map((image: unknown) => {
-    const img = image as ImageRecord
-    return img.url
-  })
+    // If it's already a string, return it
+    if (typeof image === 'string') {
+      return image
+    }
+    // If it's an object with url property, extract url
+    if (typeof image === 'object' && image !== null && 'url' in image) {
+      const img = image as ImageRecord
+      return img.url
+    }
+    return ''
+  }).filter(Boolean) // Remove empty strings
 }
 
 /**

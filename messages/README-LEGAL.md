@@ -128,7 +128,7 @@ Kontakt informacije se prikazuju na kraju svake stranice. Ažuriraj ih u:
 - Hardkodirane su trenutno, ali mogu se prebaciti u translations
 
 ```tsx
-<p className="font-bold">Email: info@apartmani-jovca.rs</p>
-<p className="font-bold">Telefon: +381 64 123 4567</p>
-<p className="font-bold">WhatsApp: +381 64 123 4567</p>
+<p className="font-bold">Email: apartmanijovca@gmail.com</p>
+<p className="font-bold">Telefon: +381 65 237 8080</p>
+<p className="font-bold">WhatsApp: +381 65 237 8080</p>
 ```
