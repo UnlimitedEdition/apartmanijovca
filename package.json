@@ -13,6 +13,7 @@
     "db:check": "node scripts/migrate.js",
     "db:migrate-content": "node scripts/migrate-content.js",
     "db:migrate-i18n": "node scripts/migrate-i18n.js",
+    "db:update-contact": "node scripts/update-contact-info-db.mjs",
     "deploy": "npm run build && firebase deploy"
   },
   "dependencies": {
