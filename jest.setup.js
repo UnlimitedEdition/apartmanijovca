@@ -3,7 +3,7 @@ require('@testing-library/jest-dom')
 
 // Mock environment variables
 process.env.RESEND_API_KEY = 'test_resend_api_key'
-process.env.EMAIL_FROM = 'noreply@apartmani-jovca.com'
+process.env.EMAIL_FROM = 'noreply@apartmani-jovca.vercel.app'
 process.env.SUPABASE_URL = 'https://test.supabase.co'
 process.env.SUPABASE_ANON_KEY = 'test_anon_key'
 process.env.WHATSAPP_TOKEN = 'test_whatsapp_token'

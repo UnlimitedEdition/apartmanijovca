@@ -220,8 +220,8 @@ const subscription = supabase
 
 **Deployment Strategy:**
 
-- **Production:** `main` branch → `apartmani-jovca.com`
-- **Staging:** `staging` branch → `staging.apartmani-jovca.com`
+- **Production:** `main` branch → `apartmani-jovca.vercel.app`
+- **Staging:** `staging` branch → `staging.apartmani-jovca.vercel.app`
 - **Preview:** Feature branches → `pr-123.vercel.app`
 
 ### Migration Strategy from Current Stack
@@ -822,7 +822,7 @@ export async function sendBookingConfirmation(booking) {
   const resend = new Resend(process.env.RESEND_API_KEY)
   
   await resend.emails.send({
-    from: 'Apartmani Jovča <bookings@apartmani-jovca.com>',
+    from: 'Apartmani Jovča <bookings@apartmani-jovca.vercel.app>',
     to: booking.guest.email,
     subject: `Booking Confirmation #${booking.booking_number}`,
     react: BookingConfirmationEmail({ booking })
@@ -989,9 +989,9 @@ sequenceDiagram
 **Git Workflow:**
 
 ```
-main (production) → apartmani-jovca.com
+main (production) → apartmani-jovca.vercel.app
   ↑
-staging → staging.apartmani-jovca.com
+staging → staging.apartmani-jovca.vercel.app
   ↑
 feature/* → pr-123.vercel.app (preview)
 ```

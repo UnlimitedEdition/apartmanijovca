@@ -12,7 +12,7 @@ Added complete GDPR-required information to all 4 languages:
 - **retention**: Data retention period (3 years)
 - **retentionText**: Detailed explanation of why data is kept and automatic deletion
 - **rightsResponse**: Response time commitment (30 days per GDPR)
-- **rightsText**: Updated to include email contact for deletion requests (privacy@apartmani-jovca.com)
+- **rightsText**: Updated to include email contact for deletion requests (privacy@apartmani-jovca.vercel.app)
 
 #### Serbian (sr) - Already had content, verified complete
 ```
@@ -98,7 +98,7 @@ The banner is properly integrated in BookingFlow.tsx:
 - ✅ How long data is retained (3 years - clearly stated)
 - ✅ How data is protected (security measures explained)
 - ✅ User rights (access, correction, deletion)
-- ✅ How to request deletion (email: privacy@apartmani-jovca.com)
+- ✅ How to request deletion (email: privacy@apartmani-jovca.vercel.app)
 - ✅ Response time commitment (30 days)
 - ✅ Link to full Privacy Policy
 - ✅ Explicit consent required (cannot proceed without accepting)

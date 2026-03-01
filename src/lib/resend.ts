@@ -1,5 +1,6 @@
 import { Resend } from 'resend'
 import type { EmailLanguage, EmailSendResult, EmailContent } from './email/types'
+import { PRODUCTION_URL, CONTACT_PHONE } from './seo/config'
 
 // Initialize Resend client with error handling
 const getResendClient = () => {
@@ -18,11 +19,11 @@ export const resend = getResendClient()
 
 // Email configuration constants
 export const EMAIL_CONFIG = {
-  fromEmail: process?.env?.EMAIL_FROM || 'noreply@apartmani-jovca.com',
-  adminEmail: process?.env?.ADMIN_EMAIL || 'jovca@apartmani-jovca.com',
+  fromEmail: process?.env?.EMAIL_FROM || 'noreply@apartmani-jovca.vercel.app',
+  adminEmail: process?.env?.ADMIN_EMAIL || 'jovca@apartmani-jovca.vercel.app',
   companyName: 'Apartmani Jovča',
-  websiteUrl: process?.env?.NEXT_PUBLIC_SITE_URL || 'https://apartmani-jovca.com',
-  supportPhone: '+381 65 237 8080',
+  websiteUrl: PRODUCTION_URL,
+  supportPhone: CONTACT_PHONE,
 } as const
 
 // Check if Resend is properly configured
@@ -184,26 +185,26 @@ export function getEmailSignature(language: EmailLanguage): string {
     sr: `
       <p>Srdačan pozdrav,<br>
       <strong>Tim Apartmana Jovča</strong><br>
-      📞 +381 65 237 8080<br>
-      🌐 apartmani-jovca.com</p>
+      📞 ${CONTACT_PHONE}<br>
+      🌐 ${PRODUCTION_URL.replace('https://', '')}</p>
     `,
     en: `
       <p>Best regards,<br>
       <strong>Apartmani Jovča Team</strong><br>
-      📞 +381 65 237 8080<br>
-      🌐 apartmani-jovca.com</p>
+      📞 ${CONTACT_PHONE}<br>
+      🌐 ${PRODUCTION_URL.replace('https://', '')}</p>
     `,
     de: `
       <p>Mit freundlichen Grüßen,<br>
       <strong>Team Apartmani Jovča</strong><br>
-      📞 +381 65 237 8080<br>
-      🌐 apartmani-jovca.com</p>
+      📞 ${CONTACT_PHONE}<br>
+      🌐 ${PRODUCTION_URL.replace('https://', '')}</p>
     `,
     it: `
       <p>Cordiali saluti,<br>
       <strong>Team Apartmani Jovča</strong><br>
-      📞 +381 65 237 8080<br>
-      🌐 apartmani-jovca.com</p>
+      📞 ${CONTACT_PHONE}<br>
+      🌐 ${PRODUCTION_URL.replace('https://', '')}</p>
     `,
   }
   return signatures[language]

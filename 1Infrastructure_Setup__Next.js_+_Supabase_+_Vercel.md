@@ -8,7 +8,7 @@ Setup kompletne infrastrukture za transformaciju sajta: Next.js 14 projekat, Sup
 - ✅ Kreiranje Next.js 14 projekta (App Router, TypeScript)
 - ✅ Supabase projekat setup (database, auth, storage)
 - ✅ Vercel deployment konfiguracija
-- ✅ Custom domain setup (apartmani-jovca.com)
+- ✅ Custom domain setup (apartmani-jovca.vercel.app)
 - ✅ Environment variables (Supabase keys, Resend API key)
 - ✅ Git repository setup (main, staging, feature branches)
 - ✅ Basic analytics infrastructure (analytics_events table)
@@ -30,7 +30,7 @@ Setup kompletne infrastrukture za transformaciju sajta: Next.js 14 projekat, Sup
 1. ✅ Next.js 14 projekat kreiran sa App Router i TypeScript
 2. ✅ Supabase projekat kreiran i konfigurisan
 3. ✅ Vercel deployment funkcioniše (staging + production)
-4. ✅ Custom domain povezan (apartmani-jovca.com)
+4. ✅ Custom domain povezan (apartmani-jovca.vercel.app)
 5. ✅ Environment variables postavljene (Vercel + local .env)
 6. ✅ Git workflow setup (main, staging, feature/*)
 7. ✅ TailwindCSS i i18next konfigurisani
