@@ -3,6 +3,19 @@
     "title": "Apartmani Jovča",
     "description": "Udoban smeštaj u prelepom okruženju"
   },
+  "faq": {
+    "title": "Često postavljana pitanja",
+    "q1": "Koje je vreme prijave i odjave?",
+    "a1": "Prijava je moguća od 14:00, a odjava je do 10:00. Ranija prijava ili kasnija odjava se mogu organizovati na upit, zavisno od dostupnosti.",
+    "q2": "Da li imate obezbeđen parking?",
+    "a2": "Da, obezbeđujemo besplatan, siguran parking za sve naše goste unutar poseda.",
+    "q3": "Koliko je brz WiFi?",
+    "a3": "Nudimo brzi optički WiFi u celom objektu, pogodan za rad na daljinu i strimovanje sadržaja visoke definicije.",
+    "q4": "Da li dozvoljavate kućne ljubimce?",
+    "a4": "Kako bismo osigurali udobnost svih gostiju, ljubimci generalno nisu dozvoljeni. Ipak, kontaktirajte nas za posebne zahteve.",
+    "q5": "Da li je plaža blizu?",
+    "a5": "Da, naši gosti imaju privatan pristup obali jezera, samo 2 minuta hoda od apartmana."
+  },
   "header": {
     "home": "Početna",
     "apartments": "Apartmani",
