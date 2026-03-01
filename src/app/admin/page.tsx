@@ -26,8 +26,15 @@ export default async function AdminPage() {
     redirect('/admin/login')
   }
 
-  if (session.user.email !== 'mtosic0450@gmail.com') {
+  // List of authorized admin emails
+  const ADMIN_EMAILS = [
+    'mtosic0450@gmail.com',
+    'apartmanijovca@gmail.com'
+  ]
+
+  if (!ADMIN_EMAILS.includes(session.user.email || '')) {
     console.warn('⚠️ Unauthorized user email:', session.user.email)
+    console.warn('⚠️ Expected one of:', ADMIN_EMAILS)
     redirect('/admin/login')
   }
 

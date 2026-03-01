@@ -44,6 +44,9 @@ export default function AdminLoginForm() {
         setError(authError.message)
       } else if (data.user) {
         console.log('✅ User logged in:', data.user.email)
+        console.log('🔍 Checking against ADMIN_EMAILS:', ADMIN_EMAILS)
+        console.log('🔍 Email to check:', data.user.email)
+        console.log('🔍 Is included?', ADMIN_EMAILS.includes(data.user.email || ''))
         
         // Check if user email is in the authorized admin list
         if (ADMIN_EMAILS.includes(data.user.email || '')) {
@@ -57,6 +60,7 @@ export default function AdminLoginForm() {
           window.location.assign('/admin')
         } else {
           console.warn('⚠️ Unauthorized email:', data.user.email)
+          console.warn('⚠️ Expected one of:', ADMIN_EMAILS)
           setError('Unauthorized access - not an admin account')
           await supabase.auth.signOut()
         }
