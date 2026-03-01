@@ -12,6 +12,7 @@ import {
   validateSchemas,
   mergeSchemas,
 } from './structured-data'
+import { PRODUCTION_URL, CONTACT_EMAIL, CONTACT_PHONE } from './config'
 
 // ============================================================================
 // Example 1: Simple Organization Schema
@@ -20,12 +21,12 @@ import {
 const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  '@id': 'https://apartmani-jovca.rs/#organization',
+  '@id': `${PRODUCTION_URL}/#organization`,
   name: 'Apartmani Jovča',
-  url: 'https://apartmani-jovca.rs',
-  logo: 'https://apartmani-jovca.rs/logo.png',
-  telephone: '+381 65 237 8080',
-  email: 'apartmanijovca@gmail.com',
+  url: PRODUCTION_URL,
+  logo: `${PRODUCTION_URL}/logo.png`,
+  telephone: CONTACT_PHONE,
+  email: CONTACT_EMAIL,
 }
 
 // Validate the schema
@@ -44,14 +45,14 @@ const htmlScript = embedJsonLd(organizationSchema)
 const localBusinessSchema = {
   '@context': 'https://schema.org',
   '@type': 'LocalBusiness',
-  '@id': 'https://apartmani-jovca.rs/#business',
+  '@id': `${PRODUCTION_URL}/#business`,
   name: 'Apartmani Jovča',
   image: [
-    'https://apartmani-jovca.rs/images/exterior.jpg',
-    'https://apartmani-jovca.rs/images/interior.jpg',
+    `${PRODUCTION_URL}/images/exterior.jpg`,
+    `${PRODUCTION_URL}/images/interior.jpg`,
   ],
-  telephone: '+381 65 237 8080',
-  email: 'apartmanijovca@gmail.com',
+  telephone: CONTACT_PHONE,
+  email: CONTACT_EMAIL,
   address: {
     '@type': 'PostalAddress',
     streetAddress: 'Jovča bb',

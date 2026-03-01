@@ -5,6 +5,15 @@
  * Supports localhost, Vercel preview, and production environments.
  */
 
+// ============================================
+// CENTRALIZED CONFIGURATION - EDIT HERE ONLY
+// ============================================
+export const PRODUCTION_URL = 'https://apartmani-jovca.vercel.app'
+export const CONTACT_EMAIL = 'apartmanijovca@gmail.com'
+export const CONTACT_PHONE = '+381 65 237 8080'
+export const WHATSAPP_NUMBER = '+381 65 237 8080'
+// ============================================
+
 export type Locale = 'sr' | 'en' | 'de' | 'it'
 
 export interface SEOConfig {
@@ -51,7 +60,7 @@ export function validateBaseUrl(url: string): boolean {
 
 /**
  * Gets the base URL for the application based on environment
- * Priority: NEXT_PUBLIC_BASE_URL > Vercel URL > localhost
+ * Priority: NEXT_PUBLIC_BASE_URL > Vercel URL > PRODUCTION_URL > localhost
  * 
  * @returns The base URL without trailing slash
  */
@@ -73,7 +82,12 @@ export function getBaseUrl(): string {
     return `https://${process.env.VERCEL_URL}`
   }
 
-  // 3. Fallback to localhost for development
+  // 3. Use production URL if in production
+  if (process.env.NODE_ENV === 'production') {
+    return PRODUCTION_URL
+  }
+
+  // 4. Fallback to localhost for development
   return 'http://localhost:3000'
 }
 
@@ -93,8 +107,8 @@ export function getSEOConfig(): SEOConfig {
     },
     business: {
       name: 'Apartmani Jovča',
-      phone: '+381 65 237 8080',
-      email: 'apartmanijovca@gmail.com',
+      phone: CONTACT_PHONE,
+      email: CONTACT_EMAIL,
       address: {
         street: 'Jovča bb',
         city: 'Aleksinac',
