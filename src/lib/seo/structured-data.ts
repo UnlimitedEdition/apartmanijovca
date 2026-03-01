@@ -211,7 +211,8 @@ export function mergeSchemas(schemas: object[]): object {
     '@context': context,
     '@graph': schemas.map(schema => {
       // Remove @context from individual schemas in graph
-      const { '@context': _, ...rest } = schema as Record<string, unknown>
+      const { '@context': _unusedContext, ...rest } = schema as Record<string, unknown>
+      void _unusedContext // Suppress unused variable warning
       return rest
     })
   }
@@ -423,7 +424,7 @@ export function generateBreadcrumbSchema(path: string, locale: Locale): Breadcru
 
   // Build breadcrumb items from path segments
   let currentPath = `/${locale}`
-  segments.forEach((segment, index) => {
+  segments.forEach((segment) => {
     // Skip locale segment if it's in the path
     if (segment === locale) return
 
@@ -463,7 +464,8 @@ export function generateBreadcrumbSchema(path: string, locale: Locale): Breadcru
  * @example
  * const schema = generateFAQSchema(faqs, 'de')
  */
-export function generateFAQSchema(faqs: FAQ[], locale: Locale): FAQSchema | null {
+export function generateFAQSchema(faqs: FAQ[], __locale: Locale): FAQSchema | null {
+  void __locale // Suppress unused variable warning
   if (!faqs || faqs.length === 0) {
     return null
   }

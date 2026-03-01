@@ -140,7 +140,17 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   // Generate LodgingBusiness schema
   const lodgingSchema = apartmentRecord 
-    ? generateLodgingBusinessSchema(apartmentRecord as any, locale)
+    ? generateLodgingBusinessSchema({
+        id: apartmentRecord.id,
+        slug: apartmentRecord.slug || '',
+        name: apartment.name,
+        description: apartment.description,
+        images: apartment.images,
+        basePrice: apartmentRecord.base_price_eur,
+        capacity: apartmentRecord.capacity,
+        numberOfRooms: apartmentRecord.bathroom_count || undefined,
+        amenities: apartment.amenities
+      }, locale)
     : null
 
   // Generate Breadcrumb schema
@@ -154,7 +164,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     .eq('status', 'approved')
 
   const reviewSchema = reviews && reviews.length > 0 
-    ? generateReviewSchema(reviews as any)
+    ? generateReviewSchema(reviews.map(r => ({
+        id: r.id,
+        author: r.guest_name,
+        rating: r.rating,
+        comment: r.comment || '',
+        createdAt: r.created_at,
+        approved: r.status === 'approved'
+      })))
     : null
 
   // Combine structured data
@@ -188,5 +205,6 @@ export default async function ApartmentPage({ params }: PageProps) {
     notFound()
   }
 
-  return <ApartmentDetailView apartment={apartment as any} locale={params.lang} />
+  // Type assertion is safe here because we've checked slug is not null
+  return <ApartmentDetailView apartment={apartment as typeof apartment & { slug: string }} locale={params.lang} />
 }

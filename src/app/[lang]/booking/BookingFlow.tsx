@@ -82,9 +82,9 @@ export default function BookingFlow() {
         ? supabase.from('apartments').select('*').eq('id', apartmentParam).single()
         : supabase.from('apartments').select('*').eq('slug', apartmentParam).single()
       
-      query.then(({ data }) => {
+      query.then(({ data }: { data: ApartmentRecord | null }) => {
         if (data) {
-          const localizedApartment = transformApartmentRecord(data as ApartmentRecord, locale)
+          const localizedApartment = transformApartmentRecord(data, locale)
           setBookingData(prev => ({ ...prev, apartment: localizedApartment }))
         }
       })

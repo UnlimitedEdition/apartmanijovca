@@ -3,7 +3,6 @@ import { createClient } from '@supabase/supabase-js'
 import { PRODUCTION_URL } from '@/lib/seo/config'
 
 const LOCALES = ['sr', 'en', 'de', 'it'] as const
-type Locale = typeof LOCALES[number]
 
 // Always use production URL for sitemap (not preview URLs)
 const BASE_URL = PRODUCTION_URL

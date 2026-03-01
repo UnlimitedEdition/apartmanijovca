@@ -32,7 +32,8 @@ for (const locale of locales) {
       allPassed = false
     }
   } catch (error) {
-    console.log(`❌ ${locale.toUpperCase()}: Error reading file - ${error.message}`)
+    const errorMessage = error instanceof Error ? error.message : String(error)
+    console.log(`❌ ${locale.toUpperCase()}: Error reading file - ${errorMessage}`)
     allPassed = false
   }
   

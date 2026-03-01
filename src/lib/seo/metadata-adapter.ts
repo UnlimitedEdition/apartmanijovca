@@ -4,7 +4,7 @@
  * Converts our SEO tag objects to Next.js Metadata API format
  */
 
-import type { Metadata } from 'next'
+
 import type { OpenGraphTags, TwitterCardTags, HreflangTag } from '@/lib/types/seo'
 
 /**

@@ -118,8 +118,8 @@ export function useAvailability(options: UseAvailabilityOptions = {}): UseAvaila
       const locale: Locale = getClientLocale()
       
       // Transform apartment records to localized format
-      const apartments = (apartmentsData || []).map(apt => 
-        transformApartmentRecord(apt as ApartmentRecord, locale)
+      const apartments = (apartmentsData || []).map((apt: ApartmentRecord) => 
+        transformApartmentRecord(apt, locale)
       )
 
       // Fetch bookings in date range
@@ -146,7 +146,7 @@ export function useAvailability(options: UseAvailabilityOptions = {}): UseAvaila
 
       // Initialize all dates as available
       const dates = getDatesInRange(rangeStart, rangeEnd)
-      apartments.forEach((apartment) => {
+      apartments.forEach((apartment: Apartment) => {
         dates.forEach((date) => {
           const key = `${apartment.id}-${date}`
           availabilityMap.set(key, {
@@ -309,7 +309,7 @@ export function useAvailability(options: UseAvailabilityOptions = {}): UseAvaila
             },
             handleBookingChange
           )
-          .subscribe((status) => {
+          .subscribe((status: string) => {
             if (status === 'SUBSCRIBED') {
               setIsRealtimeConnected(true)
               reconnectAttemptsRef.current = 0

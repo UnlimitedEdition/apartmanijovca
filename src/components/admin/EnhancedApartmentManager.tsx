@@ -248,13 +248,7 @@ export default function EnhancedApartmentManager() {
     setSuccess(null)
   }
 
-  const handleCancel = () => {
-    setSelectedApartment(null)
-    setIsEditing(false)
-    setActiveTab('basic')
-    setError(null)
-    setSuccess(null)
-  }
+  
 
   const generateSlug = (name: string) => {
     return name
@@ -934,7 +928,7 @@ export default function EnhancedApartmentManager() {
                     <div className="space-y-3">
                       {(selectedApartment.images || []).length === 0 ? (
                         <div className="text-center py-8 text-gray-500 text-sm border-2 border-dashed rounded-lg bg-white">
-                          Nema slika. Kliknite "Upload sliku" ili dodajte URL ispod.
+                          Nema slika. Kliknite &quot;Upload sliku&quot; ili dodajte URL ispod.
                         </div>
                       ) : (
                         <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">

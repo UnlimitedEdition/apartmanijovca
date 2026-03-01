@@ -270,7 +270,7 @@ export async function createBooking(
 
     // Create booking with all required columns including security metadata
     // Use preferredLanguage from input (URL parameter) if available, otherwise fallback to locale
-    const bookingLanguage = (input as any).preferredLanguage || locale
+    const bookingLanguage = (input as Record<string, unknown>).preferredLanguage as string || locale
     
     const insertData: Record<string, unknown> = {
       booking_number: bookingNumber,
@@ -288,8 +288,8 @@ export async function createBooking(
     }
 
     // Add security metadata if provided
-    if ((input as any).metadata) {
-      const metadata = (input as any).metadata
+    if ((input as Record<string, unknown>).metadata) {
+      const metadata = (input as Record<string, unknown>).metadata as Record<string, unknown>
       if (metadata.ipAddress) insertData.ip_address = metadata.ipAddress
       if (metadata.userAgent) insertData.user_agent = metadata.userAgent
       if (metadata.fingerprint) insertData.fingerprint = metadata.fingerprint
@@ -397,24 +397,19 @@ export async function getBookingById(
     }
 
     // Extract apartment data and localize name
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const apartmentData = (data.apartments as any).id ? (data.apartments as any) : (data.apartments as any)[0]
+    const apartmentData = (data.apartments as unknown as Record<string, unknown>).id ? (data.apartments as unknown as Record<string, unknown>) : (data.apartments as unknown as Array<Record<string, unknown>>)[0]
     const apartmentName = getLocalizedValue(apartmentData.name as MultiLanguageText, locale)
 
     return {
       booking: {
         id: data.id,
         bookingNumber: `BJ-${new Date(data.created_at).getFullYear()}-${data.id.substring(0, 4).toUpperCase()}`,
-        apartmentId: apartmentData.id,
+        apartmentId: apartmentData.id as string,
         apartmentName: apartmentName,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        guestId: (data.guests as any).id || (data.guests as any)[0]?.id,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        guestName: (data.guests as any).full_name || (data.guests as any)[0]?.full_name,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        guestEmail: (data.guests as any).email || (data.guests as any)[0]?.email,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        guestPhone: (data.guests as any).phone || (data.guests as any)[0]?.phone,
+        guestId: (data.guests as unknown as Record<string, unknown>).id as string || (data.guests as unknown as Array<Record<string, unknown>>)[0]?.id as string,
+        guestName: (data.guests as unknown as Record<string, unknown>).full_name as string || (data.guests as unknown as Array<Record<string, unknown>>)[0]?.full_name as string,
+        guestEmail: (data.guests as unknown as Record<string, unknown>).email as string || (data.guests as unknown as Array<Record<string, unknown>>)[0]?.email as string,
+        guestPhone: ((data.guests as unknown as Record<string, unknown>).phone as string | null || (data.guests as unknown as Array<Record<string, unknown>>)[0]?.phone as string | null) ?? undefined,
         checkIn: data.check_in,
         checkOut: data.check_out,
         nights: calculateNights(data.check_in, data.check_out),

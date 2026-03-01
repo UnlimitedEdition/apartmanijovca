@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
 import { supabase } from '../lib/supabase/client'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
+import { Card, CardContent, CardHeader } from '../components/ui/card'
 import { Button } from '../components/ui/button'
 import { Badge } from '../components/ui/badge'
 import { getLocalizedValue } from '@/lib/localization/helpers'
@@ -9,7 +9,7 @@ import { Locale, ApartmentRecord, MultiLanguageText } from '@/lib/types/database
 import { getBaseUrl } from '@/lib/seo/config'
 import { generateMetaTags } from '@/lib/seo/meta-generator'
 import { generateHreflangTags } from '@/lib/seo/hreflang'
-import { generateOpenGraphTags, generateTwitterCardTags } from '@/lib/seo/social-media'
+import { generateOpenGraphTags } from '@/lib/seo/social-media'
 import { generateBreadcrumbSchema } from '@/lib/seo/structured-data'
 import { getKeywordsString } from '@/lib/seo/keywords'
 
@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     locale
   })
 
-  const ogTags = generateOpenGraphTags({
+  generateOpenGraphTags({
     title: t('prices.title'),
     description: t('prices.description'),
     url: `${baseUrl}/${locale}/prices`,

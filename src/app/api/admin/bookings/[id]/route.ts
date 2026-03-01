@@ -101,12 +101,12 @@ export async function GET(
         apartments: apartmentDetails,
         language: booking.language,
         // Security metadata
-        ip_address: (booking as any).ip_address,
-        fingerprint: (booking as any).fingerprint,
-        user_agent: (booking as any).user_agent,
-        metadata: (booking as any).metadata,
-        consent_given: (booking as any).consent_given,
-        consent_timestamp: (booking as any).consent_timestamp
+        ip_address: (booking as unknown as Record<string, unknown>).ip_address as string | undefined,
+        fingerprint: (booking as unknown as Record<string, unknown>).fingerprint as string | undefined,
+        user_agent: (booking as unknown as Record<string, unknown>).user_agent as string | undefined,
+        metadata: (booking as unknown as Record<string, unknown>).metadata as Record<string, unknown> | undefined,
+        consent_given: (booking as unknown as Record<string, unknown>).consent_given as boolean | undefined,
+        consent_timestamp: (booking as unknown as Record<string, unknown>).consent_timestamp as string | undefined
       }
     }
 

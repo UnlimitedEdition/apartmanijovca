@@ -23,7 +23,8 @@ import { makeAbsoluteUrl } from './utils'
  * // Returns tags for sr, en, de, it, and x-default
  */
 export function generateHreflangTags(input: HreflangInput): HreflangTag[] {
-  const { path, locale, availableLocales } = input
+  const { path, locale: _locale, availableLocales } = input
+  void _locale // Suppress unused variable warning
   const config = getSEOConfig()
   const baseUrl = getBaseUrl()
   

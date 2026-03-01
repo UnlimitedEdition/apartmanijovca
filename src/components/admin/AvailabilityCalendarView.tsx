@@ -65,12 +65,12 @@ export default function AvailabilityCalendarView() {
       const data = await response.json()
       const availMap: AvailabilityData = {}
       
-      data.data?.forEach((record: any) => {
+      data.data?.forEach((record: { apartment_id: string; date: string; is_available: boolean; price_override?: number | null; booking_id?: string | null; reason?: string | null }) => {
         availMap[record.date] = {
           is_available: record.is_available,
-          booking_id: record.booking_id,
-          price_override: record.price_override,
-          reason: record.reason
+          booking_id: record.booking_id ?? null,
+          price_override: record.price_override ?? null,
+          reason: record.reason ?? null
         }
       })
       

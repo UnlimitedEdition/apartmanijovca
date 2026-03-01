@@ -6,11 +6,10 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from '../components/ui/button'
 import { Badge } from '../components/ui/badge'
 import { getLocalizedValue } from '@/lib/localization/helpers'
-import type { Locale, ApartmentRecord, MultiLanguageText } from '@/lib/types/database'
+import type { Locale, ApartmentRecord, MultiLanguageText, Json } from '@/lib/types/database'
 import { getBaseUrl } from '@/lib/seo/config'
 import { generateMetaTags } from '@/lib/seo/meta-generator'
 import { generateHreflangTags } from '@/lib/seo/hreflang'
-import { generateOpenGraphTags, generateTwitterCardTags } from '@/lib/seo/social-media'
 import { generateBreadcrumbSchema } from '@/lib/seo/structured-data'
 import { getKeywordsString } from '@/lib/seo/keywords'
 import Breadcrumb from '@/components/Breadcrumb'
@@ -38,35 +37,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const hreflangTags = generateHreflangTags({
     path: '/apartments',
     locale
-  })
-
-  // Generate Open Graph tags
-  const ogTags = generateOpenGraphTags({
-    title: t('apartments.title'),
-    description: t('apartments.description'),
-    url: `${baseUrl}/${locale}/apartments`,
-    type: 'website',
-    locale,
-    siteName: 'Apartmani Jovča',
-    images: [{
-      url: `${baseUrl}/images/background.jpg`,
-      width: 1200,
-      height: 630,
-      alt: t('apartments.ogImageAlt')
-    }]
-  })
-
-  // Generate Twitter Card tags
-  const twitterTags = generateTwitterCardTags({
-    url: `${baseUrl}/${locale}/apartments`,
-    locale,
-    title: t('apartments.title'),
-    description: t('apartments.description'),
-    card: 'summary_large_image',
-    images: [{
-      url: `${baseUrl}/images/background.jpg`,
-      alt: t('apartments.ogImageAlt')
-    }]
   })
 
   // Generate Breadcrumb schema
@@ -127,10 +97,10 @@ export default async function ApartmentsPage({ params }: PageProps) {
     // Handle images - support both string[] and object[] formats
     let imageUrls: string[] = []
     if (Array.isArray(apartment.images)) {
-      imageUrls = apartment.images.map((img: any) => {
+      imageUrls = apartment.images.map((img: Json) => {
         // If it's an object with url property, extract url
         if (typeof img === 'object' && img !== null && 'url' in img) {
-          return img.url as string
+          return (img as { url: string }).url
         }
         // If it's already a string, use it directly
         if (typeof img === 'string') {
@@ -168,7 +138,7 @@ export default async function ApartmentsPage({ params }: PageProps) {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 3xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 3xl:gap-10 4xl:gap-12 px-3 sm:px-4 md:px-0">
-        {localizedApartments?.map((apartment) => {
+        {localizedApartments?.map((apartment: typeof localizedApartments[0]) => {
           // Get first image from database or use fallback
           const firstImage = Array.isArray(apartment.images) && apartment.images.length > 0 
             ? apartment.images[0] 

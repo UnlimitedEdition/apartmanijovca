@@ -4,7 +4,7 @@ import { Locale } from '@/lib/types/database'
 import { getBaseUrl } from '@/lib/seo/config'
 import { generateMetaTags } from '@/lib/seo/meta-generator'
 import { generateHreflangTags } from '@/lib/seo/hreflang'
-import { generateOpenGraphTags, generateTwitterCardTags } from '@/lib/seo/social-media'
+import { generateOpenGraphTags } from '@/lib/seo/social-media'
 import { generateLocalBusinessSchema, generateBreadcrumbSchema } from '@/lib/seo/structured-data'
 import { getKeywordsString } from '@/lib/seo/keywords'
 import Breadcrumb from '@/components/Breadcrumb'
@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   })
 
   // Generate Open Graph tags
-  const ogTags = generateOpenGraphTags({
+  generateOpenGraphTags({
     title: t('location.title'),
     description: t('location.description'),
     url: `${baseUrl}/${locale}/location`,
