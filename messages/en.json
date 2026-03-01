@@ -291,6 +291,7 @@
       "apartment": "Select Apartment",
       "firstName": "First Name",
       "lastName": "Last Name",
+      "fullName": "Full Name",
       "email": "Email Address",
       "phone": "Phone Number",
       "specialRequests": "Special Requests",
