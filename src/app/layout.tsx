@@ -7,6 +7,7 @@ import AnalyticsTracker from '../components/AnalyticsTracker';
 import FloatingCTA from '../components/FloatingCTA';
 import StickyMobileCTA from '../components/StickyMobileCTA';
 import ConsoleWarning from '../components/ConsoleWarning';
+import { PRODUCTION_URL } from '@/lib/seo/config';
 import "./globals.css";
 
 // const geistSans = Geist({
@@ -20,6 +21,7 @@ import "./globals.css";
 // });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(PRODUCTION_URL),
   title: "Apartmani Jovča",
   description: "Beautiful apartments in Jovča - Your perfect vacation destination",
   manifest: '/manifest.json',
@@ -28,6 +30,7 @@ export const metadata: Metadata = {
     title: "Apartmani Jovča",
     description: "Beautiful apartments in Jovča - Your perfect vacation destination",
     type: 'website',
+    url: PRODUCTION_URL,
     images: ['/images/logo2.png'],
   },
 };
