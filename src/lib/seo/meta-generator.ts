@@ -5,7 +5,7 @@
  * keywords, canonical URLs, and technical meta tags (viewport, charset, robots).
  */
 
-import { getBaseUrl } from './config'
+import { PRODUCTION_URL } from './config'
 import { truncateText, sanitizeMetaContent, makeAbsoluteUrl } from './utils'
 import type { MetaTagsInput, MetaTagsOutput, Locale } from '../types/seo'
 
@@ -52,14 +52,15 @@ export function generateDescription(desc: string): string {
 
 /**
  * Generates canonical URL for a page
- * Ensures proper absolute URL format with locale prefix
+ * Always uses production URL to ensure consistent canonical URLs across all deployments
  * 
  * @param path - The page path (e.g., '/apartments/studio-1')
  * @param locale - The current locale
  * @returns Absolute canonical URL
  */
 export function generateCanonicalUrl(path: string, locale: Locale): string {
-  const baseUrl = getBaseUrl()
+  // Always use production URL for canonical URLs (not preview/deployment URLs)
+  const baseUrl = PRODUCTION_URL
   
   // Ensure path starts with /
   const cleanPath = path.startsWith('/') ? path : `/${path}`
