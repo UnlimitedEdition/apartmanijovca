@@ -15,7 +15,7 @@ export const WHATSAPP_NUMBER = '+381 65 237 8080'
 
 // Email sender configuration (for Resend)
 export const EMAIL_FROM = 'noreply@apartmani-jovca.vercel.app'
-export const EMAIL_ADMIN = 'apartmanijovca@gmail.com' // Admin receives booking notifications here
+export const EMAIL_ADMIN = CONTACT_EMAIL // Admin email is the same as contact email
 // ============================================
 
 export type Locale = 'sr' | 'en' | 'de' | 'it'

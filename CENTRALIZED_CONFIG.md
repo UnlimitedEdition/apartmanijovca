@@ -23,7 +23,7 @@ export const WHATSAPP_NUMBER = '+381 65 237 8080'
 
 // Email sender configuration (for Resend)
 export const EMAIL_FROM = 'noreply@apartmani-jovca.vercel.app'
-export const EMAIL_ADMIN = 'apartmanijovca@gmail.com' // Admin receives booking notifications here
+export const EMAIL_ADMIN = CONTACT_EMAIL // Admin email is the same as contact email
 // ============================================
 ```
 
@@ -41,13 +41,15 @@ Kada promeniš vrednosti u `config.ts`, automatski se ažuriraju na:
 - Canonical URL-ovi
 - Sve SEO meta tagove
 
-### Email (`CONTACT_EMAIL`):
+### Email (`CONTACT_EMAIL`, `EMAIL_ADMIN`):
 - Privacy stranica
 - Terms stranica
 - Contact forma
 - Footer
 - Structured data
 - Business schema
+- Admin email notifications (EMAIL_ADMIN koristi CONTACT_EMAIL)
+- Booking confirmation emails
 
 ### Telefon (`CONTACT_PHONE`, `WHATSAPP_NUMBER`):
 - Privacy stranica
