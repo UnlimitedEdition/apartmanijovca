@@ -5,10 +5,16 @@ import { createBrowserClient } from '@supabase/ssr'
 
 export default function AdminLoginForm() {
   const [mounted, setMounted] = useState(false)
-  const [email, setEmail] = useState('mtosic0450@gmail.com')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+
+  // List of authorized admin emails
+  const ADMIN_EMAILS = [
+    'mtosic0450@gmail.com',
+    'apartmanijovca@gmail.com'
+  ]
 
   useEffect(() => {
     setMounted(true)
@@ -39,7 +45,8 @@ export default function AdminLoginForm() {
       } else if (data.user) {
         console.log('✅ User logged in:', data.user.email)
         
-        if (data.user.email === 'mtosic0450@gmail.com') {
+        // Check if user email is in the authorized admin list
+        if (ADMIN_EMAILS.includes(data.user.email || '')) {
           console.log('✅ Admin email verified, session handled by SSR client')
           
           // Small delay to ensure cookies are written before redirect
@@ -50,7 +57,7 @@ export default function AdminLoginForm() {
           window.location.assign('/admin')
         } else {
           console.warn('⚠️ Unauthorized email:', data.user.email)
-          setError('Unauthorized access')
+          setError('Unauthorized access - not an admin account')
           await supabase.auth.signOut()
         }
       }
