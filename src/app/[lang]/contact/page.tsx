@@ -7,7 +7,7 @@ import SafeImage from '../../../components/SafeImage'
 import ContactForm from '../../../components/ContactForm'
 import Breadcrumb from '@/components/Breadcrumb'
 import { Locale } from '@/lib/types/database'
-import { getBaseUrl } from '@/lib/seo/config'
+import { getBaseUrl, CONTACT_PHONE, CONTACT_EMAIL } from '@/lib/seo/config'
 import { generateMetaTags } from '@/lib/seo/meta-generator'
 import { generateHreflangTags } from '@/lib/seo/hreflang'
 import { generateOpenGraphTags, generateTwitterCardTags } from '@/lib/seo/social-media'
@@ -141,8 +141,8 @@ export default async function ContactPage({ params }: PageProps) {
                 </div>
                 <div>
                   <p className="font-black uppercase tracking-widest text-[10px] 3xl:text-xs 4xl:text-sm text-muted-foreground mb-1">{contactT('info.phone')}</p>
-                  <a href="tel:+381652378080" className="text-lg sm:text-xl lg:text-2xl 3xl:text-3xl 4xl:text-4xl font-black hover:text-primary transition-colors tracking-tight text-foreground">
-                    +381 65 237 8080
+                  <a href={`tel:${CONTACT_PHONE.replace(/\s/g, '')}`} className="text-lg sm:text-xl lg:text-2xl 3xl:text-3xl 4xl:text-4xl font-black hover:text-primary transition-colors tracking-tight text-foreground">
+                    {CONTACT_PHONE}
                   </a>
                 </div>
               </div>

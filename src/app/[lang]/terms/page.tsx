@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl'
 import { getTranslations } from 'next-intl/server'
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card'
 import { Locale } from '@/lib/types/database'
-import { getBaseUrl } from '@/lib/seo/config'
+import { getBaseUrl, CONTACT_EMAIL, CONTACT_PHONE, WHATSAPP_NUMBER } from '@/lib/seo/config'
 import { generateMetaTags } from '@/lib/seo/meta-generator'
 import { generateHreflangTags } from '@/lib/seo/hreflang'
 import { generateOpenGraphTags, generateTwitterCardTags } from '@/lib/seo/social-media'
@@ -197,9 +197,9 @@ export default function TermsPage() {
           <h3 className="font-black text-xl mb-4">{t('contact.title')}</h3>
           <p className="leading-relaxed mb-4">{t('contact.content')}</p>
           <div className="space-y-2">
-            <p className="font-bold">Email: apartmanijovca@gmail.com</p>
-            <p className="font-bold">Telefon: +381 65 237 8080</p>
-            <p className="font-bold">WhatsApp: +381 65 237 8080</p>
+            <p className="font-bold">Email: {CONTACT_EMAIL}</p>
+            <p className="font-bold">Telefon: {CONTACT_PHONE}</p>
+            <p className="font-bold">WhatsApp: {WHATSAPP_NUMBER}</p>
           </div>
         </div>
       </div>

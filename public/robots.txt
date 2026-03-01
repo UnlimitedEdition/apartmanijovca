@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://apartmani-jovca.com/sitemap.xml
+Sitemap: https://apartmani-jovca.vercel.app/sitemap.xml

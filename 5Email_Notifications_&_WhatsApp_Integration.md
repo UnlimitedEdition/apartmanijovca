@@ -67,4 +67,4 @@ Implementacija email notification sistema sa Resend i WhatsApp Business API inte
 - Supabase Edge Functions za scheduled emails
 - Cron jobs: `0 9 * * *` (daily at 9am)
 - WhatsApp link: `https://wa.me/381693349457?text=...`
-- Email from: `bookings@apartmani-jovca.com` (custom domain)
+- Email from: `bookings@apartmani-jovca.vercel.app` (custom domain)

@@ -249,7 +249,7 @@ Check browser console when switching languages to see the flow.
 ## Potential Issues & Solutions
 
 ### Issue: Old SR URLs without prefix
-**Problem**: External links like `https://apartmani-jovca.com/apartments` won't work
+**Problem**: External links like `https://apartmani-jovca.vercel.app/apartments` won't work
 **Solution**: Add redirect in `next.config.mjs`:
 
 ```javascript

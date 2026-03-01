@@ -7,6 +7,7 @@ import { Menu, X, Phone } from 'lucide-react'
 import { useLocale, useTranslations } from 'next-intl'
 import { Button } from '@/app/[lang]/components/ui/button'
 import { cn } from '@/lib/utils'
+import { CONTACT_PHONE } from '@/lib/seo/config'
 
 interface HeaderProps {
   className?: string
@@ -127,13 +128,13 @@ export function Header({ className }: HeaderProps) {
           <div className="flex items-center gap-1 sm:gap-2">
             {/* Phone Call Button - Critical for conversion */}
             <a
-              href="tel:+381652378080"
+              href={`tel:${CONTACT_PHONE.replace(/\s/g, '')}`}
               className="flex items-center gap-1 sm:gap-2 bg-primary hover:opacity-90 text-primary-foreground px-2 sm:px-3 lg:px-4 py-1.5 sm:py-2 rounded-full text-[10px] sm:text-xs lg:text-sm font-bold transition-all shadow-md hover:scale-105"
               aria-label={t('contact')}
             >
               <Phone className="h-3 w-3 sm:h-4 sm:w-4" />
               <span className="hidden lg:inline mr-1">{t('contact')}:</span>
-              <span className="hidden sm:inline">+381 65 237 8080</span>
+              <span className="hidden sm:inline">{CONTACT_PHONE}</span>
               <span className="sm:hidden">Call</span>
             </a>
 

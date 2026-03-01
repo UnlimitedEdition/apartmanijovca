@@ -46,7 +46,7 @@ export default function ReviewRequestEmail({ booking, guest }: ReviewRequestEmai
 
           <Section style={{ textAlign: 'center', margin: '30px 0' }}>
             <a
-              href="https://apartmani-jovca.com/review"
+              href="https://apartmani-jovca.vercel.app/review"
               style={{
                 backgroundColor: '#2563eb',
                 color: '#ffffff',

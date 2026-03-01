@@ -11,8 +11,8 @@ jest.mock('../../resend', () => ({
   }),
   isResendConfigured: jest.fn().mockReturnValue(true),
   EMAIL_CONFIG: {
-    adminEmail: 'admin@apartmani-jovca.com',
-    fromEmail: 'noreply@apartmani-jovca.com',
+    adminEmail: 'admin@apartmani-jovca.vercel.app',
+    fromEmail: 'noreply@apartmani-jovca.vercel.app',
   },
   logEmailEvent: jest.fn(),
 }))
@@ -207,7 +207,7 @@ describe('Email Service', () => {
     })
 
     it('should include review URL when provided', async () => {
-      const reviewUrl = 'https://apartmani-jovca.com/reviews/test'
+      const reviewUrl = 'https://apartmani-jovca.vercel.app/reviews/test'
 
       const result = await sendReviewRequest(mockBooking, mockGuest, reviewUrl)
 

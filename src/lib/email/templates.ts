@@ -4,6 +4,7 @@
 import type { ReactElement } from 'react'
 import type { EmailLanguage, EmailContent } from './types'
 import { formatDateForEmail, getApartmentName } from '../resend'
+import { CONTACT_PHONE } from '../seo/config'
 
 // Import React Email templates
 import BookingConfirmationEmail from '@/emails/BookingConfirmationEmail'
@@ -83,7 +84,7 @@ const emailStrings: Record<EmailLanguage, {
     checkInTime: 'Vreme za prijavu: 14:00 - 20:00',
     checkOutTime: 'Vreme za odjavu: 10:00',
     bringValidId: 'Ponesite važeću ličnu kartu/pasoš',
-    contactUponArrival: 'Kontaktirajte nas po dolasku na +381 65 237 8080',
+    contactUponArrival: `Kontaktirajte nas po dolasku na ${CONTACT_PHONE}`,
     wifiCode: 'WiFi lozinka će biti data pri prijavi',
     safeTravels: 'Srećan put! Radujemo se vašem dolasku.',
     whatToPrepare: 'Šta pripremiti',
@@ -123,7 +124,7 @@ const emailStrings: Record<EmailLanguage, {
     checkInTime: 'Check-in time: 14:00 - 20:00',
     checkOutTime: 'Check-out time: 10:00',
     bringValidId: 'Please bring valid ID',
-    contactUponArrival: 'Contact us at +381 65 237 8080 upon arrival',
+    contactUponArrival: `Contact us at ${CONTACT_PHONE} upon arrival`,
     wifiCode: 'WiFi code will be provided at check-in',
     safeTravels: 'Safe travels! We look forward to your arrival.',
     whatToPrepare: 'What to Prepare',
@@ -163,7 +164,7 @@ const emailStrings: Record<EmailLanguage, {
     checkInTime: 'Anreisezeit: 14:00 - 20:00',
     checkOutTime: 'Abreisezeit: 10:00',
     bringValidId: 'Bitte bringen Sie einen gültigen Ausweis mit',
-    contactUponArrival: 'Kontaktieren Sie uns bei Ankunft unter +381 65 237 8080',
+    contactUponArrival: `Kontaktieren Sie uns bei Ankunft unter ${CONTACT_PHONE}`,
     wifiCode: 'WLAN-Code wird bei der Anreise bereitgestellt',
     safeTravels: 'Gute Reise! Wir freuen uns auf Ihre Ankunft.',
     whatToPrepare: 'Was vorzubereiten ist',
@@ -203,7 +204,7 @@ const emailStrings: Record<EmailLanguage, {
     checkInTime: 'Orario check-in: 14:00 - 20:00',
     checkOutTime: 'Orario check-out: 10:00',
     bringValidId: 'Si prega di portare un documento d\'identità valido',
-    contactUponArrival: 'Contattateci al +381 65 237 8080 all\'arrivo',
+    contactUponArrival: `Contattateci al ${CONTACT_PHONE} all\'arrivo`,
     wifiCode: 'Il codice WiFi verrà fornito al check-in',
     safeTravels: 'Buon viaggio! Non vediamo l\'ora di accogliervi.',
     whatToPrepare: 'Cosa preparare',

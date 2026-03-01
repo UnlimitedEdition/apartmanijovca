@@ -1432,7 +1432,7 @@ export default function EnhancedApartmentManager() {
                         {selectedApartment.meta_title?.sr || selectedApartment.name.sr || 'Naslov apartmana'}
                       </div>
                       <div className="text-green-700 text-[10px] sm:text-xs mt-1 break-all">
-                        apartmani-jovca.com › sr › apartments › {selectedApartment.slug || 'slug'}
+                        apartmani-jovca.vercel.app › sr › apartments › {selectedApartment.slug || 'slug'}
                       </div>
                       <div className="text-gray-600 text-[10px] sm:text-xs mt-1.5 sm:mt-2 break-words">
                         {selectedApartment.meta_description?.sr || (selectedApartment.description?.sr ? selectedApartment.description.sr.substring(0, 160) : 'Opis apartmana...')}
