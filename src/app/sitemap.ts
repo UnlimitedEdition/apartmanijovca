@@ -1,9 +1,12 @@
 import { MetadataRoute } from 'next'
 import { createClient } from '@supabase/supabase-js'
-import { getBaseUrl } from '@/lib/seo/config'
+import { PRODUCTION_URL } from '@/lib/seo/config'
 
 const LOCALES = ['sr', 'en', 'de', 'it'] as const
 type Locale = typeof LOCALES[number]
+
+// Always use production URL for sitemap (not preview URLs)
+const BASE_URL = PRODUCTION_URL
 
 // Initialize Supabase client
 const supabase = createClient(
@@ -35,17 +38,16 @@ const STATIC_PAGES = [
 ]
 
 function getStaticPages(): SitemapEntry[] {
-  const baseUrl = getBaseUrl()
   const entries: SitemapEntry[] = []
 
   for (const page of STATIC_PAGES) {
     for (const locale of LOCALES) {
-      const url = `${baseUrl}/${locale}${page.path}`
+      const url = `${BASE_URL}/${locale}${page.path}`
       
       // Generate alternate language URLs
       const alternates: Record<string, string> = {}
       for (const altLocale of LOCALES) {
-        alternates[altLocale] = `${baseUrl}/${altLocale}${page.path}`
+        alternates[altLocale] = `${BASE_URL}/${altLocale}${page.path}`
       }
 
       entries.push({
@@ -64,7 +66,6 @@ function getStaticPages(): SitemapEntry[] {
 }
 
 async function getDynamicPages(): Promise<SitemapEntry[]> {
-  const baseUrl = getBaseUrl()
   const entries: SitemapEntry[] = []
 
   try {
@@ -88,12 +89,12 @@ async function getDynamicPages(): Promise<SitemapEntry[]> {
       if (!apartment.slug) continue
 
       for (const locale of LOCALES) {
-        const url = `${baseUrl}/${locale}/apartments/${apartment.slug}`
+        const url = `${BASE_URL}/${locale}/apartments/${apartment.slug}`
         
         // Generate alternate language URLs
         const alternates: Record<string, string> = {}
         for (const altLocale of LOCALES) {
-          alternates[altLocale] = `${baseUrl}/${altLocale}/apartments/${apartment.slug}`
+          alternates[altLocale] = `${BASE_URL}/${altLocale}/apartments/${apartment.slug}`
         }
 
         entries.push({
