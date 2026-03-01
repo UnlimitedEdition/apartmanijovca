@@ -14,7 +14,9 @@ export const CONTACT_PHONE = '+381 65 237 8080'
 export const WHATSAPP_NUMBER = '+381 65 237 8080'
 
 // Email sender configuration (for Resend)
-export const EMAIL_FROM = 'noreply@apartmani-jovca.vercel.app'
+// For production with custom domain: use your domain (e.g., 'noreply@apartmani-jovca.com')
+// For testing without domain: use 'onboarding@resend.dev' (Resend test mode)
+export const EMAIL_FROM = process.env.EMAIL_FROM || 'onboarding@resend.dev'
 export const EMAIL_ADMIN = CONTACT_EMAIL // Admin email is the same as contact email
 // ============================================
 
