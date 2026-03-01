@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useCallback, useEffect } from 'react'
+import { createBrowserClient } from '@supabase/ssr'
 import { Card } from '../../components/ui/card'
 import { Tabs, TabsContent } from '../../components/ui/tabs'
 import { Button } from '../../components/ui/button'
@@ -50,6 +51,23 @@ export default function AdminDashboard({ stats: _initialStats }: AdminDashboardP
 
   // Suppress unused variable warning
   void _initialStats
+
+  // Create Supabase client for logout
+  const supabase = createBrowserClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
+
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut()
+      window.location.href = '/admin/login'
+    } catch (error) {
+      console.error('Logout error:', error)
+      // Force redirect even if signOut fails
+      window.location.href = '/admin/login'
+    }
+  }
 
   const refreshStats = useCallback(async () => {
     try {
@@ -114,11 +132,9 @@ export default function AdminDashboard({ stats: _initialStats }: AdminDashboardP
                 )}
                 Osveži
               </Button>
-              <Button variant="destructive" size="sm" asChild className="h-9">
-                <a href="/">
-                  <LogOut className="h-4 w-4 mr-2" />
-                  Odjava
-                </a>
+              <Button variant="destructive" size="sm" onClick={handleLogout} className="h-9">
+                <LogOut className="h-4 w-4 mr-2" />
+                Odjava
               </Button>
             </div>
 
@@ -258,11 +274,9 @@ export default function AdminDashboard({ stats: _initialStats }: AdminDashboardP
                   )}
                   Osveži stats
                 </Button>
-                <Button variant="destructive" size="sm" asChild className="w-full justify-start">
-                  <a href="/">
-                    <LogOut className="h-4 w-4 mr-2" />
-                    Odjavi se
-                  </a>
+                <Button variant="destructive" size="sm" onClick={handleLogout} className="w-full justify-start">
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Odjavi se
                 </Button>
               </div>
             </nav>
