@@ -125,6 +125,35 @@ export interface Database {
           created_at?: string
         }
       }
+      content: {
+        Row: {
+          id: string
+          key: string
+          language: string
+          value: Json
+          published: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          key: string
+          language: string
+          value: Json
+          published?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          key?: string
+          language?: string
+          value?: Json
+          published?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+      }
     }
     Views: {
       [_ in never]: never

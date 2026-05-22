@@ -86,62 +86,78 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 interface Attraction {
   name: string
   description: string
-}
-
-interface AttractionsData {
-  title?: string
-  description?: string
-  list?: Attraction[]
-  mapLink?: string
+  distance?: string
+  image?: string
+  lat?: number
+  lng?: number
 }
 
 export default async function AttractionsPage({ params }: PageProps) {
   const t = await getTranslations({ locale: params.lang, namespace: 'attractions' })
-  const { data: content } = (await supabase
+  // value je jsonb (Json tip) — castujemo na konkretan tip liste atrakcija.
+  const result = await supabase
     .from('content')
-    .select('data')
-    .eq('lang', params.lang)
-    .eq('section', 'attractions')
-    .single()) as { data: AttractionsData | null } || { data: null }
+    .select('value')
+    .eq('key', 'attractions.list')
+    .eq('language', params.lang)
+    .maybeSingle()
 
-  const attractionsData: AttractionsData = content || {}
+  const row = result.data as { value: Attraction[] } | null
+  const attractions: Attraction[] = Array.isArray(row?.value) ? row!.value : []
 
   return (
     <div className="container mx-auto px-4 py-6 sm:py-8 3xl:py-12 4xl:py-16">
       <div className="text-center mb-8 sm:mb-12 3xl:mb-16 4xl:mb-20">
         <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl 3xl:text-7xl 4xl:text-8xl font-bold mb-3 sm:mb-4 3xl:mb-6">
-          {attractionsData.title || t('title')}
+          {t('title')}
         </h1>
         <p className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto mb-6 sm:mb-8 px-4">
-          {attractionsData.description || t('description')}
+          {t('description')}
         </p>
       </div>
 
-      {Array.isArray(attractionsData.list) && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-          {attractionsData.list.map((attraction: Attraction, index: number) => (
-            <Card key={index} className="h-full">
-              <CardHeader className="p-4 sm:p-6">
-                <h2 className="text-base sm:text-lg lg:text-xl">{attraction.name}</h2>
+      {attractions.length === 0 ? (
+        <div className="text-center py-12 text-muted-foreground">
+          <p className="text-lg font-semibold">{t('noAttractions.title')}</p>
+          <p className="text-sm">{t('noAttractions.message')}</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          {attractions.map((attraction, index) => (
+            <Card key={index} className="h-full overflow-hidden flex flex-col">
+              {attraction.image && (
+                <div className="relative aspect-[4/3] bg-muted">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={attraction.image}
+                    alt={attraction.name}
+                    className="w-full h-full object-cover"
+                  />
+                  {attraction.distance && (
+                    <span className="absolute top-2 right-2 bg-black/70 text-white text-xs font-semibold px-2 py-1 rounded-full backdrop-blur-sm">
+                      {attraction.distance}
+                    </span>
+                  )}
+                </div>
+              )}
+              <CardHeader className="p-4 sm:p-6 pb-2">
+                <h2 className="text-base sm:text-lg lg:text-xl font-bold">{attraction.name}</h2>
               </CardHeader>
-              <CardContent className="p-4 sm:p-6 pt-0">
-                <p className="text-muted-foreground text-xs sm:text-sm lg:text-base">{attraction.description}</p>
+              <CardContent className="p-4 sm:p-6 pt-0 flex flex-col flex-1">
+                <p className="text-muted-foreground text-xs sm:text-sm lg:text-base flex-1">{attraction.description}</p>
+                {typeof attraction.lat === 'number' && typeof attraction.lng === 'number' && (
+                  <a
+                    href={`https://www.google.com/maps?q=${attraction.lat},${attraction.lng}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center mt-4 text-xs sm:text-sm font-medium text-blue-600 hover:text-blue-700"
+                  >
+                    {t('viewOnMap')}
+                  </a>
+                )}
               </CardContent>
             </Card>
           ))}
-        </div>
-      )}
-
-      {attractionsData.mapLink && (
-        <div className="text-center mt-8 sm:mt-12">
-          <a
-            href={attractionsData.mapLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center px-4 sm:px-6 py-2.5 sm:py-3 border border-transparent text-xs sm:text-sm lg:text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
-          >
-            {t('viewOnMap')}
-          </a>
         </div>
       )}
     </div>

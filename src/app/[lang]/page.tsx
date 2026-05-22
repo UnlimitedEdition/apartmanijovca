@@ -125,24 +125,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function HomePage({ params }: PageProps) {
-  let content = null
   let apartments = null
   let reviews = null
-  // averageRating removed
 
   if (supabase) {
-    try {
-      const { data: contentData } = await supabase
-        .from('content')
-        .select('data')
-        .eq('lang', params.lang)
-        .eq('section', 'home')
-        .single()
-      content = contentData
-    } catch (error) {
-      console.error('Error fetching content:', error)
-    }
-
     try {
       const { data: apartmentsData } = await supabase
         .from('apartments')
@@ -180,8 +166,6 @@ export default async function HomePage({ params }: PageProps) {
   const commonT = await getTranslations({ locale: params.lang, namespace: 'common' })
   const aptT = await getTranslations({ locale: params.lang, namespace: 'apartments' })
 
-  const homeData = content?.data || {}
-
   interface Testimonial {
     id: string
     rating: number
@@ -198,8 +182,8 @@ export default async function HomePage({ params }: PageProps) {
         <div className="absolute inset-0">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img 
-            src="/images/background.jpg" 
-            alt={homeData.title || t('title')}
+            src="/images/background.jpg"
+            alt={t('title')}
             fetchPriority="high"
             decoding="sync"
             className="w-full h-full object-cover"
@@ -207,10 +191,10 @@ export default async function HomePage({ params }: PageProps) {
         </div>
         <div className="container relative z-20 text-center text-white px-4">
           <h1 className="text-4xl md:text-7xl 3xl:text-8xl 4xl:text-9xl font-bold mb-6 tracking-tight drop-shadow-lg">
-            {homeData.title || t('title')}
+            {t('title')}
           </h1>
           <p className="text-xl md:text-3xl 3xl:text-4xl 4xl:text-5xl mb-10 max-w-3xl 3xl:max-w-5xl 4xl:max-w-7xl mx-auto font-medium drop-shadow-md">
-            {homeData.subtitle || t('subtitle')}
+            {t('subtitle')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 3xl:gap-6 4xl:gap-8 justify-center items-center">
             <a
