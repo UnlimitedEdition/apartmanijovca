@@ -17,11 +17,6 @@ interface PageProps {
   params: { lang: string }
 }
 
-interface PricesData {
-  title?: string
-  description?: string
-}
-
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const locale = params.lang as Locale
   const t = await getTranslations({ locale, namespace: 'seo' })
@@ -100,15 +95,6 @@ export default async function PricesPage({ params }: PageProps) {
   const t = await getTranslations({ locale: params.lang, namespace: 'prices' })
   const aptT = await getTranslations({ locale: params.lang, namespace: 'apartments' })
 
-  const { data: content } = (await supabase
-    ?.from('content')
-    .select('data')
-    .eq('lang', params.lang)
-    .eq('section', 'prices')
-    .single()) || { data: null }
-
-  const pricesData: PricesData = content || {}
-
   // Fetch apartments for dynamic prices - only active apartments
   const { data: apartments } = (await supabase
     ?.from('apartments')
@@ -132,10 +118,10 @@ export default async function PricesPage({ params }: PageProps) {
           {t('title')}
         </Badge>
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black tracking-tighter mb-4 sm:mb-6 bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/70">
-          {pricesData.title || t('title')}
+          {t('title')}
         </h1>
         <p className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto font-medium px-4">
-          {pricesData.description || t('description')}
+          {t('description')}
         </p>
       </div>
 

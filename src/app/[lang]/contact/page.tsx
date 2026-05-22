@@ -1,6 +1,5 @@
 import { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
-import { supabase } from '../lib/supabase/client'
 import { Card, CardContent, CardHeader } from '../components/ui/card'
 import { Badge } from '../components/ui/badge'
 import SafeImage from '../../../components/SafeImage'
@@ -16,11 +15,6 @@ import { getKeywordsString } from '@/lib/seo/keywords'
 
 interface PageProps {
   params: { lang: string }
-}
-
-interface ContactData {
-  title?: string
-  description?: string
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -95,15 +89,6 @@ export default async function ContactPage({ params }: PageProps) {
   const contactT = await getTranslations({ locale: params.lang, namespace: 'contact' })
   const commonT = await getTranslations({ locale: params.lang, namespace: 'common' })
 
-  const { data: content } = (await supabase
-    ?.from('content')
-    .select('data')
-    .eq('lang', params.lang)
-    .eq('section', 'contact')
-    .single()) || { data: null }
-
-  const contactData: ContactData = content || {}
-
   // Breadcrumb items
   const breadcrumbItems = [
     { label: commonT('home'), href: `/${params.lang}` },
@@ -119,10 +104,10 @@ export default async function ContactPage({ params }: PageProps) {
           {contactT('title')}
         </Badge>
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl 3xl:text-8xl 4xl:text-9xl font-black tracking-tighter mb-4 sm:mb-6 3xl:mb-8 bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/70">
-          {contactData.title || contactT('title')}
+          {contactT('title')}
         </h1>
         <p className="text-sm sm:text-base md:text-lg lg:text-xl 3xl:text-2xl 4xl:text-3xl text-muted-foreground max-w-2xl 3xl:max-w-4xl 4xl:max-w-6xl mx-auto font-medium px-4">
-          {contactData.description || contactT('description')}
+          {contactT('description')}
         </p>
       </div>
 

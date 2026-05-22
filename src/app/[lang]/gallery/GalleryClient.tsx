@@ -6,6 +6,18 @@ import { Card, CardContent } from '@/app/[lang]/components/ui/card'
 import { Button } from '@/app/[lang]/components/ui/button'
 import { Maximize2, X, Loader2 } from 'lucide-react'
 
+const CATEGORY_LABELS: Record<string, Record<string, string>> = {
+  exterior: { sr: 'Eksterijer', en: 'Exterior', de: 'Außenbereich', it: 'Esterno' },
+  lake: { sr: 'Jezero', en: 'Lake', de: 'See', it: 'Lago' },
+  rooms: { sr: 'Sobe', en: 'Rooms', de: 'Zimmer', it: 'Camere' },
+  terrace: { sr: 'Terasa', en: 'Terrace', de: 'Terrasse', it: 'Terrazza' },
+  view: { sr: 'Pogled', en: 'View', de: 'Aussicht', it: 'Vista' },
+}
+
+function tagLabel(tag: string, lang: string): string {
+  return CATEGORY_LABELS[tag]?.[lang] ?? CATEGORY_LABELS[tag]?.sr ?? tag
+}
+
 interface GalleryItem {
   id: string
   url: string
@@ -90,7 +102,7 @@ export default function GalleryClient({
             onClick={() => setSelectedTag(tag)}
             className="rounded-full px-6 font-bold"
           >
-            {tag}
+            {tagLabel(tag, lang)}
           </Button>
         ))}
       </div>
@@ -131,7 +143,7 @@ export default function GalleryClient({
                     <div className="flex flex-wrap gap-1">
                       {item.tags?.map(tag => (
                         <span key={tag} className="text-[10px] uppercase tracking-wider bg-primary/80 text-white px-2 py-0.5 rounded backdrop-blur-sm">
-                          {tag}
+                          {tagLabel(tag, lang)}
                         </span>
                       ))}
                     </div>
