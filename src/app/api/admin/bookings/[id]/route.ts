@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { requireAdmin } from '@/lib/auth/require-admin'
 import { getLocalizedValue } from '@/lib/localization/helpers'
 import { updateBooking } from '@/lib/bookings/service'
 import type { ApartmentRecord, BookingRecord, GuestRecord, MultiLanguageText, Json } from '@/lib/types/database'
@@ -26,6 +27,8 @@ export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  const authError = await requireAdmin(request)
+  if (authError) return authError
   try {
     const { id } = params
 
@@ -91,9 +94,9 @@ export async function GET(
         apartment_id: booking.apartment_id,
         check_in: booking.check_in,
         check_out: booking.check_out,
-        guest_name: booking.guests.full_name,
-        guest_email: booking.guests.email,
-        guest_phone: booking.guests.phone,
+        guest_name: booking.guests?.full_name || 'Unknown',
+        guest_email: booking.guests?.email || 'Unknown',
+        guest_phone: booking.guests?.phone,
         status: booking.status,
         total_price: booking.total_price,
         number_of_guests: booking.num_guests || 1,
@@ -125,6 +128,8 @@ export async function PATCH(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  const authError = await requireAdmin(request)
+  if (authError) return authError
   try {
     const { id } = params
     const body = await request.json()

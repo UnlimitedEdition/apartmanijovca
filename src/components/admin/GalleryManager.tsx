@@ -45,6 +45,7 @@ export default function GalleryManager() {
   const [selectedLang, setSelectedLang] = useState('sr')
   const [formData, setFormData] = useState({
     url: '',
+    publicId: '',
     captions: { sr: '', en: '', de: '', it: '' } as Record<string, string>,
     tags: [] as string[],
     display_order: 0
@@ -76,6 +77,7 @@ export default function GalleryManager() {
   const resetForm = () => {
     setFormData({
       url: '',
+      publicId: '',
       captions: { sr: '', en: '', de: '', it: '' },
       tags: [],
       display_order: 0
@@ -103,6 +105,7 @@ export default function GalleryManager() {
   const handleEdit = (item: GalleryItem) => {
     setFormData({
       url: item.url,
+      publicId: '',
       captions: parseCaption(item.caption),
       tags: item.tags || [],
       display_order: item.display_order
@@ -150,8 +153,8 @@ export default function GalleryManager() {
         throw new Error(data.error || 'Neuspešno otpremanje slike')
       }
 
-      const { url } = await response.json()
-      setFormData(prev => ({ ...prev, url }))
+      const { url, publicId } = await response.json()
+      setFormData(prev => ({ ...prev, url, publicId: publicId || '' }))
       setSuccess('Slika je uspešno otpremljena!')
       setTimeout(() => setSuccess(null), 3000)
     } catch (err) {
@@ -198,7 +201,9 @@ export default function GalleryManager() {
         ...prev,
         captions: {
           ...prev.captions,
-          ...translations
+          en: translations.en,
+          de: translations.de,
+          it: translations.it
         }
       }))
       setSuccess('Prevodi su uspešno generisani!')

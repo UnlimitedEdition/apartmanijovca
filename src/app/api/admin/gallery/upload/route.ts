@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { uploadImage } from '@/lib/cloudinary'
+import { requireAdmin } from '@/lib/auth/require-admin'
 
 export async function POST(request: NextRequest) {
+  const authError = await requireAdmin(request)
+  if (authError) return authError
   try {
     const formData = await request.formData()
     const image = formData.get('image') as File

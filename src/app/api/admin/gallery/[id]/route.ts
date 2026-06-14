@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@supabase/supabase-js'
+import { requireAdmin } from '@/lib/auth/require-admin'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -13,6 +14,8 @@ export async function DELETE(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  const authError = await requireAdmin(request)
+  if (authError) return authError
   try {
     const id = params.id
 
@@ -41,6 +44,8 @@ export async function PATCH(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  const authError = await requireAdmin(request)
+  if (authError) return authError
   try {
     const id = params.id
     const body = await request.json()
