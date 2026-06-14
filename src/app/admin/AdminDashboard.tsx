@@ -13,18 +13,20 @@ import AnalyticsView from '../../components/admin/AnalyticsView'
 import GalleryManager from '../../components/admin/GalleryManager'
 import AvailabilityCalendarView from '../../components/admin/AvailabilityCalendarView'
 import MessagesManager from '../../components/admin/MessagesManager'
-import { 
-  LayoutDashboard, 
-  Calendar, 
-  Building2, 
-  FileText, 
+import AttractionsManager from '../../components/admin/AttractionsManager'
+import {
+  LayoutDashboard,
+  Calendar,
+  Building2,
+  FileText,
   LogOut,
   RefreshCw,
   Loader2,
   LineChart,
   ImageIcon,
   CalendarCheck,
-  Mail
+  Mail,
+  MapPin
 } from 'lucide-react'
 
 interface Stats {
@@ -241,7 +243,19 @@ export default function AdminDashboard({ stats: _initialStats }: AdminDashboardP
                 <ImageIcon className="h-4 w-4" />
                 Galerija
               </button>
-              
+              <button
+                onClick={() => {
+                  setActiveTab('attractions')
+                  document.getElementById('mobile-menu')?.classList.add('hidden')
+                }}
+                className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  activeTab === 'attractions' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted'
+                }`}
+              >
+                <MapPin className="h-4 w-4" />
+                Atrakcije
+              </button>
+
               <div className="border-t pt-2 mt-2 flex flex-col gap-2">
                 <Button 
                   variant="outline" 
@@ -347,6 +361,15 @@ export default function AdminDashboard({ stats: _initialStats }: AdminDashboardP
               <ImageIcon className="h-4 w-4" />
               Galerija
             </button>
+            <button
+              onClick={() => setActiveTab('attractions')}
+              className={`flex items-center gap-3 w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                activeTab === 'attractions' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted'
+              }`}
+            >
+              <MapPin className="h-4 w-4" />
+              Atrakcije
+            </button>
           </nav>
         </aside>
 
@@ -393,6 +416,11 @@ export default function AdminDashboard({ stats: _initialStats }: AdminDashboardP
           {/* Gallery Tab */}
           <TabsContent value="gallery">
             <GalleryManager />
+          </TabsContent>
+
+          {/* Attractions Tab */}
+          <TabsContent value="attractions">
+            <AttractionsManager />
           </TabsContent>
         </Tabs>
         </main>
