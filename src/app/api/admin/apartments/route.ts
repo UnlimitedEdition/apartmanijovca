@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { requireAdmin } from '@/lib/auth/require-admin'
 import { extractLocale } from '@/lib/localization/extract'
 import { localizeApartments } from '@/lib/localization/transformer'
 import { isCompleteMultiLanguageText, getMissingLanguages } from '@/lib/localization/helpers'
@@ -13,6 +14,8 @@ const supabaseAdmin = createClient(supabaseUrl, process.env.NEXT_SERVICE_ROLE_KE
 
 // GET - List all apartments
 export async function GET(request: NextRequest) {
+  const authError = await requireAdmin(request)
+  if (authError) return authError
   try {
     // Check if raw data is requested (for admin editing)
     const { searchParams } = new URL(request.url)
@@ -50,9 +53,11 @@ export async function GET(request: NextRequest) {
 
 // POST - Create new apartment
 export async function POST(request: NextRequest) {
+  const authError = await requireAdmin(request)
+  if (authError) return authError
   try {
     const body = await request.json()
-    const { 
+    const {
       slug,
       name, 
       description, 

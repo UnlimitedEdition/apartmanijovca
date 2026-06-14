@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { requireAdmin } from '@/lib/auth/require-admin'
 import { getLocalizedValue } from '@/lib/localization/helpers'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
@@ -10,9 +11,11 @@ const supabaseAdmin = createClient(supabaseUrl, process.env.NEXT_SERVICE_ROLE_KE
 
 // GET - List bookings with filters
 export async function GET(request: NextRequest) {
+  const authError = await requireAdmin(request)
+  if (authError) return authError
   try {
     const { searchParams } = new URL(request.url)
-    
+
     const page = parseInt(searchParams.get('page') || '1')
     const limit = parseInt(searchParams.get('limit') || '20')
     const status = searchParams.get('status')

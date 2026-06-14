@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { requireAdmin } from '@/lib/auth/require-admin'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -12,6 +13,8 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey, {
 
 // GET /api/admin/availability - Get availability records with filters
 export async function GET(request: NextRequest) {
+  const authError = await requireAdmin(request)
+  if (authError) return authError
   try {
     const searchParams = request.nextUrl.searchParams
     const apartmentId = searchParams.get('apartmentId')
@@ -85,6 +88,8 @@ export async function GET(request: NextRequest) {
 
 // POST /api/admin/availability - Create or update availability record
 export async function POST(request: NextRequest) {
+  const authError = await requireAdmin(request)
+  if (authError) return authError
   try {
     const body = await request.json()
     const { apartmentId, date, isAvailable, priceOverride, reason, bookingId } = body
@@ -157,6 +162,8 @@ export async function POST(request: NextRequest) {
 
 // DELETE /api/admin/availability - Delete availability record
 export async function DELETE(request: NextRequest) {
+  const authError = await requireAdmin(request)
+  if (authError) return authError
   try {
     const searchParams = request.nextUrl.searchParams
     const id = searchParams.get('id')

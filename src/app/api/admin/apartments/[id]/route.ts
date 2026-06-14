@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { requireAdmin } from '@/lib/auth/require-admin'
 import { extractLocale } from '@/lib/localization/extract'
 import { localizeApartment } from '@/lib/localization/transformer'
 import { mergeMultiLanguageText } from '@/lib/localization/helpers'
@@ -14,9 +15,11 @@ export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  const authError = await requireAdmin(request)
+  if (authError) return authError
   try {
     const { id } = params
-    
+
     // Check if raw data is requested (for admin editing)
     const { searchParams } = new URL(request.url)
     const raw = searchParams.get('raw') === 'true'
@@ -64,6 +67,8 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  const authError = await requireAdmin(request)
+  if (authError) return authError
   try {
     const { id } = params
     const body = await request.json()
@@ -181,6 +186,8 @@ export async function DELETE(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  const authError = await requireAdmin(request)
+  if (authError) return authError
   try {
     const { id } = params
 

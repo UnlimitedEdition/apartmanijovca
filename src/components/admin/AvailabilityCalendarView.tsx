@@ -56,7 +56,7 @@ export default function AvailabilityCalendarView() {
         apartmentId: selectedApartment,
         startDate,
         endDate,
-        limit: '100'
+        limit: '31'
       })
 
       const response = await fetch(`/api/admin/availability?${params}`)
@@ -65,7 +65,7 @@ export default function AvailabilityCalendarView() {
       const data = await response.json()
       const availMap: AvailabilityData = {}
       
-      data.data?.forEach((record: { apartment_id: string; date: string; is_available: boolean; price_override?: number | null; booking_id?: string | null; reason?: string | null }) => {
+      data.data?.forEach((record: { date: string; is_available: boolean; price_override?: number | null; booking_id?: string | null; reason?: string | null }) => {
         availMap[record.date] = {
           is_available: record.is_available,
           booking_id: record.booking_id ?? null,

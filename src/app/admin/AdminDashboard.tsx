@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback } from 'react'
 import { createBrowserClient } from '@supabase/ssr'
 import { Card } from '../../components/ui/card'
 import { Tabs, TabsContent } from '../../components/ui/tabs'
@@ -69,30 +69,16 @@ export default function AdminDashboard({ stats: _initialStats }: AdminDashboardP
     }
   }
 
-  const refreshStats = useCallback(async () => {
-    try {
-      setRefreshing(true)
-      const response = await fetch('/api/admin/stats')
-      if (response.ok) {
-        await response.json()
-        setStatsKey(prev => prev + 1) // Force StatsCards to refresh
-      }
-    } catch (error) {
-      console.error('Failed to refresh stats:', error)
-    } finally {
-      setRefreshing(false)
-    }
+  const refreshStats = useCallback(() => {
+    setRefreshing(true)
+    setStatsKey(prev => prev + 1) // Force StatsCards to re-mount and re-fetch independently
+    setRefreshing(false)
   }, [])
 
   const handleStatusChange = () => {
     // Refresh stats when a booking status changes
     refreshStats()
   }
-
-  // Auto-load stats on mount
-  useEffect(() => {
-    refreshStats()
-  }, [refreshStats])
 
   if (!Card || !Tabs || !Button) {
     return (

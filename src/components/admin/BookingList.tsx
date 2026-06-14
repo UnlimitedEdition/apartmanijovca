@@ -127,17 +127,31 @@ export default function BookingList({ apartmentId, limit: propLimit, title, onSt
   }, [])
 
   const handleStatusChange = async (bookingId: string, newStatus: string) => {
+    const previousBookings = bookings
     try {
       setUpdatingStatus(bookingId)
       setActiveDropdown(null)
-      
-      // Update local state - the API call is already made by AdminBookingDetails
-      setBookings(prev => prev.map(b => 
+
+      // Optimistic update
+      setBookings(prev => prev.map(b =>
         b.id === bookingId ? { ...b, status: newStatus } : b
       ))
-      
+
+      const response = await fetch(`/api/admin/bookings/${bookingId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus })
+      })
+
+      if (!response.ok) {
+        const data = await response.json()
+        throw new Error(data.error || 'Failed to update status')
+      }
+
       onStatusChange?.(bookingId, newStatus)
     } catch (err) {
+      // Roll back optimistic update on failure
+      setBookings(previousBookings)
       setError(err instanceof Error ? err.message : 'Failed to update status')
     } finally {
       setUpdatingStatus(null)
@@ -148,9 +162,20 @@ export default function BookingList({ apartmentId, limit: propLimit, title, onSt
     try {
       // Fetch full booking details with apartment info
       const response = await fetch(`/api/admin/bookings/${booking.id}`)
-      if (!response.ok) throw new Error('Failed to fetch booking details')
-      
       const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to fetch booking details')
+      }
+
+      if (!data.booking) {
+        throw new Error('Rezervacija nije pronađena')
+      }
+
+      if (!data.booking.apartments) {
+        console.warn(`[BookingList] Booking ${booking.id}: apartments join returned null — apartment details will be unavailable`)
+      }
+
       setSelectedBooking(data.booking)
       setShowModal(true)
     } catch (err) {
@@ -547,7 +572,13 @@ export default function BookingList({ apartmentId, limit: propLimit, title, onSt
               </Button>
             </div>
             <div className="p-6">
-              <AdminBookingDetails 
+              {!selectedBooking.apartments && (
+                <div className="flex items-center gap-2 text-amber-600 bg-amber-50 border border-amber-200 rounded-md px-3 py-2 mb-4 text-sm">
+                  <AlertCircle className="h-4 w-4 shrink-0" />
+                  <span>Podaci o apartmanu nisu dostupni (join nije vratio rezultat). Proverite da li apartman postoji u bazi.</span>
+                </div>
+              )}
+              <AdminBookingDetails
                 booking={{
                   ...selectedBooking,
                   guest_phone: selectedBooking.guest_phone || '',

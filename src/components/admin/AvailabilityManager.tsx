@@ -88,9 +88,9 @@ export default function AvailabilityManager() {
       const response = await fetch(`/api/admin/availability?${params}`)
       if (!response.ok) throw new Error('Failed to fetch availability')
 
-      const data = await response.json()
-      setRecords(data.data || [])
-      setTotalCount(data.count || 0)
+      const json = await response.json()
+      setRecords(json.data || [])
+      setTotalCount(json.count || 0)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch availability')
     } finally {
