@@ -4,15 +4,15 @@ import { extractLocale } from '@/lib/localization/extract'
 import { transformApartmentRecord } from '@/lib/transformers/database'
 import type { ApartmentRecord } from '@/lib/types/database'
 
-// Initialize Supabase client
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-
-const supabase = createClient(supabaseUrl, supabaseServiceKey, {
-  auth: {
-    persistSession: false
-  }
-})
+function getSupabase() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  return createClient(supabaseUrl, supabaseServiceKey, {
+    auth: {
+      persistSession: false
+    }
+  })
+}
 
 // Types for API responses
 interface ApartmentAvailability {
@@ -46,6 +46,7 @@ export async function GET(request: NextRequest): Promise<NextResponse<Availabili
   try {
     // Extract locale from request
     const locale = extractLocale(request)
+    const supabase = getSupabase()
     
     const searchParams = request.nextUrl.searchParams
     const checkInParam = searchParams.get('checkIn')
@@ -198,6 +199,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<Availabil
   try {
     // Extract locale from request
     const locale = extractLocale(request)
+    const supabase = getSupabase()
     
     const body = await request.json()
     const { apartmentId, checkIn, checkOut } = body

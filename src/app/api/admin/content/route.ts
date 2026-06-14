@@ -3,9 +3,14 @@ import { createClient } from '@supabase/supabase-js'
 import { requireAdmin } from '@/lib/auth/require-admin'
 import { validateApiInput, sanitizeContent } from '@/lib/validations/content'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-const supabaseAdmin = createClient(supabaseUrl, process.env.NEXT_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || supabaseAnonKey)
+function getSupabaseAdmin() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  return createClient(
+    supabaseUrl,
+    process.env.NEXT_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || supabaseAnonKey
+  )
+}
 
 // GET - Get content by section or key
 export async function GET(request: NextRequest) {
@@ -16,6 +21,7 @@ export async function GET(request: NextRequest) {
     const key = searchParams.get('key')
     const section = searchParams.get('section')
     const language = searchParams.get('language') || searchParams.get('lang')
+    const supabaseAdmin = getSupabaseAdmin()
 
     let query = supabaseAdmin
       .from('content')
@@ -163,6 +169,7 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
     const { key, language, value, section, lang, data, published } = body
+    const supabaseAdmin = getSupabaseAdmin()
 
     // Section-based save: iterate through data object and save each field
     if (section && lang && data) {
@@ -325,6 +332,7 @@ export async function DELETE(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const key = searchParams.get('key')
     const language = searchParams.get('language') || searchParams.get('lang')
+    const supabaseAdmin = getSupabaseAdmin()
 
     if (!key || !language) {
       return NextResponse.json(
