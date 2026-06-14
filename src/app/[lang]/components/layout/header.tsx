@@ -86,6 +86,7 @@ export function Header({ className }: HeaderProps) {
   const navigationItems = [
     { label: t('apartments'), href: '/apartments' },
     { label: t('gallery'), href: '/gallery' },
+    { label: t('attractions'), href: '/attractions' },
     { label: t('location'), href: '/location' },
     { label: t('contact'), href: '/contact' },
   ]
