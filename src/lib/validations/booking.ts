@@ -43,13 +43,14 @@ export const GuestInfoSchema = z.object({
       message: 'Molimo koristite validnu email adresu'
     }),
   phone: z.string()
-    .min(8, 'Broj telefona mora imati minimum 8 cifara')
-    .max(20, 'Broj telefona ne sme biti duži od 20 karaktera')
     .transform(sanitizeString)
-    .refine(val => phoneRegex.test(val), {
+    .transform(val => val === '' ? undefined : val)
+    .optional()
+    .refine(val => !val || phoneRegex.test(val), {
       message: 'Molimo unesite ispravan broj telefona (npr. +381 69 123 4567)'
     })
     .refine(val => {
+      if (!val) return true
       const digitsOnly = val.replace(/\D/g, '')
       return digitsOnly.length >= 8 && digitsOnly.length <= 15
     }, {
