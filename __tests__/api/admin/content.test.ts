@@ -18,12 +18,18 @@ process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://test.supabase.co'
 process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'test-anon-key'
 process.env.NEXT_SERVICE_ROLE_KEY = 'test-service-key'
 
-// Mock Supabase client
-jest.mock('@supabase/supabase-js')
+// The route creates `supabaseAdmin = createClient(...)` at MODULE LOAD (import time).
+// A bare jest.mock + per-test mockReturnValue runs too late (after import) and never
+// reaches the route — that was the root cause of the 500s. Return a STABLE client
+// instance instead, whose `.from` each test reconfigures.
+jest.mock('@supabase/supabase-js', () => {
+  const mockClient = { from: jest.fn() }
+  return { createClient: jest.fn(() => mockClient) }
+})
 
 describe('Content API - Section-Based Queries', () => {
-  let mockSupabase: any
-  const mockCreateClient = createClient as jest.MockedFunction<typeof createClient>
+  // Handle to the same client instance the route captured at import time.
+  const mockSupabase: any = (createClient as jest.Mock)()
 
   // Sample content data
   const mockHomeContent = [
@@ -41,29 +47,18 @@ describe('Content API - Section-Based Queries', () => {
   beforeEach(() => {
     jest.clearAllMocks()
 
-    // Setup mock Supabase client
-    mockSupabase = {
-      from: jest.fn((table: string) => {
-        if (table === 'content') {
-          return {
-            select: jest.fn().mockReturnThis(),
-            like: jest.fn().mockReturnThis(),
-            eq: jest.fn().mockReturnThis(),
-            order: jest.fn().mockReturnThis(),
-            limit: jest.fn().mockReturnThis(),
-            single: jest.fn().mockReturnThis(),
-            insert: jest.fn().mockReturnThis(),
-            update: jest.fn().mockReturnThis(),
-            then: jest.fn((callback) => callback({ data: mockHomeContent, error: null }))
-          }
-        }
-        return {
-          select: jest.fn().mockResolvedValue({ data: [], error: null })
-        }
+    // Sensible default; each test overrides mockSupabase.from for its scenario.
+    mockSupabase.from.mockReturnValue({
+      select: jest.fn().mockReturnValue({
+        like: jest.fn().mockReturnValue({
+          order: jest.fn().mockResolvedValue({ data: mockHomeContent, error: null })
+        }),
+        eq: jest.fn().mockReturnValue({
+          order: jest.fn().mockResolvedValue({ data: mockHomeContent, error: null })
+        }),
+        order: jest.fn().mockResolvedValue({ data: mockHomeContent, error: null })
       })
-    }
-
-    mockCreateClient.mockReturnValue(mockSupabase as any)
+    })
   })
 
   describe('GET - Section-Based Queries', () => {

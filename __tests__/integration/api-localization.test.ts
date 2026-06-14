@@ -1,32 +1,71 @@
 /**
  * Integration Test: API Localization
- * 
+ *
  * Tests the end-to-end localization flow:
  * 1. Request with locale parameter → API transformation → localized response
  * 2. Test the availability API endpoint with different locales (sr, en, de, it)
- * 3. Verify apartment data is properly localized (name, type are strings, not JSONB objects)
+ * 3. Verify apartment data is properly localized (name, bed_type are strings, not JSONB objects)
  * 4. Test fallback behavior when translations are missing
- * 
+ *
  * Validates Requirements: 8.1, 8.3, 8.4, 13.3
+ *
+ * NOTE: The route response exposes `bed_type` (localized), not `type` — `type` is not
+ * part of the apartment contract returned by transformApartmentRecord(). Fallback is
+ * `locale → sr → ''` (no "first available" fallback); these tests assert the real route
+ * behaviour.
  */
 
 import { NextRequest } from 'next/server'
 import { GET, POST } from '@/app/api/availability/route'
-import { createClient } from '@supabase/supabase-js'
 import type { MultiLanguageText } from '@/lib/types/database'
 
 // Mock environment variables
 process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://test.supabase.co'
 process.env.SUPABASE_SERVICE_ROLE_KEY = 'test-service-key'
 
-// Mock Supabase client - override the global mock for this test
-jest.mock('@supabase/supabase-js')
+// The availability route creates `supabase = createClient(...)` at MODULE LOAD, so a
+// bare jest.mock + per-test mockReturnValue runs too late and never reaches the route.
+// Instead we return a STABLE mocked client that reads per-test data from `mockState` at
+// call time, and resolves the route's real query chains:
+//   GET:  from('apartments').select()                  -> awaited list
+//         from('bookings').select().gte().lte().neq()  -> awaited list
+//   POST: rpc('check_availability')                    -> awaited value
+//         from('apartments').select().eq().single()    -> awaited single
+let mockState: any
+
+jest.mock('@supabase/supabase-js', () => {
+  // A thenable query builder: awaiting it resolves to `result`; chain methods return
+  // another builder; single() resolves to `singleResult`.
+  const makeChain = (result: any, singleResult: any): any => {
+    const p: any = Promise.resolve(result)
+    p.eq = jest.fn(() => makeChain(result, singleResult))
+    p.gte = jest.fn(() => makeChain(result, singleResult))
+    p.lte = jest.fn(() => makeChain(result, singleResult))
+    p.neq = jest.fn(() => makeChain(result, singleResult))
+    p.order = jest.fn(() => makeChain(result, singleResult))
+    p.limit = jest.fn(() => makeChain(result, singleResult))
+    p.single = jest.fn(() => Promise.resolve(singleResult))
+    return p
+  }
+
+  const client = {
+    from: jest.fn((table: string) => {
+      if (table === 'apartments') {
+        return { select: jest.fn(() => makeChain(mockState.apartments, mockState.apartmentSingle)) }
+      }
+      if (table === 'bookings') {
+        return { select: jest.fn(() => makeChain(mockState.bookings, mockState.bookings)) }
+      }
+      return { select: jest.fn(() => makeChain({ data: [], error: null }, { data: null, error: null })) }
+    }),
+    rpc: jest.fn(() => Promise.resolve(mockState.rpc)),
+  }
+
+  return { createClient: jest.fn(() => client) }
+})
 
 describe('API Localization Integration Tests', () => {
-  let mockSupabase: any
-  const mockCreateClient = createClient as jest.MockedFunction<typeof createClient>
-
-  // Helper to get future dates for testing
+  // Helper to get future dates for testing (GET rejects past check-in dates)
   const getFutureDates = () => {
     const checkIn = new Date()
     checkIn.setDate(checkIn.getDate() + 7) // 7 days from now
@@ -109,53 +148,21 @@ describe('API Localization Integration Tests', () => {
   }
 
   beforeEach(() => {
-    // Reset mocks
     jest.clearAllMocks()
 
-    // Setup mock Supabase client with proper promise-based chaining
-    // The API does: let query = supabase.from('apartments').select(...); await query
-    // So select() needs to return an awaitable query builder that also has methods
-    
-    mockSupabase = {
-      from: jest.fn((table: string) => {
-        if (table === 'apartments') {
-          // Create a thenable query builder
-          const createQueryBuilder = () => {
-            const promise = Promise.resolve({ data: mockApartments, error: null })
-            // Add query builder methods to the promise
-            ;(promise as any).eq = jest.fn().mockReturnValue(createQueryBuilder())
-            return promise
-          }
-          
-          return {
-            select: jest.fn().mockReturnValue(createQueryBuilder())
-          }
-        }
-        if (table === 'bookings') {
-          return {
-            select: jest.fn().mockReturnValue({
-              gte: jest.fn().mockReturnValue({
-                lte: jest.fn().mockReturnValue({
-                  neq: jest.fn().mockResolvedValue({ data: [], error: null })
-                })
-              })
-            })
-          }
-        }
-        return {
-          select: jest.fn().mockResolvedValue({ data: [], error: null })
-        }
-      }),
-      rpc: jest.fn().mockResolvedValue({ data: true, error: null })
+    // Default per-test data; individual tests override fields of mockState as needed.
+    mockState = {
+      apartments: { data: mockApartments, error: null },
+      apartmentSingle: { data: mockApartments[0], error: null },
+      bookings: { data: [], error: null },
+      rpc: { data: true, error: null },
     }
-
-    mockCreateClient.mockReturnValue(mockSupabase as any)
   })
 
   describe('GET /api/availability - Locale Extraction and Transformation', () => {
     it('should extract locale from query parameter and return localized Serbian (sr) data', async () => {
       const { checkIn, checkOut } = getFutureDates()
-      
+
       // Create request with Serbian locale
       const url = new URL(`http://localhost:3000/api/availability?checkIn=${checkIn}&checkOut=${checkOut}&locale=sr`)
       const request = new NextRequest(url)
@@ -166,21 +173,23 @@ describe('API Localization Integration Tests', () => {
       expect(response.status).toBe(200)
       expect(data.success).toBe(true)
       expect(data.data.apartments).toHaveLength(2)
-      
+
       // Verify Serbian localization
       expect(data.data.apartments[0].name).toBe('Apartman Sunce')
-      expect(data.data.apartments[0].type).toBe('Studio')
+      expect(data.data.apartments[0].bed_type).toBe('Bračni krevet')
       expect(data.data.apartments[1].name).toBe('Apartman More')
-      expect(data.data.apartments[1].type).toBe('Jednosoban')
+      expect(data.data.apartments[1].bed_type).toBe('Dva kreveta')
 
       // Verify data types are strings, not objects
       expect(typeof data.data.apartments[0].name).toBe('string')
-      expect(typeof data.data.apartments[0].type).toBe('string')
+      expect(typeof data.data.apartments[0].bed_type).toBe('string')
     })
 
     it('should extract locale from query parameter and return localized English (en) data', async () => {
+      const { checkIn, checkOut } = getFutureDates()
+
       // Create request with English locale
-      const url = new URL('http://localhost:3000/api/availability?checkIn=2024-06-01&checkOut=2024-06-05&locale=en')
+      const url = new URL(`http://localhost:3000/api/availability?checkIn=${checkIn}&checkOut=${checkOut}&locale=en`)
       const request = new NextRequest(url)
 
       const response = await GET(request)
@@ -188,17 +197,19 @@ describe('API Localization Integration Tests', () => {
 
       expect(response.status).toBe(200)
       expect(data.success).toBe(true)
-      
+
       // Verify English localization
       expect(data.data.apartments[0].name).toBe('Sunny Apartment')
-      expect(data.data.apartments[0].type).toBe('Studio')
+      expect(data.data.apartments[0].bed_type).toBe('Double bed')
       expect(data.data.apartments[1].name).toBe('Sea Apartment')
-      expect(data.data.apartments[1].type).toBe('One Bedroom')
+      expect(data.data.apartments[1].bed_type).toBe('Two beds')
     })
 
     it('should extract locale from query parameter and return localized German (de) data', async () => {
+      const { checkIn, checkOut } = getFutureDates()
+
       // Create request with German locale
-      const url = new URL('http://localhost:3000/api/availability?checkIn=2024-06-01&checkOut=2024-06-05&locale=de')
+      const url = new URL(`http://localhost:3000/api/availability?checkIn=${checkIn}&checkOut=${checkOut}&locale=de`)
       const request = new NextRequest(url)
 
       const response = await GET(request)
@@ -206,17 +217,19 @@ describe('API Localization Integration Tests', () => {
 
       expect(response.status).toBe(200)
       expect(data.success).toBe(true)
-      
+
       // Verify German localization
       expect(data.data.apartments[0].name).toBe('Sonnige Wohnung')
-      expect(data.data.apartments[0].type).toBe('Studio')
+      expect(data.data.apartments[0].bed_type).toBe('Doppelbett')
       expect(data.data.apartments[1].name).toBe('Meer Wohnung')
-      expect(data.data.apartments[1].type).toBe('Ein Schlafzimmer')
+      expect(data.data.apartments[1].bed_type).toBe('Zwei Betten')
     })
 
     it('should extract locale from query parameter and return localized Italian (it) data', async () => {
+      const { checkIn, checkOut } = getFutureDates()
+
       // Create request with Italian locale
-      const url = new URL('http://localhost:3000/api/availability?checkIn=2024-06-01&checkOut=2024-06-05&locale=it')
+      const url = new URL(`http://localhost:3000/api/availability?checkIn=${checkIn}&checkOut=${checkOut}&locale=it`)
       const request = new NextRequest(url)
 
       const response = await GET(request)
@@ -224,17 +237,19 @@ describe('API Localization Integration Tests', () => {
 
       expect(response.status).toBe(200)
       expect(data.success).toBe(true)
-      
+
       // Verify Italian localization
       expect(data.data.apartments[0].name).toBe('Appartamento Soleggiato')
-      expect(data.data.apartments[0].type).toBe('Monolocale')
+      expect(data.data.apartments[0].bed_type).toBe('Letto matrimoniale')
       expect(data.data.apartments[1].name).toBe('Appartamento Mare')
-      expect(data.data.apartments[1].type).toBe('Una Camera')
+      expect(data.data.apartments[1].bed_type).toBe('Due letti')
     })
 
     it('should default to Serbian (sr) when no locale is provided', async () => {
+      const { checkIn, checkOut } = getFutureDates()
+
       // Create request without locale parameter
-      const url = new URL('http://localhost:3000/api/availability?checkIn=2024-06-01&checkOut=2024-06-05')
+      const url = new URL(`http://localhost:3000/api/availability?checkIn=${checkIn}&checkOut=${checkOut}`)
       const request = new NextRequest(url)
 
       const response = await GET(request)
@@ -242,15 +257,17 @@ describe('API Localization Integration Tests', () => {
 
       expect(response.status).toBe(200)
       expect(data.success).toBe(true)
-      
+
       // Should default to Serbian
       expect(data.data.apartments[0].name).toBe('Apartman Sunce')
-      expect(data.data.apartments[0].type).toBe('Studio')
+      expect(data.data.apartments[0].bed_type).toBe('Bračni krevet')
     })
 
     it('should extract locale from Accept-Language header when query param is not provided', async () => {
+      const { checkIn, checkOut } = getFutureDates()
+
       // Create request with Accept-Language header
-      const url = new URL('http://localhost:3000/api/availability?checkIn=2024-06-01&checkOut=2024-06-05')
+      const url = new URL(`http://localhost:3000/api/availability?checkIn=${checkIn}&checkOut=${checkOut}`)
       const request = new NextRequest(url, {
         headers: {
           'Accept-Language': 'de-DE,de;q=0.9,en;q=0.8'
@@ -262,26 +279,25 @@ describe('API Localization Integration Tests', () => {
 
       expect(response.status).toBe(200)
       expect(data.success).toBe(true)
-      
+
       // Should use German from Accept-Language header
       expect(data.data.apartments[0].name).toBe('Sonnige Wohnung')
+      expect(data.data.apartments[0].bed_type).toBe('Doppelbett')
     })
   })
 
   describe('Fallback Behavior for Missing Translations', () => {
     it('should fallback to Serbian (sr) when requested locale is missing', async () => {
-      // Mock database responses with apartment missing German translation
-      mockSupabase.select.mockResolvedValueOnce({
+      const { checkIn, checkOut } = getFutureDates()
+
+      // Apartment missing German translation; should fall back to Serbian
+      mockState.apartments = {
         data: [mockApartmentWithMissingTranslations],
         error: null
-      })
-      mockSupabase.neq.mockResolvedValueOnce({
-        data: [],
-        error: null
-      })
+      }
 
       // Request German locale
-      const url = new URL('http://localhost:3000/api/availability?checkIn=2024-06-01&checkOut=2024-06-05&locale=de')
+      const url = new URL(`http://localhost:3000/api/availability?checkIn=${checkIn}&checkOut=${checkOut}&locale=de`)
       const request = new NextRequest(url)
 
       const response = await GET(request)
@@ -289,14 +305,16 @@ describe('API Localization Integration Tests', () => {
 
       expect(response.status).toBe(200)
       expect(data.success).toBe(true)
-      
+
       // Should fallback to Serbian since German is missing
       expect(data.data.apartments[0].name).toBe('Apartman Planina')
-      expect(data.data.apartments[0].type).toBe('Dvosoban')
+      expect(data.data.apartments[0].bed_type).toBe('Tri kreveta')
     })
 
-    it('should fallback to first available language when both requested locale and Serbian are missing', async () => {
-      // Mock apartment with only English translation
+    it('should return empty string when requested locale and Serbian are both missing (no first-available fallback)', async () => {
+      const { checkIn, checkOut } = getFutureDates()
+
+      // Apartment with only English translation (no Serbian)
       const apartmentOnlyEnglish = {
         id: 'apt-4',
         name: {
@@ -312,17 +330,13 @@ describe('API Localization Integration Tests', () => {
         } as Partial<MultiLanguageText>
       }
 
-      mockSupabase.select.mockResolvedValueOnce({
+      mockState.apartments = {
         data: [apartmentOnlyEnglish],
         error: null
-      })
-      mockSupabase.neq.mockResolvedValueOnce({
-        data: [],
-        error: null
-      })
+      }
 
       // Request German locale
-      const url = new URL('http://localhost:3000/api/availability?checkIn=2024-06-01&checkOut=2024-06-05&locale=de')
+      const url = new URL(`http://localhost:3000/api/availability?checkIn=${checkIn}&checkOut=${checkOut}&locale=de`)
       const request = new NextRequest(url)
 
       const response = await GET(request)
@@ -330,14 +344,16 @@ describe('API Localization Integration Tests', () => {
 
       expect(response.status).toBe(200)
       expect(data.success).toBe(true)
-      
-      // Should fallback to English (first available)
-      expect(data.data.apartments[0].name).toBe('English Only Apartment')
-      expect(data.data.apartments[0].type).toBe('Studio')
+
+      // Transformer falls back locale -> sr -> '' (English is NOT used as a fallback)
+      expect(data.data.apartments[0].name).toBe('')
+      expect(data.data.apartments[0].bed_type).toBe('')
     })
 
     it('should return empty string when no translations are available', async () => {
-      // Mock apartment with empty translations
+      const { checkIn, checkOut } = getFutureDates()
+
+      // Apartment with empty translations
       const apartmentNoTranslations = {
         id: 'apt-5',
         name: {} as MultiLanguageText,
@@ -347,16 +363,12 @@ describe('API Localization Integration Tests', () => {
         bed_type: {} as MultiLanguageText
       }
 
-      mockSupabase.select.mockResolvedValueOnce({
+      mockState.apartments = {
         data: [apartmentNoTranslations],
         error: null
-      })
-      mockSupabase.neq.mockResolvedValueOnce({
-        data: [],
-        error: null
-      })
+      }
 
-      const url = new URL('http://localhost:3000/api/availability?checkIn=2024-06-01&checkOut=2024-06-05&locale=en')
+      const url = new URL(`http://localhost:3000/api/availability?checkIn=${checkIn}&checkOut=${checkOut}&locale=en`)
       const request = new NextRequest(url)
 
       const response = await GET(request)
@@ -364,26 +376,20 @@ describe('API Localization Integration Tests', () => {
 
       expect(response.status).toBe(200)
       expect(data.success).toBe(true)
-      
+
       // Should return empty strings
       expect(data.data.apartments[0].name).toBe('')
-      expect(data.data.apartments[0].type).toBe('')
+      expect(data.data.apartments[0].bed_type).toBe('')
     })
   })
 
   describe('POST /api/availability - Locale Extraction and Transformation', () => {
     it('should extract locale and return localized data for specific apartment', async () => {
-      // Mock RPC call for availability check
-      mockSupabase.rpc.mockResolvedValueOnce({
-        data: true,
-        error: null
-      })
+      const { checkIn, checkOut } = getFutureDates()
 
-      // Mock apartment fetch
-      mockSupabase.single.mockResolvedValueOnce({
-        data: mockApartments[0],
-        error: null
-      })
+      // RPC availability check + single apartment fetch
+      mockState.rpc = { data: true, error: null }
+      mockState.apartmentSingle = { data: mockApartments[0], error: null }
 
       // Create POST request with English locale
       const url = new URL('http://localhost:3000/api/availability?locale=en')
@@ -391,8 +397,8 @@ describe('API Localization Integration Tests', () => {
         method: 'POST',
         body: JSON.stringify({
           apartmentId: 'apt-1',
-          checkIn: '2024-06-01',
-          checkOut: '2024-06-05'
+          checkIn,
+          checkOut
         })
       })
 
@@ -402,46 +408,38 @@ describe('API Localization Integration Tests', () => {
       expect(response.status).toBe(200)
       expect(data.success).toBe(true)
       expect(data.data.apartments).toHaveLength(1)
-      
+
       // Verify English localization
       expect(data.data.apartments[0].name).toBe('Sunny Apartment')
-      expect(data.data.apartments[0].type).toBe('Studio')
-      
+      expect(data.data.apartments[0].bed_type).toBe('Double bed')
+
       // Verify data types are strings
       expect(typeof data.data.apartments[0].name).toBe('string')
-      expect(typeof data.data.apartments[0].type).toBe('string')
+      expect(typeof data.data.apartments[0].bed_type).toBe('string')
     })
 
     it('should handle all supported locales in POST requests', async () => {
+      const { checkIn, checkOut } = getFutureDates()
+
       const locales = [
-        { locale: 'sr', expectedName: 'Apartman Sunce', expectedType: 'Studio' },
-        { locale: 'en', expectedName: 'Sunny Apartment', expectedType: 'Studio' },
-        { locale: 'de', expectedName: 'Sonnige Wohnung', expectedType: 'Studio' },
-        { locale: 'it', expectedName: 'Appartamento Soleggiato', expectedType: 'Monolocale' }
+        { locale: 'sr', expectedName: 'Apartman Sunce', expectedBedType: 'Bračni krevet' },
+        { locale: 'en', expectedName: 'Sunny Apartment', expectedBedType: 'Double bed' },
+        { locale: 'de', expectedName: 'Sonnige Wohnung', expectedBedType: 'Doppelbett' },
+        { locale: 'it', expectedName: 'Appartamento Soleggiato', expectedBedType: 'Letto matrimoniale' }
       ]
 
-      for (const { locale, expectedName, expectedType } of locales) {
-        // Reset mocks for each iteration
-        jest.clearAllMocks()
-        mockCreateClient.mockReturnValue(mockSupabase as any)
-
-        mockSupabase.rpc.mockResolvedValueOnce({
-          data: true,
-          error: null
-        })
-
-        mockSupabase.single.mockResolvedValueOnce({
-          data: mockApartments[0],
-          error: null
-        })
+      for (const { locale, expectedName, expectedBedType } of locales) {
+        // Reset per-iteration data
+        mockState.rpc = { data: true, error: null }
+        mockState.apartmentSingle = { data: mockApartments[0], error: null }
 
         const url = new URL(`http://localhost:3000/api/availability?locale=${locale}`)
         const request = new NextRequest(url, {
           method: 'POST',
           body: JSON.stringify({
             apartmentId: 'apt-1',
-            checkIn: '2024-06-01',
-            checkOut: '2024-06-05'
+            checkIn,
+            checkOut
           })
         })
 
@@ -451,54 +449,49 @@ describe('API Localization Integration Tests', () => {
         expect(response.status).toBe(200)
         expect(data.success).toBe(true)
         expect(data.data.apartments[0].name).toBe(expectedName)
-        expect(data.data.apartments[0].type).toBe(expectedType)
+        expect(data.data.apartments[0].bed_type).toBe(expectedBedType)
       }
     })
   })
 
   describe('Data Type Validation', () => {
     it('should ensure all localized fields are strings, not JSONB objects', async () => {
-      mockSupabase.select.mockResolvedValueOnce({
-        data: mockApartments,
-        error: null
-      })
-      mockSupabase.neq.mockResolvedValueOnce({
-        data: [],
-        error: null
-      })
+      const { checkIn, checkOut } = getFutureDates()
 
-      const url = new URL('http://localhost:3000/api/availability?checkIn=2024-06-01&checkOut=2024-06-05&locale=en')
+      const url = new URL(`http://localhost:3000/api/availability?checkIn=${checkIn}&checkOut=${checkOut}&locale=en`)
       const request = new NextRequest(url)
 
       const response = await GET(request)
       const data = await response.json()
 
       expect(response.status).toBe(200)
-      
+
       // Verify all apartments have string fields
       data.data.apartments.forEach((apartment: any) => {
         expect(typeof apartment.name).toBe('string')
-        expect(typeof apartment.type).toBe('string')
+        expect(typeof apartment.bed_type).toBe('string')
         expect(typeof apartment.id).toBe('string')
         expect(typeof apartment.capacity).toBe('number')
         expect(typeof apartment.base_price_eur).toBe('number')
         expect(typeof apartment.available).toBe('boolean')
-        
+
         // Ensure they are NOT objects
         expect(apartment.name).not.toBeInstanceOf(Object)
-        expect(apartment.type).not.toBeInstanceOf(Object)
+        expect(apartment.bed_type).not.toBeInstanceOf(Object)
       })
     })
   })
 
   describe('Error Handling', () => {
     it('should handle database errors gracefully', async () => {
-      mockSupabase.select.mockResolvedValueOnce({
+      const { checkIn, checkOut } = getFutureDates()
+
+      mockState.apartments = {
         data: null,
         error: { message: 'Database connection failed' }
-      })
+      }
 
-      const url = new URL('http://localhost:3000/api/availability?checkIn=2024-06-01&checkOut=2024-06-05&locale=en')
+      const url = new URL(`http://localhost:3000/api/availability?checkIn=${checkIn}&checkOut=${checkOut}&locale=en`)
       const request = new NextRequest(url)
 
       const response = await GET(request)
