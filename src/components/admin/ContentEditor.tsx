@@ -310,18 +310,21 @@ export default function ContentEditor() {
         throw new Error(`Obavezna polja nisu popunjena: ${missingFields.join(', ')}`)
       }
 
-      // Prepare data for API
-      const updates = currentSection.fields.map(field => ({
-        key: field.key,
-        language: selectedLanguage,
-        value: sectionContent[field.key] || '',
-        published: true
-      }))
+      // Prepare data for API — use section-based format: { section, lang, data }
+      // Route expects field keys WITHOUT the section prefix (e.g., 'title' not 'home.title')
+      const sectionPrefix = selectedSection + '.'
+      const data: Record<string, string> = {}
+      currentSection.fields.forEach(field => {
+        const fieldKey = field.key.startsWith(sectionPrefix)
+          ? field.key.slice(sectionPrefix.length)
+          : field.key
+        data[fieldKey] = sectionContent[field.key] || ''
+      })
 
       const response = await fetch('/api/admin/content', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ updates })
+        body: JSON.stringify({ section: selectedSection, lang: selectedLanguage, data, published: true })
       })
 
       if (!response.ok) {

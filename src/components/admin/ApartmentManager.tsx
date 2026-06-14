@@ -105,7 +105,7 @@ export default function ApartmentManager() {
     // When editing, we need to fetch the full apartment data with JSONB fields
     // The list view shows localized strings, but we need the full multi-language objects for editing
     // For now, we'll fetch from the detail endpoint
-    fetch(`/api/admin/apartments/${apartment.id}`)
+    fetch(`/api/admin/apartments/${apartment.id}?raw=true`)
       .then(res => res.json())
       .then(data => {
         setFormData({
@@ -172,15 +172,13 @@ export default function ApartmentManager() {
         throw new Error(errorData.error || 'Failed to save apartment')
       }
 
-      const savedApartment = await response.json()
-      
-      if (editingId) {
-        setApartments(prev => prev.map(a => 
-          a.id === editingId ? { ...a, ...savedApartment } : a
-        ))
+      const isUpdate = !!editingId
+
+      await fetchApartments()
+
+      if (isUpdate) {
         setSuccess('Apartman je uspešno ažuriran')
       } else {
-        setApartments(prev => [...prev, savedApartment])
         setSuccess('Apartman je uspešno kreiran')
       }
       

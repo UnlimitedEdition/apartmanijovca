@@ -2,8 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card'
-import { Button } from '../ui/button'
-import { 
+import {
   Users, 
   MousePointer2, 
   Smartphone, 
@@ -32,13 +31,12 @@ interface AnalyticsData {
 export default function AnalyticsView() {
   const [data, setData] = useState<AnalyticsData | null>(null)
   const [loading, setLoading] = useState(true)
-  const [days, setDays] = useState(7)
 
   useEffect(() => {
     async function fetchAnalytics() {
       try {
         setLoading(true)
-        const response = await fetch(`/api/admin/analytics?days=${days}`)
+        const response = await fetch(`/api/admin/analytics`)
         if (response.ok) {
           const result = await response.json()
           setData(result)
@@ -50,7 +48,7 @@ export default function AnalyticsView() {
       }
     }
     fetchAnalytics()
-  }, [days])
+  }, [])
 
   if (loading && !data) {
     return (
@@ -69,20 +67,7 @@ export default function AnalyticsView() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
           <h2 className="text-lg sm:text-xl font-bold tracking-tight">Analitika poseta</h2>
-          <p className="text-xs sm:text-sm text-muted-foreground">Pregled saobraćaja u poslednjih {days} dana</p>
-        </div>
-        <div className="flex gap-1 bg-muted p-1 rounded-lg w-fit">
-          {[7, 30, 90].map(d => (
-            <Button 
-              key={d}
-              variant={days === d ? 'secondary' : 'ghost'} 
-              size="sm"
-              onClick={() => setDays(d)}
-              className="h-7 text-xs px-2 sm:px-3"
-            >
-              {d}d
-            </Button>
-          ))}
+          <p className="text-xs sm:text-sm text-muted-foreground">Pregled saobraćaja — svi podaci</p>
         </div>
       </div>
 

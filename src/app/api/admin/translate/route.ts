@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { requireAdmin } from '@/lib/auth/require-admin'
 
 // Simple translation map for common hospitality terms
 const HOSPITALITY_TRANSLATIONS: Record<string, Record<string, string>> = {
@@ -115,6 +116,8 @@ const HOSPITALITY_TRANSLATIONS: Record<string, Record<string, string>> = {
 }
 
 export async function POST(request: NextRequest) {
+  const authError = await requireAdmin(request)
+  if (authError) return authError
   try {
     const { text, targetLangs } = await request.json()
 
