@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { requireAdmin } from '@/lib/auth/require-admin'
 import { validateApiInput, sanitizeContent } from '@/lib/validations/content'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
@@ -8,6 +9,8 @@ const supabaseAdmin = createClient(supabaseUrl, process.env.NEXT_SERVICE_ROLE_KE
 
 // GET - Get content by section or key
 export async function GET(request: NextRequest) {
+  const authError = await requireAdmin(request)
+  if (authError) return authError
   try {
     const { searchParams } = new URL(request.url)
     const key = searchParams.get('key')
@@ -155,6 +158,8 @@ export async function GET(request: NextRequest) {
 
 // POST - Create or update content
 export async function POST(request: NextRequest) {
+  const authError = await requireAdmin(request)
+  if (authError) return authError
   try {
     const body = await request.json()
     const { key, language, value, section, lang, data, published } = body
@@ -314,6 +319,8 @@ export async function PUT(request: NextRequest) {
 
 // DELETE - Delete content
 export async function DELETE(request: NextRequest) {
+  const authError = await requireAdmin(request)
+  if (authError) return authError
   try {
     const { searchParams } = new URL(request.url)
     const key = searchParams.get('key')

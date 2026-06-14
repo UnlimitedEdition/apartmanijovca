@@ -133,29 +133,37 @@ export default function AdminBookingDetails({ booking, onBack, onStatusChange }:
         throw new Error(result.error || 'Грешка при ажурирању статуса')
       }
 
-      // Refetch booking data to get the latest state
+      // Refetch booking data to get the latest state (snake_case fields from GET)
       const refreshResponse = await fetch(`/api/admin/bookings/${currentBooking.id}`)
-      const refreshData = await refreshResponse.json()
-      
-      if (refreshResponse.ok && refreshData.booking) {
-        // Update the entire booking object with fresh data
-        setCurrentBooking({
-          ...currentBooking,
-          ...refreshData.booking,
-          status: refreshData.booking.status
-        })
-        setMessage({ type: 'success', text: 'Статус је успешно ажуриран' })
-        onStatusChange?.(refreshData.booking.status)
-      } else {
-        // Fallback: use the status from update response
-        if (result.success && result.booking) {
-          setCurrentBooking(prev => ({ 
-            ...prev, 
-            status: result.booking.status as 'pending' | 'confirmed' | 'checked_in' | 'checked_out' | 'cancelled' | 'no_show'
+
+      if (refreshResponse.ok) {
+        const refreshData = await refreshResponse.json()
+        if (refreshData.booking) {
+          // Update the entire booking object with fresh data
+          setCurrentBooking({
+            ...currentBooking,
+            ...refreshData.booking,
+            status: refreshData.booking.status
+          })
+          setMessage({ type: 'success', text: 'Статус је успешно ажуриран' })
+          onStatusChange?.(refreshData.booking.status)
+        } else {
+          // GET returned ok but no booking — fall back to status-only update
+          setCurrentBooking(prev => ({
+            ...prev,
+            status: newStatus as 'pending' | 'confirmed' | 'checked_in' | 'checked_out' | 'cancelled' | 'no_show'
           }))
           setMessage({ type: 'success', text: 'Статус је успешно ажуриран' })
-          onStatusChange?.(result.booking.status)
+          onStatusChange?.(newStatus)
         }
+      } else {
+        // GET refresh failed — use newStatus directly (avoids camelCase PATCH response fields)
+        setCurrentBooking(prev => ({
+          ...prev,
+          status: newStatus as 'pending' | 'confirmed' | 'checked_in' | 'checked_out' | 'cancelled' | 'no_show'
+        }))
+        setMessage({ type: 'success', text: 'Статус је успешно ажуриран' })
+        onStatusChange?.(newStatus)
       }
       
       setTimeout(() => setMessage(null), 3000)

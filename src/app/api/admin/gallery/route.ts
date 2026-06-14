@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@supabase/supabase-js'
+import { requireAdmin } from '@/lib/auth/require-admin'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -9,7 +10,9 @@ const supabaseAdmin = createClient(
   process.env.NEXT_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || supabaseAnonKey
 )
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const authError = await requireAdmin(request)
+  if (authError) return authError
   try {
     const { data, error } = await supabaseAdmin
       .from('gallery')
@@ -25,6 +28,8 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
+  const authError = await requireAdmin(request)
+  if (authError) return authError
   try {
     const body = await request.json()
     const { url, caption, tags, display_order } = body

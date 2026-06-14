@@ -148,8 +148,8 @@ export default function EnhancedApartmentManager() {
       const response = await fetch('/api/admin/apartments?raw=true')
       if (!response.ok) throw new Error('Failed to load apartments')
       const data = await response.json()
-      // API returns { apartments: [...] }
-      setApartments(Array.isArray(data) ? data : (data.apartments || []))
+      // API always returns { apartments: [...] }
+      setApartments(data.apartments || [])
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load apartments')
     } finally {
