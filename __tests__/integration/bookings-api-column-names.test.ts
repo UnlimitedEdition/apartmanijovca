@@ -14,6 +14,10 @@ process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://test.supabase.co'
 process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'test-anon-key'
 process.env.NEXT_SERVICE_ROLE_KEY = 'test-service-key'
 
+jest.mock('@/lib/auth/require-admin', () => ({
+  requireAdmin: jest.fn().mockResolvedValue(null),
+}))
+
 // Mock Supabase
 jest.mock('@supabase/supabase-js', () => ({
   createClient: jest.fn()

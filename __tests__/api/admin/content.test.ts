@@ -18,6 +18,10 @@ process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://test.supabase.co'
 process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'test-anon-key'
 process.env.NEXT_SERVICE_ROLE_KEY = 'test-service-key'
 
+jest.mock('@/lib/auth/require-admin', () => ({
+  requireAdmin: jest.fn().mockResolvedValue(null),
+}))
+
 // The route creates `supabaseAdmin = createClient(...)` at MODULE LOAD (import time).
 // A bare jest.mock + per-test mockReturnValue runs too late (after import) and never
 // reaches the route — that was the root cause of the 500s. Return a STABLE client
