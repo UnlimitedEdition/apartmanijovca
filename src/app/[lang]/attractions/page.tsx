@@ -8,19 +8,11 @@ import { generateMetaTags } from '@/lib/seo/meta-generator'
 import { generateHreflangTags } from '@/lib/seo/hreflang'
 import { generateBreadcrumbSchema } from '@/lib/seo/structured-data'
 import { getKeywordsString } from '@/lib/seo/keywords'
+import { STATIC_ATTRACTIONS, AttractionEntry } from '@/data/attractions'
 
 type PageProps = {
   params: { lang: string }
 }
-
-// export async function generateStaticParams() {
-//   return [
-//     { lang: 'en' },
-//     { lang: 'sr' },
-//     { lang: 'it' },
-//     { lang: 'de' }
-//   ]
-// }
 
 export const dynamic = 'force-dynamic'
 
@@ -28,7 +20,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const locale = params.lang as Locale
   const t = await getTranslations({ locale, namespace: 'seo' })
   const baseUrl = getBaseUrl()
-  
+
   const metaTags = generateMetaTags({
     title: t('attractions.title'),
     description: t('attractions.description'),
@@ -38,11 +30,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     type: 'website'
   })
 
-  const hreflangTags = generateHreflangTags({
-    path: '/attractions',
-    locale
-  })
-
+  const hreflangTags = generateHreflangTags({ path: '/attractions', locale })
   const breadcrumbSchema = generateBreadcrumbSchema('/attractions', locale)
 
   return {
@@ -53,9 +41,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     alternates: {
       canonical: metaTags.canonical,
       languages: hreflangTags.reduce((acc, tag) => {
-        if (tag.hreflang !== 'x-default') {
-          acc[tag.hreflang] = tag.href
-        }
+        if (tag.hreflang !== 'x-default') acc[tag.hreflang] = tag.href
         return acc
       }, {} as Record<string, string>)
     },
@@ -66,10 +52,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       type: 'website',
       locale,
       siteName: 'Apartmani Jovča',
-      images: [{
-        url: `${baseUrl}/images/background.jpg`,
-        alt: t('attractions.ogImageAlt')
-      }]
+      images: [{ url: `${baseUrl}/images/background.jpg`, alt: t('attractions.ogImageAlt') }]
     },
     twitter: {
       card: 'summary_large_image',
@@ -77,33 +60,41 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description: t('attractions.description'),
       images: [`${baseUrl}/images/background.jpg`]
     },
-    other: {
-      'application/ld+json': JSON.stringify(breadcrumbSchema)
-    }
+    other: { 'application/ld+json': JSON.stringify(breadcrumbSchema) }
   }
 }
 
-interface Attraction {
+interface CustomAttraction {
   name: string
   description: string
   distance?: string
   image?: string
-  lat?: number
-  lng?: number
+  lat?: number | null
+  lng?: number | null
 }
 
 export default async function AttractionsPage({ params }: PageProps) {
-  const t = await getTranslations({ locale: params.lang, namespace: 'attractions' })
-  // value je jsonb (Json tip) — castujemo na konkretan tip liste atrakcija.
-  const result = await supabase
-    .from('content')
-    .select('value')
-    .eq('key', 'attractions.list')
-    .eq('language', params.lang)
-    .maybeSingle()
+  const lang = params.lang
+  const t = await getTranslations({ locale: lang, namespace: 'attractions' })
 
-  const row = result.data as { value: Attraction[] } | null
-  const attractions: Attraction[] = Array.isArray(row?.value) ? row!.value : []
+  // Load visibility and custom attractions in parallel
+  const [visibilityResult, customResult] = await Promise.all([
+    supabase.from('content').select('value').eq('key', 'attractions.visibility').eq('language', 'sr').maybeSingle(),
+    supabase.from('content').select('value').eq('key', 'attractions.custom').eq('language', 'sr').maybeSingle(),
+  ])
+
+  const visibilityRow = visibilityResult.data as { value: { hidden: number[] } } | null
+  const hiddenIndices: number[] = Array.isArray(visibilityRow?.value?.hidden)
+    ? visibilityRow!.value.hidden
+    : []
+
+  const staticList: AttractionEntry[] = (STATIC_ATTRACTIONS[lang] ?? STATIC_ATTRACTIONS['sr'])
+    .filter(a => !hiddenIndices.includes(a.id))
+
+  const customRow = customResult.data as { value: CustomAttraction[] } | null
+  const customList: CustomAttraction[] = Array.isArray(customRow?.value) ? customRow!.value : []
+
+  const attractions = [...staticList, ...customList]
 
   return (
     <div className="container mx-auto px-4 py-6 sm:py-8 3xl:py-12 4xl:py-16">
@@ -163,4 +154,3 @@ export default async function AttractionsPage({ params }: PageProps) {
     </div>
   )
 }
-
