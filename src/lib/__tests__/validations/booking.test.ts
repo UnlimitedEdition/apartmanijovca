@@ -127,6 +127,9 @@ describe('Booking Validations', () => {
         email: 'john@example.com',
         phone: '+381651234567',
       },
+      security: {
+        consentGiven: true,
+      },
     }
 
     it('should validate correct booking data', () => {

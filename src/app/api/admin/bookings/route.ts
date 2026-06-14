@@ -2,11 +2,14 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { getLocalizedValue } from '@/lib/localization/helpers'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-const supabaseAdmin = createClient(supabaseUrl, process.env.NEXT_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || supabaseAnonKey)
-
-
+function getSupabaseAdmin() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  return createClient(
+    supabaseUrl,
+    process.env.NEXT_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || supabaseAnonKey
+  )
+}
 
 // GET - List bookings with filters
 export async function GET(request: NextRequest) {
@@ -17,10 +20,14 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '20')
     const status = searchParams.get('status')
     const apartmentId = searchParams.get('apartment_id')
+    const startDate = searchParams.get('start_date')
+    const endDate = searchParams.get('end_date')
     const occupiedOn = searchParams.get('occupied_on')
     const search = searchParams.get('search')
     const sortBy = searchParams.get('sort_by') || 'created_at'
     const sortOrder = searchParams.get('sort_order') || 'desc'
+
+    const supabaseAdmin = getSupabaseAdmin()
 
     // Build query
     let query = supabaseAdmin
@@ -37,6 +44,12 @@ export async function GET(request: NextRequest) {
     }
     if (apartmentId) {
       query = query.eq('apartment_id', apartmentId)
+    }
+    if (startDate) {
+      query = query.gte('check_in', startDate)
+    }
+    if (endDate) {
+      query = query.lte('check_out', endDate)
     }
     
     // Filter by occupied on specific date (check_in <= date < check_out)
