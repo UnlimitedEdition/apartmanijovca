@@ -175,7 +175,7 @@ export default async function HomePage({ params }: PageProps) {
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-fixed bg-cover bg-center bg-no-repeat" style={{ backgroundImage: 'url(/images/background.jpg)' }}>
       {/* Hero Section */}
       <section className="relative h-[80vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-black/20 z-10" />
@@ -229,7 +229,7 @@ export default async function HomePage({ params }: PageProps) {
       </section>
 
       {/* Trust & Features Bar */}
-      <section className="bg-muted py-8 border-y">
+      <section className="bg-white/65 py-8 border-y border-white/30 backdrop-blur-md">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             {[
@@ -250,7 +250,7 @@ export default async function HomePage({ params }: PageProps) {
       </section>
 
       {/* About Us Section */}
-      <section className="py-20 bg-background">
+      <section className="py-20 bg-white/65 backdrop-blur-md">
         <div className="container mx-auto px-4 max-w-6xl 3xl:max-w-7xl 4xl:max-w-[90rem]">
           <div className="text-center mb-12 3xl:mb-16 4xl:mb-20">
             <h2 className="text-3xl md:text-5xl 3xl:text-6xl 4xl:text-7xl font-bold mb-6 3xl:mb-8 text-foreground">{t('about.title')}</h2>
@@ -264,7 +264,7 @@ export default async function HomePage({ params }: PageProps) {
       </section>
 
       {/* Featured Apartments */}
-      <section className="py-20 bg-background">
+      <section className="py-20 bg-white/65 backdrop-blur-md">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-end mb-12">
             <div>
@@ -286,7 +286,7 @@ export default async function HomePage({ params }: PageProps) {
                 : 'https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=800&q=80'
               
               return (
-              <Card key={apt.id} className="overflow-hidden border shadow-lg hover:shadow-2xl transition-all duration-300 rounded-2xl group border-border bg-card text-card-foreground">
+              <Card key={apt.id} className="overflow-hidden border border-white/40 shadow-lg hover:shadow-2xl transition-all duration-300 rounded-2xl group bg-white/80 text-card-foreground backdrop-blur-md">
                 <Link href={`/${params.lang}/apartments/${apt.slug || apt.id}`} className="block">
                   <div className="relative aspect-video overflow-hidden">
                     <div className="absolute top-4 left-4 z-10 bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-bold shadow-sm">
@@ -327,7 +327,7 @@ export default async function HomePage({ params }: PageProps) {
       </section>
 
       {/* Amenities Section */}
-      <section className="py-20 bg-muted/30">
+      <section className="py-20 bg-white/55 backdrop-blur-md">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row gap-16 items-center">
             <div className="flex-1">
@@ -346,7 +346,7 @@ export default async function HomePage({ params }: PageProps) {
                   { name: t('features.lakeAccess'), icon: '🏖️' },
                   { name: t('features.bbq'), icon: '🔥' },
                 ].map((item) => (
-                  <div key={item.name} className="flex items-center gap-3 p-4 bg-card rounded-xl shadow-sm border border-border">
+                  <div key={item.name} className="flex items-center gap-3 p-4 bg-white/75 rounded-xl shadow-sm border border-white/40 backdrop-blur-md">
                     <span className="text-2xl">{item.icon}</span>
                     <span className="font-bold text-foreground">{item.name}</span>
                   </div>
@@ -354,14 +354,14 @@ export default async function HomePage({ params }: PageProps) {
               </div>
             </div>
             <div className="flex-1 relative">
-              <div className="aspect-square bg-muted rounded-3xl overflow-hidden shadow-2xl skew-y-3">
+              <div className="aspect-square bg-white/30 rounded-3xl overflow-hidden shadow-2xl skew-y-3 backdrop-blur-sm">
                 <LazyImage
                   src="https://i.ibb.co/xS8Z2xmn/DJI-0150.avif?auto=format&fit=crop&w=1200&q=80"
                   alt={generateAltText('', 'location', params.lang as Locale, 'Bovansko jezero')}
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div className="absolute -bottom-10 -left-10 bg-primary p-6 rounded-2xl shadow-xl max-w-sm hidden lg:block text-primary-foreground transform -rotate-3 border-4 border-background">
+              <div className="absolute -bottom-10 -left-10 bg-primary/90 p-6 rounded-2xl shadow-xl max-w-sm hidden lg:block text-primary-foreground transform -rotate-3 border-4 border-white/50 backdrop-blur-md">
                 <p className="font-bold italic text-lg mb-2">&quot;{t('testimonials.sampleQuote')}&quot;</p>
                 <div className="flex items-center gap-2">
                   <div className="w-10 h-10 rounded-full bg-primary-foreground/20 flex items-center justify-center">{t('testimonials.sampleInitials')}</div>
@@ -377,7 +377,7 @@ export default async function HomePage({ params }: PageProps) {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-20 bg-background">
+      <section className="py-20 bg-white/65 backdrop-blur-md">
         <div className="container mx-auto px-4 md:px-16">
           <h2 className="text-3xl md:text-5xl 3xl:text-6xl 4xl:text-7xl font-bold mb-12 text-center text-foreground">{t('faq.title')}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8">
@@ -389,7 +389,7 @@ export default async function HomePage({ params }: PageProps) {
                 { q: t('faq.q4'), a: t('faq.a4') },
                 { q: t('faq.q5'), a: t('faq.a5') },
               ].map((faq, i) => (
-                <div key={i} className="bg-muted/20 p-6 rounded-2xl border border-border">
+                <div key={i} className="bg-white/70 p-6 rounded-2xl border border-white/40 backdrop-blur-md">
                   <h3 className="text-lg font-bold mb-2 text-foreground">{faq.q}</h3>
                   <p className="text-muted-foreground">{faq.a}</p>
                 </div>
@@ -403,7 +403,7 @@ export default async function HomePage({ params }: PageProps) {
                 { q: t('faq.q9'), a: t('faq.a9') },
                 { q: t('faq.q10'), a: t('faq.a10') },
               ].map((faq, i) => (
-                <div key={i} className="bg-muted/20 p-6 rounded-2xl border border-border">
+                <div key={i} className="bg-white/70 p-6 rounded-2xl border border-white/40 backdrop-blur-md">
                   <h3 className="text-lg font-bold mb-2 text-foreground">{faq.q}</h3>
                   <p className="text-muted-foreground">{faq.a}</p>
                 </div>
@@ -418,14 +418,14 @@ export default async function HomePage({ params }: PageProps) {
 
       {/* Reviews Section */}
       {Array.isArray(reviews) && reviews.length > 0 && (
-        <section className="py-20 bg-background border-y">
+        <section className="py-20 bg-white/65 backdrop-blur-md border-y border-white/30">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl md:text-5xl 3xl:text-6xl 4xl:text-7xl font-bold text-center mb-16">
               {t('testimonials.title')}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {reviews.slice(0, 3).map((review: Testimonial) => (
-                <div key={review.id} className="bg-white p-8 rounded-2xl shadow-sm border">
+                <div key={review.id} className="bg-white/75 p-8 rounded-2xl shadow-sm border border-white/40 backdrop-blur-md">
                   <div className="flex items-center gap-1 mb-4 text-yellow-400">
                     {[...Array(review.rating)].map((_, i) => (
                       <span key={i}>★</span>
