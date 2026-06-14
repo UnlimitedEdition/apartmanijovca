@@ -35,6 +35,7 @@ export function Footer({ className }: FooterProps) {
             <ul className="flex flex-col gap-3 text-sm font-bold list-none m-0 p-0">
               <li><Link href={`/${currentLang}/apartments`} className="text-muted-foreground hover:text-primary transition-colors">{navT('apartments')}</Link></li>
               <li><Link href={`/${currentLang}/gallery`} className="text-muted-foreground hover:text-primary transition-colors">{navT('gallery')}</Link></li>
+              <li><Link href={`/${currentLang}/attractions`} className="text-muted-foreground hover:text-primary transition-colors">{navT('attractions')}</Link></li>
               <li><Link href={`/${currentLang}/prices`} className="text-muted-foreground hover:text-primary transition-colors">{navT('prices')}</Link></li>
               <li><Link href={`/${currentLang}/location`} className="text-muted-foreground hover:text-primary transition-colors">{navT('location')}</Link></li>
             </ul>
