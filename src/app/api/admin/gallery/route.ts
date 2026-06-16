@@ -3,6 +3,9 @@ import { revalidatePath } from 'next/cache'
 import { createClient } from '@supabase/supabase-js'
 import { requireAdmin } from '@/lib/auth/require-admin'
 
+
+export const dynamic = 'force-dynamic'
+
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 const supabaseAdmin = createClient(

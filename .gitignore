@@ -54,3 +54,14 @@ functions/package-lock.json
 
 .vercel
 .env*
+
+# local tool / IDE configs (NEMA u repo)
+.agents/
+.claude/
+.kiro/
+.cursor/
+.vscode/
+skills-lock.json
+
+# Renamed stale Next.js build caches (npr. .next.stale-0 posle cache clear-a)
+.next.stale-*

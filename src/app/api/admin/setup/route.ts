@@ -4,6 +4,9 @@ import { requireAdmin } from '@/lib/auth/require-admin'
 import fs from 'fs'
 import path from 'path'
 
+
+export const dynamic = 'force-dynamic'
+
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseKey = process.env.NEXT_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY! // Needs service role to bypass RLS for initial sync
 
