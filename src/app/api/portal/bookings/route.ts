@@ -10,6 +10,8 @@ function getSupabase() {
   return createClient(supabaseUrl, supabaseServiceKey)
 }
 
+export const dynamic = 'force-dynamic'
+
 export async function GET(request: NextRequest) {
   try {
     // Identity comes from the verified session, never from a query param (IDOR).
