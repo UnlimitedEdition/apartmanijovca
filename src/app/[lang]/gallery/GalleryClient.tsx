@@ -177,16 +177,13 @@ export default function GalleryClient({
             >
               {/* 4:3 aspect ratio container */}
               <div className="relative w-full bg-zinc-200" style={{ aspectRatio: '4/3', overflow: 'hidden' }}>
-                {/* Shimmer placeholder (behind image, covered when image loads) */}
-                <div className="absolute inset-0 animate-shimmer bg-zinc-200" />
-                <Image
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                   src={item.url}
                   alt={caption || 'Gallery image'}
-                  fill
-                  unoptimized
                   loading={idx < 6 ? 'eager' : 'lazy'}
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  decoding="async"
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
                 {/* Hover overlay */}
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-5">
