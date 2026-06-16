@@ -1,7 +1,6 @@
 import { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
 import { Badge } from '../components/ui/badge'
-import SafeImage from '../../../components/SafeImage'
 import ContactForm from '../../../components/ContactForm'
 import { Locale } from '@/lib/types/database'
 import { getBaseUrl, CONTACT_PHONE } from '@/lib/seo/config'
@@ -147,26 +146,16 @@ export default async function ContactPage({ params }: PageProps) {
           </div>
 
           {/* Owner Identity - Trust Building */}
-          <div className="bg-white/85 backdrop-blur-md rounded-2xl shadow-lg border border-white/40 p-8 flex flex-col sm:flex-row gap-6 items-center sm:items-start">
-            <div className="w-24 h-24 rounded-2xl overflow-hidden shrink-0 shadow-xl border-4 border-white rotate-3">
-              <SafeImage
-                src="https://api.dicebear.com/7.x/avataaars/svg?seed=Jovca"
-                fallbackSrc="https://api.dicebear.com/7.x/initials/svg?seed=J"
-                alt={contactT('host.title')}
-                className="w-full h-full object-cover bg-white"
-              />
-            </div>
-            <div>
-              <p className="font-black text-2xl tracking-tighter mb-1">{contactT('host.title')}</p>
-              <p className="text-primary font-bold text-sm mb-4">{contactT('host.since')}</p>
-              <p className="text-muted-foreground leading-relaxed font-medium mb-4 italic">
-                &quot;{contactT('host.available')}&quot;
-              </p>
-              <div className="flex flex-wrap gap-2">
-                <Badge variant="outline" className="bg-white/80 backdrop-blur border-primary/20 text-primary font-bold">{contactT('languages.sr')}</Badge>
-                <Badge variant="outline" className="bg-white/80 backdrop-blur border-primary/20 text-primary font-bold">{contactT('languages.en')}</Badge>
-                <Badge variant="outline" className="bg-white/80 backdrop-blur border-primary/20 text-primary font-bold">{contactT('languages.de')}</Badge>
-              </div>
+          <div className="bg-white/85 backdrop-blur-md rounded-2xl shadow-lg border border-white/40 p-8">
+            <p className="font-black text-2xl tracking-tighter mb-1">{contactT('host.title')}</p>
+            <p className="text-primary font-bold text-sm mb-4">{contactT('host.since')}</p>
+            <p className="text-muted-foreground leading-relaxed font-medium mb-4 italic">
+              &quot;{contactT('host.available')}&quot;
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <Badge variant="outline" className="bg-white/80 backdrop-blur border-primary/20 text-primary font-bold">{contactT('languages.sr')}</Badge>
+              <Badge variant="outline" className="bg-white/80 backdrop-blur border-primary/20 text-primary font-bold">{contactT('languages.en')}</Badge>
+              <Badge variant="outline" className="bg-white/80 backdrop-blur border-primary/20 text-primary font-bold">{contactT('languages.de')}</Badge>
             </div>
           </div>
         </div>
