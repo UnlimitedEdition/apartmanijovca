@@ -20,27 +20,33 @@ export default function StickyMobileCTA() {
   if (!mounted || pathname?.startsWith('/admin') || pathname?.startsWith('/portal')) return null
 
   return (
-    <div className="md:hidden fixed bottom-0 left-0 right-0 z-[60] bg-background/80 backdrop-blur-lg border-t border-border p-3 flex gap-4">
-      <a 
+    <div
+      className="md:hidden fixed bottom-0 left-0 right-0 z-[60] bg-black/60 backdrop-blur-md border-t border-white/10 p-3 flex gap-3"
+      style={{ paddingBottom: 'calc(0.75rem + env(safe-area-inset-bottom, 0px))' }}
+    >
+      <a
         href={`tel:${phoneNumber}`}
         onClick={() => trackEvent('cta_click', { type: 'phone', location: 'sticky_mobile' })}
-        className="flex-1 flex items-center justify-center gap-2 bg-primary text-primary-foreground py-3 rounded-xl font-bold text-sm"
+        className="flex-1 flex items-center justify-center gap-2 bg-[#2563eb] text-white py-3 rounded-full font-bold text-sm uppercase tracking-wide shadow hover:bg-[#1d4ed8] transition-colors duration-200"
+        aria-label="Pozovite nas telefonom"
       >
         <Phone className="w-4 h-4" /> Pozovi
       </a>
-      <a 
+      <a
         href={viberUrl}
         onClick={() => trackEvent('cta_click', { type: 'viber', location: 'sticky_mobile' })}
-        className="flex-1 flex items-center justify-center gap-2 bg-[#7360f2] text-white py-3 rounded-xl font-bold text-sm"
+        className="flex-1 flex items-center justify-center gap-2 bg-[#7360f2] text-white py-3 rounded-full font-bold text-sm uppercase tracking-wide shadow hover:opacity-90 transition-opacity duration-200"
+        aria-label="Kontaktirajte nas putem Vibera"
       >
         <MessageSquare className="w-4 h-4" /> Viber
       </a>
-      <a 
+      <a
         href={whatsappUrl}
         target="_blank"
         rel="noopener noreferrer"
         onClick={() => trackEvent('cta_click', { type: 'whatsapp', location: 'sticky_mobile' })}
-        className="flex-1 flex items-center justify-center gap-2 bg-[#25D366] text-white py-3 rounded-xl font-bold text-sm"
+        className="flex-1 flex items-center justify-center gap-2 bg-[#25D366] text-white py-3 rounded-full font-bold text-sm uppercase tracking-wide shadow hover:opacity-90 transition-opacity duration-200"
+        aria-label="Kontaktirajte nas putem WhatsAppa"
       >
         <MessageCircle className="w-4 h-4" /> WA
       </a>

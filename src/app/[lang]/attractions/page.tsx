@@ -1,7 +1,6 @@
 import { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
 import { supabase } from '../lib/supabase/client'
-import { Card, CardContent, CardHeader } from '../components/ui/card'
 import { Locale } from '@/lib/types/database'
 import { getBaseUrl } from '@/lib/seo/config'
 import { generateMetaTags } from '@/lib/seo/meta-generator'
@@ -98,24 +97,28 @@ export default async function AttractionsPage({ params }: PageProps) {
 
   return (
     <div className="container mx-auto px-4 py-6 sm:py-8 3xl:py-12 4xl:py-16">
-      <div className="text-center mb-8 sm:mb-12 3xl:mb-16 4xl:mb-20">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl 3xl:text-7xl 4xl:text-8xl font-bold mb-3 sm:mb-4 3xl:mb-6">
+      {/* Hero */}
+      <div className="stagger-fade-in text-center py-20 text-white mb-8 sm:mb-12 3xl:mb-16 4xl:mb-20">
+        <h1 className="text-4xl md:text-5xl font-extrabold text-shadow-strong tracking-wide mb-4">
           {t('title')}
         </h1>
-        <p className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto mb-6 sm:mb-8 px-4">
+        <p className="text-xl text-white/90 text-shadow-medium max-w-2xl mx-auto px-4">
           {t('description')}
         </p>
       </div>
 
       {attractions.length === 0 ? (
-        <div className="text-center py-12 text-muted-foreground">
+        <div className="bg-white/85 backdrop-blur-md rounded-2xl shadow-lg border border-white/40 p-12 text-center text-muted-foreground">
           <p className="text-lg font-semibold">{t('noAttractions.title')}</p>
           <p className="text-sm">{t('noAttractions.message')}</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {attractions.map((attraction, index) => (
-            <Card key={index} className="h-full overflow-hidden flex flex-col">
+            <div
+              key={index}
+              className="bg-white/85 backdrop-blur-md rounded-2xl shadow-lg border border-white/40 overflow-hidden flex flex-col hover:-translate-y-1 hover:shadow-xl transition-all"
+            >
               {attraction.image && (
                 <div className="relative aspect-[4/3] bg-muted">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -131,23 +134,23 @@ export default async function AttractionsPage({ params }: PageProps) {
                   )}
                 </div>
               )}
-              <CardHeader className="p-4 sm:p-6 pb-2">
+              <div className="p-4 sm:p-6 pb-2">
                 <h2 className="text-base sm:text-lg lg:text-xl font-bold">{attraction.name}</h2>
-              </CardHeader>
-              <CardContent className="p-4 sm:p-6 pt-0 flex flex-col flex-1">
+              </div>
+              <div className="p-4 sm:p-6 pt-0 flex flex-col flex-1">
                 <p className="text-muted-foreground text-xs sm:text-sm lg:text-base flex-1">{attraction.description}</p>
                 {typeof attraction.lat === 'number' && typeof attraction.lng === 'number' && (
                   <a
                     href={`https://www.google.com/maps?q=${attraction.lat},${attraction.lng}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center mt-4 text-xs sm:text-sm font-medium text-blue-600 hover:text-blue-700"
+                    className="inline-flex items-center mt-4 text-xs sm:text-sm font-semibold text-primary hover:text-primary/80 border border-primary rounded-full px-4 py-1.5 hover:bg-primary hover:text-white transition-all self-start"
                   >
                     {t('viewOnMap')}
                   </a>
                 )}
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           ))}
         </div>
       )}

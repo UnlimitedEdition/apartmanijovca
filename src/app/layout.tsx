@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
-// import { Geist, Geist_Mono } from "next/font/google";
-// import { appWithTranslation } from 'next-i18next';
+import { Inter } from 'next/font/google';
 import { ThemeProvider } from 'next-themes';
-// import PWAInstall from '../components/PWAInstall';
 import AnalyticsTracker from '../components/AnalyticsTracker';
 import FloatingCTA from '../components/FloatingCTA';
 import StickyMobileCTA from '../components/StickyMobileCTA';
@@ -10,15 +8,12 @@ import ConsoleWarning from '../components/ConsoleWarning';
 import { PRODUCTION_URL } from '@/lib/seo/config';
 import "./globals.css";
 
-// const geistSans = Geist({
-//   variable: "--font-geist-sans",
-//   subsets: ["latin"],
-// });
-
-// const geistMono = Geist_Mono({
-//   variable: "--font-geist-mono",
-//   subsets: ["latin"],
-// });
+const inter = Inter({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-inter',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(PRODUCTION_URL),
@@ -38,7 +33,7 @@ export const metadata: Metadata = {
 export const generateViewport = () => ({
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#ffffff', // Bela boja za address bar
+  themeColor: '#2563eb',
 });
 
 function RootLayout({
@@ -47,15 +42,21 @@ function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="sr" suppressHydrationWarning style={{ colorScheme: 'light' }}>
+    <html lang="sr" suppressHydrationWarning style={{ colorScheme: 'light' }} className={inter.variable}>
       <head>
-        <meta name="theme-color" content="#ffffff" />
+        <meta name="theme-color" content="#2563eb" />
         <meta name="color-scheme" content="light" />
       </head>
       <body
-        className="antialiased"
+        className="antialiased bg-transparent"
         style={{ colorScheme: 'light' }}
       >
+        {/* Global fixed background — replicates Astro .fixed-background pattern */}
+        <div
+          aria-hidden
+          className="fixed inset-0 -z-10 bg-cover bg-center bg-no-repeat md:bg-fixed"
+          style={{ backgroundImage: "url('/images/background.jpg')" }}
+        />
         <ThemeProvider
           attribute="class"
           defaultTheme="light"

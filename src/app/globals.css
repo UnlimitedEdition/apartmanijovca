@@ -11,8 +11,8 @@
     --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
-    --primary: 142 76% 36%;
-    --primary-foreground: 355.7 100% 97.3%;
+    --primary: 221.2 83.2% 53.3%;        /* #2563eb */
+    --primary-foreground: 0 0% 100%;     /* white */
     --secondary: 240 4.8% 95.9%;
     --secondary-foreground: 240 5.9% 10%;
     --muted: 240 4.8% 95.9%;
@@ -23,8 +23,21 @@
     --destructive-foreground: 0 0% 98%;
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
-    --ring: 142 76% 36%;
+    --ring: 221.2 83.2% 53.3%;
     --radius: 0.75rem;
+
+    /* Legacy direct-use vars (matches old Astro site) */
+    --primary-color: #2563eb;
+    --secondary-color: #1d4ed8;
+    --text-dark: #1f2937;
+    --text-light: #6b7280;
+    --background-light: #f8fafc;
+
+    /* Viewport units */
+    --vh: 1vh;
+    --vw: 1vw;
+    --dvh: 1dvh;
+    --dvw: 1dvw;
   }
 
   .dark {
@@ -34,8 +47,8 @@
     --card-foreground: 0 0% 98%;
     --popover: 240 10% 3.9%;
     --popover-foreground: 0 0% 98%;
-    --primary: 142 70% 45%;
-    --primary-foreground: 144 33% 97.5%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 0 0% 100%;
     --secondary: 240 3.7% 15.9%;
     --secondary-foreground: 0 0% 98%;
     --muted: 240 3.7% 15.9%;
@@ -46,14 +59,118 @@
     --destructive-foreground: 0 0% 98%;
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
-    --ring: 142 76% 36%;
+    --ring: 221.2 83.2% 53.3%;
   }
 
   * {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
+    background: transparent !important;
+    font-size: 16px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  html {
+    font-family: var(--font-inter), 'Inter', system-ui, sans-serif;
+    scroll-behavior: smooth;
+    color: var(--text-dark);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  a {
+    color: var(--primary-color);
+    transition: color 0.3s ease;
+  }
+  a:hover {
+    color: var(--secondary-color);
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  main {
+    background: transparent;
+  }
+}
+
+@layer components {
+  /* ── CTA pill buttons ── */
+  .cta-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-radius: 50px;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .cta-pill.primary {
+    background: #2563eb;
+    color: white;
+    box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+  }
+  .cta-pill.primary:hover {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+  }
+  .cta-pill.secondary {
+    background: transparent;
+    color: white;
+    border-color: white;
+  }
+  .cta-pill.secondary:hover {
+    background: white;
+    color: #2563eb;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+  }
+
+  /* ── Text shadows ── */
+  .text-shadow-strong {
+    text-shadow:
+      0 0 10px rgba(0, 0, 0, 0.8),
+      0 0 20px rgba(0, 0, 0, 0.6),
+      0 0 30px rgba(0, 0, 0, 0.4);
+  }
+  .text-shadow-medium {
+    text-shadow:
+      0 0 5px rgba(0, 0, 0, 0.8),
+      0 0 10px rgba(0, 0, 0, 0.6),
+      0 0 15px rgba(0, 0, 0, 0.4);
+  }
+  .text-shadow-light {
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  }
+
+  /* ── Stagger fade-in ── */
+  .stagger-fade-in > * {
+    animation: fade-in-up 1s ease-out both;
+  }
+  .stagger-fade-in > *:nth-child(1) { animation-delay: 0s; }
+  .stagger-fade-in > *:nth-child(2) { animation-delay: 0.2s; }
+  .stagger-fade-in > *:nth-child(3) { animation-delay: 0.4s; }
+  .stagger-fade-in > *:nth-child(4) { animation-delay: 0.6s; }
+
+  /* ── Ken-Burns image animation ── */
+  .animate-ken-burns {
+    animation: ken-burns 20s infinite;
   }
 }
 
@@ -116,4 +233,125 @@
       max-width: 3000px !important;
     }
   }
+}
+
+/* ================================================================
+   KEYFRAME ANIMATIONS
+   ================================================================ */
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ken-burns {
+  0%, 100% { transform: scale(1) translate(0, 0); }
+  50%       { transform: scale(1.1) translate(-5px, 5px); }
+}
+
+@keyframes bounce-arrow {
+  0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+  40% { transform: translateX(-50%) translateY(-10px); }
+  60% { transform: translateX(-50%) translateY(-5px); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateY(-50px); opacity: 0; }
+  to   { transform: translateY(0);     opacity: 1; }
+}
+
+/* ================================================================
+   MOBILE-SAFE VIEWPORT & GPU FIXES  (ported from old Astro site)
+   ================================================================ */
+
+/* Android: GPU compositing for fixed background */
+@media (max-width: 767px) {
+  .fixed-inset-0,
+  [class*="fixed inset-0"] {
+    background-attachment: scroll;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    touch-action: manipulation;
+    overflow-x: hidden;
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+  img {
+    image-rendering: crisp-edges;
+  }
+}
+
+/* iOS: font smoothing + translateZ + text-size-adjust */
+@supports (-webkit-touch-callout: none) {
+  .fixed-inset-0,
+  [class*="fixed inset-0"] {
+    background-attachment: scroll;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* iOS Safari hero height fix */
+  .hero {
+    height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
+    min-height: calc(600px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
+  }
+}
+
+/* Modern dvh hero support */
+@media (max-width: 767px) {
+  .hero {
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+  }
+}
+
+/* iOS safe area support for hero */
+@supports (padding: max(0px)) {
+  .hero {
+    height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
+    min-height: calc(600px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
+  }
+}
+
+/* Prevent iOS Safari zoom on input focus (font-size must be >= 16px) */
+@media screen and (max-width: 767px) {
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="password"],
+  input[type="number"],
+  input[type="search"],
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+
+  input:focus,
+  textarea:focus,
+  select:focus {
+    font-size: 16px !important;
+  }
+}
+
+/* Mobile body typography */
+@media (max-width: 768px) {
+  body {
+    background-attachment: scroll;
+    font-size: 14px;
+  }
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.25rem; }
 }
