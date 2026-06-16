@@ -404,9 +404,10 @@ export default async function HomePage({ params }: PageProps) {
               {/* Removed skew-y-3 for cleaner old-site feel */}
               <div className="aspect-square bg-white/30 rounded-3xl overflow-hidden shadow-2xl backdrop-blur-sm">
                 <LazyImage
-                  src="https://i.ibb.co/xS8Z2xmn/DJI-0150.avif?auto=format&fit=crop&w=1200&q=80"
+                  src="/images/bovansko-jezero.jpg"
                   alt={generateAltText('', 'location', params.lang as Locale, 'Bovansko jezero')}
                   className="w-full h-full object-cover"
+                  priority
                 />
               </div>
               <div className="absolute -bottom-10 -left-10 bg-primary/90 p-6 rounded-2xl shadow-xl max-w-sm hidden lg:block text-primary-foreground transform -rotate-3 border-4 border-white/50 backdrop-blur-md">

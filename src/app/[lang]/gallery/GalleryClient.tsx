@@ -176,19 +176,16 @@ export default function GalleryClient({
               }}
             >
               {/* 4:3 aspect ratio container */}
-              <div className="relative w-full" style={{ aspectRatio: '4/3', overflow: 'hidden' }}>
-                {/* Shimmer placeholder */}
-                <div className="absolute inset-0 animate-shimmer" />
+              <div className="relative w-full bg-zinc-200" style={{ aspectRatio: '4/3', overflow: 'hidden' }}>
+                {/* Shimmer placeholder (behind image, covered when image loads) */}
+                <div className="absolute inset-0 animate-shimmer bg-zinc-200" />
                 <Image
                   src={item.url}
                   alt={caption || 'Gallery image'}
                   fill
                   unoptimized
-                  className="object-cover transition-transform duration-300 group-hover:scale-105 opacity-0 data-[loaded=true]:opacity-100"
-                  onLoad={(img) => {
-                    const target = img.target as HTMLImageElement
-                    target.setAttribute('data-loaded', 'true')
-                  }}
+                  loading={idx < 6 ? 'eager' : 'lazy'}
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 />
                 {/* Hover overlay */}
