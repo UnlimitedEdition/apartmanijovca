@@ -15,8 +15,9 @@ import {
   sendReviewRequest,
   sendPaymentReceived,
   sendPaymentReminder,
-  isWhatsAppConfigured 
+  isWhatsAppConfigured
 } from '@/lib/whatsapp/service'
+import { requireAdmin } from '@/lib/auth/require-admin'
 
 // GET handler for webhook verification
 export async function GET(request: NextRequest) {
@@ -40,54 +41,52 @@ export async function POST(request: NextRequest) {
   try {
     const contentType = request.headers.get('content-type') || ''
 
-    // Handle WhatsApp webhook (application/json)
+    // Parse the body exactly once (the request stream can only be read once).
+    let body: any = {}
     if (contentType.includes('application/json')) {
-      const body = await request.json()
-      
-      // Check if it's a WhatsApp webhook
-      if (body.object === 'whatsapp_business_account' || body.object === 'whatsapp') {
-        // Process webhook entries
-        for (const entry of body.entry || []) {
-          for (const change of entry.changes || []) {
-            const value = change.value
-            
-            // Handle incoming messages
-            if (value.messages && value.messages.length > 0) {
-              for (const message of value.messages) {
-                console.log('[WhatsApp Webhook] Received message:', {
-                  from: message.from,
-                  type: message.type,
-                  text: message.text?.body,
-                })
+      body = await request.json()
+    }
 
-                // You can process incoming messages here
-                // For example, store them in the database or respond automatically
-              }
+    // Handle WhatsApp webhook (called by Meta — must stay public, no admin cookie).
+    if (body.object === 'whatsapp_business_account' || body.object === 'whatsapp') {
+      // Process webhook entries
+      for (const entry of body.entry || []) {
+        for (const change of entry.changes || []) {
+          const value = change.value
+
+          // Handle incoming messages (PII redacted from logs)
+          if (value.messages && value.messages.length > 0) {
+            for (const message of value.messages) {
+              console.log('[WhatsApp Webhook] Received message:', {
+                type: message.type,
+              })
+
+              // You can process incoming messages here
+              // For example, store them in the database or respond automatically
             }
+          }
 
-            // Handle status updates (delivery/read receipts)
-            if (value.statuses && value.statuses.length > 0) {
-              for (const status of value.statuses) {
-                console.log('[WhatsApp Webhook] Status update:', {
-                  id: status.id,
-                  status: status.status,
-                  timestamp: status.timestamp,
-                })
-              }
+          // Handle status updates (delivery/read receipts)
+          if (value.statuses && value.statuses.length > 0) {
+            for (const status of value.statuses) {
+              console.log('[WhatsApp Webhook] Status update:', {
+                id: status.id,
+                status: status.status,
+                timestamp: status.timestamp,
+              })
             }
           }
         }
-
-        return NextResponse.json({ success: true }, { status: 200 })
       }
+
+      return NextResponse.json({ success: true }, { status: 200 })
     }
 
-    // Handle sending messages (application/json with type field)
-    const jsonBody = await request.json()
-    
-    // Check if this is a send message request
-    if (jsonBody.action === 'send') {
-      return handleSendMessage(jsonBody)
+    // Handle sending messages — admin only (prevents spam through the Business account).
+    if (body.action === 'send') {
+      const denied = await requireAdmin(request)
+      if (denied) return denied
+      return handleSendMessage(body)
     }
 
     // If no recognized action, return error
