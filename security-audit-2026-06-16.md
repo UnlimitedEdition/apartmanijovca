@@ -115,3 +115,78 @@ Radni fajl je redaktovan i `.env*` je u `.gitignore` (dobro), ALI istorija javno
 **Batch C — hardening:** H3 generičke greške, H4/H5 client leak/stack, getSession→getUser, CORS allowlist + CSP, webhook fail-closed, rate-limit fail-closed, input limiti (availability/translate/contact/analytics).
 
 **Batch D — deps & GDPR:** `next` update (CRITICAL CVE), `npm audit fix`, granularni consent, retention.
+
+---
+
+## 7. STATUS SANACIJE (2026-06-16, ova sesija)
+
+Sve izmene na branču `claude/project-security-review-1o3794` (4 commita). Posle svake faze: `tsc` čist, 354/354 testova, `next build` prolazi.
+
+### ✅ Popravljeno (kod)
+
+| Nalaz | Šta je urađeno |
+|---|---|
+| C1 portal/profile | identitet iz `getUser()` sesije, ne iz `?email=` |
+| C2 portal/bookings | uklonjena lažna auth; identitet iz sesije |
+| C3 upload | `requireAdmin` + MIME allowlist + 5MB + folder sanitizacija |
+| C4 booking/[id] | `requireAdmin` na GET/PUT/DELETE/PATCH |
+| C5b GET /api/booking | `requireAdmin` (lista svih rezervacija) |
+| C6/H6 PII logovi | redaktovani (booking body/IP/email/fingerprint, whatsapp telefon) |
+| H1 email | `requireAdmin` |
+| H2 whatsapp | dupli `json()` popravljen + `requireAdmin` na send |
+| H3 error disclosure | generičke 500 poruke (gallery/analytics/setup/messages/translate) |
+| H4 client admin emails | uklonjeni iz client bundle-a + debug logovi |
+| H5 error.stack | uklonjen iz admin UI |
+| H6 open redirect | `?next=` ograničen na interne putanje |
+| getSession→getUser | middleware, admin/page, portal/page |
+| CORS/CSP | CORS na prod origin + dodat CSP |
+| webhook fail-closed | odbija ako `RESEND_WEBHOOK_SECRET` nedostaje + length guard |
+| input limiti | contact (length), analytics (size), translate (size+enum), availability (uuid/limit) |
+| H11 next CVE | `next` 14.2.18 → 14.2.35 (kritični rešen) |
+
+### ✅ Popravljeno (migracije — ti primeni na bazu)
+
+`supabase/migrations/20260616000000_security_rls_hardening.sql` (nedestruktivna):
+- RLS na `booking_rate_limits` (C5) i `gallery` (H7)
+- `is_admin()` pokriva oba admina na svim tabelama, uklj. `email_events` (H8, L5)
+
+`src/app/api/cron/cleanup/route.ts` (H9) — data retention (briše ustajale rate-limite, stare analytics, anonimizuje PII >3god). **Postavi `CRON_SECRET` env var.**
+
+### ⏳ Ostaje (zahteva tvoju odluku / odvojen rad — NIJE automatski dirano)
+
+| Nalaz | Razlog |
+|---|---|
+| **P0 rotacija ključeva** | samo ti (Supabase/Firebase dashboard) |
+| **Čišćenje git istorije** | zahteva rewrite + force-push mastera (vidi dole) |
+| H10/M GDPR granularni consent + purpose | proizvodna odluka + UI + šema |
+| Right-to-erasure endpoint | proizvodna odluka |
+| `/api/contact` rate limit | traži generički rate limiter (booking RPC je vezan za booking) |
+| Preostali `next` DoS advisori | traže `next@16` major migraciju (App Router breaking) |
+| Portal signup `Math.random()` lozinka | client flow refactor |
+| Dve konfliktne double-booking migracije | DB constraint postoji; treba utvrditi koja je u prod |
+| `supabaseAdmin` tihi fallback | hard-fail na startu može oboriti app ako env fali — pažljivo |
+| M3 `sanitizeContent` HTML strip | latentno; trenutno nema unsafe render sink |
+
+---
+
+## 8. Čišćenje izloženih tajni iz git istorije
+
+Tajne su u commitovima `88f2ff9` i `0bedb10`, koji su deo **master** istorije. Brisanje zahteva prepisivanje istorije i **force-push mastera** — destruktivno i van dozvoljenog push-a ove sesije. **Pravi fix je rotacija** (već planirana). Ako želiš i da očistiš istoriju (tek POSLE rotacije), uradi sam, sa backup-om:
+
+```bash
+# 1) Backup
+git clone --mirror https://github.com/UnlimitedEdition/apartmanijovca apartmanijovca-backup.git
+
+# 2) Instaliraj git-filter-repo, pa ukloni fajlove sa tajnama iz CELE istorije
+pip install git-filter-repo
+git filter-repo --path VERCEL_DEPLOYMENT.md --path src/app/firebase.js --invert-paths
+
+# 3) (alternativa) zameni same stringove ključeva: kreiraj replacements.txt pa
+#    git filter-repo --replace-text replacements.txt
+
+# 4) Force-push svih grana i tagova (NAKON što su svi obavešteni — rewrite!)
+git push origin --force --all
+git push origin --force --tags
+```
+
+Napomena: pošto je repo bio JAVAN, smatraj ključeve kompromitovanim bez obzira na čišćenje — **rotacija je obavezna**.
