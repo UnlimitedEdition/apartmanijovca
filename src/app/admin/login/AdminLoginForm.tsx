@@ -10,12 +10,6 @@ export default function AdminLoginForm() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
-  // List of authorized admin emails
-  const ADMIN_EMAILS = [
-    'mtosic0450@gmail.com',
-    'apartmanijovca@gmail.com'
-  ]
-
   useEffect(() => {
     setMounted(true)
   }, [])
@@ -28,49 +22,29 @@ export default function AdminLoginForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log('🔵 Login attempt started')
     setLoading(true)
     setError('')
 
     try {
-      console.log('🔵 Calling Supabase signInWithPassword...')
       const { data, error: authError } = await supabase.auth.signInWithPassword({
         email,
         password,
       })
 
       if (authError) {
-        console.error('❌ Login error:', authError)
         setError(authError.message)
       } else if (data.user) {
-        console.log('✅ User logged in:', data.user.email)
-        console.log('🔍 Checking against ADMIN_EMAILS:', ADMIN_EMAILS)
-        console.log('🔍 Email to check:', data.user.email)
-        console.log('🔍 Is included?', ADMIN_EMAILS.includes(data.user.email || ''))
-        
-        // Check if user email is in the authorized admin list
-        if (ADMIN_EMAILS.includes(data.user.email || '')) {
-          console.log('✅ Admin email verified, session handled by SSR client')
-          
-          // Small delay to ensure cookies are written before redirect
-          await new Promise(resolve => setTimeout(resolve, 500))
-          
-          console.log('🚀 Redirecting to /admin')
-          // Using window.location.assign for a fresh reload to pick up server cookies
-          window.location.assign('/admin')
-        } else {
-          console.warn('⚠️ Unauthorized email:', data.user.email)
-          console.warn('⚠️ Expected one of:', ADMIN_EMAILS)
-          setError('Unauthorized access - not an admin account')
-          await supabase.auth.signOut()
-        }
+        // Authorization (admin allowlist) is enforced server-side by the
+        // middleware, the /admin server component and every /api/admin route.
+        // Small delay to ensure cookies are written before redirect.
+        await new Promise(resolve => setTimeout(resolve, 500))
+        // Fresh reload so the server picks up the new session cookies.
+        window.location.assign('/admin')
       }
-    } catch (err) {
-      console.error('💥 Unexpected login error:', err)
+    } catch {
       setError('An unexpected error occurred')
     } finally {
       setLoading(false)
-      console.log('🔵 Login attempt finished')
     }
   }
 

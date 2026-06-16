@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
     })
 
   } catch (err: unknown) {
-    const error = err as Error
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('[admin/setup] error:', err)
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

@@ -22,7 +22,7 @@ export async function PATCH(
 
     if (error) {
       console.error('Error updating message:', error)
-      return NextResponse.json({ error: error.message }, { status: 500 })
+      return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
     }
 
     return NextResponse.json({ success: true })
@@ -48,7 +48,7 @@ export async function DELETE(
 
     if (error) {
       console.error('Error deleting message:', error)
-      return NextResponse.json({ error: error.message }, { status: 500 })
+      return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
     }
 
     return NextResponse.json({ success: true })

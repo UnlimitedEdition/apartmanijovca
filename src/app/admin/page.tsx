@@ -18,11 +18,10 @@ export default async function AdminPage() {
     },
   })
 
-  // 1. Provera sesije
-  const { data: { session } } = await supabase.auth.getSession()
+  // 1. Provera sesije — getUser() verifikuje JWT potpis (getSession ne).
+  const { data: { user } } = await supabase.auth.getUser()
 
-  if (!session) {
-    console.log('❌ No active session found, redirecting to login')
+  if (!user) {
     redirect('/admin/login')
   }
 
@@ -32,13 +31,9 @@ export default async function AdminPage() {
     'apartmanijovca@gmail.com'
   ]
 
-  if (!ADMIN_EMAILS.includes(session.user.email || '')) {
-    console.warn('⚠️ Unauthorized user email:', session.user.email)
-    console.warn('⚠️ Expected one of:', ADMIN_EMAILS)
+  if (!ADMIN_EMAILS.includes(user.email || '')) {
     redirect('/admin/login')
   }
-
-  console.log('✅ Admin authorized:', session.user.email)
 
   try {
     if (!AdminDashboard) {
@@ -56,15 +51,11 @@ export default async function AdminPage() {
       />
     )
   } catch (err: unknown) {
-    const error = err as Error
-    console.error('💥 Rendering error in AdminPage:', error)
+    console.error('💥 Rendering error in AdminPage:', err)
     return (
       <div style={{ padding: '2rem', color: 'red', border: '2px solid red', margin: '2rem', borderRadius: '8px' }}>
         <h2>Admin Panel - Rendering Error</h2>
-        <p><strong>Error message:</strong> {error.message}</p>
-        <pre style={{ background: '#f0f0f0', padding: '1rem', overflow: 'auto' }}>
-          {error.stack}
-        </pre>
+        <p>Došlo je do greške pri učitavanju panela. Pokušajte ponovo.</p>
       </div>
     )
   }

@@ -39,8 +39,7 @@ export async function POST(request: NextRequest) {
     })
 
   } catch (err: unknown) {
-    const error = err as Error
-    console.error('Gallery upload error:', error)
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('Gallery upload error:', err)
+    return NextResponse.json({ error: 'Upload failed' }, { status: 500 })
   }
 }
