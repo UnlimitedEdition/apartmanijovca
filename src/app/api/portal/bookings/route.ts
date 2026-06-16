@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
-import { cookies } from 'next/headers'
+import { requireUser } from '@/lib/auth/require-user'
 
 // Create Supabase client with service role for admin operations
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
@@ -10,34 +10,23 @@ function getSupabase() {
   return createClient(supabaseUrl, supabaseServiceKey)
 }
 
+export const dynamic = 'force-dynamic'
+
 export async function GET(request: NextRequest) {
   try {
-    const supabase = getSupabase()
-    
-    // Get the user's email from the request headers (set by middleware)
-    // Or we can get it from the session
-    const cookieStore = cookies()
-    const sessionCookie = cookieStore.get('sb-access-token')
-    
-    if (!sessionCookie) {
-      // Try to get from auth header
-      const authHeader = request.headers.get('authorization')
-      if (!authHeader) {
-        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-      }
+    // Identity comes from the verified session, never from a query param (IDOR).
+    const auth = await requireUser(request)
+    if ('response' in auth) return auth.response
+    const guestEmail = auth.user.email
+    if (!guestEmail) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
+
+    const supabase = getSupabase()
 
     const { searchParams } = new URL(request.url)
     const status = searchParams.get('status')
     const type = searchParams.get('type') // 'upcoming', 'past', 'all', 'active'
-
-    // For now, we'll get guest from the bookings table directly by email
-    // In a real implementation, you'd get the user from the session
-    const guestEmail = searchParams.get('email')
-
-    if (!guestEmail) {
-      return NextResponse.json({ error: 'Email required' }, { status: 400 })
-    }
 
     // Get guest by email
     const { data: guest, error: guestError } = await supabase

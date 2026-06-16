@@ -121,8 +121,25 @@ export async function POST(request: NextRequest) {
   try {
     const { text, targetLangs } = await request.json()
 
-    if (!text) {
+    if (!text || typeof text !== 'string') {
       return NextResponse.json({ error: 'Text is required' }, { status: 400 })
+    }
+
+    if (text.length > 5000) {
+      return NextResponse.json({ error: 'Text too long (max 5000 chars)' }, { status: 400 })
+    }
+
+    const ALLOWED_LANGS = ['en', 'de', 'it']
+    if (
+      !Array.isArray(targetLangs) ||
+      targetLangs.length === 0 ||
+      targetLangs.length > ALLOWED_LANGS.length ||
+      !targetLangs.every((l) => ALLOWED_LANGS.includes(l))
+    ) {
+      return NextResponse.json(
+        { error: 'targetLangs must be a non-empty array of: en, de, it' },
+        { status: 400 }
+      )
     }
 
     // Since this is a demo/dev environment, we'll use a mix of simple mapping 
@@ -163,7 +180,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ translations })
   } catch (err: unknown) {
-    const error = err as Error
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('[admin/translate] error:', err)
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

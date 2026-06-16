@@ -30,11 +30,12 @@ export default async function PortalPage() {
     }
   )
 
+  // getUser() verifies the JWT signature server-side (getSession trusts the cookie).
   const {
-    data: { session },
-  } = await supabase.auth.getSession()
+    data: { user },
+  } = await supabase.auth.getUser()
 
-  if (!session) {
+  if (!user) {
     redirect('/portal/login')
   }
 
@@ -42,7 +43,7 @@ export default async function PortalPage() {
   const { data: guest } = await supabase
     .from('guests')
     .select('id')
-    .eq('email', session.user.email)
+    .eq('email', user.email)
     .single()
 
   if (!guest) {
@@ -78,5 +79,5 @@ export default async function PortalPage() {
     return booking
   }) || []
 
-  return <PortalDashboard bookings={transformedBookings} userEmail={session.user.email!} />
+  return <PortalDashboard bookings={transformedBookings} userEmail={user.email!} />
 }

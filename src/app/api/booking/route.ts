@@ -4,11 +4,12 @@ import {
   CreateBookingSchema, 
   BookingFilterSchema
 } from '../../../lib/validations/booking'
-import { 
-  createBooking, 
+import {
+  createBooking,
   listBookings
 } from '../../../lib/bookings/service'
 import { extractLocale } from '../../../lib/localization/extract'
+import { requireAdmin } from '@/lib/auth/require-admin'
 
 /**
  * GET /api/booking
@@ -26,6 +27,10 @@ import { extractLocale } from '../../../lib/localization/extract'
  */
 export async function GET(request: NextRequest) {
   try {
+    // Listing all bookings exposes guest PII — admin only.
+    const denied = await requireAdmin(request)
+    if (denied) return denied
+
     // Extract locale from request
     const locale = extractLocale(request)
 
@@ -97,9 +102,13 @@ export async function POST(request: NextRequest) {
 
     // Parse request body
     const body = await request.json()
-    
-    // LOG: What we received
-    console.log('[Booking API] Received body:', JSON.stringify(body, null, 2))
+
+    // Log non-PII fields only (GDPR — never log guest name/email/phone/fingerprint).
+    console.log('[Booking API] Received booking request:', {
+      apartmentId: body?.apartmentId,
+      checkIn: body?.checkIn,
+      checkOut: body?.checkOut,
+    })
 
     // Validate input
     const parseResult = CreateBookingSchema.safeParse(body)
@@ -145,11 +154,9 @@ export async function POST(request: NextRequest) {
 
     if (!rateLimitCheck.allowed) {
       console.warn('[Booking API] Rate limit exceeded:', {
-        ip: ipAddress,
-        email: validatedData.guest.email,
         reason: rateLimitCheck.reason
       })
-      
+
       return NextResponse.json(
         { 
           error: rateLimitCheck.reason || 'Previše pokušaja. Molimo pokušajte ponovo kasnije.',
@@ -158,9 +165,6 @@ export async function POST(request: NextRequest) {
         { status: 429 }
       )
     }
-
-    console.log('[Booking API] Rate limit check passed for:', ipAddress)
-    console.log('[Booking API] Rate limit check passed for:', ipAddress)
 
     // Create booking with metadata
     const bookingInput = {
@@ -194,12 +198,9 @@ export async function POST(request: NextRequest) {
       validatedData.security.fingerprint || 'unknown'
     )
 
-    // Log successful booking
+    // Log successful booking (id only — no PII)
     console.log('[Booking API] Booking created successfully:', {
       bookingId: result.booking?.id,
-      email: validatedData.guest.email,
-      ipAddress,
-      fingerprint: validatedData.security.fingerprint
     })
 
     return NextResponse.json(result.booking, { status: 201 })

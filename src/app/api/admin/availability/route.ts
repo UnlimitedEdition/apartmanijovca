@@ -11,6 +11,9 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey, {
   }
 })
 
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+const DATE_RE = /^\d{4}-\d{2}-\d{2}$/
+
 // GET /api/admin/availability - Get availability records with filters
 export async function GET(request: NextRequest) {
   const authError = await requireAdmin(request)
@@ -21,8 +24,13 @@ export async function GET(request: NextRequest) {
     const startDate = searchParams.get('startDate')
     const endDate = searchParams.get('endDate')
     const isAvailable = searchParams.get('isAvailable')
-    const limit = parseInt(searchParams.get('limit') || '100')
-    const offset = parseInt(searchParams.get('offset') || '0')
+    // Clamp paging to sane bounds (prevents huge result-set queries).
+    const limit = Math.min(Math.max(parseInt(searchParams.get('limit') || '100') || 100, 1), 500)
+    const offset = Math.max(parseInt(searchParams.get('offset') || '0') || 0, 0)
+
+    if (apartmentId && !UUID_RE.test(apartmentId)) {
+      return NextResponse.json({ error: 'Invalid apartmentId' }, { status: 400 })
+    }
 
     let query = supabase
       .from('availability')
@@ -101,6 +109,17 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    if (!UUID_RE.test(apartmentId) || !DATE_RE.test(date)) {
+      return NextResponse.json(
+        { error: 'Invalid apartmentId or date format' },
+        { status: 400 }
+      )
+    }
+
+    if (bookingId && !UUID_RE.test(bookingId)) {
+      return NextResponse.json({ error: 'Invalid bookingId' }, { status: 400 })
+    }
+
     // Check if record exists
     const { data: existing } = await supabase
       .from('availability')
@@ -168,9 +187,9 @@ export async function DELETE(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams
     const id = searchParams.get('id')
 
-    if (!id) {
+    if (!id || !UUID_RE.test(id)) {
       return NextResponse.json(
-        { error: 'id is required' },
+        { error: 'Valid id is required' },
         { status: 400 }
       )
     }

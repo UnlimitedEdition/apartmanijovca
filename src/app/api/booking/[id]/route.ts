@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '../../../../lib/supabase'
-import { 
+import { requireAdmin } from '@/lib/auth/require-admin'
+import {
   UpdateBookingSchema
 } from '../../../../lib/validations/booking'
 import { 
@@ -25,6 +26,9 @@ export async function GET(
   { params }: RouteParams
 ) {
   try {
+    const denied = await requireAdmin(request)
+    if (denied) return denied
+
     const { id } = params
 
     // Validate UUID format
@@ -81,6 +85,9 @@ export async function PUT(
   { params }: RouteParams
 ) {
   try {
+    const denied = await requireAdmin(request)
+    if (denied) return denied
+
     const { id } = params
 
     // Validate UUID format
@@ -162,6 +169,9 @@ export async function DELETE(
   { params }: RouteParams
 ) {
   try {
+    const denied = await requireAdmin(request)
+    if (denied) return denied
+
     const { id } = params
 
     // Validate UUID format

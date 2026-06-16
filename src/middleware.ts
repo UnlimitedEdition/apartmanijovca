@@ -59,9 +59,10 @@ export default async function middleware(request: NextRequest) {
       }
     )
 
-    const { data: { session } } = await supabase.auth.getSession()
+    // getUser() verifies the JWT signature server-side (getSession() trusts the cookie).
+    const { data: { user } } = await supabase.auth.getUser()
 
-    if (!session && pathname !== '/admin/login') {
+    if (!user && pathname !== '/admin/login') {
       return NextResponse.redirect(new URL('/admin/login', request.url))
     }
 
