@@ -11,69 +11,130 @@ interface FooterProps {
 export function Footer({ className }: FooterProps) {
   const t = useTranslations('footer')
   const navT = useTranslations('header')
-  const homeT = useTranslations('home')
   const locale = useLocale()
   const currentLang = locale
 
   return (
-    <footer className={cn("border-t py-16 bg-zinc-50 dark:bg-zinc-950", className)}>
-      <div className="container px-4 3xl:px-6 4xl:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 3xl:gap-16 4xl:gap-20 mb-12 3xl:mb-16 4xl:mb-20 text-center md:text-left">
-          <div className="space-y-4">
-            <img 
-              src="/images/logo2.png" 
-              alt="Apartmani Jovča Logo" 
-              className="h-12 w-auto mx-auto md:mx-0"
-            />
-            <p className="text-muted-foreground font-medium max-w-xs mx-auto md:mx-0">
-              {homeT('subtitle')}
-            </p>
-          </div>
-          
-          <nav aria-label="Site navigation" className="space-y-4">
-            <h2 className="font-black text-sm uppercase tracking-widest text-foreground">{navT('home')}</h2>
-            <ul className="flex flex-col gap-3 text-sm font-bold list-none m-0 p-0">
-              <li><Link href={`/${currentLang}/apartments`} className="text-muted-foreground hover:text-primary transition-colors">{navT('apartments')}</Link></li>
-              <li><Link href={`/${currentLang}/gallery`} className="text-muted-foreground hover:text-primary transition-colors">{navT('gallery')}</Link></li>
-              <li><Link href={`/${currentLang}/attractions`} className="text-muted-foreground hover:text-primary transition-colors">{navT('attractions')}</Link></li>
-              <li><Link href={`/${currentLang}/prices`} className="text-muted-foreground hover:text-primary transition-colors">{navT('prices')}</Link></li>
-              <li><Link href={`/${currentLang}/location`} className="text-muted-foreground hover:text-primary transition-colors">{navT('location')}</Link></li>
-            </ul>
-          </nav>
+    <footer
+      className={cn(
+        'bg-gray-800/80 backdrop-blur-sm text-slate-50 py-8 px-4 mt-16 text-center',
+        className
+      )}
+    >
+      <div className="mx-auto max-w-5xl space-y-3">
+        {/* Copyright */}
+        <p className="text-sm">
+          &copy; {new Date().getFullYear()} Apartmani Jovča. {t('rights')}.
+        </p>
 
-          <nav aria-label="Contact and legal" className="space-y-4">
-            <h2 className="font-black text-sm uppercase tracking-widest text-foreground">{t('contactUs')}</h2>
-            <ul className="flex flex-col gap-3 text-sm font-bold list-none m-0 p-0">
-              <li><Link href={`/${currentLang}/contact`} className="text-muted-foreground hover:text-primary transition-colors">{navT('contact')}</Link></li>
-              <li><Link href={`/${currentLang}/privacy`} className="text-muted-foreground hover:text-primary transition-colors">{t('privacy')}</Link></li>
-              <li><Link href={`/${currentLang}/terms`} className="text-muted-foreground hover:text-primary transition-colors">{t('terms')}</Link></li>
-            </ul>
-          </nav>
-        </div>
+        {/* Nav links — horizontal row separated by | */}
+        <nav aria-label="Footer navigation">
+          <ul className="flex flex-wrap justify-center gap-x-2 gap-y-1 text-sm list-none m-0 p-0">
+            <li>
+              <Link
+                href={`/${currentLang}/apartments`}
+                className="underline text-slate-50 hover:text-blue-400 transition-colors"
+              >
+                {navT('apartments')}
+              </Link>
+            </li>
+            <li className="text-slate-50/40 select-none">|</li>
+            <li>
+              <Link
+                href={`/${currentLang}/gallery`}
+                className="underline text-slate-50 hover:text-blue-400 transition-colors"
+              >
+                {navT('gallery')}
+              </Link>
+            </li>
+            <li className="text-slate-50/40 select-none">|</li>
+            <li>
+              <Link
+                href={`/${currentLang}/attractions`}
+                className="underline text-slate-50 hover:text-blue-400 transition-colors"
+              >
+                {navT('attractions')}
+              </Link>
+            </li>
+            <li className="text-slate-50/40 select-none">|</li>
+            <li>
+              <Link
+                href={`/${currentLang}/prices`}
+                className="underline text-slate-50 hover:text-blue-400 transition-colors"
+              >
+                {navT('prices')}
+              </Link>
+            </li>
+            <li className="text-slate-50/40 select-none">|</li>
+            <li>
+              <Link
+                href={`/${currentLang}/location`}
+                className="underline text-slate-50 hover:text-blue-400 transition-colors"
+              >
+                {navT('location')}
+              </Link>
+            </li>
+            <li className="text-slate-50/40 select-none">|</li>
+            <li>
+              <Link
+                href={`/${currentLang}/contact`}
+                className="underline text-slate-50 hover:text-blue-400 transition-colors"
+              >
+                {navT('contact')}
+              </Link>
+            </li>
+            <li className="text-slate-50/40 select-none">|</li>
+            <li>
+              <Link
+                href={`/${currentLang}/privacy`}
+                className="underline text-slate-50 hover:text-blue-400 transition-colors"
+              >
+                {t('privacy')}
+              </Link>
+            </li>
+            <li className="text-slate-50/40 select-none">|</li>
+            <li>
+              <Link
+                href={`/${currentLang}/terms`}
+                className="underline text-slate-50 hover:text-blue-400 transition-colors"
+              >
+                {t('terms')}
+              </Link>
+            </li>
+          </ul>
+        </nav>
 
-        <div className="pt-8 border-t border-zinc-200 dark:border-zinc-800 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground font-medium">
-          <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
-            <p>© {new Date().getFullYear()} Apartmani Jovča. {t('rights')}.</p>
-            <span className="hidden sm:inline text-muted-foreground/30">|</span>
-            <a 
-              href="https://toske-programer.web.app" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-all group"
-              aria-label="Development: Toške"
-            >
-              <span className="text-xs font-semibold">Development:</span>
-              <span className="font-mono font-bold text-indigo-400 group-hover:text-primary transition-colors flex items-center gap-0.5">
-                &lt;Toške/&gt;
-              </span>
-            </a>
-          </div>
-          <div className="flex gap-4 items-center">
-            <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">{t('followUs')}:</span>
-            <a href="https://instagram.com/apartmanijovca" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">Instagram</a>
-            <a href="https://facebook.com/apartmanijovca" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">Facebook</a>
-          </div>
-        </div>
+        {/* Social + dev credit */}
+        <p className="text-xs text-slate-300 flex flex-wrap justify-center items-center gap-x-2 gap-y-1">
+          <a
+            href="https://instagram.com/apartmanijovca"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-blue-400 transition-colors"
+          >
+            Instagram
+          </a>
+          <span className="text-slate-50/40 select-none">|</span>
+          <a
+            href="https://facebook.com/apartmanijovca"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-blue-400 transition-colors"
+          >
+            Facebook
+          </a>
+          <span className="text-slate-50/40 select-none">|</span>
+          <a
+            href="https://toske-programer.web.app"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-blue-400 transition-colors"
+            aria-label="Development: Toške"
+          >
+            Development:{' '}
+            <span className="font-mono text-indigo-300">&lt;Toške/&gt;</span>
+          </a>
+        </p>
       </div>
     </footer>
   )

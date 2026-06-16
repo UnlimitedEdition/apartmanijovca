@@ -57,13 +57,14 @@ export default function LazyImage({
     return (
       <div
         ref={imgRef}
-        className={className}
+        className={`${className} animate-pulse`}
         style={{
-          backgroundColor: '#f0f0f0',
+          backgroundColor: '#e5e7eb',
           minHeight: height ? `${height}px` : '200px',
           width: width ? `${width}px` : '100%',
         }}
         aria-label={alt}
+        role="img"
       />
     )
   }
@@ -80,7 +81,7 @@ export default function LazyImage({
       onLoad={() => setIsLoaded(true)}
       style={{
         opacity: isLoaded ? 1 : 0,
-        transition: 'opacity 0.3s ease-in-out',
+        transition: 'opacity 0.4s ease-in-out',
       }}
     />
   )

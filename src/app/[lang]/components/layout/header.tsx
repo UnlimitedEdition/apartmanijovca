@@ -3,9 +3,8 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { Menu, X, Phone } from 'lucide-react'
+import { Phone } from 'lucide-react'
 import { useLocale, useTranslations } from 'next-intl'
-import { Button } from '@/app/[lang]/components/ui/button'
 import { cn } from '@/lib/utils'
 import { CONTACT_PHONE } from '@/lib/seo/config'
 
@@ -22,7 +21,7 @@ export function Header({ className }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false)
   const [isVisible, setIsVisible] = useState(true)
   const [lastScrollY, setLastScrollY] = useState(0)
-  
+
   // Use locale from next-intl instead of manual parsing
   const currentLang = locale
 
@@ -63,22 +62,18 @@ export function Header({ className }: HeaderProps) {
   }
 
   const handleLanguageChange = (newLang: string) => {
-    console.log('🌍 Language change requested:', { from: currentLang, to: newLang, pathname })
-    
     // Get current path segments
     const segments = pathname.split('/').filter(Boolean)
     const locales = ['en', 'sr', 'de', 'it']
-    
+
     // Remove current locale from path if it exists
     if (segments.length > 0 && locales.includes(segments[0])) {
-      console.log('  Removing locale from path:', segments[0])
       segments.shift()
     }
-    
+
     // Build new path - ALL languages now use prefix (localePrefix: 'always')
     const newPath = '/' + newLang + (segments.length === 0 ? '' : '/' + segments.join('/'))
-    console.log('  New path with locale prefix:', newPath)
-    
+
     router.push(newPath)
     setMenuOpen(false) // Close mobile menu
   }
@@ -92,105 +87,238 @@ export function Header({ className }: HeaderProps) {
   ]
 
   return (
-    <header 
+    <header
       className={cn(
-        "sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 transition-transform duration-300",
-        isVisible ? "translate-y-0" : "-translate-y-full",
+        'fixed top-0 left-0 right-0 z-[1000] bg-transparent transition-transform duration-300',
+        isVisible ? 'translate-y-0' : '-translate-y-full',
         className
       )}
+      style={{ padding: '0 1rem' }}
     >
-      <div className="container flex h-14 sm:h-16 lg:h-20 items-center justify-between px-3 sm:px-4">
-        <div className="flex items-center gap-4 sm:gap-6 lg:gap-8">
-          <Link href={`/${currentLang}`} className="flex items-center space-x-2">
-            {/* Logo - simple img tag for testing */}
-            <img 
-              src="/images/logo2.png" 
-              alt="Apartmani Jovča Logo" 
-              className="h-10 w-auto"
-            />
+      {/* nav-container: max-width 1200px centered, flex, ~80px tall via 1rem padding */}
+      <div
+        className="flex items-center justify-between mx-auto w-full"
+        style={{ maxWidth: '1200px', padding: '1rem 0' }}
+      >
+        {/* Logo */}
+        <Link href={`/${currentLang}`} className="flex items-center flex-shrink-0">
+          <img
+            src="/images/logo2.png"
+            alt="Apartmani Jovča Logo"
+            className="h-10 w-auto"
+            style={{ filter: 'drop-shadow(1px 1px 2px rgba(0,0,0,0.5))' }}
+          />
+        </Link>
+
+        {/* Desktop nav links — center */}
+        <nav aria-label="Main navigation" className="hidden md:flex">
+          <ul className="flex list-none m-0 p-0" style={{ gap: '2rem' }}>
+            {navigationItems.map((item) => (
+              <li key={item.href}>
+                <Link
+                  href={getLocalizedHref(item.href)}
+                  className={cn(
+                    'relative text-white no-underline font-medium',
+                    // text-shadow-light equivalent
+                    // underline grow animation via after pseudo-element
+                    'after:content-[""] after:absolute after:-bottom-1 after:left-0',
+                    'after:h-0.5 after:w-0 after:bg-white after:transition-all after:duration-300',
+                    'hover:after:w-full'
+                  )}
+                  style={{
+                    fontSize: '1rem',
+                    textShadow: '1px 1px 2px rgba(0,0,0,0.5)',
+                  }}
+                >
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        {/* Right side: phone CTA + booking + lang switcher + hamburger */}
+        <div className="flex items-center" style={{ gap: '0.75rem' }}>
+          {/* Phone CTA — blue pill, always visible */}
+          <a
+            href={`tel:${CONTACT_PHONE.replace(/\s/g, '')}`}
+            className="flex items-center gap-1.5 bg-primary text-white rounded-full font-bold shadow-md transition-opacity hover:opacity-90"
+            style={{ padding: '0.5rem 1rem', fontSize: '0.875rem' }}
+            aria-label={`${t('contact')}: ${CONTACT_PHONE}`}
+          >
+            <Phone className="h-4 w-4 flex-shrink-0" />
+            <span className="hidden sm:inline">{CONTACT_PHONE}</span>
+            <span className="sm:hidden">Call</span>
+          </a>
+
+          {/* Booking button — outline white pill, desktop only */}
+          <Link
+            href={`/${currentLang}/booking`}
+            className="hidden sm:inline-flex items-center border-2 border-white text-white rounded-full font-bold transition-colors hover:bg-white hover:text-primary"
+            style={{ padding: '0.5rem 1rem', fontSize: '0.875rem' }}
+          >
+            {t('book')}
           </Link>
-          <nav aria-label="Main navigation" className="hidden md:flex gap-3 lg:gap-6">
-            <ul className="flex gap-3 lg:gap-6 list-none m-0 p-0">
-              {navigationItems.map((item) => (
-                <li key={item.href}>
-                  <Link
-                    href={getLocalizedHref(item.href)}
-                    className="text-xs lg:text-sm font-bold text-muted-foreground transition-colors hover:text-primary"
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </div>
 
-        <div className="flex items-center gap-2 sm:gap-4">
-          <div className="flex items-center gap-1 sm:gap-2">
-            {/* Phone Call Button - Critical for conversion */}
-            <a
-              href={`tel:${CONTACT_PHONE.replace(/\s/g, '')}`}
-              className="flex items-center gap-1 sm:gap-2 bg-primary hover:opacity-90 text-primary-foreground px-2 sm:px-3 lg:px-4 py-1.5 sm:py-2 rounded-full text-[10px] sm:text-xs lg:text-sm font-bold transition-all shadow-md hover:scale-105"
-              aria-label={t('contact')}
-            >
-              <Phone className="h-3 w-3 sm:h-4 sm:w-4" />
-              <span className="hidden lg:inline mr-1">{t('contact')}:</span>
-              <span className="hidden sm:inline">{CONTACT_PHONE}</span>
-              <span className="sm:hidden">Call</span>
-            </a>
+          {/* Language select — transparent, white text */}
+          <select
+            value={currentLang}
+            onChange={(e) => handleLanguageChange(e.target.value)}
+            className="rounded-md bg-transparent text-white font-bold focus:outline-none focus:ring-2 focus:ring-white/50 [&>option]:text-foreground [&>option]:bg-background"
+            style={{
+              border: '1px solid rgba(255,255,255,0.3)',
+              padding: '0.25rem 0.5rem',
+              fontSize: '0.75rem',
+              textShadow: '1px 1px 2px rgba(0,0,0,0.5)',
+            }}
+            aria-label="Select language"
+          >
+            {languages.map((lang) => (
+              <option key={lang.code} value={lang.code}>
+                {lang.name}
+              </option>
+            ))}
+          </select>
 
-            <Link href={`/${currentLang}/booking`}>
-              <Button variant="outline" size="sm" className="hidden sm:flex border-primary text-primary hover:bg-primary/10">
-                {t('book')}
-              </Button>
-            </Link>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <select
-              value={currentLang}
-              onChange={(e) => handleLanguageChange(e.target.value)}
-              className="rounded-md border border-input bg-background px-2 py-1 text-xs font-bold ring-offset-background focus:ring-2 focus:ring-ring"
-            >
-              {languages.map((lang) => (
-                <option key={lang.code} value={lang.code}>
-                  {lang.name}
-                </option>
-              ))}
-            </select>
-            
-            {/* Theme toggle removed for better conversion focus */}
-
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setMenuOpen(!menuOpen)}
-              className="md:hidden h-8 w-8"
-            >
-              {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </Button>
-          </div>
+          {/* Hamburger — mobile only, 3 white bars */}
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="md:hidden flex flex-col justify-center items-center rounded transition-colors hover:bg-white/10"
+            style={{
+              width: '44px',
+              height: '44px',
+              padding: '10px',
+              gap: '4px',
+              cursor: 'pointer',
+              border: 'none',
+              background: 'transparent',
+            }}
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={menuOpen}
+          >
+            {menuOpen ? (
+              // X icon when open — two rotated bars
+              <>
+                <span
+                  style={{
+                    display: 'block',
+                    width: '24px',
+                    height: '2px',
+                    background: 'white',
+                    borderRadius: '2px',
+                    boxShadow: '0 1px 2px rgba(0,0,0,0.2)',
+                    transform: 'rotate(45deg) translate(4px, 4px)',
+                    transition: 'all 0.3s ease',
+                  }}
+                />
+                <span
+                  style={{
+                    display: 'block',
+                    width: '24px',
+                    height: '2px',
+                    background: 'white',
+                    borderRadius: '2px',
+                    boxShadow: '0 1px 2px rgba(0,0,0,0.2)',
+                    opacity: 0,
+                    transition: 'all 0.3s ease',
+                  }}
+                />
+                <span
+                  style={{
+                    display: 'block',
+                    width: '24px',
+                    height: '2px',
+                    background: 'white',
+                    borderRadius: '2px',
+                    boxShadow: '0 1px 2px rgba(0,0,0,0.2)',
+                    transform: 'rotate(-45deg) translate(6px, -6px)',
+                    transition: 'all 0.3s ease',
+                  }}
+                />
+              </>
+            ) : (
+              // 3 bars when closed
+              <>
+                <span
+                  style={{
+                    display: 'block',
+                    width: '24px',
+                    height: '2px',
+                    background: 'white',
+                    borderRadius: '2px',
+                    boxShadow: '0 1px 2px rgba(0,0,0,0.2)',
+                    transition: 'all 0.3s ease',
+                  }}
+                />
+                <span
+                  style={{
+                    display: 'block',
+                    width: '24px',
+                    height: '2px',
+                    background: 'white',
+                    borderRadius: '2px',
+                    boxShadow: '0 1px 2px rgba(0,0,0,0.2)',
+                    transition: 'all 0.3s ease',
+                  }}
+                />
+                <span
+                  style={{
+                    display: 'block',
+                    width: '24px',
+                    height: '2px',
+                    background: 'white',
+                    borderRadius: '2px',
+                    boxShadow: '0 1px 2px rgba(0,0,0,0.2)',
+                    transition: 'all 0.3s ease',
+                  }}
+                />
+              </>
+            )}
+          </button>
         </div>
       </div>
 
+      {/* Mobile fullscreen overlay menu */}
       {menuOpen && (
-        <div className="absolute top-20 left-0 right-0 bg-background border-b md:hidden z-50 animate-in slide-in-from-top duration-300">
-          <nav aria-label="Mobile navigation" className="flex flex-col space-y-4 p-6">
-            <ul className="flex flex-col space-y-4 list-none m-0 p-0">
+        <div
+          className="absolute top-full left-0 right-0 md:hidden"
+          style={{
+            background: 'rgba(0,0,0,0.9)',
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)',
+            zIndex: 1000,
+          }}
+        >
+          <nav aria-label="Mobile navigation">
+            <ul className="flex flex-col list-none m-0 p-0">
               {navigationItems.map((item) => (
-                <li key={item.href}>
-                  <Link 
-                    href={getLocalizedHref(item.href)} 
+                <li
+                  key={item.href}
+                  style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}
+                >
+                  <Link
+                    href={getLocalizedHref(item.href)}
                     onClick={() => setMenuOpen(false)}
-                    className="text-lg font-bold text-foreground hover:text-primary transition-colors"
+                    className="block w-full text-white font-bold text-center transition-colors hover:bg-white/10"
+                    style={{
+                      fontSize: '1.125rem',
+                      padding: '0.75rem 1rem',
+                      textDecoration: 'none',
+                    }}
                   >
                     {item.label}
                   </Link>
                 </li>
               ))}
-              <li>
-                <Link href={`/${currentLang}/booking`} onClick={() => setMenuOpen(false)}>
-                  <Button className="w-full bg-primary text-primary-foreground font-bold">{t('book')}</Button>
+              {/* Booking CTA in mobile menu */}
+              <li className="p-4">
+                <Link
+                  href={`/${currentLang}/booking`}
+                  onClick={() => setMenuOpen(false)}
+                  className="flex items-center justify-center w-full bg-primary text-white rounded-full font-bold shadow-md hover:opacity-90 transition-opacity"
+                  style={{ padding: '0.75rem 1rem', fontSize: '1rem' }}
+                >
+                  {t('book')}
                 </Link>
               </li>
             </ul>
@@ -198,6 +326,5 @@ export function Header({ className }: HeaderProps) {
         </div>
       )}
     </header>
-
   )
 }

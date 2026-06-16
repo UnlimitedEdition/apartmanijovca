@@ -3,7 +3,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useSearchParams, useParams } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { Button } from '../components/ui/button'
 import { Input } from '../components/ui/input'
 import { Textarea } from '../components/ui/textarea'
 import { supabase } from '../lib/supabase/client'
@@ -43,7 +42,7 @@ export default function BookingFlow() {
   const searchParams = useSearchParams()
   const params = useParams()
   const locale = params.lang as Locale
-  
+
   const [step, setStep] = useState(1)
   const [showGDPRBanner, setShowGDPRBanner] = useState(false)
   const [bookingData, setBookingData] = useState<BookingData>({
@@ -73,15 +72,15 @@ export default function BookingFlow() {
     const apartmentParam = searchParams.get('apartment')
     if (apartmentParam) {
       setInitialApartmentId(apartmentParam)
-      
+
       // Check if parameter is UUID (ID) or slug
       const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(apartmentParam)
-      
+
       // Query by ID or slug depending on parameter format
       const query = isUUID
         ? supabase.from('apartments').select('*').eq('id', apartmentParam).single()
         : supabase.from('apartments').select('*').eq('slug', apartmentParam).single()
-      
+
       query.then(({ data }: { data: ApartmentRecord | null }) => {
         if (data) {
           const localizedApartment = transformApartmentRecord(data, locale)
@@ -105,7 +104,7 @@ export default function BookingFlow() {
       setShowGDPRBanner(true)
       return
     }
-    
+
     trackEvent('booking_step_completed', { step })
     setStep(step + 1)
   }
@@ -206,57 +205,57 @@ export default function BookingFlow() {
   const nights = bookingData.checkIn && bookingData.checkOut
     ? Math.ceil((bookingData.checkOut.getTime() - bookingData.checkIn.getTime()) / (1000 * 60 * 60 * 24))
     : 0
-  
+
   const totalPrice = bookingData.apartment && nights > 0
     ? nights * bookingData.apartment.base_price_eur
     : 0
 
-  // SUCCESS STATE - Ultra-modern design
+  // SUCCESS STATE
   if (submitSuccess) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
-        <div className="max-w-3xl mx-auto px-4 py-16">
-          {/* Success Icon */}
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-green-100 rounded-full mb-6">
-              <svg className="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
-              </svg>
+      <div className="min-h-screen py-16 px-4">
+        <div className="max-w-3xl mx-auto">
+          {/* Success panel */}
+          <div className="bg-white/85 backdrop-blur-md rounded-2xl shadow-xl border border-white/40 overflow-hidden mb-6">
+            <div className="text-center p-12">
+              <div className="inline-flex items-center justify-center w-20 h-20 bg-green-100 rounded-full mb-6">
+                <svg className="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight mb-3">{t('messages.success')}</h1>
+              <p className="text-lg text-gray-600">{t('messages.successSubtitle')}</p>
             </div>
-            <h1 className="text-4xl font-bold text-gray-900 mb-3">{t('messages.success')}</h1>
-            <p className="text-lg text-gray-600">{t('messages.successSubtitle')}</p>
-          </div>
 
-          {/* Booking Summary */}
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden mb-6">
-            <div className="bg-gray-50 px-6 py-4 border-b border-gray-200">
-              <h2 className="text-lg font-semibold text-gray-900">{t('summary.title')}</h2>
-            </div>
-            <div className="p-6 space-y-4">
-              <div className="flex justify-between py-3 border-b border-gray-100">
-                <span className="text-sm font-medium text-gray-600">{t('step.apartment')}</span>
-                <span className="text-sm font-semibold text-gray-900">{bookingData.apartment?.name}</span>
-              </div>
-              <div className="flex justify-between py-3 border-b border-gray-100">
-                <span className="text-sm font-medium text-gray-600">{t('step.dates')}</span>
-                <span className="text-sm font-semibold text-gray-900">
-                  {bookingData.checkIn?.toLocaleDateString()} - {bookingData.checkOut?.toLocaleDateString()}
-                </span>
-              </div>
-              <div className="flex justify-between py-3">
-                <span className="text-base font-semibold text-gray-900">{t('summary.total')}</span>
-                <span className="text-2xl font-bold text-blue-600">€{totalPrice}</span>
+            {/* Booking Summary */}
+            <div className="border-t border-gray-100 px-8 pb-8">
+              <h2 className="text-base font-semibold text-gray-900 mb-4 mt-6">{t('summary.title')}</h2>
+              <div className="space-y-3">
+                <div className="flex justify-between py-3 border-b border-gray-100">
+                  <span className="text-sm font-medium text-gray-600">{t('step.apartment')}</span>
+                  <span className="text-sm font-semibold text-gray-900">{bookingData.apartment?.name}</span>
+                </div>
+                <div className="flex justify-between py-3 border-b border-gray-100">
+                  <span className="text-sm font-medium text-gray-600">{t('step.dates')}</span>
+                  <span className="text-sm font-semibold text-gray-900">
+                    {bookingData.checkIn?.toLocaleDateString()} - {bookingData.checkOut?.toLocaleDateString()}
+                  </span>
+                </div>
+                <div className="flex justify-between py-3">
+                  <span className="text-base font-semibold text-gray-900">{t('summary.total')}</span>
+                  <span className="text-2xl font-bold text-primary">€{totalPrice}</span>
+                </div>
               </div>
             </div>
           </div>
 
           {/* Instructions */}
-          <div className="bg-blue-50 rounded-2xl p-6 mb-8">
+          <div className="bg-white/85 backdrop-blur-md rounded-2xl shadow-lg border border-white/40 p-6 mb-8">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('messages.instructionsTitle')}</h3>
             <div className="space-y-3">
               {[1, 2, 3].map((num) => (
                 <div key={num} className="flex gap-3">
-                  <div className="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
+                  <div className="flex-shrink-0 w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center text-sm font-bold">
                     {num}
                   </div>
                   <p className="text-sm text-gray-700 pt-0.5">{t(`messages.instructionsStep${num}`)}</p>
@@ -265,28 +264,26 @@ export default function BookingFlow() {
             </div>
           </div>
 
-          <Button 
+          <button
             onClick={() => window.location.href = '/'}
-            className="w-full h-12 bg-gray-900 hover:bg-gray-800 text-white rounded-xl font-medium"
+            className="cta-pill primary w-full text-center"
           >
             {commonT('back')}
-          </Button>
+          </button>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
+    <div className="min-h-screen py-8 px-4">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-5xl mx-auto px-4 py-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('title')}</h1>
-          <p className="text-gray-600">{t('description')}</p>
-        </div>
+      <div className="stagger-fade-in text-center py-16 text-white mb-8">
+        <h1 className="text-4xl md:text-5xl font-extrabold text-shadow-strong tracking-wide mb-3">{t('title')}</h1>
+        <p className="text-xl text-white/90 text-shadow-medium">{t('description')}</p>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 py-8">
+      <div className="max-w-5xl mx-auto">
         {/* Progress Steps */}
         <div className="mb-8">
           <div className="flex items-center justify-between max-w-2xl mx-auto">
@@ -298,17 +295,17 @@ export default function BookingFlow() {
               <div key={s.num} className="flex items-center flex-1">
                 <div className="flex flex-col items-center flex-1">
                   <div className={`
-                    w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm mb-2
-                    ${step > s.num ? 'bg-green-600 text-white' : step === s.num ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-500'}
+                    w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm mb-2 shadow-md
+                    ${step > s.num ? 'bg-green-600 text-white' : step === s.num ? 'bg-primary text-white' : 'bg-white/60 text-gray-500'}
                   `}>
                     {step > s.num ? '✓' : s.num}
                   </div>
-                  <span className={`text-xs font-medium ${step === s.num ? 'text-blue-600' : 'text-gray-500'}`}>
+                  <span className={`text-xs font-semibold text-shadow-light ${step === s.num ? 'text-white' : 'text-white/70'}`}>
                     {s.label}
                   </span>
                 </div>
                 {idx < 2 && (
-                  <div className={`h-0.5 flex-1 mx-2 ${step > s.num ? 'bg-green-600' : 'bg-gray-200'}`} />
+                  <div className={`h-0.5 flex-1 mx-2 ${step > s.num ? 'bg-green-500' : 'bg-white/30'}`} />
                 )}
               </div>
             ))}
@@ -317,7 +314,7 @@ export default function BookingFlow() {
 
         {/* Error Message */}
         {submitError && (
-          <div className="mb-6 bg-red-50 border border-red-200 rounded-xl p-4">
+          <div className="mb-6 bg-red-50/90 backdrop-blur-sm border border-red-200 rounded-2xl p-4">
             <div className="flex gap-3">
               <svg className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -328,15 +325,15 @@ export default function BookingFlow() {
         )}
 
         {/* Step Content */}
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+        <div className="bg-white/85 backdrop-blur-md rounded-2xl shadow-xl border border-white/40 overflow-hidden">
 
           {/* STEP 1: Dates & Apartment Selection */}
           {step === 1 && (
             <div>
-              <div className="bg-gray-50 px-6 py-5 border-b border-gray-200">
+              <div className="bg-primary/10 px-6 py-5 border-b border-white/40">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center">
+                    <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
                   </div>
@@ -359,7 +356,7 @@ export default function BookingFlow() {
                 />
 
                 {bookingData.apartment && bookingData.checkIn && bookingData.checkOut && (
-                  <div className="mt-6 bg-blue-50 rounded-xl p-5">
+                  <div className="mt-6 bg-primary/10 rounded-2xl p-5 border border-primary/20">
                     <h3 className="text-sm font-semibold text-gray-900 mb-4">{t('summary.preview')}</h3>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                       <div>
@@ -378,19 +375,19 @@ export default function BookingFlow() {
                       </div>
                       <div>
                         <p className="text-xs text-gray-600 mb-1">{t('summary.total')}</p>
-                        <p className="text-lg font-bold text-blue-600">€{totalPrice}</p>
+                        <p className="text-lg font-bold text-primary">€{totalPrice}</p>
                       </div>
                     </div>
                   </div>
                 )}
 
-                <Button
+                <button
                   onClick={handleNextStep}
                   disabled={!bookingData.checkIn || !bookingData.checkOut || !bookingData.apartment}
-                  className="w-full h-12 mt-6 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="cta-pill primary w-full mt-6 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {commonT('next')}
-                </Button>
+                </button>
               </div>
             </div>
           )}
@@ -398,10 +395,10 @@ export default function BookingFlow() {
           {/* STEP 2: Special Requests */}
           {step === 2 && (
             <div>
-              <div className="bg-gray-50 px-6 py-5 border-b border-gray-200">
+              <div className="bg-primary/10 px-6 py-5 border-b border-white/40">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center">
+                    <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
                     </svg>
                   </div>
@@ -415,9 +412,9 @@ export default function BookingFlow() {
               <div className="p-6 space-y-6">
                 {/* Apartment Amenities - Dynamic from Database */}
                 {bookingData.apartment?.selected_amenities && bookingData.apartment.selected_amenities.length > 0 && (
-                  <div className="bg-blue-50 rounded-xl p-5">
+                  <div className="bg-primary/10 rounded-2xl p-5 border border-primary/20">
                     <div className="flex gap-3">
-                      <svg className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                       <div className="text-sm text-gray-700 flex-1">
@@ -442,9 +439,9 @@ export default function BookingFlow() {
 
                 {/* Fallback if no amenities defined */}
                 {(!bookingData.apartment?.selected_amenities || bookingData.apartment.selected_amenities.length === 0) && (
-                  <div className="bg-blue-50 rounded-xl p-5">
+                  <div className="bg-primary/10 rounded-2xl p-5 border border-primary/20">
                     <div className="flex gap-3">
-                      <svg className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                       <div className="text-sm text-gray-700">
@@ -462,7 +459,7 @@ export default function BookingFlow() {
 
                 {/* Special Requests */}
                 <div>
-                  <label className="block text-sm font-semibold text-gray-900 mb-2">
+                  <label className="block mb-2 font-medium text-gray-700">
                     {t('requestsPlaceholder')}
                   </label>
                   <Textarea
@@ -472,7 +469,7 @@ export default function BookingFlow() {
                       options: { ...bookingData.options, specialRequests: e.target.value }
                     })}
                     placeholder={t('requestsPlaceholder')}
-                    className="w-full rounded-xl border-gray-300 focus:border-blue-500 focus:ring-blue-500 min-h-[150px]"
+                    className="w-full px-4 py-3 rounded-[10px] border-2 border-gray-200 bg-white/95 text-foreground transition-colors focus:outline-none focus:border-primary min-h-[150px]"
                   />
                   <p className="text-xs text-gray-500 mt-2">
                     {t('requestsNote')}
@@ -481,19 +478,18 @@ export default function BookingFlow() {
 
                 {/* Navigation */}
                 <div className="flex gap-3 pt-4">
-                  <Button
+                  <button
                     onClick={handlePrevStep}
-                    variant="outline"
-                    className="flex-1 h-12 border-gray-300 hover:bg-gray-50 rounded-xl font-medium"
+                    className="cta-pill secondary flex-1"
                   >
                     {commonT('back')}
-                  </Button>
-                  <Button
+                  </button>
+                  <button
                     onClick={handleNextStep}
-                    className="flex-1 h-12 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-medium"
+                    className="cta-pill primary flex-1"
                   >
                     {commonT('next')}
-                  </Button>
+                  </button>
                 </div>
               </div>
             </div>
@@ -502,10 +498,10 @@ export default function BookingFlow() {
           {/* STEP 3: Contact Details */}
           {step === 3 && (
             <div>
-              <div className="bg-gray-50 px-6 py-5 border-b border-gray-200">
+              <div className="bg-primary/10 px-6 py-5 border-b border-white/40">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-10 h-10 bg-primary/20 rounded-full flex items-center justify-center">
+                    <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
                   </div>
@@ -520,7 +516,7 @@ export default function BookingFlow() {
                 {/* Contact Form */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="md:col-span-2">
-                    <label htmlFor="guest-name" className="block text-sm font-semibold text-gray-900 mb-2">
+                    <label htmlFor="guest-name" className="block mb-2 font-medium text-gray-700">
                       {t('form.fullName')}
                     </label>
                     <Input
@@ -534,12 +530,12 @@ export default function BookingFlow() {
                         ...bookingData,
                         contact: { ...bookingData.contact, name: e.target.value }
                       })}
-                      className="h-11 rounded-xl border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                      className="w-full px-4 py-3 rounded-[10px] border-2 border-gray-200 bg-white/95 text-foreground transition-colors focus:outline-none focus:border-primary"
                       required
                     />
                   </div>
                   <div>
-                    <label htmlFor="guest-phone" className="block text-sm font-semibold text-gray-900 mb-2">
+                    <label htmlFor="guest-phone" className="block mb-2 font-medium text-gray-700">
                       {t('form.phone')}
                     </label>
                     <Input
@@ -552,12 +548,12 @@ export default function BookingFlow() {
                         ...bookingData,
                         contact: { ...bookingData.contact, phone: e.target.value }
                       })}
-                      className="h-11 rounded-xl border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                      className="w-full px-4 py-3 rounded-[10px] border-2 border-gray-200 bg-white/95 text-foreground transition-colors focus:outline-none focus:border-primary"
                       required
                     />
                   </div>
                   <div className="md:col-span-2">
-                    <label htmlFor="guest-email" className="block text-sm font-semibold text-gray-900 mb-2">
+                    <label htmlFor="guest-email" className="block mb-2 font-medium text-gray-700">
                       {t('form.email')}
                     </label>
                     <Input
@@ -570,14 +566,14 @@ export default function BookingFlow() {
                         ...bookingData,
                         contact: { ...bookingData.contact, email: e.target.value }
                       })}
-                      className="h-11 rounded-xl border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                      className="w-full px-4 py-3 rounded-[10px] border-2 border-gray-200 bg-white/95 text-foreground transition-colors focus:outline-none focus:border-primary"
                       required
                     />
                   </div>
                 </div>
 
                 {/* Booking Summary */}
-                <div className="bg-gray-50 rounded-xl p-5">
+                <div className="bg-primary/10 rounded-2xl p-5 border border-primary/20">
                   <h3 className="text-sm font-semibold text-gray-900 mb-4">{t('summary.title')}</h3>
                   <div className="space-y-3">
                     <div className="flex justify-between text-sm">
@@ -590,15 +586,15 @@ export default function BookingFlow() {
                         {bookingData.checkIn?.toLocaleDateString()} - {bookingData.checkOut?.toLocaleDateString()}
                       </span>
                     </div>
-                    <div className="flex justify-between pt-3 border-t border-gray-200">
+                    <div className="flex justify-between pt-3 border-t border-primary/20">
                       <span className="font-semibold text-gray-900">{t('summary.total')}</span>
-                      <span className="text-xl font-bold text-blue-600">€{totalPrice}</span>
+                      <span className="text-xl font-bold text-primary">€{totalPrice}</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Terms Checkbox */}
-                <div className="bg-blue-50 rounded-xl p-4">
+                <div className="bg-primary/10 rounded-2xl p-4 border border-primary/20">
                   <label className="flex items-start gap-3 cursor-pointer">
                     <input
                       type="checkbox"
@@ -607,16 +603,16 @@ export default function BookingFlow() {
                         ...bookingData,
                         acceptedTerms: e.target.checked
                       })}
-                      className="w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mt-0.5"
+                      className="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary mt-0.5"
                       required
                     />
                     <span className="text-sm text-gray-700">
                       {t('form.acceptTerms')}{' '}
-                      <a href={`/${locale}/terms`} target="_blank" className="text-blue-600 hover:underline font-medium">
+                      <a href={`/${locale}/terms`} target="_blank" className="text-primary hover:underline font-medium">
                         {t('form.termsLink')}
                       </a>
                       {' '}{t('form.and')}{' '}
-                      <a href={`/${locale}/privacy`} target="_blank" className="text-blue-600 hover:underline font-medium">
+                      <a href={`/${locale}/privacy`} target="_blank" className="text-primary hover:underline font-medium">
                         {t('form.privacyLink')}
                       </a>
                     </span>
@@ -625,20 +621,19 @@ export default function BookingFlow() {
 
                 {/* Navigation */}
                 <div className="flex gap-3 pt-4">
-                  <Button
+                  <button
                     onClick={handlePrevStep}
-                    variant="outline"
-                    className="flex-1 h-12 border-gray-300 hover:bg-gray-50 rounded-xl font-medium"
+                    className="cta-pill secondary flex-1"
                   >
                     {commonT('back')}
-                  </Button>
-                  <Button
+                  </button>
+                  <button
                     onClick={handleSubmit}
                     disabled={!bookingData.contact.name || !bookingData.contact.email || !bookingData.acceptedTerms || isSubmitting}
-                    className="flex-1 h-12 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="cta-pill primary flex-1 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isSubmitting ? commonT('loading') : t('form.submit')}
-                  </Button>
+                  </button>
                 </div>
               </div>
             </div>

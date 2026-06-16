@@ -2,7 +2,6 @@
 
 import { useEffect } from 'react'
 import { AlertCircle, Shield, Info } from 'lucide-react'
-import { Button } from '../../app/[lang]/components/ui/button'
 
 interface GDPRConsentBannerProps {
   onAccept: () => void
@@ -236,20 +235,19 @@ export default function GDPRConsentBanner({ onAccept, onDecline, locale = 'sr' }
         </div>
 
         {/* Actions - Fixed at bottom */}
-        <div className="bg-gray-50 p-4 sm:p-6 flex flex-col sm:flex-row gap-3 justify-end border-t flex-shrink-0">
-          <Button
-            variant="outline"
+        <div className="bg-gray-50 p-4 sm:p-6 flex flex-col sm:flex-row gap-3 justify-end border-t border-gray-200 flex-shrink-0">
+          <button
             onClick={onDecline}
-            className="px-6 border-red-300 text-red-700 hover:bg-red-50 w-full sm:w-auto"
+            className="px-6 py-2.5 bg-gray-200 text-gray-800 rounded font-bold hover:bg-gray-300 transition-colors duration-200 w-full sm:w-auto"
           >
             {t.decline}
-          </Button>
-          <Button
+          </button>
+          <button
             onClick={onAccept}
-            className="px-6 bg-green-600 hover:bg-green-700 w-full sm:w-auto"
+            className="px-6 py-2.5 bg-[#2563eb] text-white rounded font-bold hover:bg-[#1d4ed8] transition-colors duration-200 w-full sm:w-auto"
           >
             {t.accept}
-          </Button>
+          </button>
         </div>
       </div>
     </div>

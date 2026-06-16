@@ -1,10 +1,8 @@
 import { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
-import { Card, CardContent, CardHeader } from '../components/ui/card'
 import { Badge } from '../components/ui/badge'
 import SafeImage from '../../../components/SafeImage'
 import ContactForm from '../../../components/ContactForm'
-import Breadcrumb from '@/components/Breadcrumb'
 import { Locale } from '@/lib/types/database'
 import { getBaseUrl, CONTACT_PHONE } from '@/lib/seo/config'
 import { generateMetaTags } from '@/lib/seo/meta-generator'
@@ -21,7 +19,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const locale = params.lang as Locale
   const t = await getTranslations({ locale, namespace: 'seo' })
   const baseUrl = getBaseUrl()
-  
+
   // Generate meta tags
   const metaTags = generateMetaTags({
     title: t('contact.title'),
@@ -89,24 +87,14 @@ export default async function ContactPage({ params }: PageProps) {
   const contactT = await getTranslations({ locale: params.lang, namespace: 'contact' })
   const commonT = await getTranslations({ locale: params.lang, namespace: 'common' })
 
-  // Breadcrumb items
-  const breadcrumbItems = [
-    { label: commonT('home'), href: `/${params.lang}` },
-    { label: contactT('title'), current: true }
-  ]
-
   return (
     <div className="container mx-auto px-4 py-8 sm:py-12 max-w-7xl 3xl:max-w-[2000px] 4xl:max-w-[2800px]">
-      <Breadcrumb items={breadcrumbItems} />
-      
-      <div className="text-center mb-10 sm:mb-16 3xl:mb-20 4xl:mb-24">
-        <Badge className="mb-3 sm:mb-4 3xl:mb-6 px-2 sm:px-3 3xl:px-4 py-0.5 sm:py-1 3xl:py-1.5 bg-primary/10 text-primary border-0 font-bold uppercase tracking-widest text-[10px] sm:text-xs 3xl:text-sm 4xl:text-base">
-          {contactT('title')}
-        </Badge>
-        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl 3xl:text-8xl 4xl:text-9xl font-black tracking-tighter mb-4 sm:mb-6 3xl:mb-8 bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/70">
+      {/* Hero */}
+      <div className="stagger-fade-in text-center py-20 text-white mb-10 sm:mb-16">
+        <h1 className="text-4xl md:text-5xl font-extrabold text-shadow-strong tracking-wide mb-4">
           {contactT('title')}
         </h1>
-        <p className="text-sm sm:text-base md:text-lg lg:text-xl 3xl:text-2xl 4xl:text-3xl text-muted-foreground max-w-2xl 3xl:max-w-4xl 4xl:max-w-6xl mx-auto font-medium px-4">
+        <p className="text-xl text-white/90 text-shadow-medium max-w-2xl mx-auto px-4">
           {contactT('description')}
         </p>
       </div>
@@ -114,12 +102,12 @@ export default async function ContactPage({ params }: PageProps) {
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 sm:gap-12 3xl:gap-16 4xl:gap-20">
         {/* Contact Info */}
         <div className="lg:col-span-2 space-y-6 sm:space-y-8">
-          <Card className="border-0 shadow-2xl shadow-zinc-200/50 dark:shadow-none overflow-hidden rounded-2xl sm:rounded-3xl">
-            <CardHeader className="bg-zinc-950 text-white p-6 sm:p-8 3xl:p-10 4xl:p-12">
+          <div className="bg-white/85 backdrop-blur-md rounded-2xl shadow-lg border border-white/40 overflow-hidden">
+            <div className="bg-zinc-950 text-white p-6 sm:p-8 3xl:p-10 4xl:p-12">
               <h2 className="text-lg sm:text-xl lg:text-2xl 3xl:text-3xl 4xl:text-4xl font-black tracking-tight">{contactT('info.title')}</h2>
               <p className="text-zinc-400 font-medium text-xs sm:text-sm 3xl:text-base 4xl:text-lg">{contactT('info.subtitle')}</p>
-            </CardHeader>
-            <CardContent className="p-6 sm:p-8 3xl:p-10 4xl:p-12 space-y-6 sm:space-y-8 3xl:space-y-10 4xl:space-y-12">
+            </div>
+            <div className="p-6 sm:p-8 3xl:p-10 4xl:p-12 space-y-6 sm:space-y-8 3xl:space-y-10 4xl:space-y-12">
               <div className="flex items-start gap-3 sm:gap-4 3xl:gap-6">
                 <div className="w-10 h-10 sm:w-12 sm:h-12 3xl:w-16 3xl:h-16 4xl:w-20 4xl:h-20 rounded-xl sm:rounded-2xl bg-primary/10 flex items-center justify-center text-primary shrink-0">
                   <svg className="w-5 h-5 sm:w-6 sm:h-6 3xl:w-8 3xl:h-8 4xl:w-10 4xl:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
@@ -155,16 +143,16 @@ export default async function ContactPage({ params }: PageProps) {
                   </p>
                 </div>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           {/* Owner Identity - Trust Building */}
-          <Card className="border-0 bg-primary/5 rounded-3xl overflow-hidden p-8 flex flex-col sm:flex-row gap-6 items-center sm:items-start">
+          <div className="bg-white/85 backdrop-blur-md rounded-2xl shadow-lg border border-white/40 p-8 flex flex-col sm:flex-row gap-6 items-center sm:items-start">
             <div className="w-24 h-24 rounded-2xl overflow-hidden shrink-0 shadow-xl border-4 border-white rotate-3">
-              <SafeImage 
-                src="https://api.dicebear.com/7.x/avataaars/svg?seed=Jovca" 
+              <SafeImage
+                src="https://api.dicebear.com/7.x/avataaars/svg?seed=Jovca"
                 fallbackSrc="https://api.dicebear.com/7.x/initials/svg?seed=J"
-                alt={contactT('host.title')} 
+                alt={contactT('host.title')}
                 className="w-full h-full object-cover bg-white"
               />
             </div>
@@ -180,36 +168,32 @@ export default async function ContactPage({ params }: PageProps) {
                 <Badge variant="outline" className="bg-white/80 backdrop-blur border-primary/20 text-primary font-bold">{contactT('languages.de')}</Badge>
               </div>
             </div>
-          </Card>
+          </div>
         </div>
-
 
         {/* Contact Form */}
         <div className="lg:col-span-3">
-          <Card className="border-0 shadow-2xl shadow-zinc-200/50 rounded-3xl p-4 sm:p-8 md:p-12 3xl:p-16 4xl:p-20">
-            <CardHeader className="px-0 pt-0">
+          <div className="bg-white/85 backdrop-blur-md rounded-2xl shadow-lg border border-white/40 p-6 sm:p-8 md:p-12 3xl:p-16 4xl:p-20">
+            <div className="mb-6">
               <h2 className="text-4xl 3xl:text-5xl 4xl:text-6xl font-black tracking-tighter mb-2">{contactT('form.submit')}</h2>
               <p className="text-lg 3xl:text-xl 4xl:text-2xl font-medium">{contactT('form.subtitle')}</p>
-            </CardHeader>
-            <CardContent className="px-0">
-              <ContactForm
-                labels={{
-                  name: contactT('form.name'),
-                  email: contactT('form.email'),
-                  phone: contactT('form.phone'),
-                  message: contactT('form.message'),
-                  submit: commonT('send'),
-                  success: contactT('form.success'),
-                  error: contactT('form.error')
-                }}
-              />
-            </CardContent>
-          </Card>
+            </div>
+            <ContactForm
+              labels={{
+                name: contactT('form.name'),
+                email: contactT('form.email'),
+                phone: contactT('form.phone'),
+                message: contactT('form.message'),
+                submit: commonT('send'),
+                success: contactT('form.success'),
+                error: contactT('form.error')
+              }}
+            />
+          </div>
         </div>
       </div>
 
       {/* WhatsApp Button removed as it is now handled by global FloatingCTA component */}
-
 
       {/* WhatsAppStatus removed for better conversion focus */}
     </div>

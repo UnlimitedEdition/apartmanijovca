@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const locale = params.lang as Locale
   const t = await getTranslations({ locale, namespace: 'seo' })
   const baseUrl = getBaseUrl()
-  
+
   const metaTags = generateMetaTags({
     title: t('gallery.title'),
     description: t('gallery.description'),
@@ -100,7 +100,7 @@ async function getGalleryItems() {
     .select('*')
     .order('display_order', { ascending: true })
     .order('created_at', { ascending: false })
-  
+
   if (error) {
     console.error('Error fetching gallery:', error)
     return []
@@ -115,24 +115,35 @@ export default async function GalleryPage({
 }) {
   const items = await getGalleryItems()
 
-  return (
-    <div className="min-h-screen pt-20 pb-12">
-      <div className="container mx-auto px-4 3xl:px-6 4xl:px-8">
-        <header className="mb-12 3xl:mb-16 4xl:mb-20 text-center">
-          <h1 className="text-4xl md:text-5xl 3xl:text-6xl 4xl:text-7xl font-bold mb-4 3xl:mb-6 uppercase tracking-tight">
-            {lang === 'sr' ? 'Galerija' : 
-             lang === 'en' ? 'Gallery' : 
-             lang === 'de' ? 'Galerie' :
-             lang === 'it' ? 'Galleria' : 'Galerija'}
-          </h1>
-          <p className="text-muted-foreground max-w-2xl mx-auto italic">
-            {lang === 'sr' ? 'Uživajte u prelepim prizorima Bovanaskog jezera i enterijeru naših apartmana.' : 
-             lang === 'en' ? 'Enjoy the beautiful views of Lake Bovan and the interior of our apartments.' : 
-             lang === 'de' ? 'Genießen Sie die schöne Aussicht auf den Bovan-See und das Innere naših Apartments.' : 
-             lang === 'it' ? 'Godeti le bellisime viste del lago Bovan e l\'interno dei nostri appartamenti.' : 'Galerija'}
-          </p>
-        </header>
+  const title =
+    lang === 'sr' ? 'Galerija' :
+    lang === 'en' ? 'Gallery' :
+    lang === 'de' ? 'Galerie' :
+    lang === 'it' ? 'Galleria' : 'Galerija'
 
+  const subtitle =
+    lang === 'sr' ? 'Uživajte u prelepim prizorima Bovanaskog jezera i enterijeru naših apartmana.' :
+    lang === 'en' ? 'Enjoy the beautiful views of Lake Bovan and the interior of our apartments.' :
+    lang === 'de' ? 'Genießen Sie die schöne Aussicht auf den Bovan-See und das Innere naših Apartments.' :
+    lang === 'it' ? "Godeti le bellisime viste del lago Bovan e l'interno dei nostri appartamenti." : ''
+
+  return (
+    <div className="min-h-screen">
+      {/* Page Hero */}
+      <div className="py-20 text-center px-4 stagger-fade-in">
+        <h1
+          className="font-extrabold text-white text-shadow-strong uppercase tracking-tight mb-4"
+          style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)' }}
+        >
+          {title}
+        </h1>
+        <p className="text-white/90 text-shadow-medium max-w-2xl mx-auto italic text-lg">
+          {subtitle}
+        </p>
+      </div>
+
+      {/* Gallery content */}
+      <div className="container mx-auto px-4 3xl:px-6 4xl:px-8 pb-16">
         <GalleryClient initialItems={items} lang={lang} />
       </div>
     </div>
