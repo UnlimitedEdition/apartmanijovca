@@ -157,7 +157,7 @@ export default function ApartmentDetailView({ apartment, locale }: Props) {
     <div className="min-h-screen">
       {/* Hero / Image Grid */}
       <div className="bg-black/30 backdrop-blur-sm">
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto px-4 pt-24 sm:pt-28 lg:pt-32 pb-8">
           {/* Title */}
           <h1
             className="font-extrabold text-white text-shadow-strong mb-2"
