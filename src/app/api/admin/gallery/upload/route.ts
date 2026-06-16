@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import { uploadImage } from '@/lib/cloudinary'
 import { requireAdmin } from '@/lib/auth/require-admin'
 
+
+export const dynamic = 'force-dynamic'
+
 export async function POST(request: NextRequest) {
   const authError = await requireAdmin(request)
   if (authError) return authError

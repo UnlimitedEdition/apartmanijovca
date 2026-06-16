@@ -6,6 +6,9 @@ import { localizeApartments } from '@/lib/localization/transformer'
 import { isCompleteMultiLanguageText, getMissingLanguages } from '@/lib/localization/helpers'
 import type { ApartmentRecord } from '@/lib/types/database'
 
+
+export const dynamic = 'force-dynamic'
+
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 const supabaseAdmin = createClient(supabaseUrl, process.env.NEXT_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || supabaseAnonKey)

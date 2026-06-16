@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/auth/require-admin'
 
+
+export const dynamic = 'force-dynamic'
+
 // Simple translation map for common hospitality terms
 const HOSPITALITY_TRANSLATIONS: Record<string, Record<string, string>> = {
   'pogled na jezero': {
