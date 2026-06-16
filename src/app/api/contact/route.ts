@@ -17,6 +17,19 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Reject oversized fields (prevents DoS / DB bloat via huge payloads)
+    if (
+      typeof name !== 'string' || name.length > 100 ||
+      typeof email !== 'string' || email.length > 200 ||
+      (phone != null && (typeof phone !== 'string' || phone.length > 30)) ||
+      typeof message !== 'string' || message.length > 5000
+    ) {
+      return NextResponse.json(
+        { error: 'Neispravni podaci (predugačko polje)' },
+        { status: 400 }
+      )
+    }
+
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(email)) {

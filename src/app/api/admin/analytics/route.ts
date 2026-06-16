@@ -97,8 +97,7 @@ export async function GET(request: NextRequest) {
     })
 
   } catch (err: unknown) {
-    const error = err as Error
-    console.error('Analytics API Error:', error)
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('Analytics API Error:', err)
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

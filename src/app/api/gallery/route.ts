@@ -18,8 +18,7 @@ export async function GET() {
 
     return NextResponse.json(items || [])
   } catch (err: unknown) {
-    const error = err as Error
-    console.error('Gallery API Error:', error)
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('Gallery API Error:', err)
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

@@ -22,8 +22,8 @@ export async function GET(request: NextRequest) {
     if (error) throw error
     return NextResponse.json(data)
   } catch (err: unknown) {
-    const error = err as Error
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('[admin/gallery] error:', err)
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
 
@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(data)
   } catch (err: unknown) {
-    const error = err as Error
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('[admin/gallery] error:', err)
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

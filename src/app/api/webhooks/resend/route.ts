@@ -55,7 +55,13 @@ function verifyWebhookSignature(
   try {
     const hmac = crypto.createHmac('sha256', secret)
     const digest = hmac.update(payload).digest('hex')
-    return crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(digest))
+    const sigBuf = Buffer.from(signature)
+    const digestBuf = Buffer.from(digest)
+    // timingSafeEqual throws if the buffers differ in length — guard first.
+    if (sigBuf.length !== digestBuf.length) {
+      return false
+    }
+    return crypto.timingSafeEqual(sigBuf, digestBuf)
   } catch (error) {
     console.error('Error verifying webhook signature:', error)
     return false
@@ -97,18 +103,23 @@ export async function POST(request: NextRequest) {
     const signature = request.headers.get('x-resend-signature')
     const webhookSecret = process.env.RESEND_WEBHOOK_SECRET
 
-    // Verify webhook signature if secret is configured
-    if (webhookSecret) {
-      const isValid = verifyWebhookSignature(rawBody, signature, webhookSecret)
-      if (!isValid) {
-        console.error('Invalid webhook signature')
-        return NextResponse.json(
-          { error: 'Invalid signature' },
-          { status: 401 }
-        )
-      }
-    } else {
-      console.warn('RESEND_WEBHOOK_SECRET not configured - skipping signature verification')
+    // Fail closed: without a configured secret we cannot trust any payload,
+    // so reject rather than accepting forged webhook events.
+    if (!webhookSecret) {
+      console.error('RESEND_WEBHOOK_SECRET not configured - rejecting webhook')
+      return NextResponse.json(
+        { error: 'Webhook not configured' },
+        { status: 503 }
+      )
+    }
+
+    const isValid = verifyWebhookSignature(rawBody, signature, webhookSecret)
+    if (!isValid) {
+      console.error('Invalid webhook signature')
+      return NextResponse.json(
+        { error: 'Invalid signature' },
+        { status: 401 }
+      )
     }
 
     // Parse the webhook payload
