@@ -18,9 +18,13 @@ export async function POST(request: NextRequest) {
       language
     } = body
 
-    if (!event_type) {
-      console.warn('Analytics API: Missing event_type in body', body)
-      return NextResponse.json({ success: false, error: 'Missing event_type' })
+    if (!event_type || typeof event_type !== 'string' || event_type.length > 100) {
+      return NextResponse.json({ success: false, error: 'Missing or invalid event_type' })
+    }
+
+    // Cap event_data size to prevent JSONB/DB bloat from unauthenticated callers.
+    if (event_data && JSON.stringify(event_data).length > 4000) {
+      return NextResponse.json({ success: false, error: 'event_data too large' })
     }
 
     // Get geo data from Vercel headers
