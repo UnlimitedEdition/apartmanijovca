@@ -11,23 +11,21 @@ interface LazyImageProps {
   height?: number
 }
 
-export default function LazyImage({ 
-  src, 
-  alt, 
-  className = '', 
+export default function LazyImage({
+  src,
+  alt,
+  className = '',
   priority = false,
   width,
-  height 
+  height
 }: LazyImageProps) {
   const [imageSrc, setImageSrc] = useState<string | null>(priority ? src : null)
   const [isLoaded, setIsLoaded] = useState(false)
-  const imgRef = useRef<HTMLDivElement>(null)
+  const placeholderRef = useRef<HTMLDivElement>(null)
+  const imgRef = useRef<HTMLImageElement>(null)
 
   useEffect(() => {
-    if (priority) {
-      setIsLoaded(true)
-      return
-    }
+    if (priority) return
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -38,25 +36,28 @@ export default function LazyImage({
           }
         })
       },
-      {
-        rootMargin: '100px', // Start loading 100px before image enters viewport
-      }
+      { rootMargin: '100px' }
     )
 
-    if (imgRef.current) {
-      observer.observe(imgRef.current)
+    if (placeholderRef.current) {
+      observer.observe(placeholderRef.current)
     }
 
-    return () => {
-      observer.disconnect()
-    }
+    return () => observer.disconnect()
   }, [priority, src])
 
+  // Cached images load synchronously and `onLoad` may fire before React
+  // attaches the listener. Detect that case via `img.complete`.
+  useEffect(() => {
+    if (imgRef.current?.complete && imgRef.current.naturalWidth > 0) {
+      setIsLoaded(true)
+    }
+  }, [imageSrc])
+
   if (!imageSrc) {
-    // Render placeholder div until image should load
     return (
       <div
-        ref={imgRef}
+        ref={placeholderRef}
         className={`${className} animate-pulse`}
         style={{
           backgroundColor: '#e5e7eb',
@@ -71,6 +72,7 @@ export default function LazyImage({
 
   return (
     <img
+      ref={imgRef}
       src={imageSrc}
       alt={alt}
       className={className}
@@ -79,9 +81,10 @@ export default function LazyImage({
       loading={priority ? 'eager' : 'lazy'}
       decoding={priority ? 'sync' : 'async'}
       onLoad={() => setIsLoaded(true)}
+      onError={() => setIsLoaded(true)}
       style={{
         opacity: isLoaded ? 1 : 0,
-        transition: 'opacity 0.4s ease-in-out',
+        transition: 'opacity 0.3s ease-in-out',
       }}
     />
   )
