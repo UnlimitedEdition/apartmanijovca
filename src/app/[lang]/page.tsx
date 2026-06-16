@@ -178,7 +178,6 @@ export default async function HomePage({ params }: PageProps) {
       {/* Hero Section */}
       <section className="hero relative min-h-[100dvh] flex items-center justify-center overflow-hidden">
         {/* Subtle darkening overlay — old-site aesthetic */}
-        <div className="absolute inset-0 bg-black/20 z-10 pointer-events-none" />
 
         {/* Hero content — stagger fade-in like old Astro hero */}
         <div className="container relative z-20 text-center text-white max-w-3xl mx-auto px-8">
@@ -261,7 +260,7 @@ export default async function HomePage({ params }: PageProps) {
       </section>
 
       {/* Trust & Features Bar */}
-      <section className="bg-black/30 backdrop-blur-sm border-y border-white/20 py-12">
+      <section className="border-y border-white/20 py-12">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             {[
@@ -301,7 +300,7 @@ export default async function HomePage({ params }: PageProps) {
       </section>
 
       {/* Featured Apartments */}
-      <section className="py-20 bg-black/25 backdrop-blur-sm">
+      <section className="py-20">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-end mb-12">
             <div>
@@ -475,7 +474,7 @@ export default async function HomePage({ params }: PageProps) {
 
       {/* Reviews Section */}
       {Array.isArray(reviews) && reviews.length > 0 && (
-        <section className="py-20 bg-black/25 backdrop-blur-sm border-y border-white/20">
+        <section className="py-20 border-y border-white/20">
           <div className="container mx-auto px-4">
             <h2
               className="font-bold text-center mb-16 text-white text-shadow-strong"
@@ -509,7 +508,7 @@ export default async function HomePage({ params }: PageProps) {
       )}
 
       {/* Final CTA Section — no own background, lets global photo show through */}
-      <section className="relative py-24 text-white overflow-hidden bg-black/40 backdrop-blur-sm">
+      <section className="relative py-24 text-white overflow-hidden">
         <div className="container relative z-10 mx-auto px-4 text-center">
           <h2
             className="font-bold mb-6 text-white text-shadow-strong"
