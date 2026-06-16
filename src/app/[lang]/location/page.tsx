@@ -167,7 +167,7 @@ export default async function LocationPage({ params }: PageProps) {
         <div className="lg:col-span-2 bg-white/85 backdrop-blur-md rounded-2xl shadow-lg border border-white/40 p-4 overflow-hidden">
           <div className="h-[560px] rounded-xl overflow-hidden">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d606.8016731075406!2d21.702344251651983!3d43.64617888011119!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zNDPCsDM4JzQ1LjkiTiAyMcKwNDInMDkuNyJF!5e1!3m2!1ssr!2srs!4v1771085634374!5m2!1ssr!2srs"
+              src="https://maps.google.com/maps?q=43.64617888011119,21.702344251651983&z=15&output=embed"
               width="100%"
               height="100%"
               style={{ border: 0 }}
