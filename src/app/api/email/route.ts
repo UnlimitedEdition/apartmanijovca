@@ -2,10 +2,14 @@ import { NextRequest, NextResponse } from 'next/server'
 import { isResendConfigured, logEmailEvent, EMAIL_CONFIG } from '@/lib/resend'
 import { sendEmailByType } from '@/lib/email/service'
 import { EmailType } from '@/lib/email/types'
+import { requireAdmin } from '@/lib/auth/require-admin'
 
-// POST /api/email - Send an email
+// POST /api/email - Send an email (admin only)
 export async function POST(request: NextRequest) {
   try {
+    const denied = await requireAdmin(request)
+    if (denied) return denied
+
     const body = await request.json()
     const { type, bookingId, bookingData, guestData, additionalOptions } = body
 
@@ -42,7 +46,7 @@ export async function POST(request: NextRequest) {
         bookingId,
       })
       
-      console.log('[Email API] Mock send:', { type, bookingId, guestData })
+      console.log('[Email API] Mock send:', { type, bookingId })
       
       return NextResponse.json({
         success: true,

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { requireUser } from '@/lib/auth/require-user'
 
 // Create Supabase client with service role for admin operations
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
@@ -11,14 +12,15 @@ function getSupabase() {
 
 export async function GET(request: NextRequest) {
   try {
-    const supabase = getSupabase()
-    
-    const { searchParams } = new URL(request.url)
-    const guestEmail = searchParams.get('email')
-
+    // Identity comes from the verified session, never from a query param (IDOR).
+    const auth = await requireUser(request)
+    if ('response' in auth) return auth.response
+    const guestEmail = auth.user.email
     if (!guestEmail) {
-      return NextResponse.json({ error: 'Email required' }, { status: 400 })
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
+
+    const supabase = getSupabase()
 
     // Get guest profile
     const { data: guest, error: guestError } = await supabase
@@ -61,14 +63,18 @@ export async function GET(request: NextRequest) {
 
 export async function PUT(request: NextRequest) {
   try {
-    const supabase = getSupabase()
-    
-    const body = await request.json()
-    const { email, name, phone, country, notifications } = body
-
+    // Identity comes from the verified session, never from the request body (IDOR).
+    const auth = await requireUser(request)
+    if ('response' in auth) return auth.response
+    const email = auth.user.email
     if (!email) {
-      return NextResponse.json({ error: 'Email required' }, { status: 400 })
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
+
+    const supabase = getSupabase()
+
+    const body = await request.json()
+    const { name, phone, country, notifications } = body
 
     // Update guest profile
     const updateData: Record<string, unknown> = {

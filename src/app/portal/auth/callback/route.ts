@@ -6,8 +6,13 @@ import { NextRequest, NextResponse } from 'next/server'
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url)
   const code = searchParams.get('code')
-  // if "next" is in param, use it as the redirect URL
-  const next = searchParams.get('next') ?? '/portal'
+  // if "next" is in param, use it as the redirect URL — but only allow internal
+  // single-slash paths to prevent open redirects (e.g. //evil.com or https://evil.com).
+  const requestedNext = searchParams.get('next') ?? '/portal'
+  const next =
+    requestedNext.startsWith('/') && !requestedNext.startsWith('//')
+      ? requestedNext
+      : '/portal'
 
   if (code) {
     const cookieStore = cookies()
