@@ -8,7 +8,6 @@ import { Textarea } from '../components/ui/textarea'
 import { supabase } from '../lib/supabase/client'
 import { trackEvent } from '../../../hooks/useAnalytics'
 import AvailabilityCalendar from '../../../components/booking/AvailabilityCalendar'
-import GDPRConsentBanner from '../../../components/booking/GDPRConsentBanner'
 import { getSecurityMetadata } from '../../../lib/security/fingerprint'
 import { Apartment } from '../../../hooks/useAvailability'
 import { Locale } from '@/lib/types/database'
@@ -32,7 +31,6 @@ interface BookingData {
     phone: string
   }
   acceptedTerms: boolean
-  gdprConsent: boolean
 }
 
 export default function BookingFlow() {
@@ -44,7 +42,6 @@ export default function BookingFlow() {
   const locale = params.lang as Locale
 
   const [step, setStep] = useState(1)
-  const [showGDPRBanner, setShowGDPRBanner] = useState(false)
   const [bookingData, setBookingData] = useState<BookingData>({
     checkIn: null,
     checkOut: null,
@@ -61,7 +58,6 @@ export default function BookingFlow() {
       phone: ''
     },
     acceptedTerms: false,
-    gdprConsent: false
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
@@ -98,31 +94,13 @@ export default function BookingFlow() {
     setBookingData(prev => ({ ...prev, apartment }))
   }, [])
 
-  const handleNextStep = () => {
-    // If moving from step 2 to step 3, show GDPR banner first
-    if (step === 2 && !bookingData.gdprConsent) {
-      setShowGDPRBanner(true)
-      return
-    }
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [step])
 
+  const handleNextStep = () => {
     trackEvent('booking_step_completed', { step })
     setStep(step + 1)
-  }
-
-  const handleGDPRAccept = () => {
-    setBookingData(prev => ({ ...prev, gdprConsent: true }))
-    setShowGDPRBanner(false)
-    // Continue to step 3 after accepting
-    trackEvent('gdpr_accepted', { step: 2 })
-    trackEvent('booking_step_completed', { step: 2 })
-    setStep(3)
-  }
-
-  const handleGDPRDecline = () => {
-    setShowGDPRBanner(false)
-    trackEvent('gdpr_declined', { step: 2 })
-    // Redirect to home page if user declines GDPR
-    window.location.href = `/${locale}`
   }
 
   const handlePrevStep = () => {
@@ -137,12 +115,6 @@ export default function BookingFlow() {
 
     if (!bookingData.acceptedTerms) {
       setSubmitError(t('messages.acceptTermsRequired'))
-      return
-    }
-
-    // Show GDPR banner if not yet consented
-    if (!bookingData.gdprConsent) {
-      setShowGDPRBanner(true)
       return
     }
 
@@ -182,7 +154,7 @@ export default function BookingFlow() {
             fingerprint: securityMetadata.fingerprint,
             userAgent: securityMetadata.userAgent,
             deviceInfo: securityMetadata.deviceInfo,
-            consentGiven: true,
+            consentGiven: bookingData.acceptedTerms,
             consentTimestamp: new Date().toISOString()
           }
         })
@@ -640,14 +612,6 @@ export default function BookingFlow() {
           )}
         </div>
 
-        {/* GDPR Consent Banner */}
-        {showGDPRBanner && (
-          <GDPRConsentBanner
-            onAccept={handleGDPRAccept}
-            onDecline={handleGDPRDecline}
-            locale={locale}
-          />
-        )}
       </div>
     </div>
   )

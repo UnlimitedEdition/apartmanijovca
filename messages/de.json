@@ -117,11 +117,11 @@
     "features": {
       "title": "Alles für Ihren perfekten Aufenthalt",
       "description": "Unsere Apartments sind mit Liebe zum Detail eingerichtet, um Ihnen maximalen Komfort zu bieten.",
-      "wiFi": "High-Speed WLAN",
+      "wiFi": "WLAN",
       "climate": "Klimaanlage",
       "parking": "Privater Parkplatz",
-      "kitchen": "Voll ausgestattet",
-      "tv": "Smart TV",
+      "kitchen": "Ausgestattete Küche",
+      "tv": "Beamer",
       "linens": "Bettwäsche & Handtücher",
       "lakeAccess": "Strandzugang",
       "bbq": "Grillplatz"
@@ -135,7 +135,7 @@
       "q3": "Sind Haustiere erlaubt?",
       "a3": "Bitte kontaktieren Sie uns vorab bezüglich Haustieren, da dies vom jeweiligen Apartment abhängt.",
       "q4": "Wie weit ist der Strand entfernt?",
-      "a4": "Der nächste Strand am Bovan-See ist nur 2-3 Gehminuten (ca. 150m) entfernt.",
+      "a4": "Ja, wir haben einen privaten Strand für unsere Gäste, nur 2-3 Gehminuten entfernt.",
       "q5": "Ist WLAN verfügbar?",
       "a5": "Ja, wir bieten kostenloses High-Speed-WLAN in allen unseren Apartments.",
       "q6": "Haben die Apartments eine Klimaanlage?",
