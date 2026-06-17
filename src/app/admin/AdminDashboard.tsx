@@ -46,12 +46,16 @@ interface AdminDashboardProps {
   stats: Stats
 }
 
+function getActiveBookingCount(stats: Pick<Stats, 'pendingBookings' | 'confirmedBookings'>): number {
+  return stats.pendingBookings + stats.confirmedBookings
+}
+
 export default function AdminDashboard({ stats: initialStats }: AdminDashboardProps) {
   const [activeTab, setActiveTab] = useState('dashboard')
   const [refreshing, setRefreshing] = useState(false)
   const [statsKey, setStatsKey] = useState(0) // Key to force StatsCards refresh
   const [messageCount, setMessageCount] = useState<number | null>(null)
-  const [bookingCount, setBookingCount] = useState<number | null>(initialStats.totalBookings)
+  const [bookingCount, setBookingCount] = useState<number | null>(getActiveBookingCount(initialStats))
 
   // Create Supabase client for logout
   const supabase = createBrowserClient(
@@ -77,7 +81,9 @@ export default function AdminDashboard({ stats: initialStats }: AdminDashboardPr
       const response = await fetch('/api/admin/stats')
       if (!response.ok) throw new Error('Failed to fetch booking stats')
       const data = await response.json()
-      setBookingCount(typeof data.totalBookings === 'number' ? data.totalBookings : 0)
+      const pendingBookings = typeof data.pendingBookings === 'number' ? data.pendingBookings : 0
+      const confirmedBookings = typeof data.confirmedBookings === 'number' ? data.confirmedBookings : 0
+      setBookingCount(pendingBookings + confirmedBookings)
     } catch (error) {
       console.error('Booking count error:', error)
       setBookingCount(null)
