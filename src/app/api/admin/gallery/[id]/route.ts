@@ -52,10 +52,25 @@ export async function PATCH(
   try {
     const id = params.id
     const body = await request.json()
+    const updateData: {
+      url?: string
+      caption?: string | Record<string, string> | null
+      tags?: string[]
+      display_order?: number
+    } = {}
+
+    if (typeof body.url === 'string') updateData.url = body.url
+    if ('caption' in body) updateData.caption = body.caption
+    if (Array.isArray(body.tags)) updateData.tags = body.tags
+    if ('display_order' in body) updateData.display_order = Number(body.display_order) || 0
+
+    if (Object.keys(updateData).length === 0) {
+      return NextResponse.json({ error: 'No valid fields to update' }, { status: 400 })
+    }
     
     const { data, error } = await supabaseAdmin
       .from('gallery')
-      .update(body)
+      .update(updateData)
       .eq('id', id)
       .select()
       .single()
