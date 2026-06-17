@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { createBrowserClient } from '@supabase/ssr'
 import { Card } from '../../components/ui/card'
 import { Tabs, TabsContent } from '../../components/ui/tabs'
@@ -50,6 +50,7 @@ export default function AdminDashboard({ stats: _initialStats }: AdminDashboardP
   const [activeTab, setActiveTab] = useState('dashboard')
   const [refreshing, setRefreshing] = useState(false)
   const [statsKey, setStatsKey] = useState(0) // Key to force StatsCards refresh
+  const [messageCount, setMessageCount] = useState<number | null>(null)
 
   // Suppress unused variable warning
   void _initialStats
@@ -58,6 +59,29 @@ export default function AdminDashboard({ stats: _initialStats }: AdminDashboardP
   const supabase = createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  )
+
+
+  const fetchMessageCount = useCallback(async () => {
+    try {
+      const response = await fetch('/api/admin/messages')
+      if (!response.ok) throw new Error('Failed to fetch messages')
+      const data = await response.json()
+      setMessageCount(Array.isArray(data.messages) ? data.messages.length : 0)
+    } catch (error) {
+      console.error('Message count error:', error)
+      setMessageCount(null)
+    }
+  }, [])
+
+  useEffect(() => {
+    fetchMessageCount()
+  }, [fetchMessageCount])
+
+  const messageBadge = messageCount !== null && (
+    <span className="ml-auto min-w-5 rounded-full bg-primary px-1.5 py-0.5 text-center text-[10px] font-bold text-primary-foreground">
+      {messageCount}
+    </span>
   )
 
   const handleLogout = async () => {
@@ -74,8 +98,9 @@ export default function AdminDashboard({ stats: _initialStats }: AdminDashboardP
   const refreshStats = useCallback(() => {
     setRefreshing(true)
     setStatsKey(prev => prev + 1) // Force StatsCards to re-mount and re-fetch independently
+    fetchMessageCount()
     setRefreshing(false)
-  }, [])
+  }, [fetchMessageCount])
 
   const handleStatusChange = () => {
     // Refresh stats when a booking status changes
@@ -217,7 +242,8 @@ export default function AdminDashboard({ stats: _initialStats }: AdminDashboardP
                 }`}
               >
                 <Mail className="h-4 w-4" />
-                Poruke
+                <span>Poruke</span>
+                {messageBadge}
               </button>
               <button
                 onClick={() => {
@@ -341,7 +367,8 @@ export default function AdminDashboard({ stats: _initialStats }: AdminDashboardP
               }`}
             >
               <Mail className="h-4 w-4" />
-              Poruke
+              <span>Poruke</span>
+              {messageBadge}
             </button>
             <button
               onClick={() => setActiveTab('analytics')}
