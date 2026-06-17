@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { requireAdmin } from '@/lib/auth/require-admin'
+import { getBookedDatesForRange } from '@/lib/admin/availability-calendar'
 
 
 export const dynamic = 'force-dynamic'
@@ -27,6 +28,7 @@ export async function GET(request: NextRequest) {
     const startDate = searchParams.get('startDate')
     const endDate = searchParams.get('endDate')
     const isAvailable = searchParams.get('isAvailable')
+    const includeBookings = searchParams.get('includeBookings') === 'true'
     // Clamp paging to sane bounds (prevents huge result-set queries).
     const limit = Math.min(Math.max(parseInt(searchParams.get('limit') || '100') || 100, 1), 500)
     const offset = Math.max(parseInt(searchParams.get('offset') || '0') || 0, 0)
@@ -37,21 +39,10 @@ export async function GET(request: NextRequest) {
 
     let query = supabase
       .from('availability')
-      .select(`
-        id,
-        apartment_id,
-        date,
-        is_available,
-        price_override,
-        reason,
-        booking_id,
-        created_at,
-        updated_at,
-        apartments (
-          id,
-          name
-        )
-      `, { count: 'exact' })
+      .select(
+        'id, apartment_id, date, is_available, price_override, reason, booking_id, created_at, updated_at, apartments ( id, name )',
+        { count: 'exact' }
+      )
       .order('date', { ascending: false })
       .range(offset, offset + limit - 1)
 
@@ -81,10 +72,45 @@ export async function GET(request: NextRequest) {
       )
     }
 
+    let responseData = data || []
+
+    if (includeBookings && apartmentId && startDate && endDate) {
+      const { data: bookings, error: bookingsError } = await supabase
+        .from('bookings')
+        .select('id, apartment_id, check_in, check_out, status')
+        .eq('apartment_id', apartmentId)
+        .lte('check_in', endDate)
+        .gte('check_out', startDate)
+        .neq('status', 'cancelled')
+
+      if (bookingsError) throw bookingsError
+
+      const byDate = new Map(responseData.map(record => [record.date, record]))
+
+      ;(bookings || []).forEach(booking => {
+        getBookedDatesForRange(booking, startDate, endDate).forEach(date => {
+          byDate.set(date, {
+            id: 'booking-' + booking.id + '-' + date,
+            apartment_id: apartmentId,
+            date,
+            is_available: false,
+            price_override: null,
+            reason: 'booking',
+            booking_id: booking.id,
+            created_at: null,
+            updated_at: null,
+            apartments: []
+          })
+        })
+      })
+
+      responseData = Array.from(byDate.values()).sort((a, b) => a.date.localeCompare(b.date))
+    }
+
     return NextResponse.json({
       success: true,
-      data,
-      count,
+      data: responseData,
+      count: includeBookings ? responseData.length : count,
       limit,
       offset
     })
