@@ -117,7 +117,7 @@ export function getSEOConfig(): SEOConfig {
       email: CONTACT_EMAIL,
       address: {
         street: 'Jovča bb',
-        city: 'Aleksinac',
+        city: 'Bovan',
         region: 'Nišavski okrug',
         postalCode: '18220',
         country: 'Serbia',

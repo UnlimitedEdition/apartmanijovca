@@ -123,7 +123,7 @@ describe('SEO Config Module', () => {
       expect(config.business.email).toBeDefined()
       
       expect(config.business.address.street).toBeDefined()
-      expect(config.business.address.city).toBe('Aleksinac')
+      expect(config.business.address.city).toBe('Bovan')
       expect(config.business.address.country).toBe('Serbia')
       
       expect(config.business.geo.latitude).toBeDefined()

@@ -174,7 +174,7 @@
       "q6": "Da li su apartmani klimatizovani?",
       "a6": "Da, svaki apartman je opremljen modernim, tihim klima uređajima za vaš savršen boravak tokom leta.",
       "q7": "Gde je najbliža prodavnica?",
-      "a7": "Najbliža prodavnica je u selu Bovan (500m), a veći supermarketi su u Aleksincu (15km).",
+      "a7": "Najbliža prodavnica je u selu Bovan (500m), a veći supermarketi su u Bovanu (15km).",
       "q8": "Da li obezbeđujete peškire i posteljinu?",
       "a8": "Da, sveži peškiri i kvalitetna posteljina su obezbeđeni za svakog gosta i menjaju se nedeljno ili po potrebi.",
       "q9": "Kakva je politika otkazivanja?",
@@ -266,7 +266,7 @@
       "phone": "Telefon",
       "email": "Email",
       "address": "Adresa",
-      "addressValue": "Bovansko jezero, Aleksinac",
+      "addressValue": "Bovansko jezero, Bovan",
       "whatsapp": "WhatsApp Čet"
     },
     "host": {
@@ -460,15 +460,15 @@
     "directions": "Uputstva za dolazak",
     "reachTitle": "Kako do nas",
     "byCarTitle": "Automobilom",
-    "byCarDesc": "Iz pravca Beograda/Niša (autoput E75): Isključite se kod Aleksinca i pratite znakove za Bovansko jezero. Nalazimo se u naselju \"Vikend naselje\".",
+    "byCarDesc": "Iz pravca Beograda/Niša (autoput E75): Isključite se kod Bovana i pratite znakove za Bovansko jezero. Nalazimo se u naselju \"Vikend naselje\".",
     "byBusTitle": "Autobusom",
-    "byBusDesc": "Idite autobusom do Aleksinca. Sa stanice, taksi do jezera Bovan traje oko 15 minuta (oko 10€).",
+    "byBusDesc": "Idite autobusom do Bovana. Sa stanice, taksi do jezera Bovan traje oko 15 minuta (oko 10€).",
     "googleMaps": "Otvori u Google Mapama",
     "callDirections": "Pozovite za instrukcije",
     "addressName": "Apartmani Jovča",
     "addressStreet": "Vikend naselje (Jovča)",
     "addressLake": "Bovansko jezero",
-    "addressCity": "18230 Aleksinac, Srbija",
+    "addressCity": "18230 Bovan, Srbija",
     "nearbyTitle": "U blizini",
     "bovanLake": "Bovansko jezero",
     "bovanLakeDesc": "Na samom pragu - kupanje, ribolov i sportovi na vodi",
@@ -653,7 +653,7 @@
   },
   "seo": {
     "home": {
-      "title": "Apartmani Jovča - Smeštaj na Bovanskom jezeru | Aleksinac, Srbija",
+      "title": "Apartmani Jovča - Smeštaj na Bovanskom jezeru | Bovan, Srbija",
       "description": "Rezervišite luksuzne apartmane na Bovanskom jezeru. Moderno opremljen smeštaj sa WiFi, parkingom i pogledom na jezero. Idealno za porodični odmor u prirodi.",
       "ogImageAlt": "Apartmani Jovča - Pogled na Bovansko jezero"
     },
@@ -672,8 +672,8 @@
       "ogImageAlt": "Kontaktirajte Apartmane Jovča"
     },
     "location": {
-      "title": "Lokacija - Kako do Apartmana Jovča | Bovansko Jezero, Aleksinac",
-      "description": "Pronađite nas na Bovanskom jezeru kod Aleksinca. Detaljne uputstva za dolazak automobilom ili autobusom. Mapa i GPS koordinate dostupne.",
+      "title": "Lokacija - Kako do Apartmana Jovča | Bovansko Jezero, Bovan",
+      "description": "Pronađite nas na Bovanskom jezeru kod Bovana. Detaljne uputstva za dolazak automobilom ili autobusom. Mapa i GPS koordinate dostupne.",
       "ogImageAlt": "Lokacija Apartmana Jovča na Bovanskom jezeru"
     },
     "gallery": {

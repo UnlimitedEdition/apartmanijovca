@@ -50,7 +50,7 @@ describe('validateSchema', () => {
         address: {
           '@type': 'PostalAddress',
           streetAddress: 'Jovča bb',
-          addressLocality: 'Aleksinac',
+          addressLocality: 'Bovan',
         },
       }
       expect(validateSchema(schema)).toBe(true)
@@ -87,7 +87,7 @@ describe('validateSchema', () => {
         address: {
           '@type': 'PostalAddress',
           streetAddress: 'Jovča bb',
-          addressLocality: 'Aleksinac',
+          addressLocality: 'Bovan',
           addressCountry: 'RS',
         },
         geo: {

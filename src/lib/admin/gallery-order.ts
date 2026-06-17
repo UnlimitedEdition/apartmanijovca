@@ -14,14 +14,60 @@ export function normalizeDisplayOrder(value: unknown): number {
   return Math.max(0, Math.trunc(order))
 }
 
+function sortByCurrentOrder(items: GalleryOrderItem[]): GalleryOrderItem[] {
+  return [...items].sort((a, b) => {
+    if (a.display_order !== b.display_order) return a.display_order - b.display_order
+    return a.id.localeCompare(b.id)
+  })
+}
+
+function getSequenceBase(items: GalleryOrderItem[], targetOrder: number): number {
+  if (items.length === 0) return targetOrder
+  return Math.min(targetOrder, ...items.map(item => item.display_order))
+}
+
+function clampOrder(targetOrder: number, minOrder: number, maxOrder: number): number {
+  return Math.min(Math.max(targetOrder, minOrder), maxOrder)
+}
+
+function sortUpdatesForSafeWrite(updates: GalleryOrderUpdate[]): GalleryOrderUpdate[] {
+  return [...updates].sort((a, b) => b.display_order - a.display_order)
+}
+
+export function normalizeInsertTargetOrder(
+  items: GalleryOrderItem[],
+  targetOrder: number
+): number {
+  const baseOrder = getSequenceBase(items, targetOrder)
+  return clampOrder(targetOrder, baseOrder, baseOrder + items.length)
+}
+
+export function normalizeMoveTargetOrder(
+  items: GalleryOrderItem[],
+  targetOrder: number
+): number {
+  const baseOrder = getSequenceBase(items, targetOrder)
+  return clampOrder(targetOrder, baseOrder, baseOrder + Math.max(items.length - 1, 0))
+}
+
 export function getInsertOrderUpdates(
   items: GalleryOrderItem[],
   targetOrder: number
 ): GalleryOrderUpdate[] {
-  return items
-    .filter(item => item.display_order >= targetOrder)
-    .sort((a, b) => b.display_order - a.display_order)
-    .map(item => ({ id: item.id, display_order: item.display_order + 1 }))
+  const insertOrder = normalizeInsertTargetOrder(items, targetOrder)
+  let nextOrder = getSequenceBase(items, insertOrder)
+
+  const updates = sortByCurrentOrder(items).map(item => {
+    if (nextOrder === insertOrder) nextOrder += 1
+    const displayOrder = nextOrder
+    nextOrder += 1
+    return { id: item.id, display_order: displayOrder }
+  }).filter(update => {
+    const item = items.find(current => current.id === update.id)
+    return item?.display_order !== update.display_order
+  })
+
+  return sortUpdatesForSafeWrite(updates)
 }
 
 export function getMoveOrderUpdates(
@@ -30,25 +76,22 @@ export function getMoveOrderUpdates(
   currentOrder: number,
   targetOrder: number
 ): GalleryOrderUpdate[] {
-  if (targetOrder === currentOrder) return []
+  const moveOrder = normalizeMoveTargetOrder(items, targetOrder)
+  let nextOrder = getSequenceBase(items, moveOrder)
 
-  if (targetOrder < currentOrder) {
-    return items
-      .filter(item =>
-        item.id !== movingId &&
-        item.display_order >= targetOrder &&
-        item.display_order < currentOrder
-      )
-      .sort((a, b) => b.display_order - a.display_order)
-      .map(item => ({ id: item.id, display_order: item.display_order + 1 }))
-  }
+  const updates = sortByCurrentOrder(items)
+    .filter(item => item.id !== movingId)
+    .map(item => {
+      if (nextOrder === moveOrder) nextOrder += 1
+      const displayOrder = nextOrder
+      nextOrder += 1
+      return { id: item.id, display_order: displayOrder }
+    })
+    .filter(update => {
+      const item = items.find(current => current.id === update.id)
+      return item?.display_order !== update.display_order
+    })
 
-  return items
-    .filter(item =>
-      item.id !== movingId &&
-      item.display_order > currentOrder &&
-      item.display_order <= targetOrder
-    )
-    .sort((a, b) => a.display_order - b.display_order)
-    .map(item => ({ id: item.id, display_order: item.display_order - 1 }))
+  if (moveOrder === currentOrder) return sortUpdatesForSafeWrite(updates)
+  return sortUpdatesForSafeWrite(updates)
 }
