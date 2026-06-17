@@ -9,6 +9,7 @@ import {
   GuestRecord,
   Locale 
 } from '@/lib/types/database'
+import { formatBedCounts } from '@/lib/apartment-options'
 
 
 /**
@@ -70,7 +71,7 @@ export function transformApartmentRecord(
     slug: record.slug,
     name: extractLocalizedValue(record.name, locale),
     description: extractLocalizedValue(record.description, locale),
-    bed_type: extractLocalizedValue(record.bed_type, locale),
+    bed_type: formatBedCounts(record.bed_counts as Record<string, number> | null | undefined, locale) || extractLocalizedValue(record.bed_type, locale),
     capacity: record.capacity,
     amenities: transformAmenities(record.amenities, locale),
     base_price_eur: record.base_price_eur,

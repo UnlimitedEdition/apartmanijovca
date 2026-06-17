@@ -111,6 +111,23 @@ describe('Transformer Functions', () => {
       const result = transformApartmentRecord(recordWithMissingLocale, 'de')
       expect(result.name).toBe('Apartman 1') // Falls back to Serbian
     })
+
+    it("should prefer bed_counts over stale bed_type text", () => {
+      const recordWithBedCounts: ApartmentRecord = {
+        ...mockApartmentRecord,
+        bed_type: {
+          sr: "2 bračna kreveta + 1 kauč na razvlačenje",
+          en: "2 double beds + 1 sofa bed",
+          de: "2 Doppelbetten + 1 Schlafsofa",
+          it: "2 letti matrimoniali + 1 divano letto"
+        } as Json,
+        bed_counts: { single_bed: 2 } as Json
+      }
+
+      expect(transformApartmentRecord(recordWithBedCounts, "sr").bed_type).toBe("2 kreveta za jednu osobu")
+      expect(transformApartmentRecord(recordWithBedCounts, "en").bed_type).toBe("2 single beds")
+    })
+
   })
 
   describe('transformBookingRecord', () => {
