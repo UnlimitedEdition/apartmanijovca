@@ -33,12 +33,12 @@ export type KeywordConfig = Record<PageType, Record<Locale, KeywordSet>>;
 export const keywords: KeywordConfig = {
   home: {
     sr: {
-      primary: ['apartmani', 'Jovča', 'Bovan', 'Aleksinac'],
+      primary: ['apartmani', 'Jovča', 'Bovan', 'Srbija'],
       secondary: ['smeštaj', 'jezero', 'odmor', 'vikendica', 'apartman'],
       longTail: [
         'apartmani na Bovanu',
         'smeštaj Bovan jezero',
-        'apartmani Aleksinac',
+        'apartmani Bovan',
         'vikendice Jovča',
         'odmor na jezeru Bovan',
         'apartmani pored jezera',
@@ -47,12 +47,12 @@ export const keywords: KeywordConfig = {
       ]
     },
     en: {
-      primary: ['apartments', 'Jovča', 'Bovan', 'Aleksinac'],
+      primary: ['apartments', 'Jovča', 'Bovan', 'Serbia'],
       secondary: ['accommodation', 'lake', 'vacation', 'rental', 'lodging'],
       longTail: [
         'apartments Bovan Lake',
         'accommodation Bovan Lake Serbia',
-        'vacation rentals Aleksinac',
+        'vacation rentals Bovan',
         'lakeside apartments Serbia',
         'Bovan Lake lodging',
         'family apartments Bovan',
@@ -61,12 +61,12 @@ export const keywords: KeywordConfig = {
       ]
     },
     de: {
-      primary: ['Ferienwohnung', 'Jovča', 'Bovan', 'Aleksinac'],
+      primary: ['Ferienwohnung', 'Jovča', 'Bovan', 'Serbien'],
       secondary: ['Unterkunft', 'See', 'Urlaub', 'Vermietung', 'Apartment'],
       longTail: [
         'Ferienwohnung Bovan See',
         'Unterkunft Bovan See Serbien',
-        'Urlaub Aleksinac',
+        'Urlaub Bovan',
         'Apartments am See Serbien',
         'Bovan See Unterkunft',
         'Familienwohnung Bovan',
@@ -75,12 +75,12 @@ export const keywords: KeywordConfig = {
       ]
     },
     it: {
-      primary: ['appartamenti', 'Jovča', 'Bovan', 'Aleksinac'],
+      primary: ['appartamenti', 'Jovča', 'Bovan', 'Serbia'],
       secondary: ['alloggio', 'lago', 'vacanza', 'affitto', 'sistemazione'],
       longTail: [
         'appartamenti Lago Bovan',
         'alloggio Lago Bovan Serbia',
-        'vacanze Aleksinac',
+        'vacanze Bovan',
         'appartamenti sul lago Serbia',
         'sistemazione Lago Bovan',
         'appartamenti per famiglie Bovan',
@@ -202,53 +202,53 @@ export const keywords: KeywordConfig = {
 
   location: {
     sr: {
-      primary: ['lokacija', 'Bovan', 'Aleksinac', 'Niš'],
+      primary: ['lokacija', 'Bovan', 'Srbija', 'Niš'],
       secondary: ['jezero', 'priroda', 'plaža', 'pecanje', 'šetnja'],
       longTail: [
         'gde se nalazi Bovan',
         'kako doći do Bovana',
         'Bovan jezero lokacija',
         'udaljenost od Niša',
-        'Aleksinac Bovan',
+        'Bovan lokacija',
         'plaže na Bovanu',
         'aktivnosti Bovan jezero'
       ]
     },
     en: {
-      primary: ['location', 'Bovan', 'Aleksinac', 'Niš'],
+      primary: ['location', 'Bovan', 'Serbia', 'Niš'],
       secondary: ['lake', 'nature', 'beach', 'fishing', 'hiking'],
       longTail: [
         'where is Bovan Lake',
         'how to get to Bovan',
         'Bovan Lake location',
         'distance from Niš',
-        'Aleksinac Bovan',
+        'Bovan lokacija',
         'beaches at Bovan',
         'activities Bovan Lake'
       ]
     },
     de: {
-      primary: ['Lage', 'Bovan', 'Aleksinac', 'Niš'],
+      primary: ['Lage', 'Bovan', 'Serbien', 'Niš'],
       secondary: ['See', 'Natur', 'Strand', 'Angeln', 'Wandern'],
       longTail: [
         'wo liegt Bovan See',
         'wie kommt man nach Bovan',
         'Bovan See Lage',
         'Entfernung von Niš',
-        'Aleksinac Bovan',
+        'Bovan lokacija',
         'Strände am Bovan',
         'Aktivitäten Bovan See'
       ]
     },
     it: {
-      primary: ['posizione', 'Bovan', 'Aleksinac', 'Niš'],
+      primary: ['posizione', 'Bovan', 'Serbia', 'Niš'],
       secondary: ['lago', 'natura', 'spiaggia', 'pesca', 'escursioni'],
       longTail: [
         'dove si trova Lago Bovan',
         'come arrivare a Bovan',
         'posizione Lago Bovan',
         'distanza da Niš',
-        'Aleksinac Bovan',
+        'Bovan lokacija',
         'spiagge a Bovan',
         'attività Lago Bovan'
       ]
@@ -366,7 +366,7 @@ export const keywords: KeywordConfig = {
         'atrakcije Bovan jezero',
         'manastiri blizu Bovana',
         'aktivnosti na jezeru',
-        'izleti Aleksinac',
+        'izleti Bovan',
         'turističke destinacije'
       ]
     },
@@ -378,7 +378,7 @@ export const keywords: KeywordConfig = {
         'attractions Bovan Lake',
         'monasteries near Bovan',
         'lake activities',
-        'trips Aleksinac',
+        'trips Bovan',
         'tourist destinations'
       ]
     },
@@ -390,7 +390,7 @@ export const keywords: KeywordConfig = {
         'Sehenswürdigkeiten Bovan See',
         'Klöster in der Nähe von Bovan',
         'See Aktivitäten',
-        'Ausflüge Aleksinac',
+        'Ausflüge Bovan',
         'touristische Ziele'
       ]
     },
@@ -402,7 +402,7 @@ export const keywords: KeywordConfig = {
         'attrazioni Lago Bovan',
         'monasteri vicino a Bovan',
         'attività sul lago',
-        'gite Aleksinac',
+        'gite Bovan',
         'destinazioni turistiche'
       ]
     }

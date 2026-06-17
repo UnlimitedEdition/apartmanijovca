@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@supabase/supabase-js'
 import { requireAdmin } from '@/lib/auth/require-admin'
-import { getMoveOrderUpdates, normalizeDisplayOrder } from '@/lib/admin/gallery-order'
+import { getMoveOrderUpdates, normalizeDisplayOrder, normalizeMoveTargetOrder } from '@/lib/admin/gallery-order'
 
 
 export const dynamic = 'force-dynamic'
@@ -66,7 +66,6 @@ export async function PATCH(
     if (Array.isArray(body.tags)) updateData.tags = body.tags
     if ('display_order' in body) {
       targetOrder = normalizeDisplayOrder(body.display_order)
-      updateData.display_order = targetOrder
     }
 
     if (Object.keys(updateData).length === 0) {
@@ -84,6 +83,9 @@ export async function PATCH(
       if (!currentItem) {
         return NextResponse.json({ error: 'Gallery item not found' }, { status: 404 })
       }
+
+      targetOrder = normalizeMoveTargetOrder(orderItems || [], targetOrder)
+      updateData.display_order = targetOrder
 
       const orderUpdates = getMoveOrderUpdates(orderItems || [], id, currentItem.display_order, targetOrder)
       for (const orderUpdate of orderUpdates) {

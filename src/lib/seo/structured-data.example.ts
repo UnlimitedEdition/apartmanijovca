@@ -57,7 +57,7 @@ const localBusinessSchema = {
   address: {
     '@type': 'PostalAddress',
     streetAddress: 'Jovča bb',
-    addressLocality: 'Aleksinac',
+    addressLocality: 'Bovan',
     addressRegion: 'Nišavski okrug',
     postalCode: '18220',
     addressCountry: 'RS',
@@ -106,7 +106,7 @@ const apartmentPageSchema = {
   address: {
     '@type': 'PostalAddress',
     streetAddress: 'Jovča bb',
-    addressLocality: 'Aleksinac',
+    addressLocality: 'Bovan',
     addressCountry: 'RS',
   },
   priceRange: '€30-€50',
@@ -252,7 +252,7 @@ function generateApartmentSchemaExample(apartment: {
     address: {
       '@type': 'PostalAddress',
       streetAddress: 'Jovča bb',
-      addressLocality: 'Aleksinac',
+      addressLocality: 'Bovan',
       addressCountry: 'RS',
     },
   }

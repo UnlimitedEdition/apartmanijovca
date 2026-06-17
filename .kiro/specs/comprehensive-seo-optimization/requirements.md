@@ -202,7 +202,7 @@ This document defines the requirements for implementing comprehensive SEO optimi
 
 #### Acceptance Criteria
 
-1. THE SEO_System SHALL include location keywords (Jovča, Bovan Lake, Aleksinac, Serbia) in meta tags
+1. THE SEO_System SHALL include location keywords (Jovča, Bovan Lake, Bovan, Serbia) in meta tags
 2. THE SEO_System SHALL include NAP (Name, Address, Phone) information consistently across all pages
 3. THE SEO_System SHALL include geo coordinates in Local_Business_Schema
 4. FOR ALL pages, THE SEO_System SHALL include location-specific content and keywords
@@ -210,7 +210,7 @@ This document defines the requirements for implementing comprehensive SEO optimi
 6. THE SEO_System SHALL include directions and nearby landmarks in location content
 7. WHEN generating structured data, THE SEO_System SHALL include addressCountry, addressRegion, and addressLocality
 8. THE SEO_System SHALL include local business categories in Local_Business_Schema
-9. THE SEO_System SHALL optimize for local search queries (e.g., "apartments near Bovan Lake", "vacation rentals Aleksinac")
+9. THE SEO_System SHALL optimize for local search queries (e.g., "apartments near Bovan Lake", "vacation rentals Bovan")
 10. THE SEO_System SHALL include schema markup for tourist attractions and points of interest
 
 ### Requirement 11: Multi-Language Content Optimization
@@ -313,7 +313,7 @@ This document defines the requirements for implementing comprehensive SEO optimi
 3. THE SEO_System SHALL include secondary keywords in h2 and h3 headings
 4. THE SEO_System SHALL maintain natural Keyword_Density (1-2% for primary keywords)
 5. FOR ALL apartment pages, THE SEO_System SHALL include keywords: apartment name, location, amenities, price range
-6. FOR ALL location pages, THE SEO_System SHALL include keywords: Bovan Lake, Jovča, Aleksinac, Serbia, vacation rental
+6. FOR ALL location pages, THE SEO_System SHALL include keywords: Bovan Lake, Jovča, Bovan, Serbia, vacation rental
 7. THE SEO_System SHALL include long-tail keywords in content (e.g., "pet-friendly apartments near Bovan Lake")
 8. THE SEO_System SHALL include keywords in image Alt_Text naturally
 9. THE SEO_System SHALL include keywords in meta descriptions

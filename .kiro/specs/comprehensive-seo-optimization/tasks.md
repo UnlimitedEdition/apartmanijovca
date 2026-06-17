@@ -191,7 +191,7 @@ The implementation covers all 4 languages (SR, EN, DE, IT) and integrates with N
   
   - [x] 8.4 Implement generateMetadata for location page
     - Update `src/app/[lang]/location/page.tsx` with `generateMetadata()` function
-    - Include location keywords (Jovča, Bovan Lake, Aleksinac, Serbia)
+    - Include location keywords (Jovča, Bovan Lake, Bovan, Serbia)
     - Include LocalBusiness schema with geo coordinates
     - Include tourist attraction structured data if applicable
     - Requirements: 10.1, 10.4, 10.6, 10.10

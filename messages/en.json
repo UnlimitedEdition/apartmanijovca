@@ -161,7 +161,7 @@
       "q6": "Are the apartments air-conditioned?",
       "a6": "Yes, every guest unit is equipped with modern, silent air conditioning units to keep you cool during the summer.",
       "q7": "Is there a grocery store nearby?",
-      "a7": "The nearest grocery store is in the village of Bovan (500m away), and larger supermarkets are in Aleksinac (15km).",
+      "a7": "The nearest grocery store is in the village of Bovan (500m away), and larger supermarkets are in Bovan (15km).",
       "q8": "Do you provide towels and bed linens?",
       "a8": "Yes, fresh towels and high-quality bed linens are provided for every guest and changed weekly or upon request.",
       "q9": "What is your cancellation policy?",
@@ -253,7 +253,7 @@
       "phone": "Phone",
       "email": "Email",
       "address": "Address",
-      "addressValue": "Bovan Lake, Aleksinac",
+      "addressValue": "Bovan Lake, Bovan",
       "whatsapp": "WhatsApp Chat"
     },
     "host": {
@@ -449,15 +449,15 @@
     "directions": "Get Directions",
     "reachTitle": "How to reach us",
     "byCarTitle": "By Car",
-    "byCarDesc": "From Belgrade/Niš (E75 highway): Exit at Aleksinac and follow signs for Bovan Lake. We are located in the \"Vikend naselje\" area.",
+    "byCarDesc": "From Belgrade/Niš (E75 highway): Exit at Bovan and follow signs for Bovan Lake. We are located in the \"Vikend naselje\" area.",
     "byBusTitle": "By Bus",
-    "byBusDesc": "Take a bus to Aleksinac. From the station, a taxi to Bovan Lake takes approx. 15 minutes (approx. 10€).",
+    "byBusDesc": "Take a bus to Bovan. From the station, a taxi to Bovan Lake takes approx. 15 minutes (approx. 10€).",
     "googleMaps": "Open in Google Maps",
     "callDirections": "Call for Directions",
     "addressName": "Jovča Apartments",
     "addressStreet": "Weekend Resort (Jovča)",
     "addressLake": "Bovan Lake",
-    "addressCity": "18230 Aleksinac, Serbia",
+    "addressCity": "18230 Bovan, Serbia",
     "nearbyTitle": "Nearby Attractions",
     "bovanLake": "Bovan Lake",
     "bovanLakeDesc": "Right at your doorstep - swimming, fishing, and water sports",
@@ -487,9 +487,9 @@
   "seo": {
     "meta": {
       "home": {
-        "title": "Jovča Apartments - Bovan Lake Accommodation | Aleksinac, Serbia",
+        "title": "Jovča Apartments - Bovan Lake Accommodation | Bovan, Serbia",
         "description": "Book luxury apartments at Bovan Lake. Modern accommodation with WiFi, parking, and lake views. Perfect for family vacation in nature.",
-        "keywords": "Bovan Lake apartments, Aleksinac accommodation, Jovča apartments, Bovan vacation rental, Serbia apartments, lake holiday"
+        "keywords": "Bovan Lake apartments, Bovan accommodation, Jovča apartments, Bovan vacation rental, Serbia apartments, lake holiday"
       },
       "apartments": {
         "title": "Our Apartments - Modern Accommodation at Bovan Lake",
@@ -499,7 +499,7 @@
       "apartmentDetail": {
         "titleTemplate": "{name} - Apartment at Bovan Lake | Jovča Apartments",
         "descriptionTemplate": "Book {name} at Bovan Lake. {capacity} guests, {beds}. Modern equipped with WiFi, AC. From {price}€ per night.",
-        "keywords": "Bovan apartment, {name}, Aleksinac accommodation, lake cottage, apartment booking"
+        "keywords": "Bovan apartment, {name}, Bovan accommodation, lake cottage, apartment booking"
       },
       "contact": {
         "title": "Contact - Jovča Apartments | Bovan Lake",
@@ -507,9 +507,9 @@
         "keywords": "contact Jovča apartments, Bovan booking, apartment phone, reservation email"
       },
       "location": {
-        "title": "Location - How to Reach Jovča Apartments | Bovan Lake, Aleksinac",
-        "description": "Find us at Bovan Lake near Aleksinac. Detailed directions by car or bus. Map and GPS coordinates available.",
-        "keywords": "Bovan Lake location, how to reach Bovan Lake, Aleksinac accommodation, GPS coordinates, directions"
+        "title": "Location - How to Reach Jovča Apartments | Bovan Lake, Bovan",
+        "description": "Find us at Bovan Lake near Bovan. Detailed directions by car or bus. Map and GPS coordinates available.",
+        "keywords": "Bovan Lake location, how to reach Bovan Lake, Bovan accommodation, GPS coordinates, directions"
       },
       "gallery": {
         "title": "Gallery - Photos of Apartments and Bovan Lake",
@@ -519,7 +519,7 @@
       "attractions": {
         "title": "Attractions - What to Visit Around Bovan Lake",
         "description": "Discover attractions around Bovan Lake: Soko Banja, Sokolica Fortress, Niš, monasteries. Perfect for excursions and sightseeing.",
-        "keywords": "Bovan attractions, Soko Banja, Sokolica Fortress, Niš sights, Aleksinac excursions, Serbia monasteries"
+        "keywords": "Bovan attractions, Soko Banja, Sokolica Fortress, Niš sights, Bovan excursions, Serbia monasteries"
       },
       "prices": {
         "title": "Prices - Jovča Apartments | Best Rates at Bovan Lake",

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@supabase/supabase-js'
 import { requireAdmin } from '@/lib/auth/require-admin'
-import { getInsertOrderUpdates, normalizeDisplayOrder } from '@/lib/admin/gallery-order'
+import { getInsertOrderUpdates, normalizeDisplayOrder, normalizeInsertTargetOrder } from '@/lib/admin/gallery-order'
 
 
 export const dynamic = 'force-dynamic'
@@ -42,14 +42,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'URL is required' }, { status: 400 })
     }
 
-    const targetOrder = normalizeDisplayOrder(display_order)
+    const requestedOrder = normalizeDisplayOrder(display_order)
     const { data: orderItems, error: orderError } = await supabaseAdmin
       .from('gallery')
       .select('id, display_order')
-      .gte('display_order', targetOrder)
 
     if (orderError) throw orderError
 
+    const targetOrder = normalizeInsertTargetOrder(orderItems || [], requestedOrder)
     const orderUpdates = getInsertOrderUpdates(orderItems || [], targetOrder)
     for (const orderUpdate of orderUpdates) {
       const { error: updateError } = await supabaseAdmin

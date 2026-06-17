@@ -242,7 +242,7 @@
       "phone": "Telefon",
       "email": "E-Mail",
       "address": "Adresse",
-      "addressValue": "Bovan See, Aleksinac",
+      "addressValue": "Bovan See, Bovan",
       "whatsapp": "WhatsApp Chat"
     },
     "host": {
@@ -437,15 +437,15 @@
     "directions": "Wegbeschreibung",
     "reachTitle": "So erreichen Sie uns",
     "byCarTitle": "Mit dem Auto",
-    "byCarDesc": "Aus Richtung Belgrad/Niš (Autobahn E75): Nehmen Sie die Ausfahrt Aleksinac und folgen Sie der Beschilderung zum Bovan-See. Wir befinden uns im Bereich \"Vikend naselje\".",
+    "byCarDesc": "Aus Richtung Belgrad/Niš (Autobahn E75): Nehmen Sie die Ausfahrt Bovan und folgen Sie der Beschilderung zum Bovan-See. Wir befinden uns im Bereich \"Vikend naselje\".",
     "byBusTitle": "Mit dem Bus",
-    "byBusDesc": "Nehmen Sie einen Bus nach Aleksinac. Vom Bahnhof dauert ein Taxi zum Bovan-See ca. 15 Minuten (ca. 10€).",
+    "byBusDesc": "Nehmen Sie einen Bus nach Bovan. Vom Bahnhof dauert ein Taxi zum Bovan-See ca. 15 Minuten (ca. 10€).",
     "googleMaps": "In Google Maps öffnen",
     "callDirections": "Anrufen für Wegbeschreibung",
     "addressName": "Apartments Jovča",
     "addressStreet": "Wochenendsiedlung (Jovča)",
     "addressLake": "Bovan See",
-    "addressCity": "18230 Aleksinac, Serbien",
+    "addressCity": "18230 Bovan, Serbien",
     "nearbyTitle": "In der Nähe",
     "bovanLake": "Bovan See",
     "bovanLakeDesc": "Direkt vor der Haustür - Schwimmen, Angeln und Wassersport",
@@ -475,9 +475,9 @@
   "seo": {
     "meta": {
       "home": {
-        "title": "Apartments Jovča - Unterkunft am Bovan See | Aleksinac, Serbien",
+        "title": "Apartments Jovča - Unterkunft am Bovan See | Bovan, Serbien",
         "description": "Buchen Sie luxuriöse Ferienwohnungen am Bovan See. Moderne Unterkunft mit WLAN, Parkplatz und Seeblick. Perfekt für Familienurlaub in der Natur.",
-        "keywords": "Ferienwohnung Bovan See, Unterkunft Aleksinac, Apartments Jovča, Ferienhaus Bovan, Wohnung mieten Serbien, Urlaub am See"
+        "keywords": "Ferienwohnung Bovan See, Unterkunft Bovan, Apartments Jovča, Ferienhaus Bovan, Wohnung mieten Serbien, Urlaub am See"
       },
       "apartments": {
         "title": "Unsere Apartments - Moderne Unterkunft am Bovan See",
@@ -487,7 +487,7 @@
       "apartmentDetail": {
         "titleTemplate": "{name} - Ferienwohnung am Bovan See | Apartments Jovča",
         "descriptionTemplate": "Buchen Sie {name} am Bovan See. {capacity} Gäste, {beds}. Modern ausgestattet mit WLAN, Klimaanlage. Ab {price}€ pro Nacht.",
-        "keywords": "Bovan Apartment, {name}, Aleksinac Unterkunft, Ferienhaus See, Apartment Buchung"
+        "keywords": "Bovan Apartment, {name}, Bovan Unterkunft, Ferienhaus See, Apartment Buchung"
       },
       "contact": {
         "title": "Kontakt - Apartments Jovča | Bovan See",
@@ -495,9 +495,9 @@
         "keywords": "Kontakt Apartments Jovča, Bovan Buchung, Apartment Telefon, Reservierung E-Mail"
       },
       "location": {
-        "title": "Lage - Anfahrt zu Apartments Jovča | Bovan See, Aleksinac",
-        "description": "Finden Sie uns am Bovan See bei Aleksinac. Detaillierte Anfahrtsbeschreibung mit Auto oder Bus. Karte und GPS-Koordinaten verfügbar.",
-        "keywords": "Bovan See Lage, Anfahrt Bovan See, Aleksinac Unterkunft, GPS Koordinaten, Wegbeschreibung"
+        "title": "Lage - Anfahrt zu Apartments Jovča | Bovan See, Bovan",
+        "description": "Finden Sie uns am Bovan See bei Bovan. Detaillierte Anfahrtsbeschreibung mit Auto oder Bus. Karte und GPS-Koordinaten verfügbar.",
+        "keywords": "Bovan See Lage, Anfahrt Bovan See, Bovan Unterkunft, GPS Koordinaten, Wegbeschreibung"
       },
       "gallery": {
         "title": "Galerie - Fotos der Apartments und des Bovan Sees",
@@ -507,7 +507,7 @@
       "attractions": {
         "title": "Sehenswürdigkeiten - Was man rund um den Bovan See besuchen kann",
         "description": "Entdecken Sie Sehenswürdigkeiten rund um den Bovan See: Soko Banja, Festung Sokolica, Niš, Klöster. Perfekt für Ausflüge und Besichtigungen.",
-        "keywords": "Bovan Sehenswürdigkeiten, Soko Banja, Festung Sokolica, Niš Attraktionen, Aleksinac Ausflüge, Serbien Klöster"
+        "keywords": "Bovan Sehenswürdigkeiten, Soko Banja, Festung Sokolica, Niš Attraktionen, Bovan Ausflüge, Serbien Klöster"
       },
       "prices": {
         "title": "Preise - Apartments Jovča | Beste Preise am Bovan See",

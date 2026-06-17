@@ -690,7 +690,7 @@ async function getApartmentsForSitemap(): Promise<SitemapEntry[]> {
 const t = await getTranslations({ locale: lang, namespace: 'seo' })
 
 const keywords = {
-  sr: ['apartmani', 'Bovansko jezero', 'smeštaj', 'Aleksinac'],
+  sr: ['apartmani', 'Bovansko jezero', 'smeštaj', 'Bovan'],
   en: ['apartments', 'Bovan Lake', 'accommodation', 'Serbia'],
   de: ['Ferienwohnung', 'Bovan See', 'Unterkunft', 'Serbien'],
   it: ['appartamenti', 'Lago Bovan', 'alloggio', 'Serbia']

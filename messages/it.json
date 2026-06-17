@@ -242,7 +242,7 @@
       "phone": "Telefono",
       "email": "Email",
       "address": "Indirizzo",
-      "addressValue": "Lago Bovan, Aleksinac",
+      "addressValue": "Lago Bovan, Bovan",
       "whatsapp": "Chat WhatsApp"
     },
     "host": {
@@ -437,15 +437,15 @@
     "directions": "Ottieni indicazioni",
     "reachTitle": "Come raggiungerci",
     "byCarTitle": "In auto",
-    "byCarDesc": "Da Belgrado/Niš (autostrada E75): uscire ad Aleksinac e seguire le indicazioni per il Lago Bovan. Ci troviamo nella zona \"Vikend naselje\".",
+    "byCarDesc": "Da Belgrado/Niš (autostrada E75): uscire ad Bovan e seguire le indicazioni per il Lago Bovan. Ci troviamo nella zona \"Vikend naselje\".",
     "byBusTitle": "In autobus",
-    "byBusDesc": "Prendere un autobus per Aleksinac. Dalla stazione, un taxi per il Lago Bovan impiega circa 15 minuti (circa 10€).",
+    "byBusDesc": "Prendere un autobus per Bovan. Dalla stazione, un taxi per il Lago Bovan impiega circa 15 minuti (circa 10€).",
     "googleMaps": "Apri in Google Maps",
     "callDirections": "Chiama per indicazioni",
     "addressName": "Appartamenti Jovča",
     "addressStreet": "Residenza estiva (Jovča)",
     "addressLake": "Lago di Bovan",
-    "addressCity": "18230 Aleksinac, Serbia",
+    "addressCity": "18230 Bovan, Serbia",
     "nearbyTitle": "Attrazioni vicine",
     "bovanLake": "Lago Bovan",
     "bovanLakeDesc": "Proprio a portata di mano - nuoto, pesca e sport acquatici",
@@ -475,9 +475,9 @@
   "seo": {
     "meta": {
       "home": {
-        "title": "Appartamenti Jovča - Alloggio al Lago Bovan | Aleksinac, Serbia",
+        "title": "Appartamenti Jovča - Alloggio al Lago Bovan | Bovan, Serbia",
         "description": "Prenota appartamenti di lusso al Lago Bovan. Alloggio moderno con WiFi, parcheggio e vista lago. Perfetto per vacanze in famiglia nella natura.",
-        "keywords": "appartamenti Lago Bovan, alloggio Aleksinac, appartamenti Jovča, casa vacanze Bovan, affitto appartamenti Serbia, vacanza al lago"
+        "keywords": "appartamenti Lago Bovan, alloggio Bovan, appartamenti Jovča, casa vacanze Bovan, affitto appartamenti Serbia, vacanza al lago"
       },
       "apartments": {
         "title": "I Nostri Appartamenti - Alloggio Moderno al Lago Bovan",
@@ -487,7 +487,7 @@
       "apartmentDetail": {
         "titleTemplate": "{name} - Appartamento al Lago Bovan | Appartamenti Jovča",
         "descriptionTemplate": "Prenota {name} al Lago Bovan. {capacity} ospiti, {beds}. Modernamente attrezzato con WiFi, aria condizionata. Da {price}€ a notte.",
-        "keywords": "appartamento Bovan, {name}, alloggio Aleksinac, casa vacanze lago, prenotazione appartamento"
+        "keywords": "appartamento Bovan, {name}, alloggio Bovan, casa vacanze lago, prenotazione appartamento"
       },
       "contact": {
         "title": "Contatto - Appartamenti Jovča | Lago Bovan",
@@ -495,9 +495,9 @@
         "keywords": "contatto Appartamenti Jovča, prenotazione Bovan, telefono appartamenti, email prenotazione"
       },
       "location": {
-        "title": "Posizione - Come Raggiungere Appartamenti Jovča | Lago Bovan, Aleksinac",
-        "description": "Trovaci al Lago Bovan vicino ad Aleksinac. Indicazioni dettagliate in auto o autobus. Mappa e coordinate GPS disponibili.",
-        "keywords": "posizione Lago Bovan, come raggiungere Lago Bovan, alloggio Aleksinac, coordinate GPS, indicazioni stradali"
+        "title": "Posizione - Come Raggiungere Appartamenti Jovča | Lago Bovan, Bovan",
+        "description": "Trovaci al Lago Bovan vicino ad Bovan. Indicazioni dettagliate in auto o autobus. Mappa e coordinate GPS disponibili.",
+        "keywords": "posizione Lago Bovan, come raggiungere Lago Bovan, alloggio Bovan, coordinate GPS, indicazioni stradali"
       },
       "gallery": {
         "title": "Galleria - Foto degli Appartamenti e del Lago Bovan",
@@ -507,7 +507,7 @@
       "attractions": {
         "title": "Attrazioni - Cosa Visitare Intorno al Lago Bovan",
         "description": "Scopri le attrazioni intorno al Lago Bovan: Soko Banja, Fortezza Sokolica, Niš, monasteri. Perfetto per escursioni e visite turistiche.",
-        "keywords": "attrazioni Bovan, Soko Banja, Fortezza Sokolica, attrazioni Niš, escursioni Aleksinac, monasteri Serbia"
+        "keywords": "attrazioni Bovan, Soko Banja, Fortezza Sokolica, attrazioni Niš, escursioni Bovan, monasteri Serbia"
       },
       "prices": {
         "title": "Prezzi - Appartamenti Jovča | Migliori Tariffe al Lago Bovan",
