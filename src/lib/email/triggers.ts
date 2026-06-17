@@ -90,46 +90,29 @@ export async function triggerReviewRequest(
   }
 }
 
+function toDateOnlyString(date: Date): string {
+  return date.toISOString().split('T')[0]
+}
+
+function getDateOnlyAfterDays(days: number): string {
+  const date = new Date()
+  date.setDate(date.getDate() + days)
+  return toDateOnlyString(date)
+}
+
 // Check if check-in is tomorrow (for triggering check-in instructions)
 export function isCheckInTomorrow(checkInDate: string): boolean {
-  const tomorrow = new Date()
-  tomorrow.setDate(tomorrow.getDate() + 1)
-  
-  const checkIn = new Date(checkInDate)
-  
-  return (
-    checkIn.getFullYear() === tomorrow.getFullYear() &&
-    checkIn.getMonth() === tomorrow.getMonth() &&
-    checkIn.getDate() === tomorrow.getDate()
-  )
+  return checkInDate === getDateOnlyAfterDays(1)
 }
 
 // Check if check-in is in the specified number of days
 export function isCheckInInDays(checkInDate: string, days: number): boolean {
-  const targetDate = new Date()
-  targetDate.setDate(targetDate.getDate() + days)
-  
-  const checkIn = new Date(checkInDate)
-  
-  return (
-    checkIn.getFullYear() === targetDate.getFullYear() &&
-    checkIn.getMonth() === targetDate.getMonth() &&
-    checkIn.getDate() === targetDate.getDate()
-  )
+  return checkInDate === getDateOnlyAfterDays(days)
 }
 
 // Check if checkout was yesterday (for triggering review request)
 export function wasCheckoutYesterday(checkoutDate: string): boolean {
-  const yesterday = new Date()
-  yesterday.setDate(yesterday.getDate() - 1)
-  
-  const checkout = new Date(checkoutDate)
-  
-  return (
-    checkout.getFullYear() === yesterday.getFullYear() &&
-    checkout.getMonth() === yesterday.getMonth() &&
-    checkout.getDate() === yesterday.getDate()
-  )
+  return checkoutDate === getDateOnlyAfterDays(-1)
 }
 
 // Process scheduled email tasks (called by cron job or scheduled function)
