@@ -56,7 +56,8 @@ export default function AvailabilityCalendarView() {
         apartmentId: selectedApartment,
         startDate,
         endDate,
-        limit: '31'
+        limit: '31',
+        includeBookings: 'true'
       })
 
       const response = await fetch(`/api/admin/availability?${params}`)
@@ -130,7 +131,7 @@ export default function AvailabilityCalendarView() {
     const dateStr = formatDate(date)
     const avail = availability[dateStr]
     
-    if (!avail) return 'unknown'
+    if (!avail) return 'available'
     if (avail.booking_id) return 'booked'
     if (!avail.is_available) {
       // Check reason to determine specific blocked status
