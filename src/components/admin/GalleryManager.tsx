@@ -7,7 +7,6 @@ import { Badge } from '../../components/ui/badge'
 import { Input } from '../../components/ui/input'
 import { Label } from '../../components/ui/label'
 import { 
-  Plus, 
   Pencil, 
   Trash2, 
   Loader2, 
@@ -16,7 +15,9 @@ import {
   XCircle,
   RefreshCw,
   Camera,
-  Image as ImageIcon
+  Image as ImageIcon,
+  ChevronDown,
+  Check
 } from 'lucide-react'
 
 interface GalleryItem {
@@ -35,6 +36,21 @@ const LANGUAGES = [
   { code: 'it', label: 'IT', flag: '🇮🇹' }
 ]
 
+const GALLERY_CATEGORIES = [
+  "Enterijer",
+  "Sobe",
+  "Kuhinja",
+  "Kupatilo",
+  "Terasa",
+  "Dvorište",
+  "Eksterijer",
+  "Pogled",
+  "Jezero",
+  "Parking",
+  "Detalji",
+  "Okolina"
+]
+
 export default function GalleryManager() {
   const [items, setItems] = useState<GalleryItem[]>([])
   const [loading, setLoading] = useState(true)
@@ -50,11 +66,13 @@ export default function GalleryManager() {
     tags: [] as string[],
     display_order: 0
   })
-  const [tagInput, setTagInput] = useState('')
+  const [categoryMenuOpen, setCategoryMenuOpen] = useState(false)
+  const [categoryMenuDirection, setCategoryMenuDirection] = useState<"down" | "up">("down")
   const [saving, setSaving] = useState(false)
   const [translating, setTranslating] = useState(false)
   const [uploading, setUploading] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const categoryMenuRef = useRef<HTMLDivElement>(null)
 
   const fetchItems = useCallback(async () => {
     try {
@@ -74,6 +92,19 @@ export default function GalleryManager() {
     fetchItems()
   }, [fetchItems])
 
+  useEffect(() => {
+    if (!categoryMenuOpen) return
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (!categoryMenuRef.current?.contains(event.target as Node)) {
+        setCategoryMenuOpen(false)
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [categoryMenuOpen])
+
   const resetForm = () => {
     setFormData({
       url: '',
@@ -82,7 +113,7 @@ export default function GalleryManager() {
       tags: [],
       display_order: 0
     })
-    setTagInput('')
+    setCategoryMenuOpen(false)
     setIsEditing(false)
     setEditingId(null)
     setSelectedLang('sr')
@@ -229,9 +260,11 @@ export default function GalleryManager() {
       
       const method = editingId ? 'PATCH' : 'POST'
 
-      const { captions, ...rest } = formData
+      const { captions } = formData
       const payload = {
-        ...rest,
+        url: formData.url,
+        tags: formData.tags,
+        display_order: formData.display_order,
         caption: JSON.stringify(captions)
       }
 
@@ -267,14 +300,20 @@ export default function GalleryManager() {
     }
   }
 
-  const addTag = () => {
-    if (tagInput.trim() && !formData.tags.includes(tagInput.trim())) {
-      setFormData(prev => ({
-        ...prev,
-        tags: [...prev.tags, tagInput.trim()]
-      }))
-      setTagInput('')
-    }
+  const openCategoryMenu = () => {
+    const rect = categoryMenuRef.current?.getBoundingClientRect()
+    const spaceBelow = rect ? window.innerHeight - rect.bottom : 0
+    setCategoryMenuDirection(spaceBelow < 280 ? "up" : "down")
+    setCategoryMenuOpen(prev => !prev)
+  }
+
+  const toggleCategory = (category: string) => {
+    setFormData(prev => ({
+      ...prev,
+      tags: prev.tags.includes(category)
+        ? prev.tags.filter(t => t !== category)
+        : [...prev.tags, category]
+    }))
   }
 
   const removeTag = (tagToRemove: string) => {
@@ -435,25 +474,49 @@ export default function GalleryManager() {
                   />
                 </div>
 
-                <div className="space-y-2">
-                  <Label className="text-xs sm:text-sm">Tagovi</Label>
-                  <div className="flex gap-2">
-                    <Input
-                      value={tagInput}
-                      onChange={(e) => setTagInput(e.target.value)}
-                      onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
-                      placeholder="npr. Enterijer"
-                      className="text-xs sm:text-sm"
-                    />
-                    <Button type="button" variant="outline" size="icon" onClick={addTag} className="h-9 w-9 flex-shrink-0">
-                      <Plus className="h-4 w-4" />
+                <div className="space-y-2" ref={categoryMenuRef}>
+                  <Label className="text-xs sm:text-sm">Kategorije</Label>
+                  <div className="relative">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={openCategoryMenu}
+                      className="h-9 w-full justify-between text-xs sm:text-sm font-normal"
+                      aria-expanded={categoryMenuOpen}
+                    >
+                      <span className="truncate">
+                        {formData.tags.length ? formData.tags.length + ' izabrano' : 'Izaberi kategorije'}
+                      </span>
+                      <ChevronDown className={'h-4 w-4 transition-transform ' + (categoryMenuOpen ? 'rotate-180' : '')} />
                     </Button>
+                    {categoryMenuOpen && (
+                      <div
+                        className={'absolute left-0 right-0 z-30 max-h-64 overflow-y-auto rounded-md border bg-background p-1 shadow-lg ' + (
+                          categoryMenuDirection === 'up' ? 'bottom-full mb-2' : 'top-full mt-2'
+                        )}
+                      >
+                        {GALLERY_CATEGORIES.map(category => {
+                          const selected = formData.tags.includes(category)
+                          return (
+                            <button
+                              key={category}
+                              type="button"
+                              onClick={() => toggleCategory(category)}
+                              className="flex w-full items-center justify-between rounded-sm px-3 py-2 text-left text-xs sm:text-sm hover:bg-muted"
+                            >
+                              <span>{category}</span>
+                              {selected && <Check className="h-4 w-4 text-primary" />}
+                            </button>
+                          )
+                        })}
+                      </div>
+                    )}
                   </div>
                   <div className="flex flex-wrap gap-1 mt-2">
                     {formData.tags.map(tag => (
                       <Badge key={tag} variant="secondary" className="gap-1 text-[10px] sm:text-xs">
-                        <span className="truncate max-w-[100px]">{tag}</span>
-                        <button type="button" onClick={() => removeTag(tag)}>
+                        <span className="truncate max-w-[120px]">{tag}</span>
+                        <button type="button" onClick={() => removeTag(tag)} aria-label={'Ukloni ' + tag}>
                           <XCircle className="h-3 w-3" />
                         </button>
                       </Badge>

@@ -298,7 +298,7 @@ export default function AttractionsManager() {
 
       {custom.length === 0 && !showForm && (
         <p className="text-sm text-muted-foreground text-center py-4">
-          Nema dodatih atrakcija. Klikni "Dodaj novu" da dodaš.
+          Nema dodatih atrakcija. Klikni &quot;Dodaj novu&quot; da dodaš.
         </p>
       )}
     </div>
