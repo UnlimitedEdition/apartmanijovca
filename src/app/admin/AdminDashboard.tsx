@@ -46,14 +46,12 @@ interface AdminDashboardProps {
   stats: Stats
 }
 
-export default function AdminDashboard({ stats: _initialStats }: AdminDashboardProps) {
+export default function AdminDashboard({ stats: initialStats }: AdminDashboardProps) {
   const [activeTab, setActiveTab] = useState('dashboard')
   const [refreshing, setRefreshing] = useState(false)
   const [statsKey, setStatsKey] = useState(0) // Key to force StatsCards refresh
   const [messageCount, setMessageCount] = useState<number | null>(null)
-
-  // Suppress unused variable warning
-  void _initialStats
+  const [bookingCount, setBookingCount] = useState<number | null>(initialStats.totalBookings)
 
   // Create Supabase client for logout
   const supabase = createBrowserClient(
@@ -74,9 +72,28 @@ export default function AdminDashboard({ stats: _initialStats }: AdminDashboardP
     }
   }, [])
 
+  const fetchBookingCount = useCallback(async () => {
+    try {
+      const response = await fetch('/api/admin/stats')
+      if (!response.ok) throw new Error('Failed to fetch booking stats')
+      const data = await response.json()
+      setBookingCount(typeof data.totalBookings === 'number' ? data.totalBookings : 0)
+    } catch (error) {
+      console.error('Booking count error:', error)
+      setBookingCount(null)
+    }
+  }, [])
+
   useEffect(() => {
     fetchMessageCount()
-  }, [fetchMessageCount])
+    fetchBookingCount()
+  }, [fetchMessageCount, fetchBookingCount])
+
+  const bookingBadge = bookingCount !== null && (
+    <span className="ml-auto min-w-5 rounded-full bg-primary px-1.5 py-0.5 text-center text-[10px] font-bold text-primary-foreground">
+      {bookingCount}
+    </span>
+  )
 
   const messageBadge = messageCount !== null && (
     <span className="ml-auto min-w-5 rounded-full bg-primary px-1.5 py-0.5 text-center text-[10px] font-bold text-primary-foreground">
@@ -99,8 +116,9 @@ export default function AdminDashboard({ stats: _initialStats }: AdminDashboardP
     setRefreshing(true)
     setStatsKey(prev => prev + 1) // Force StatsCards to re-mount and re-fetch independently
     fetchMessageCount()
+    fetchBookingCount()
     setRefreshing(false)
-  }, [fetchMessageCount])
+  }, [fetchMessageCount, fetchBookingCount])
 
   const handleStatusChange = () => {
     // Refresh stats when a booking status changes
@@ -194,7 +212,8 @@ export default function AdminDashboard({ stats: _initialStats }: AdminDashboardP
                 }`}
               >
                 <Calendar className="h-4 w-4" />
-                Rezervacije
+                <span>Rezervacije</span>
+                {bookingBadge}
               </button>
               <button
                 onClick={() => {
@@ -331,7 +350,8 @@ export default function AdminDashboard({ stats: _initialStats }: AdminDashboardP
               }`}
             >
               <Calendar className="h-4 w-4" />
-              Rezervacije
+              <span>Rezervacije</span>
+              {bookingBadge}
             </button>
             <button
               onClick={() => setActiveTab('apartments')}
