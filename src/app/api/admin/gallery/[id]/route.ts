@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@supabase/supabase-js'
 import { requireAdmin } from '@/lib/auth/require-admin'
+import { getMoveOrderUpdates, normalizeDisplayOrder } from '@/lib/admin/gallery-order'
 
 
 export const dynamic = 'force-dynamic'
@@ -58,14 +59,41 @@ export async function PATCH(
       tags?: string[]
       display_order?: number
     } = {}
+    let targetOrder: number | undefined
 
     if (typeof body.url === 'string') updateData.url = body.url
     if ('caption' in body) updateData.caption = body.caption
     if (Array.isArray(body.tags)) updateData.tags = body.tags
-    if ('display_order' in body) updateData.display_order = Number(body.display_order) || 0
+    if ('display_order' in body) {
+      targetOrder = normalizeDisplayOrder(body.display_order)
+      updateData.display_order = targetOrder
+    }
 
     if (Object.keys(updateData).length === 0) {
       return NextResponse.json({ error: 'No valid fields to update' }, { status: 400 })
+    }
+
+    if (targetOrder !== undefined) {
+      const { data: orderItems, error: orderError } = await supabaseAdmin
+        .from('gallery')
+        .select('id, display_order')
+
+      if (orderError) throw orderError
+
+      const currentItem = (orderItems || []).find(item => item.id === id)
+      if (!currentItem) {
+        return NextResponse.json({ error: 'Gallery item not found' }, { status: 404 })
+      }
+
+      const orderUpdates = getMoveOrderUpdates(orderItems || [], id, currentItem.display_order, targetOrder)
+      for (const orderUpdate of orderUpdates) {
+        const { error: updateError } = await supabaseAdmin
+          .from('gallery')
+          .update({ display_order: orderUpdate.display_order })
+          .eq('id', orderUpdate.id)
+
+        if (updateError) throw updateError
+      }
     }
     
     const { data, error } = await supabaseAdmin
