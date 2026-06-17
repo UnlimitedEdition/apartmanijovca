@@ -279,15 +279,12 @@ export default function GalleryManager() {
         throw new Error(errorData.error || 'Failed to save item')
       }
 
-      const savedItem = await response.json()
+      await response.json()
+      await fetchItems()
       
       if (editingId) {
-        setItems(prev => prev.map(a => 
-          a.id === editingId ? { ...a, ...savedItem } : a
-        ).sort((a, b) => a.display_order - b.display_order))
         setSuccess('Stavka je uspešno ažurirana')
       } else {
-        setItems(prev => [...prev, savedItem].sort((a, b) => a.display_order - b.display_order))
         setSuccess('Slika je uspešno dodata u galeriju')
       }
       
