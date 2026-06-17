@@ -540,3 +540,65 @@ export function getOptionLabels(
 ): string[] {
   return options.map(option => option.label[lang])
 }
+
+
+export type ApartmentOptionLocale = keyof ApartmentOption["label"]
+
+type BedCountFormatter = (count: number) => string
+
+const BED_COUNT_FORMATTERS: Record<string, Record<ApartmentOptionLocale, BedCountFormatter>> = {
+  double_bed: {
+    sr: count => String(count) + " " + (count === 1 ? "bračni krevet" : "bračna kreveta"),
+    en: count => String(count) + " double " + (count === 1 ? "bed" : "beds"),
+    de: count => String(count) + " " + (count === 1 ? "Doppelbett" : "Doppelbetten"),
+    it: count => String(count) + " " + (count === 1 ? "letto matrimoniale" : "letti matrimoniali")
+  },
+  queen_bed: {
+    sr: count => String(count) + " queen size " + (count === 1 ? "krevet" : "kreveta"),
+    en: count => String(count) + " queen size " + (count === 1 ? "bed" : "beds"),
+    de: count => String(count) + " Queen-Size-" + (count === 1 ? "Bett" : "Betten"),
+    it: count => String(count) + " " + (count === 1 ? "letto queen size" : "letti queen size")
+  },
+  single_bed: {
+    sr: count => String(count) + " " + (count === 1 ? "krevet" : "kreveta") + " za jednu osobu",
+    en: count => String(count) + " single " + (count === 1 ? "bed" : "beds"),
+    de: count => String(count) + " " + (count === 1 ? "Einzelbett" : "Einzelbetten"),
+    it: count => String(count) + " " + (count === 1 ? "letto singolo" : "letti singoli")
+  },
+  two_single_beds: {
+    sr: count => String(count * 2) + " kreveta za jednu osobu",
+    en: count => String(count * 2) + " single beds",
+    de: count => String(count * 2) + " Einzelbetten",
+    it: count => String(count * 2) + " letti singoli"
+  },
+  sofa_bed: {
+    sr: count => String(count) + " " + (count === 1 ? "kauč" : "kauča") + " na razvlačenje",
+    en: count => String(count) + " sofa " + (count === 1 ? "bed" : "beds"),
+    de: count => String(count) + " " + (count === 1 ? "Schlafsofa" : "Schlafsofas"),
+    it: count => String(count) + " " + (count === 1 ? "divano letto" : "divani letto")
+  },
+  bunk_bed: {
+    sr: count => String(count) + " " + (count === 1 ? "krevet" : "kreveta") + " na sprat",
+    en: count => String(count) + " bunk " + (count === 1 ? "bed" : "beds"),
+    de: count => String(count) + " " + (count === 1 ? "Etagenbett" : "Etagenbetten"),
+    it: count => String(count) + " " + (count === 1 ? "letto a castello" : "letti a castello")
+  }
+}
+
+export function formatBedCounts(
+  bedCounts: Record<string, number> | null | undefined,
+  locale: ApartmentOptionLocale = "sr"
+): string {
+  if (!bedCounts) return ""
+
+  return BED_OPTIONS
+    .map(option => {
+      const count = Number(bedCounts[option.id] || 0)
+      if (!Number.isFinite(count) || count <= 0) return ""
+
+      const formatter = BED_COUNT_FORMATTERS[option.id]?.[locale] || BED_COUNT_FORMATTERS[option.id]?.sr
+      return formatter ? formatter(count) : option.label[locale] || option.label.sr
+    })
+    .filter(Boolean)
+    .join(" + ")
+}

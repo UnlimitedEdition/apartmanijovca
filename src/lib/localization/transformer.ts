@@ -1,6 +1,7 @@
 // src/lib/localization/transformer.ts
 
 import type { Locale, ApartmentRecord, LocalizedApartment, Json } from '../types/database'
+import { formatBedCounts } from '../apartment-options'
 
 /**
  * Helper to extract localized value from Json type
@@ -60,7 +61,7 @@ export function localizeApartment(
     slug: apartment.slug || null,
     name: extractLocalizedValue(apartment.name, locale),
     description: extractLocalizedValue(apartment.description, locale),
-    bed_type: extractLocalizedValue(apartment.bed_type, locale),
+    bed_type: formatBedCounts(apartment.bed_counts as Record<string, number> | null | undefined, locale) || extractLocalizedValue(apartment.bed_type, locale),
     capacity: apartment.capacity || 2,
     amenities: transformAmenities(apartment.amenities, locale),
     base_price_eur: apartment.base_price_eur || 0,
