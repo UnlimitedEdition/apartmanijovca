@@ -13,6 +13,16 @@ describe('availability calendar helpers', () => {
     ])
   })
 
+  it('keeps the requested calendar end date inclusive', () => {
+    expect(getBookedDatesForRange({
+      id: 'booking-3',
+      check_in: '2026-07-31',
+      check_out: '2026-08-02',
+    }, '2026-07-01', '2026-07-31')).toEqual([
+      '2026-07-31',
+    ])
+  })
+
   it('clips booking dates to the requested calendar range', () => {
     expect(getBookedDatesForRange({
       id: 'booking-2',
