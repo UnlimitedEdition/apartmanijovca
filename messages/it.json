@@ -117,11 +117,11 @@
     "features": {
       "title": "Tutto il necessario per un soggiorno perfetto",
       "description": "I nostri appartamenti sono arredati con attenzione ai dettagli per offrirvi il massimo comfort.",
-      "wiFi": "WiFi ad alta velocità",
+      "wiFi": "WiFi",
       "climate": "Aria condizionata",
       "parking": "Parcheggio privato",
-      "kitchen": "Cucina completa",
-      "tv": "Smart TV",
+      "kitchen": "Cucina attrezzata",
+      "tv": "Videoproiettore",
       "linens": "Lenzuola e asciugamani",
       "lakeAccess": "Accesso alla spiaggia",
       "bbq": "Area barbecue"
@@ -135,7 +135,7 @@
       "q3": "Sono ammessi animali domestici?",
       "a3": "Vi preghiamo di contattarci in anticipo per gli animali domestici, poiché dipende dall'appartamento specifico.",
       "q4": "Quanto dista la spiaggia?",
-      "a4": "La spiaggia più vicina del Lago Bovan dista solo 2-3 minuti a piedi (circa 150 m).",
+      "a4": "Sì, abbiamo una spiaggia privata per i nostri ospiti, a soli 2-3 minuti a piedi.",
       "q5": "C'è il WiFi disponibile?",
       "a5": "Sì, offriamo WiFi ad alta velocità gratuito in tutti i nostri appartamenti.",
       "q6": "Gli appartamenti hanno l'aria condizionata?",

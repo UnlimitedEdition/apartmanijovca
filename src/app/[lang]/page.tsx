@@ -96,7 +96,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const faqs = [
     { question: faqTranslations('q1'), answer: faqTranslations('a1') },
     { question: faqTranslations('q2'), answer: faqTranslations('a2') },
-    { question: faqTranslations('q3'), answer: faqTranslations('a3') },
     { question: faqTranslations('q4'), answer: faqTranslations('a4') },
     { question: faqTranslations('q5'), answer: faqTranslations('a5') }
   ]
@@ -384,7 +383,6 @@ export default async function HomePage({ params }: PageProps) {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {[
                   { name: t('features.wiFi'), icon: '📶' },
-                  { name: t('features.climate'), icon: '❄️' },
                   { name: t('features.parking'), icon: '🚗' },
                   { name: t('features.kitchen'), icon: '🍳' },
                   { name: t('features.tv'), icon: '📺' },
@@ -403,8 +401,8 @@ export default async function HomePage({ params }: PageProps) {
               {/* Removed skew-y-3 for cleaner old-site feel */}
               <div className="aspect-square bg-white/30 rounded-3xl overflow-hidden shadow-2xl backdrop-blur-sm">
                 <LazyImage
-                  src="/images/bovansko-jezero.jpg"
-                  alt={generateAltText('', 'location', params.lang as Locale, 'Bovansko jezero')}
+                  src="/images/gallery/vikendica sprat 1.jpg"
+                  alt={generateAltText('', 'apartment', params.lang as Locale, 'Vikendica Apartmani Jovča')}
                   className="w-full h-full object-cover"
                   priority
                 />
@@ -438,7 +436,6 @@ export default async function HomePage({ params }: PageProps) {
               {[
                 { q: t('faq.q1'), a: t('faq.a1') },
                 { q: t('faq.q2'), a: t('faq.a2') },
-                { q: t('faq.q3'), a: t('faq.a3') },
                 { q: t('faq.q4'), a: t('faq.a4') },
                 { q: t('faq.q5'), a: t('faq.a5') },
               ].map((faq, i) => (
@@ -450,7 +447,6 @@ export default async function HomePage({ params }: PageProps) {
             </div>
             <div className="space-y-6">
               {[
-                { q: t('faq.q6'), a: t('faq.a6') },
                 { q: t('faq.q7'), a: t('faq.a7') },
                 { q: t('faq.q8'), a: t('faq.a8') },
                 { q: t('faq.q9'), a: t('faq.a9') },
