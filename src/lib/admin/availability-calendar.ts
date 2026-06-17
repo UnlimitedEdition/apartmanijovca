@@ -23,6 +23,7 @@ export function getBookedDatesForRange(
 ): string[] {
   const rangeStart = parseDate(startDate)
   const rangeEnd = parseDate(endDate)
+  rangeEnd.setDate(rangeEnd.getDate() + 1)
   const bookingStart = parseDate(booking.check_in)
   const bookingEnd = parseDate(booking.check_out)
   const dates: string[] = []
