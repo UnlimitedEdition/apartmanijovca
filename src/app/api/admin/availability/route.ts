@@ -15,7 +15,11 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey, {
   }
 })
 
-const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+// Strukturni UUID (8-4-4-4-12 hex), BEZ RFC-4122 version/variant provere.
+// Apartmani u bazi koriste ID-jeve tipa 11111111…/22222222…/33333333…/44444444…
+// koji NISU v4 (variant nibble je 1/2/3/4, ne [89ab]) — strogi regex ih je odbijao
+// pa je /api/admin/availability vraćao 400 i kalendar nikad nije dobio rezervacije.
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/
 
 // GET /api/admin/availability - Get availability records with filters

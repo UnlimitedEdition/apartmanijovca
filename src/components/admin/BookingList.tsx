@@ -27,6 +27,7 @@ import {
   X
 } from 'lucide-react'
 import AdminBookingDetails from './AdminBookingDetails'
+import DatePopoverPicker from './DatePopoverPicker'
 import type { BookingData } from '../portal/BookingCard'
 
 interface Booking {
@@ -360,31 +361,15 @@ export default function BookingList({ apartmentId, limit: propLimit, title, init
             {/* Date Filter */}
             <div className="flex-1 min-w-0">
               <label className="text-xs font-medium text-muted-foreground mb-1.5 block">Zauzeto na dan:</label>
-              <div className="flex gap-2">
-                <Input
-                  type="date"
-                  value={occupiedOnDate}
-                  onChange={(e) => {
-                    setOccupiedOnDate(e.target.value)
-                    setPage(1)
-                  }}
-                  className="flex-1 h-11"
-                />
-                {occupiedOnDate && (
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={() => {
-                      setOccupiedOnDate('')
-                      setPage(1)
-                    }}
-                    className="h-11 w-11 shrink-0"
-                    title="Očisti datum"
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                )}
-              </div>
+              <DatePopoverPicker
+                value={occupiedOnDate}
+                onChange={(v) => {
+                  setOccupiedOnDate(v)
+                  setPage(1)
+                }}
+                placeholder="Izaberi dan"
+                ariaLabel="Zauzeto na dan"
+              />
             </div>
           </div>
         </div>

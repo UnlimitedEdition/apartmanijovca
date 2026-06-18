@@ -30,6 +30,9 @@ export type StatCardFilter =
   | { type: 'departures'; date: string }
   | { type: 'status'; status: 'pending' | 'confirmed' }
   | { type: 'all' }
+  | { type: 'revenue' }
+  | { type: 'monthlyRevenue' }
+  | { type: 'occupancy' }
 
 interface StatsCardsProps {
   initialStats?: Partial<DashboardStats>
@@ -70,7 +73,12 @@ export default function StatsCards({ initialStats, onCardClick }: StatsCardsProp
               onCardClick(filter)
             }
           },
-          title: 'Klikni za prikaz rezervacija (svi apartmani)',
+          title:
+            filter.type === 'occupancy'
+              ? 'Klikni za kalendar dostupnosti'
+              : filter.type === 'revenue' || filter.type === 'monthlyRevenue'
+                ? 'Klikni za analitiku'
+                : 'Klikni za prikaz rezervacija (svi apartmani)',
         }
       : {}
 
@@ -242,7 +250,7 @@ export default function StatsCards({ initialStats, onCardClick }: StatsCardsProp
       </Card>
 
       {/* Total Revenue */}
-      <Card>
+      <Card className={clickableClass} {...cardClickProps({ type: 'revenue' })}>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Ukupan prihod</CardTitle>
           <CreditCard className="h-5 w-5 md:h-4 md:w-4 text-muted-foreground" />
@@ -256,7 +264,7 @@ export default function StatsCards({ initialStats, onCardClick }: StatsCardsProp
       </Card>
 
       {/* Monthly Revenue */}
-      <Card>
+      <Card className={clickableClass} {...cardClickProps({ type: 'monthlyRevenue' })}>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Mesečni prihod</CardTitle>
           <TrendingUp className="h-5 w-5 md:h-4 md:w-4 text-muted-foreground" />
@@ -270,7 +278,7 @@ export default function StatsCards({ initialStats, onCardClick }: StatsCardsProp
       </Card>
 
       {/* Occupancy Rate */}
-      <Card>
+      <Card className={clickableClass} {...cardClickProps({ type: 'occupancy' })}>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Popunjenost</CardTitle>
           <Home className="h-5 w-5 md:h-4 md:w-4 text-muted-foreground" />
