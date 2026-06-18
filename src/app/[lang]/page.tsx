@@ -24,7 +24,7 @@ import { generateApartmentImageAlt, generateAltText } from '@/lib/seo/alt-text'
 import LazyImage from '@/components/LazyImage'
 
 type PageProps = {
-  params: { lang: string }
+  params: Promise<{ lang: string }>
 }
 
 // export async function generateStaticParams() {
@@ -38,7 +38,8 @@ type PageProps = {
 
 export const dynamic = 'force-dynamic'
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({ params: paramsInput }: PageProps): Promise<Metadata> {
+  const params = await paramsInput
   const locale = params.lang as Locale
   const t = await getTranslations({ locale, namespace: 'seo' })
   const baseUrl = getBaseUrl()
@@ -122,7 +123,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 }
 
-export default async function HomePage({ params }: PageProps) {
+export default async function HomePage({ params: paramsInput }: PageProps) {
+  const params = await paramsInput
   let apartments = null
   let reviews = null
 

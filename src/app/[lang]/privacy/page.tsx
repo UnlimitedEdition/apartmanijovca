@@ -10,10 +10,11 @@ import { generateBreadcrumbSchema } from '@/lib/seo/structured-data'
 import { getKeywordsString } from '@/lib/seo/keywords'
 
 interface PageProps {
-  params: { lang: string }
+  params: Promise<{ lang: string }>
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({ params: paramsInput }: PageProps): Promise<Metadata> {
+  const params = await paramsInput
   const locale = params.lang as Locale
   const t = await getTranslations({ locale, namespace: 'seo' })
   const baseUrl = getBaseUrl()

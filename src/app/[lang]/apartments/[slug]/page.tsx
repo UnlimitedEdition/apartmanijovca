@@ -24,7 +24,7 @@ import {
 } from '@/lib/seo/metadata-adapter'
 
 interface PageProps {
-  params: { lang: Locale; slug: string }
+  params: Promise<{ lang: Locale; slug: string }>
 }
 
 async function getApartment(slug: string, locale: Locale) {
@@ -52,7 +52,8 @@ async function getApartment(slug: string, locale: Locale) {
   return transformApartmentRecord(data as ApartmentRecord, locale)
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({ params: paramsInput }: PageProps): Promise<Metadata> {
+  const params = await paramsInput
   const locale = params.lang
   const apartment = await getApartment(params.slug, locale)
   const t = await getTranslations({ locale, namespace: 'seo' })
@@ -198,7 +199,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 }
 
-export default async function ApartmentPage({ params }: PageProps) {
+export default async function ApartmentPage({ params: paramsInput }: PageProps) {
+  const params = await paramsInput
   const apartment = await getApartment(params.slug, params.lang)
 
   if (!apartment || !apartment.slug) {

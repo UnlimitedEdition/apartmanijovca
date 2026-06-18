@@ -16,12 +16,12 @@ const supabaseAdmin = createClient(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const authError = await requireAdmin(request)
   if (authError) return authError
   try {
-    const id = params.id
+    const id = (await params).id
 
     const { error } = await supabaseAdmin
       .from('gallery')
@@ -46,12 +46,12 @@ export async function DELETE(
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const authError = await requireAdmin(request)
   if (authError) return authError
   try {
-    const id = params.id
+    const id = (await params).id
     const body = await request.json()
     const updateData: {
       url?: string

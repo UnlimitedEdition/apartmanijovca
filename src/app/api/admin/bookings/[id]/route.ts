@@ -28,12 +28,12 @@ function isMultiLanguageText(value: unknown): value is MultiLanguageText {
 // GET - Get single booking with full details
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const authError = await requireAdmin(request)
   if (authError) return authError
   try {
-    const { id } = params
+    const { id } = await params
 
     const { data, error } = await supabaseAdmin
       .from('bookings')
@@ -129,12 +129,12 @@ export async function GET(
 // PATCH - Update booking status
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const authError = await requireAdmin(request)
   if (authError) return authError
   try {
-    const { id } = params
+    const { id } = await params
     const body = await request.json()
     const { status } = body
 

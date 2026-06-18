@@ -9,10 +9,11 @@ import { generateLocalBusinessSchema, generateBreadcrumbSchema } from '@/lib/seo
 import { getKeywordsString } from '@/lib/seo/keywords'
 
 interface PageProps {
-  params: { lang: string }
+  params: Promise<{ lang: string }>
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({ params: paramsInput }: PageProps): Promise<Metadata> {
+  const params = await paramsInput
   const locale = params.lang as Locale
   const t = await getTranslations({ locale, namespace: 'seo' })
   const baseUrl = getBaseUrl()
@@ -96,7 +97,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 }
 
-export default async function LocationPage({ params }: PageProps) {
+export default async function LocationPage({ params: paramsInput }: PageProps) {
+  const params = await paramsInput
   const t = await getTranslations({ locale: params.lang, namespace: 'location' })
 
   return (

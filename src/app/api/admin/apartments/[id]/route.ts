@@ -16,12 +16,12 @@ const supabaseAdmin = createClient(supabaseUrl, process.env.NEXT_SERVICE_ROLE_KE
 // GET - Get single apartment
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const authError = await requireAdmin(request)
   if (authError) return authError
   try {
-    const { id } = params
+    const { id } = await params
 
     // Check if raw data is requested (for admin editing)
     const { searchParams } = new URL(request.url)
@@ -68,12 +68,12 @@ export async function GET(
 // PUT - Update apartment
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const authError = await requireAdmin(request)
   if (authError) return authError
   try {
-    const { id } = params
+    const { id } = await params
     const body = await request.json()
 
     // First, get the existing apartment to merge multi-language fields
@@ -187,12 +187,12 @@ export async function PUT(
 // DELETE - Delete apartment
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const authError = await requireAdmin(request)
   if (authError) return authError
   try {
-    const { id } = params
+    const { id } = await params
 
     // Check for existing bookings
     const { data: bookings, error: bookingsError } = await supabaseAdmin
