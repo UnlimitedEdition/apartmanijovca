@@ -96,9 +96,7 @@ export default function GalleryManager() {
   }, [items])
 
   const getNextFolderOrder = useCallback((folder: string) => {
-    const folderItems = getItemsInFolder(folder === ALL_FOLDER ? DEFAULT_IMAGE_FOLDER : folder)
-    if (folderItems.length === 0) return 1
-    return Math.max(...folderItems.map(item => item.display_order)) + 1
+    return getItemsInFolder(folder === ALL_FOLDER ? DEFAULT_IMAGE_FOLDER : folder).length + 1
   }, [getItemsInFolder])
 
   const fetchItems = useCallback(async () => {
@@ -150,6 +148,7 @@ export default function GalleryManager() {
 
   const handleEdit = (item: GalleryItem) => {
     const itemFolder = GALLERY_CATEGORIES.find(category => category !== ALL_FOLDER && item.tags?.includes(category)) || DEFAULT_IMAGE_FOLDER
+    const folderOrder = getItemsInFolder(itemFolder).findIndex(folderItem => folderItem.id === item.id) + 1
 
     setError(null)
     setSelectedFolder(itemFolder)
@@ -157,7 +156,7 @@ export default function GalleryManager() {
       url: item.url,
       publicId: '',
       captions: parseCaption(item.caption),
-      display_order: item.display_order
+      display_order: folderOrder || item.display_order
     })
     setEditingId(item.id)
     setIsEditing(true)
@@ -317,7 +316,10 @@ export default function GalleryManager() {
     }
   }
 
-  const folderItems = getItemsInFolder(selectedFolder)
+  const folderItems = getItemsInFolder(selectedFolder).map((item, index) => ({
+    ...item,
+    folderOrder: index + 1
+  }))
   const folderCounts = GALLERY_CATEGORIES.reduce<Record<string, number>>((counts, category) => {
     counts[category] = category === ALL_FOLDER
       ? items.length
@@ -435,7 +437,7 @@ export default function GalleryManager() {
                     </div>
                     <div className="absolute bottom-2 left-2 flex gap-1">
                       <Badge variant="secondary" className="bg-black/60 text-white border-none backdrop-blur-sm text-[9px] sm:text-[10px] py-0 px-1.5">
-                        #{item.display_order}
+                        #{item.folderOrder}
                       </Badge>
                     </div>
                   </div>
@@ -555,9 +557,9 @@ export default function GalleryManager() {
                   <Input
                     id="order"
                     type="number"
-                    min={0}
+                    min={1}
                     value={formData.display_order}
-                    onChange={(e) => setFormData(prev => ({ ...prev, display_order: parseInt(e.target.value, 10) || 0 }))}
+                    onChange={(e) => setFormData(prev => ({ ...prev, display_order: parseInt(e.target.value, 10) || 1 }))}
                     className="text-xs sm:text-sm"
                   />
                 </div>

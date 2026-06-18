@@ -10,8 +10,8 @@ export interface GalleryOrderUpdate {
 
 export function normalizeDisplayOrder(value: unknown): number {
   const order = Number(value)
-  if (!Number.isFinite(order)) return 0
-  return Math.max(0, Math.trunc(order))
+  if (!Number.isFinite(order)) return 1
+  return Math.max(1, Math.trunc(order))
 }
 
 function sortByCurrentOrder(items: GalleryOrderItem[]): GalleryOrderItem[] {
@@ -21,13 +21,8 @@ function sortByCurrentOrder(items: GalleryOrderItem[]): GalleryOrderItem[] {
   })
 }
 
-function getSequenceBase(items: GalleryOrderItem[], targetOrder: number): number {
-  if (items.length === 0) return targetOrder
-  return Math.min(targetOrder, ...items.map(item => item.display_order))
-}
-
-function clampOrder(targetOrder: number, minOrder: number, maxOrder: number): number {
-  return Math.min(Math.max(targetOrder, minOrder), maxOrder)
+function clampOrder(targetOrder: number, maxOrder: number): number {
+  return Math.min(Math.max(normalizeDisplayOrder(targetOrder), 1), Math.max(maxOrder, 1))
 }
 
 function sortUpdatesForSafeWrite(updates: GalleryOrderUpdate[]): GalleryOrderUpdate[] {
@@ -38,16 +33,14 @@ export function normalizeInsertTargetOrder(
   items: GalleryOrderItem[],
   targetOrder: number
 ): number {
-  const baseOrder = getSequenceBase(items, targetOrder)
-  return clampOrder(targetOrder, baseOrder, baseOrder + items.length)
+  return clampOrder(targetOrder, items.length + 1)
 }
 
 export function normalizeMoveTargetOrder(
   items: GalleryOrderItem[],
   targetOrder: number
 ): number {
-  const baseOrder = getSequenceBase(items, targetOrder)
-  return clampOrder(targetOrder, baseOrder, baseOrder + Math.max(items.length - 1, 0))
+  return clampOrder(targetOrder, items.length)
 }
 
 export function getInsertOrderUpdates(
@@ -55,7 +48,7 @@ export function getInsertOrderUpdates(
   targetOrder: number
 ): GalleryOrderUpdate[] {
   const insertOrder = normalizeInsertTargetOrder(items, targetOrder)
-  let nextOrder = getSequenceBase(items, insertOrder)
+  let nextOrder = 1
 
   const updates = sortByCurrentOrder(items).map(item => {
     if (nextOrder === insertOrder) nextOrder += 1
@@ -77,7 +70,7 @@ export function getMoveOrderUpdates(
   targetOrder: number
 ): GalleryOrderUpdate[] {
   const moveOrder = normalizeMoveTargetOrder(items, targetOrder)
-  let nextOrder = getSequenceBase(items, moveOrder)
+  let nextOrder = 1
 
   const updates = sortByCurrentOrder(items)
     .filter(item => item.id !== movingId)
