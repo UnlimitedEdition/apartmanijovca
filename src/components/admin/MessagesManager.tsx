@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { Badge } from '../ui/badge'
 import { Button } from '../ui/button'
@@ -23,11 +23,7 @@ export default function MessagesManager() {
   const [filter, setFilter] = useState<'all' | 'new' | 'read' | 'replied' | 'archived'>('all')
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null)
 
-  useEffect(() => {
-    fetchMessages()
-  }, [filter])
-
-  const fetchMessages = async () => {
+  const fetchMessages = useCallback(async () => {
     setLoading(true)
     try {
       // Use API route instead of direct Supabase call to bypass RLS
@@ -52,7 +48,11 @@ export default function MessagesManager() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [filter])
+
+  useEffect(() => {
+    fetchMessages()
+  }, [fetchMessages])
 
   const updateMessageStatus = async (id: string, status: Message['status']) => {
     try {

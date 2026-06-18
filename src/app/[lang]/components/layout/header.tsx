@@ -1,4 +1,5 @@
 'use client'
+/* eslint-disable @next/next/no-img-element -- Header logo uses existing fixed asset styling. */
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
