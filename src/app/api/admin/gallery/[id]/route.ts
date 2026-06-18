@@ -61,14 +61,23 @@ export async function PATCH(
     } = {}
     let targetOrder: number | undefined
 
+    const tags = Array.isArray(body.tags)
+      ? body.tags.filter((tag: unknown): tag is string => typeof tag === 'string' && tag.trim().length > 0)
+      : undefined
+    const folder = tags?.[0]
+
     if (typeof body.url === 'string') updateData.url = body.url
     if ('caption' in body) updateData.caption = body.caption
-    if (Array.isArray(body.tags)) updateData.tags = body.tags
+    if (tags) updateData.tags = tags
     if ('display_order' in body) {
       targetOrder = normalizeDisplayOrder(body.display_order)
     }
 
-    if (Object.keys(updateData).length === 0) {
+    if (targetOrder !== undefined && !folder) {
+      return NextResponse.json({ error: 'Folder is required' }, { status: 400 })
+    }
+
+    if (Object.keys(updateData).length === 0 && targetOrder === undefined) {
       return NextResponse.json({ error: 'No valid fields to update' }, { status: 400 })
     }
 
@@ -76,13 +85,22 @@ export async function PATCH(
       const { data: orderItems, error: orderError } = await supabaseAdmin
         .from('gallery')
         .select('id, display_order')
+        .contains('tags', [folder])
 
       if (orderError) throw orderError
 
-      const currentItem = (orderItems || []).find(item => item.id === id)
-      if (!currentItem) {
+      const { data: existingItem, error: existingError } = await supabaseAdmin
+        .from('gallery')
+        .select('id, display_order')
+        .eq('id', id)
+        .single()
+
+      if (existingError) throw existingError
+      if (!existingItem) {
         return NextResponse.json({ error: 'Gallery item not found' }, { status: 404 })
       }
+
+      const currentItem = (orderItems || []).find(item => item.id === id) || existingItem
 
       targetOrder = normalizeMoveTargetOrder(orderItems || [], targetOrder)
       updateData.display_order = targetOrder
