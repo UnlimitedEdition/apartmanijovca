@@ -1,4 +1,5 @@
 import { getRequestConfig } from 'next-intl/server'
+import { IntlErrorCode } from 'next-intl'
 import { notFound } from 'next/navigation'
 
 const locales = ['sr', 'en', 'de', 'it'] as const
@@ -18,6 +19,12 @@ export default getRequestConfig(async ({ requestLocale }) => {
 
   return {
     locale: requestedLocale,
-    messages: (await import('../../messages/' + requestedLocale + '.json')).default
+    messages: (await import('../../messages/' + requestedLocale + '.json')).default,
+    // Resilience: tolerate missing keys (partial translations) instead of crashing render/build
+    onError(error) {
+      if (error.code === IntlErrorCode.MISSING_MESSAGE) return
+      console.error(error)
+    },
+    getMessageFallback: () => ''
   }
 })
