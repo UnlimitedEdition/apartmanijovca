@@ -178,7 +178,7 @@ export async function createOrGetGuest(
       if (existingGuest.full_name !== name || existingGuest.phone !== phone) {
         const { error: updateError } = await supabaseAdmin
           .from('guests')
-          .update({ full_name: name, phone })
+          .update({ full_name: name, phone: phone || '' })
           .eq('id', existingGuest.id)
 
         if (updateError) {
@@ -191,7 +191,7 @@ export async function createOrGetGuest(
     // Create new guest
     const { data: newGuest, error: createError } = await supabaseAdmin
       .from('guests')
-      .insert({ full_name: name, email, phone })
+      .insert({ full_name: name, email, phone: phone || '' })
       .select('id')
       .single()
 

@@ -11,7 +11,7 @@ export const BookingStatus = z.enum([
 ])
 
 // Enhanced name validation - accepts both single name and full name
-const nameRegex = /^[A-Za-zÀ-ÿ\u0400-\u04FF\s'-]{2,}$/
+const nameRegex = /^[A-Za-zÀ-ÿĀ-ɏ\u0400-\u04FF\s'-]{2,}$/
 const phoneRegex = /^[\d\s\-\+\(\)]{8,20}$/
 const sanitizeString = (str: string) => str.trim().replace(/\s+/g, ' ')
 
