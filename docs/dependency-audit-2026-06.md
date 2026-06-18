@@ -268,3 +268,19 @@ Remaining follow-up:
 
 - Decide whether to refactor the 36 React Compiler lint warnings or keep them as warnings until React Compiler is explicitly enabled.
 - Review npm audit output separately. Tier B did not run npm audit fix because that can make unrelated breaking changes.
+
+## npm ci warning cleanup - 2026-06-18
+
+Cleaned npm ci install warnings after the Tier B migration:
+
+- Replaced deprecated React Email component package usage with local email wrapper components while keeping React Email render.
+- Upgraded Resend to 6.14.0.
+- Upgraded Jest to 30.4.2 and removed unused jest environment jsdom because the Jest config uses node environment.
+- Added npm overrides for glob, postcss, and js-yaml to remove transitive deprecation warnings and audit findings.
+
+Verification after the cleanup:
+
+- npm ci - passed with no npm deprecated warnings and found 0 vulnerabilities.
+- npm test - 18 suites passed, 367 tests passed.
+- npm run lint - passed with 0 errors and 36 warnings from React Compiler and Next lint recommendations.
+- npm run build - passed on Next.js 16.2.9.
