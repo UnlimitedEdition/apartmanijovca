@@ -1,6 +1,5 @@
 import { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
-import { supabase } from '../lib/supabase/client'
 import { Locale } from '@/lib/types/database'
 import { getBaseUrl } from '@/lib/seo/config'
 import { generateMetaTags } from '@/lib/seo/meta-generator'
@@ -14,6 +13,7 @@ import {
 } from '@/lib/seo/structured-data'
 import { getKeywordsString } from '@/lib/seo/keywords'
 import { STATIC_ATTRACTIONS, AttractionEntry } from '@/data/attractions'
+import { getVisibleAttractions } from '@/lib/attractions/db'
 
 type PageProps = {
   params: Promise<{ lang: string }>
@@ -73,43 +73,22 @@ export async function generateMetadata({ params: paramsInput }: PageProps): Prom
   }
 }
 
-interface CustomAttraction {
-  name: string
-  description: string
-  distance?: string
-  image?: string
-  lat?: number | null
-  lng?: number | null
-}
-
 export default async function AttractionsPage({ params: paramsInput }: PageProps) {
   const params = await paramsInput
   const lang = params.lang
   const locale = lang as Locale
   const t = await getTranslations({ locale: lang, namespace: 'attractions' })
 
-  // Load visibility and custom attractions in parallel
-  const [visibilityResult, customResult] = await Promise.all([
-    supabase.from('content').select('value').eq('key', 'attractions.visibility').eq('language', 'sr').maybeSingle(),
-    supabase.from('content').select('value').eq('key', 'attractions.custom').eq('language', 'sr').maybeSingle(),
-  ])
+  // Primary source: DB attractions table (admin-managed)
+  const dbAttractions = await getVisibleAttractions(locale)
 
-  const visibilityRow = visibilityResult.data as { value: { hidden: number[] } } | null
-  const hiddenIndices: number[] = Array.isArray(visibilityRow?.value?.hidden)
-    ? visibilityRow!.value.hidden
-    : []
+  // Fallback: static data if DB returned nothing (migration not yet done / DB unavailable)
+  const staticFallback: AttractionEntry[] = STATIC_ATTRACTIONS[lang] ?? STATIC_ATTRACTIONS['sr']
+  const attractions: AttractionEntry[] = dbAttractions.length > 0 ? dbAttractions : staticFallback
 
-  const staticList: AttractionEntry[] = (STATIC_ATTRACTIONS[lang] ?? STATIC_ATTRACTIONS['sr'])
-    .filter(a => !hiddenIndices.includes(a.id))
-
-  const customRow = customResult.data as { value: CustomAttraction[] } | null
-  const customList: CustomAttraction[] = Array.isArray(customRow?.value) ? customRow!.value : []
-
-  const attractions = [...staticList, ...customList]
-
-  // Structured data: one TouristAttraction per static attraction + one TouristDestination
-  const attractionSchemas = staticList.map(a => generateTouristAttractionSchema(a, locale))
-  const destinationSchema = generateTouristDestinationSchema(locale, staticList)
+  // Structured data: one TouristAttraction per attraction + one TouristDestination
+  const attractionSchemas = attractions.map(a => generateTouristAttractionSchema(a, locale))
+  const destinationSchema = generateTouristDestinationSchema(locale, attractions)
 
   return (
     <div className="container mx-auto px-4 py-6 sm:py-8 3xl:py-12 4xl:py-16">

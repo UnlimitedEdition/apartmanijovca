@@ -5,104 +5,288 @@ import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { Textarea } from '../ui/textarea'
-import { Eye, EyeOff, Plus, Trash2, Loader2, MapPin } from 'lucide-react'
-import { STATIC_ATTRACTIONS, AttractionEntry } from '@/data/attractions'
+import {
+  Eye,
+  EyeOff,
+  Plus,
+  Trash2,
+  Loader2,
+  MapPin,
+  Pencil,
+  X,
+  AlertCircle,
+} from 'lucide-react'
 
-interface CustomAttraction {
-  name: string
-  description: string
+// ─── Types ────────────────────────────────────────────────────────────────────
+
+interface LocalizedText {
+  sr: string
+  en: string
+  de: string
+  it: string
+}
+
+interface Attraction {
+  id: string
+  name: LocalizedText
+  description: LocalizedText | null
+  distance: string | null
+  image: string | null
+  latitude: number | null
+  longitude: number | null
+  display_order: number
+  is_visible: boolean
+}
+
+// ─── Constants ────────────────────────────────────────────────────────────────
+
+const LANGS: { code: keyof LocalizedText; label: string }[] = [
+  { code: 'sr', label: 'SR' },
+  { code: 'en', label: 'EN' },
+  { code: 'de', label: 'DE' },
+  { code: 'it', label: 'IT' },
+]
+
+const EMPTY_LOCALIZED: LocalizedText = { sr: '', en: '', de: '', it: '' }
+
+interface FormState {
+  name: LocalizedText
+  description: LocalizedText
   distance: string
   image: string
-  lat: number | null
-  lng: number | null
+  latitude: string
+  longitude: string
+  display_order: string
+  is_visible: boolean
 }
 
-const EMPTY_FORM: CustomAttraction = {
-  name: '',
-  description: '',
+const EMPTY_FORM: FormState = {
+  name: { ...EMPTY_LOCALIZED },
+  description: { ...EMPTY_LOCALIZED },
   distance: '',
   image: '',
-  lat: null,
-  lng: null,
+  latitude: '',
+  longitude: '',
+  display_order: '0',
+  is_visible: true,
 }
 
+function attractionToForm(a: Attraction): FormState {
+  return {
+    name: { sr: a.name.sr, en: a.name.en ?? '', de: a.name.de ?? '', it: a.name.it ?? '' },
+    description: {
+      sr: a.description?.sr ?? '',
+      en: a.description?.en ?? '',
+      de: a.description?.de ?? '',
+      it: a.description?.it ?? '',
+    },
+    distance: a.distance ?? '',
+    image: a.image ?? '',
+    latitude: a.latitude != null ? String(a.latitude) : '',
+    longitude: a.longitude != null ? String(a.longitude) : '',
+    display_order: String(a.display_order),
+    is_visible: a.is_visible,
+  }
+}
+
+function formToPayload(f: FormState): Omit<Attraction, 'id'> {
+  return {
+    name: f.name,
+    description:
+      f.description.sr.trim() || f.description.en.trim()
+        ? f.description
+        : null,
+    distance: f.distance.trim() || null,
+    image: f.image.trim() || null,
+    latitude: f.latitude !== '' ? parseFloat(f.latitude) : null,
+    longitude: f.longitude !== '' ? parseFloat(f.longitude) : null,
+    display_order: parseInt(f.display_order, 10) || 0,
+    is_visible: f.is_visible,
+  }
+}
+
+// ─── Subcomponent: Localized Field Group ────────────────────────────────────
+
+interface LocalizedInputProps {
+  label: string
+  value: LocalizedText
+  onChange: (updated: LocalizedText) => void
+  multiline?: boolean
+  required?: boolean
+  activeLang: keyof LocalizedText
+}
+
+function LocalizedField({
+  label,
+  value,
+  onChange,
+  multiline,
+  required,
+  activeLang,
+}: LocalizedInputProps) {
+  const handleChange = (val: string) => {
+    onChange({ ...value, [activeLang]: val })
+  }
+
+  const currentValue = value[activeLang]
+  const placeholder = `${label} (${activeLang.toUpperCase()})${required && activeLang === 'sr' ? ' *' : ''}`
+
+  return multiline ? (
+    <Textarea
+      placeholder={placeholder}
+      rows={3}
+      value={currentValue}
+      onChange={e => handleChange(e.target.value)}
+    />
+  ) : (
+    <Input
+      placeholder={placeholder}
+      value={currentValue}
+      onChange={e => handleChange(e.target.value)}
+    />
+  )
+}
+
+// ─── Main Component ──────────────────────────────────────────────────────────
+
 export default function AttractionsManager() {
-  const [hidden, setHidden] = useState<number[]>([])
-  const [custom, setCustom] = useState<CustomAttraction[]>([])
+  const [attractions, setAttractions] = useState<Attraction[]>([])
   const [loading, setLoading] = useState(true)
-  const [saving, setSaving] = useState(false)
-  const [showForm, setShowForm] = useState(false)
-  const [form, setForm] = useState<CustomAttraction>(EMPTY_FORM)
+  const [error, setError] = useState<string | null>(null)
+  const [formOpen, setFormOpen] = useState(false)
+  const [editingId, setEditingId] = useState<string | null>(null)
+  const [form, setForm] = useState<FormState>(EMPTY_FORM)
   const [formSaving, setFormSaving] = useState(false)
+  const [deletingId, setDeletingId] = useState<string | null>(null)
+  const [togglingId, setTogglingId] = useState<string | null>(null)
+  const [activeLang, setActiveLang] = useState<keyof LocalizedText>('sr')
 
-  const staticList: AttractionEntry[] = STATIC_ATTRACTIONS['sr'] ?? []
+  // ── Fetch ──────────────────────────────────────────────────────────────────
 
-  const fetchData = useCallback(async () => {
+  const fetchAttractions = useCallback(async () => {
     setLoading(true)
+    setError(null)
     try {
       const res = await fetch('/api/admin/attractions')
-      if (res.ok) {
-        const data = await res.json()
-        setHidden(data.hidden ?? [])
-        setCustom(data.custom ?? [])
+      if (!res.ok) {
+        const j = await res.json().catch(() => ({}))
+        throw new Error((j as { error?: string }).error ?? `HTTP ${res.status}`)
       }
+      const data = (await res.json()) as { attractions: Attraction[] }
+      setAttractions(data.attractions ?? [])
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Greška pri učitavanju')
     } finally {
       setLoading(false)
     }
   }, [])
 
-  useEffect(() => { fetchData() }, [fetchData])
+  useEffect(() => {
+    void fetchAttractions()
+  }, [fetchAttractions])
 
-  const toggleVisibility = async (id: number) => {
-    const newHidden = hidden.includes(id)
-      ? hidden.filter(h => h !== id)
-      : [...hidden, id]
+  // ── Form helpers ────────────────────────────────────────────────────────────
 
-    setSaving(true)
-    try {
-      const res = await fetch('/api/admin/attractions', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ hidden: newHidden }),
-      })
-      if (res.ok) setHidden(newHidden)
-    } finally {
-      setSaving(false)
-    }
+  const openCreate = () => {
+    setEditingId(null)
+    setForm(EMPTY_FORM)
+    setActiveLang('sr')
+    setFormOpen(true)
   }
 
-  const deleteCustom = async (index: number) => {
-    if (!confirm('Obrisati ovu atrakciju?')) return
-    const res = await fetch('/api/admin/attractions', {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ index }),
-    })
-    if (res.ok) {
-      const data = await res.json()
-      setCustom(data.custom ?? [])
-    }
+  const openEdit = (a: Attraction) => {
+    setEditingId(a.id)
+    setForm(attractionToForm(a))
+    setActiveLang('sr')
+    setFormOpen(true)
   }
 
-  const submitForm = async () => {
-    if (!form.name.trim() || !form.description.trim()) return
+  const closeForm = () => {
+    setFormOpen(false)
+    setEditingId(null)
+    setForm(EMPTY_FORM)
+  }
+
+  // ── Save (create / update) ─────────────────────────────────────────────────
+
+  const handleSave = async () => {
+    if (!form.name.sr.trim()) return
     setFormSaving(true)
+    setError(null)
     try {
+      const payload = formToPayload(form)
+      const isEdit = editingId !== null
+
       const res = await fetch('/api/admin/attractions', {
-        method: 'POST',
+        method: isEdit ? 'PATCH' : 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify(isEdit ? { id: editingId, ...payload } : payload),
       })
-      if (res.ok) {
-        const data = await res.json()
-        setCustom(data.custom ?? [])
-        setForm(EMPTY_FORM)
-        setShowForm(false)
+
+      if (!res.ok) {
+        const j = await res.json().catch(() => ({}))
+        throw new Error((j as { error?: string }).error ?? `HTTP ${res.status}`)
       }
+
+      closeForm()
+      await fetchAttractions()
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Greška pri čuvanju')
     } finally {
       setFormSaving(false)
     }
   }
+
+  // ── Delete ─────────────────────────────────────────────────────────────────
+
+  const handleDelete = async (id: string, nameSr: string) => {
+    if (!confirm(`Obrisati atrakciju "${nameSr}"?`)) return
+    setDeletingId(id)
+    setError(null)
+    try {
+      const res = await fetch('/api/admin/attractions', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id }),
+      })
+      if (!res.ok) {
+        const j = await res.json().catch(() => ({}))
+        throw new Error((j as { error?: string }).error ?? `HTTP ${res.status}`)
+      }
+      setAttractions(prev => prev.filter(a => a.id !== id))
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Greška pri brisanju')
+    } finally {
+      setDeletingId(null)
+    }
+  }
+
+  // ── Toggle visibility ──────────────────────────────────────────────────────
+
+  const handleToggleVisible = async (a: Attraction) => {
+    setTogglingId(a.id)
+    setError(null)
+    try {
+      const res = await fetch('/api/admin/attractions', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: a.id, is_visible: !a.is_visible }),
+      })
+      if (!res.ok) {
+        const j = await res.json().catch(() => ({}))
+        throw new Error((j as { error?: string }).error ?? `HTTP ${res.status}`)
+      }
+      setAttractions(prev =>
+        prev.map(item => (item.id === a.id ? { ...item, is_visible: !item.is_visible } : item))
+      )
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Greška pri promeni vidljivosti')
+    } finally {
+      setTogglingId(null)
+    }
+  }
+
+  // ── Render: loading ────────────────────────────────────────────────────────
 
   if (loading) {
     return (
@@ -112,165 +296,224 @@ export default function AttractionsManager() {
     )
   }
 
+  // ── Render: form ───────────────────────────────────────────────────────────
+
+  const isFormValid = form.name.sr.trim().length > 0
+
+  const formCard = formOpen && (
+    <Card>
+      <CardHeader className="pb-3">
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-base">
+            {editingId ? 'Izmena atrakcije' : 'Nova atrakcija'}
+          </CardTitle>
+          <Button variant="ghost" size="sm" onClick={closeForm} className="h-8 w-8 p-0">
+            <X className="h-4 w-4" />
+          </Button>
+        </div>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        {/* Language tab switcher */}
+        <div className="flex gap-1">
+          {LANGS.map(l => (
+            <button
+              key={l.code}
+              type="button"
+              onClick={() => setActiveLang(l.code)}
+              className={`px-3 py-1 rounded text-xs font-medium transition-colors ${
+                activeLang === l.code
+                  ? 'bg-primary text-primary-foreground'
+                  : 'bg-muted text-muted-foreground hover:bg-muted/80'
+              }`}
+            >
+              {l.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Name */}
+        <div className="space-y-1">
+          <label className="text-xs font-medium text-muted-foreground">
+            Naziv{activeLang === 'sr' ? ' *' : ''}
+          </label>
+          <LocalizedField
+            label="Naziv"
+            value={form.name}
+            onChange={updated => setForm(f => ({ ...f, name: updated }))}
+            activeLang={activeLang}
+          />
+        </div>
+
+        {/* Description */}
+        <div className="space-y-1">
+          <label className="text-xs font-medium text-muted-foreground">Opis</label>
+          <LocalizedField
+            label="Opis"
+            value={form.description}
+            onChange={updated => setForm(f => ({ ...f, description: updated }))}
+            multiline
+            activeLang={activeLang}
+          />
+        </div>
+
+        {/* Distance + Image */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div className="space-y-1">
+            <label className="text-xs font-medium text-muted-foreground">Udaljenost</label>
+            <Input
+              placeholder="npr. 15 km"
+              value={form.distance}
+              onChange={e => setForm(f => ({ ...f, distance: e.target.value }))}
+            />
+          </div>
+          <div className="space-y-1">
+            <label className="text-xs font-medium text-muted-foreground">URL slike</label>
+            <Input
+              placeholder="/images/... ili https://..."
+              value={form.image}
+              onChange={e => setForm(f => ({ ...f, image: e.target.value }))}
+            />
+          </div>
+        </div>
+
+        {/* Lat + Lng + Order */}
+        <div className="grid grid-cols-3 gap-3">
+          <div className="space-y-1">
+            <label className="text-xs font-medium text-muted-foreground">Lat</label>
+            <Input
+              type="number"
+              step="any"
+              placeholder="43.xxx"
+              value={form.latitude}
+              onChange={e => setForm(f => ({ ...f, latitude: e.target.value }))}
+            />
+          </div>
+          <div className="space-y-1">
+            <label className="text-xs font-medium text-muted-foreground">Lng</label>
+            <Input
+              type="number"
+              step="any"
+              placeholder="21.xxx"
+              value={form.longitude}
+              onChange={e => setForm(f => ({ ...f, longitude: e.target.value }))}
+            />
+          </div>
+          <div className="space-y-1">
+            <label className="text-xs font-medium text-muted-foreground">Redosled</label>
+            <Input
+              type="number"
+              placeholder="0"
+              value={form.display_order}
+              onChange={e => setForm(f => ({ ...f, display_order: e.target.value }))}
+            />
+          </div>
+        </div>
+
+        {/* Visibility toggle */}
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setForm(f => ({ ...f, is_visible: !f.is_visible }))}
+            className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none ${
+              form.is_visible ? 'bg-primary' : 'bg-muted-foreground/30'
+            }`}
+          >
+            <span
+              className={`inline-block h-3.5 w-3.5 rounded-full bg-white transition-transform ${
+                form.is_visible ? 'translate-x-4' : 'translate-x-1'
+              }`}
+            />
+          </button>
+          <span className="text-xs text-muted-foreground">
+            {form.is_visible ? 'Vidljiva na sajtu' : 'Skrivena sa sajta'}
+          </span>
+        </div>
+
+        {/* Actions */}
+        <div className="flex gap-2 pt-1">
+          <Button onClick={() => void handleSave()} disabled={formSaving || !isFormValid} size="sm">
+            {formSaving && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
+            {editingId ? 'Sačuvaj izmene' : 'Dodaj atrakciju'}
+          </Button>
+          <Button variant="outline" size="sm" onClick={closeForm}>
+            Otkaži
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  )
+
+  // ── Render: list ───────────────────────────────────────────────────────────
+
   return (
     <div className="space-y-6">
+      {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-xl font-bold">Atrakcije</h2>
           <p className="text-sm text-muted-foreground">
-            Upravljaj vidljivošću stalnih atrakcija i dodaj nove
+            Upravljaj atrakcijama koje se prikazuju na sajtu
           </p>
         </div>
-        <Button onClick={() => setShowForm(v => !v)} size="sm">
+        <Button onClick={openCreate} size="sm" disabled={formOpen}>
           <Plus className="h-4 w-4 mr-2" />
           Dodaj novu
         </Button>
       </div>
 
-      {/* Add form */}
-      {showForm && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Nova atrakcija</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <div className="space-y-1">
-                <label className="text-xs font-medium text-muted-foreground">Naziv *</label>
-                <Input
-                  placeholder="Naziv atrakcije"
-                  value={form.name}
-                  onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-                />
-              </div>
-              <div className="space-y-1">
-                <label className="text-xs font-medium text-muted-foreground">Udaljenost</label>
-                <Input
-                  placeholder="npr. 25 km"
-                  value={form.distance}
-                  onChange={e => setForm(f => ({ ...f, distance: e.target.value }))}
-                />
-              </div>
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs font-medium text-muted-foreground">Opis *</label>
-              <Textarea
-                placeholder="Opis atrakcije..."
-                rows={3}
-                value={form.description}
-                onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
-              />
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs font-medium text-muted-foreground">URL slike</label>
-              <Input
-                placeholder="/images/attractions/nova.jpg ili https://..."
-                value={form.image}
-                onChange={e => setForm(f => ({ ...f, image: e.target.value }))}
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-1">
-                <label className="text-xs font-medium text-muted-foreground">Lat</label>
-                <Input
-                  type="number"
-                  step="any"
-                  placeholder="43.xxx"
-                  value={form.lat ?? ''}
-                  onChange={e => setForm(f => ({ ...f, lat: e.target.value ? parseFloat(e.target.value) : null }))}
-                />
-              </div>
-              <div className="space-y-1">
-                <label className="text-xs font-medium text-muted-foreground">Lng</label>
-                <Input
-                  type="number"
-                  step="any"
-                  placeholder="21.xxx"
-                  value={form.lng ?? ''}
-                  onChange={e => setForm(f => ({ ...f, lng: e.target.value ? parseFloat(e.target.value) : null }))}
-                />
-              </div>
-            </div>
-            <div className="flex gap-2 pt-1">
-              <Button onClick={submitForm} disabled={formSaving || !form.name.trim() || !form.description.trim()} size="sm">
-                {formSaving && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
-                Sačuvaj
-              </Button>
-              <Button variant="outline" size="sm" onClick={() => { setShowForm(false); setForm(EMPTY_FORM) }}>
-                Otkaži
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+      {/* Error banner */}
+      {error && (
+        <div className="flex items-center gap-2 p-3 rounded-lg bg-destructive/10 text-destructive text-sm">
+          <AlertCircle className="h-4 w-4 flex-shrink-0" />
+          <span>{error}</span>
+          <button
+            type="button"
+            className="ml-auto text-destructive hover:opacity-70"
+            onClick={() => setError(null)}
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </div>
       )}
 
-      {/* Static attractions */}
-      <div>
-        <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
-          Stalne atrakcije ({staticList.length})
-        </h3>
+      {formCard}
+
+      {/* List */}
+      {attractions.length === 0 ? (
+        <p className="text-sm text-muted-foreground text-center py-8">
+          Nema atrakcija u bazi. Klikni &quot;Dodaj novu&quot; da počneš.
+        </p>
+      ) : (
         <div className="space-y-2">
-          {staticList.map(a => {
-            const isHidden = hidden.includes(a.id)
+          {attractions.map(a => {
+            const isDeleting = deletingId === a.id
+            const isToggling = togglingId === a.id
+
             return (
               <div
                 key={a.id}
-                className={`flex items-center gap-3 p-3 rounded-lg border bg-card transition-opacity ${isHidden ? 'opacity-50' : ''}`}
+                className={`flex items-center gap-3 p-3 rounded-lg border bg-card transition-opacity ${
+                  !a.is_visible ? 'opacity-60' : ''
+                }`}
               >
-                {a.image && (
+                {/* Thumbnail */}
+                {a.image ? (
                   <div className="w-14 h-10 rounded overflow-hidden flex-shrink-0 bg-muted">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={a.image} alt={a.name} className="w-full h-full object-cover" />
+                    <img src={a.image} alt={a.name.sr} className="w-full h-full object-cover" />
                   </div>
+                ) : (
+                  <div className="w-14 h-10 rounded flex-shrink-0 bg-muted" />
                 )}
-                <div className="flex-1 min-w-0">
-                  <p className="font-medium text-sm truncate">{a.name}</p>
-                  <p className="text-xs text-muted-foreground">{a.distance}</p>
-                </div>
-                <Button
-                  variant={isHidden ? 'outline' : 'ghost'}
-                  size="sm"
-                  className="flex-shrink-0 h-8 px-2"
-                  onClick={() => toggleVisibility(a.id)}
-                  disabled={saving}
-                  title={isHidden ? 'Prikaži' : 'Sakrij'}
-                >
-                  {saving ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : isHidden ? (
-                    <><EyeOff className="h-4 w-4 mr-1 text-muted-foreground" /><span className="text-xs">Skrivena</span></>
-                  ) : (
-                    <><Eye className="h-4 w-4 mr-1" /><span className="text-xs">Vidljiva</span></>
-                  )}
-                </Button>
-              </div>
-            )
-          })}
-        </div>
-      </div>
 
-      {/* Custom attractions */}
-      {custom.length > 0 && (
-        <div>
-          <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
-            Dodate atrakcije ({custom.length})
-          </h3>
-          <div className="space-y-2">
-            {custom.map((a, i) => (
-              <div key={i} className="flex items-center gap-3 p-3 rounded-lg border bg-card">
-                {a.image && (
-                  <div className="w-14 h-10 rounded overflow-hidden flex-shrink-0 bg-muted">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={a.image} alt={a.name} className="w-full h-full object-cover" />
-                  </div>
-                )}
+                {/* Info */}
                 <div className="flex-1 min-w-0">
-                  <p className="font-medium text-sm truncate">{a.name}</p>
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <p className="font-medium text-sm truncate">{a.name.sr}</p>
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground flex-wrap">
                     {a.distance && <span>{a.distance}</span>}
-                    {a.lat && a.lng && (
+                    {a.latitude != null && a.longitude != null && (
                       <a
-                        href={`https://www.google.com/maps?q=${a.lat},${a.lng}`}
+                        href={`https://www.google.com/maps?q=${a.latitude},${a.longitude}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center text-blue-600 hover:underline"
@@ -280,26 +523,65 @@ export default function AttractionsManager() {
                         Mapa
                       </a>
                     )}
+                    <span className="text-muted-foreground/60">#{a.display_order}</span>
                   </div>
                 </div>
+
+                {/* Visibility */}
+                <Button
+                  variant={a.is_visible ? 'ghost' : 'outline'}
+                  size="sm"
+                  className="flex-shrink-0 h-8 px-2"
+                  onClick={() => void handleToggleVisible(a)}
+                  disabled={isToggling || isDeleting}
+                  title={a.is_visible ? 'Sakrij' : 'Prikaži'}
+                >
+                  {isToggling ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : a.is_visible ? (
+                    <>
+                      <Eye className="h-4 w-4 mr-1" />
+                      <span className="text-xs">Vidljiva</span>
+                    </>
+                  ) : (
+                    <>
+                      <EyeOff className="h-4 w-4 mr-1 text-muted-foreground" />
+                      <span className="text-xs">Skrivena</span>
+                    </>
+                  )}
+                </Button>
+
+                {/* Edit */}
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="flex-shrink-0 h-8 px-2 text-destructive hover:text-destructive"
-                  onClick={() => deleteCustom(i)}
+                  className="flex-shrink-0 h-8 w-8 p-0"
+                  onClick={() => openEdit(a)}
+                  disabled={isDeleting || isToggling}
+                  title="Izmeni"
                 >
-                  <Trash2 className="h-4 w-4" />
+                  <Pencil className="h-4 w-4" />
+                </Button>
+
+                {/* Delete */}
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="flex-shrink-0 h-8 w-8 p-0 text-destructive hover:text-destructive"
+                  onClick={() => void handleDelete(a.id, a.name.sr)}
+                  disabled={isDeleting || isToggling}
+                  title="Obriši"
+                >
+                  {isDeleting ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Trash2 className="h-4 w-4" />
+                  )}
                 </Button>
               </div>
-            ))}
-          </div>
+            )
+          })}
         </div>
-      )}
-
-      {custom.length === 0 && !showForm && (
-        <p className="text-sm text-muted-foreground text-center py-4">
-          Nema dodatih atrakcija. Klikni &quot;Dodaj novu&quot; da dodaš.
-        </p>
       )}
     </div>
   )
