@@ -141,7 +141,7 @@ export default function EnhancedApartmentManager() {
               {/* Tab 1: Basic Info */}
               <TabsContent value="basic" className="space-y-4 sm:space-y-6">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:gap-4">
-                  {/* Name fields for all languages */}
+                  {/* Serbian name */}
                   <div className="lg:col-span-2">
                     <label className="block text-xs sm:text-sm font-semibold mb-2">Naziv apartmana *</label>
                     <div className="grid grid-cols-1 gap-2 sm:gap-3">
@@ -155,49 +155,7 @@ export default function EnhancedApartmentManager() {
                           className="text-xs sm:text-sm h-8 sm:h-9"
                         />
                       </div>
-                      <div>
-                        <label className="text-[10px] sm:text-xs text-gray-600">English (EN)</label>
-                        <Input
-                          value={selectedApartment.name.en}
-                          onChange={(e) => handleNameChange('en', e.target.value)}
-                          placeholder="Standard Apartment"
-                          className="text-xs sm:text-sm h-8 sm:h-9"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-[10px] sm:text-xs text-gray-600">Deutsch (DE)</label>
-                        <Input
-                          value={selectedApartment.name.de}
-                          onChange={(e) => handleNameChange('de', e.target.value)}
-                          placeholder="Standard Wohnung"
-                          className="text-xs sm:text-sm h-8 sm:h-9"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-[10px] sm:text-xs text-gray-600">Italiano (IT)</label>
-                        <Input
-                          value={selectedApartment.name.it}
-                          onChange={(e) => handleNameChange('it', e.target.value)}
-                          placeholder="Appartamento Standard"
-                          className="text-xs sm:text-sm h-8 sm:h-9"
-                        />
-                      </div>
                     </div>
-                  </div>
-
-                  {/* Slug */}
-                  <div className="lg:col-span-2">
-                    <label className="block text-xs sm:text-sm font-semibold mb-2">URL Slug (SEO) *</label>
-                    <Input
-                      value={selectedApartment.slug}
-                      onChange={(e) => setSelectedApartment({ ...selectedApartment, slug: e.target.value })}
-                      placeholder="apartman-standard"
-                      className="font-mono text-xs sm:text-sm h-8 sm:h-9"
-                      required
-                    />
-                    <p className="text-[10px] sm:text-xs text-gray-500 mt-1 break-all">
-                      URL: /{'{lang}'}/apartments/{selectedApartment.slug}
-                    </p>
                   </div>
 
                   {/* Capacity */}
