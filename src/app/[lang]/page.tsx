@@ -399,7 +399,7 @@ export default async function HomePage({ params: paramsInput }: PageProps) {
                     />
                     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
                       <p className="text-white font-bold text-xl">{apt.name}</p>
-                      <p className="text-white/80 text-sm">{apt.description}</p>
+                      <p className="text-white/80 text-sm line-clamp-2">{apt.description}</p>
                     </div>
                   </div>
                 </Link>

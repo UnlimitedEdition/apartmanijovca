@@ -33,7 +33,7 @@ import {
   Globe
 } from 'lucide-react'
 import type { Locale, Json } from '@/lib/types/database'
-import { AMENITY_OPTIONS, VIEW_OPTIONS, getSelectedOptions } from '@/lib/apartment-options'
+import { AMENITY_OPTIONS, VIEW_OPTIONS, RULE_OPTIONS, getSelectedOptions } from '@/lib/apartment-options'
 
 interface Apartment {
   id: string
@@ -344,24 +344,17 @@ export default function ApartmentDetailView({ apartment, locale }: Props) {
                     <span className="text-muted-foreground">{t('maxStay')}: {apartment.max_stay_nights} {t('nights')}</span>
                   </div>
                 )}
-                {apartment.selected_rules?.includes('no_smoking') && (
-                  <div className="flex items-center gap-3">
-                    <XCircle className="h-5 w-5 text-red-500" />
-                    <span className="text-muted-foreground">{t('noSmoking')}</span>
-                  </div>
-                )}
-                {apartment.selected_rules?.includes('pets_allowed') && (
-                  <div className="flex items-center gap-3">
-                    <CheckCircle2 className="h-5 w-5 text-green-600" />
-                    <span className="text-muted-foreground">{t('petsAllowed')}</span>
-                  </div>
-                )}
-                {apartment.selected_rules?.includes('quiet_hours_22') && (
-                  <div className="flex items-center gap-3">
-                    <Clock className="h-5 w-5 text-primary" />
-                    <span className="text-muted-foreground">{t('quietHours')}</span>
-                  </div>
-                )}
+                {apartment.selected_rules && apartment.selected_rules.length > 0 &&
+                  getSelectedOptions(RULE_OPTIONS, apartment.selected_rules).map((rule) => {
+                    const isProhibition = rule.id.startsWith('no_')
+                    const RuleIcon = isProhibition ? XCircle : CheckCircle2
+                    return (
+                      <div key={rule.id} className="flex items-center gap-3">
+                        <RuleIcon className={isProhibition ? 'h-5 w-5 text-red-500 shrink-0' : 'h-5 w-5 text-green-600 shrink-0'} />
+                        <span className="text-muted-foreground">{rule.label[locale]}</span>
+                      </div>
+                    )
+                  })}
               </div>
 
               {apartment.house_rules && (
@@ -369,6 +362,12 @@ export default function ApartmentDetailView({ apartment, locale }: Props) {
                   <p className="text-muted-foreground leading-relaxed whitespace-pre-line">{apartment.house_rules}</p>
                 </div>
               )}
+
+              <div className="mt-6 pt-6 border-t border-border">
+                <Link href={`/${locale}/terms`} className="text-primary font-semibold hover:underline">
+                  {(({ sr: 'Pun kućni red i uslovi korišćenja', en: 'Full house rules & terms of use', de: 'Vollständige Hausordnung & Nutzungsbedingungen', it: 'Regolamento completo e termini' }) as Record<string, string>)[locale] || 'Uslovi'} →
+                </Link>
+              </div>
             </div>
 
             {/* Cancellation Policy */}

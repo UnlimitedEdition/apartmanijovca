@@ -871,14 +871,14 @@ export default function EnhancedApartmentManager() {
 
                   {/* Max Stay */}
                   <div>
-                    <label className="block text-xs sm:text-sm font-semibold mb-2">Max. boravak (noći)</label>
+                    <label className="block text-xs sm:text-sm font-semibold mb-2">Max. boravak (noći) <span className="font-normal text-muted-foreground">— prazno = bez ograničenja</span></label>
                     <Input
                       type="number"
                       min="0"
                       max="365"
-                      value={selectedApartment.max_stay_nights ?? ''}
+                      value={selectedApartment.max_stay_nights || ''}
                       onChange={(e) => setSelectedApartment({ ...selectedApartment, max_stay_nights: e.target.value === '' ? 0 : parseInt(e.target.value) })}
-                      placeholder="0 = neograničeno"
+                      placeholder="Bez ograničenja"
                       className="text-xs sm:text-sm h-8 sm:h-9"
                     />
                   </div>
