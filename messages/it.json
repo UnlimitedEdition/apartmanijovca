@@ -3,6 +3,19 @@
     "title": "Appartamenti Jovča",
     "description": "Sistemazione confortevole in un ambiente bellissimo"
   },
+  "faq": {
+    "title": "Domande Frequenti",
+    "q1": "Quali sono gli orari di check-in e check-out?",
+    "a1": "Il check-in è disponibile dalle 14:00 e il check-out entro le 10:00. Check-in anticipato o check-out posticipato possono essere organizzati su richiesta in base alla disponibilità.",
+    "q2": "C'è un parcheggio disponibile?",
+    "a2": "Sì, offriamo un parcheggio privato gratuito per tutti i nostri ospiti direttamente presso la struttura.",
+    "q3": "Quanto è veloce il WiFi?",
+    "a3": "Offriamo WiFi in fibra ottica ad alta velocità in tutta la struttura, adatto per lavoro remoto e streaming di contenuti HD.",
+    "q4": "Sono ammessi animali domestici?",
+    "a4": "Purtroppo, gli animali domestici non sono ammessi negli appartamenti.",
+    "q5": "La spiaggia è accessibile?",
+    "a5": "Sì, i nostri ospiti hanno accesso privato alla riva del lago, a soli 2-3 minuti a piedi dagli appartamenti."
+  },
   "header": {
     "home": "Home",
     "apartments": "Appartamenti",
@@ -572,12 +585,14 @@
     "home": {
       "title": "Appartamenti Jovča - Alloggio al Lago Bovan | Bovan, Serbia",
       "description": "Prenota appartamenti di lusso al Lago Bovan. Alloggio moderno con WiFi, parcheggio e vista lago. Perfetto per vacanze in famiglia nella natura.",
-      "keywords": "appartamenti Lago Bovan, alloggio Bovan, appartamenti Jovča, casa vacanze Bovan, affitto appartamenti Serbia, vacanza al lago"
+      "keywords": "appartamenti Lago Bovan, alloggio Bovan, appartamenti Jovča, casa vacanze Bovan, affitto appartamenti Serbia, vacanza al lago",
+      "ogImageAlt": "Appartamenti Jovča — casa vacanze sulla riva del Lago Bovan"
     },
     "apartments": {
       "title": "I Nostri Appartamenti - Alloggio Moderno al Lago Bovan",
       "description": "Scopri i nostri appartamenti moderni al Lago Bovan. Varie capacità, tutti con WiFi, aria condizionata e vista lago. Prenota ora!",
-      "keywords": "appartamenti Bovan, alloggio Lago Bovan, monolocale, bilocale, appartamento familiare"
+      "keywords": "appartamenti Bovan, alloggio Lago Bovan, monolocale, bilocale, appartamento familiare",
+      "ogImageAlt": "Appartamenti Jovča — alloggio moderno al Lago Bovan"
     },
     "apartmentDetail": {
       "titleTemplate": "{name} - Appartamento al Lago Bovan | Appartamenti Jovča",
@@ -587,37 +602,44 @@
     "contact": {
       "title": "Contatto - Appartamenti Jovča | Lago Bovan",
       "description": "Contattaci per prenotare appartamenti al Lago Bovan. Disponibili 24/7 via telefono, email o WhatsApp. Risposta rapida garantita.",
-      "keywords": "contatto Appartamenti Jovča, prenotazione Bovan, telefono appartamenti, email prenotazione"
+      "keywords": "contatto Appartamenti Jovča, prenotazione Bovan, telefono appartamenti, email prenotazione",
+      "ogImageAlt": "Contatta gli Appartamenti Jovča"
     },
     "location": {
       "title": "Posizione - Come Raggiungere Appartamenti Jovča | Lago Bovan, Bovan",
       "description": "Trovaci al Lago Bovan vicino ad Bovan. Indicazioni dettagliate in auto o autobus. Mappa e coordinate GPS disponibili.",
-      "keywords": "posizione Lago Bovan, come raggiungere Lago Bovan, alloggio Bovan, coordinate GPS, indicazioni stradali"
+      "keywords": "posizione Lago Bovan, come raggiungere Lago Bovan, alloggio Bovan, coordinate GPS, indicazioni stradali",
+      "ogImageAlt": "Posizione degli Appartamenti Jovča sul Lago Bovan"
     },
     "gallery": {
       "title": "Galleria - Foto degli Appartamenti e del Lago Bovan",
       "description": "Guarda le foto dei nostri appartamenti, interni, viste sul Lago Bovan e dintorni. Scopri la qualità del nostro alloggio.",
-      "keywords": "galleria Appartamenti Jovča, foto Lago Bovan, immagini appartamenti, interni alloggio"
+      "keywords": "galleria Appartamenti Jovča, foto Lago Bovan, immagini appartamenti, interni alloggio",
+      "ogImageAlt": "Galleria fotografica degli Appartamenti Jovča"
     },
     "attractions": {
       "title": "Attrazioni - Cosa Visitare Intorno al Lago Bovan",
       "description": "Scopri le attrazioni intorno al Lago Bovan: Soko Banja, Fortezza Sokolica, Niš, monasteri. Perfetto per escursioni e visite turistiche.",
-      "keywords": "attrazioni Bovan, Soko Banja, Fortezza Sokolica, attrazioni Niš, escursioni Bovan, monasteri Serbia"
+      "keywords": "attrazioni Bovan, Soko Banja, Fortezza Sokolica, attrazioni Niš, escursioni Bovan, monasteri Serbia",
+      "ogImageAlt": "Attrazioni nei dintorni del Lago Bovan"
     },
     "prices": {
       "title": "Prezzi - Appartamenti Jovča | Migliori Tariffe al Lago Bovan",
       "description": "Prezzi trasparenti per appartamenti al Lago Bovan. Nessun costo nascosto. Sconti per soggiorni più lunghi. Verifica disponibilità e prenota ora.",
-      "keywords": "prezzi appartamenti Bovan, tariffe alloggio, sconti appartamenti, prezzo prenotazione"
+      "keywords": "prezzi appartamenti Bovan, tariffe alloggio, sconti appartamenti, prezzo prenotazione",
+      "ogImageAlt": "Listino prezzi degli Appartamenti Jovča"
     },
     "privacy": {
       "title": "Informativa sulla Privacy - Appartamenti Jovča",
       "description": "Leggi la nostra informativa sulla privacy e scopri come proteggiamo i tuoi dati personali in conformità con le leggi serbe.",
-      "keywords": "informativa privacy, protezione dati, GDPR Serbia"
+      "keywords": "informativa privacy, protezione dati, GDPR Serbia",
+      "ogImageAlt": "Informativa sulla privacy"
     },
     "terms": {
       "title": "Termini di Servizio e Regolamento - Appartamenti Jovča",
       "description": "Termini di prenotazione, regolamento interno, politica di cancellazione e regole di comportamento negli Appartamenti Jovča al Lago Bovan.",
-      "keywords": "termini di servizio, regolamento interno, politica cancellazione, regole appartamento"
+      "keywords": "termini di servizio, regolamento interno, politica cancellazione, regole appartamento",
+      "ogImageAlt": "Termini di servizio e regolamento"
     }
   },
   "admin": {

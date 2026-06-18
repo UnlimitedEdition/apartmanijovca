@@ -106,7 +106,9 @@ export default function ApartmentDetailView({ apartment, locale }: Props) {
     ...(apartment.size_sqm ? [{ icon: Maximize, label: `${apartment.size_sqm} m²`, value: apartment.size_sqm }] : []),
     ...(apartment.floor !== null && apartment.floor !== undefined ? [{
       icon: Building2,
-      label: `${t('floor')} ${apartment.floor}`,
+      label: apartment.floor === 0
+        ? (({ sr: 'Prizemlje', en: 'Ground floor', de: 'Erdgeschoss', it: 'Piano terra' }) as Record<string, string>)[locale]
+        : `${t('floor')} ${apartment.floor}`,
       value: apartment.floor
     }] : []),
     ...(apartment.balcony ? [{ icon: Palmtree, label: t('balcony'), value: true }] : []),
@@ -332,13 +334,13 @@ export default function ApartmentDetailView({ apartment, locale }: Props) {
                     <span className="text-muted-foreground">{t('checkOut')} {apartment.check_out_time}</span>
                   </div>
                 )}
-                {apartment.min_stay_nights && (
+                {(apartment.min_stay_nights ?? 0) > 0 && (
                   <div className="flex items-center gap-3">
                     <Calendar className="h-5 w-5 text-primary" />
                     <span className="text-muted-foreground">{t('minStay')}: {apartment.min_stay_nights} {apartment.min_stay_nights === 1 ? t('night') : t('nights')}</span>
                   </div>
                 )}
-                {apartment.max_stay_nights && apartment.max_stay_nights > 0 && (
+                {(apartment.max_stay_nights ?? 0) > 0 && (
                   <div className="flex items-center gap-3">
                     <Calendar className="h-5 w-5 text-primary" />
                     <span className="text-muted-foreground">{t('maxStay')}: {apartment.max_stay_nights} {t('nights')}</span>
@@ -445,7 +447,7 @@ export default function ApartmentDetailView({ apartment, locale }: Props) {
                   <span className="text-4xl font-black text-primary">€{apartment.base_price_eur}</span>
                   <span className="text-muted-foreground text-sm">{t('pricePerNight')}</span>
                 </div>
-                {apartment.weekend_price_eur && apartment.weekend_price_eur > 0 && apartment.weekend_price_eur !== apartment.base_price_eur && (
+                {(apartment.weekend_price_eur ?? 0) > 0 && apartment.weekend_price_eur !== apartment.base_price_eur && (
                   <p className="text-sm text-muted-foreground">
                     {t('weekend')}: €{apartment.weekend_price_eur} {t('pricePerNight')}
                   </p>
@@ -460,10 +462,10 @@ export default function ApartmentDetailView({ apartment, locale }: Props) {
                     {t('discounts')}
                   </h3>
                   <div className="space-y-1 text-sm">
-                    {apartment.weekly_discount_percent && apartment.weekly_discount_percent > 0 && (
+                    {(apartment.weekly_discount_percent ?? 0) > 0 && (
                       <p className="text-muted-foreground">{t('weeklyDiscount')}: -{apartment.weekly_discount_percent}%</p>
                     )}
-                    {apartment.monthly_discount_percent && apartment.monthly_discount_percent > 0 && (
+                    {(apartment.monthly_discount_percent ?? 0) > 0 && (
                       <p className="text-muted-foreground">{t('monthlyDiscount')}: -{apartment.monthly_discount_percent}%</p>
                     )}
                   </div>
