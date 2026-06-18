@@ -296,25 +296,6 @@ export default async function HomePage({ params }: PageProps) {
         </div>
       </section>
 
-      {/* About Us Section */}
-      <section className="py-20 bg-transparent">
-        <div className="container mx-auto px-4 max-w-6xl">
-          <div className="text-center mb-12">
-            <h2
-              className="font-bold mb-6 text-white text-shadow-strong"
-              style={{ fontSize: 'clamp(1.8rem, 3.5vw, 3rem)' }}
-            >
-              {t('about.title')}
-            </h2>
-          </div>
-          <div className="max-w-none">
-            <p className="text-base md:text-lg text-center text-white/90 text-shadow-medium leading-relaxed">
-              {t('about.content')}
-            </p>
-          </div>
-        </div>
-      </section>
-
       {/* Amenities Section */}
       <section className="py-20 bg-transparent">
         <div className="container mx-auto px-4">
@@ -435,6 +416,25 @@ export default async function HomePage({ params }: PageProps) {
                 </CardContent>
               </Card>
             )})}
+          </div>
+        </div>
+      </section>
+
+      {/* About Us Section */}
+      <section className="py-20 bg-transparent">
+        <div className="container mx-auto px-4 max-w-6xl">
+          <div className="text-center mb-12">
+            <h2
+              className="font-bold mb-6 text-white text-shadow-strong"
+              style={{ fontSize: 'clamp(1.8rem, 3.5vw, 3rem)' }}
+            >
+              {t('about.title')}
+            </h2>
+          </div>
+          <div className="max-w-none">
+            <p className="text-base md:text-lg text-center text-white/90 text-shadow-medium leading-relaxed">
+              {t('about.content')}
+            </p>
           </div>
         </div>
       </section>
