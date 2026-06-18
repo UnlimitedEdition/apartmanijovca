@@ -26,6 +26,7 @@ export async function proxy(request: NextRequest) {
     pathname.startsWith('/_next') ||
     pathname.startsWith('/api') ||
     pathname.startsWith('/images') ||
+    pathname.startsWith('/.well-known') ||
     pathname === '/favicon.ico' ||
     pathname === '/favicon.svg' ||
     pathname === '/icon.png' ||
@@ -76,6 +77,6 @@ export async function proxy(request: NextRequest) {
 export const config = {
   matcher: [
     // Skip all internal Next.js paths, static files, and images
-    '/((?!api|_next|images|favicon\\.ico|favicon\\.svg|.*\\.(?:ico|png|jpg|jpeg|svg|gif|webp|avif|woff|woff2|ttf|eot)).*)'
+    '/((?!api|_next|images|\\.well-known|sitemap\\.xml|robots\\.txt|manifest\\.json|favicon\\.ico|favicon\\.svg|.*\\.(?:ico|png|jpg|jpeg|svg|gif|webp|avif|woff|woff2|ttf|eot|xml|txt|json|webmanifest)).*)'
   ]
 }
