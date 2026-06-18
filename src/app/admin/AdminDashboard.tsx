@@ -132,8 +132,16 @@ export default function AdminDashboard({ stats: initialStats }: AdminDashboardPr
     refreshStats()
   }
 
-  // Klik na statističku karticu -> otvori Rezervacije tab sa odgovarajućim filterom (svi apartmani)
-  const goToBookings = useCallback((filter: StatCardFilter) => {
+  // Klik na statističku karticu -> odgovarajući tab (rezervacije sa filterom / analitika / dostupnost)
+  const handleCardClick = useCallback((filter: StatCardFilter) => {
+    if (filter.type === 'revenue' || filter.type === 'monthlyRevenue') {
+      setActiveTab('analytics')
+      return
+    }
+    if (filter.type === 'occupancy') {
+      setActiveTab('availability')
+      return
+    }
     if (filter.type === 'arrivals') {
       setBookingFilter({ arrivalOn: filter.date, title: 'Dolasci danas' })
     } else if (filter.type === 'departures') {
@@ -456,7 +464,7 @@ export default function AdminDashboard({ stats: initialStats }: AdminDashboardPr
           
           {/* Dashboard Tab */}
           <TabsContent value="dashboard" className="space-y-6">
-            <StatsCards key={statsKey} onCardClick={goToBookings} />
+            <StatsCards key={statsKey} onCardClick={handleCardClick} />
           </TabsContent>
 
           {/* Bookings Tab */}

@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { Button } from '../ui/button'
 import { ChevronLeft, ChevronRight, Loader2, Calendar as CalendarIcon, X } from 'lucide-react'
+import DatePopoverPicker from './DatePopoverPicker'
 
 // ---------------------------------------------------------------------------
 // Types
@@ -459,20 +460,20 @@ export default function AvailabilityCalendarView() {
           <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 sm:items-end">
             <div className="flex flex-col gap-1 flex-1">
               <label className="text-xs font-medium text-gray-600">Od</label>
-              <input
-                type="date"
+              <DatePopoverPicker
                 value={rangeFrom}
-                onChange={(e) => { setRangeFrom(e.target.value); setRangeMessage(null) }}
-                className="h-9 px-2 rounded-md border border-gray-300 text-sm w-full"
+                onChange={(v) => { setRangeFrom(v); setRangeMessage(null) }}
+                placeholder="Od"
+                ariaLabel="Od datum"
               />
             </div>
             <div className="flex flex-col gap-1 flex-1">
               <label className="text-xs font-medium text-gray-600">Do (check-out, nije blokiran)</label>
-              <input
-                type="date"
+              <DatePopoverPicker
                 value={rangeTo}
-                onChange={(e) => { setRangeTo(e.target.value); setRangeMessage(null) }}
-                className="h-9 px-2 rounded-md border border-gray-300 text-sm w-full"
+                onChange={(v) => { setRangeTo(v); setRangeMessage(null) }}
+                placeholder="Do"
+                ariaLabel="Do datum"
               />
             </div>
             <div className="flex flex-col gap-1 flex-1">
