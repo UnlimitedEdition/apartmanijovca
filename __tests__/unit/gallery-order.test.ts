@@ -18,10 +18,10 @@ const items = [
 ]
 
 describe('gallery order helpers', () => {
-  it('normalizes invalid display order values', () => {
+  it('normalizes invalid display order values to a one-based order', () => {
     expect(normalizeDisplayOrder('3.9')).toBe(3)
-    expect(normalizeDisplayOrder('-2')).toBe(0)
-    expect(normalizeDisplayOrder('abc')).toBe(0)
+    expect(normalizeDisplayOrder('-2')).toBe(1)
+    expect(normalizeDisplayOrder('abc')).toBe(1)
   })
 
   it('shifts existing images down when inserting into an occupied position', () => {
@@ -50,7 +50,6 @@ describe('gallery order helpers', () => {
 
   it('fills missing numbers before the inserted image target order', () => {
     const existingItems = [
-      { id: 'zero', display_order: 0 },
       { id: 'one', display_order: 1 },
       { id: 'four', display_order: 4 },
       { id: 'five', display_order: 5 },
@@ -60,6 +59,21 @@ describe('gallery order helpers', () => {
     expect(getInsertOrderUpdates(existingItems, 3)).toEqual([
       { id: 'five', display_order: 4 },
       { id: 'four', display_order: 2 },
+    ])
+  })
+
+  it('normalizes existing zero-based orders back to one-based values', () => {
+    const existingItems = [
+      { id: 'zero', display_order: 0 },
+      { id: 'one', display_order: 1 },
+      { id: 'four', display_order: 4 },
+      { id: 'five', display_order: 5 },
+    ]
+
+    expect(normalizeInsertTargetOrder(existingItems, 0)).toBe(1)
+    expect(getInsertOrderUpdates(existingItems, 3)).toEqual([
+      { id: 'one', display_order: 2 },
+      { id: 'zero', display_order: 1 },
     ])
   })
 
@@ -109,7 +123,8 @@ describe('gallery order helpers', () => {
     ])
   })
 
-  it('clamps a too-large move target to the end of the contiguous sequence', () => {
+  it('clamps move targets to the one-based contiguous sequence', () => {
     expect(normalizeMoveTargetOrder(items, 99)).toBe(8)
+    expect(normalizeMoveTargetOrder(items, 0)).toBe(1)
   })
 })
