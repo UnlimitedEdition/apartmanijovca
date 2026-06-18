@@ -315,6 +315,62 @@ export default async function HomePage({ params }: PageProps) {
         </div>
       </section>
 
+      {/* Amenities Section */}
+      <section className="py-20 bg-transparent">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row gap-16 items-center">
+            <div className="flex-1">
+              <h2
+                className="font-bold mb-6 text-white text-shadow-strong"
+                style={{ fontSize: 'clamp(1.8rem, 3.5vw, 3rem)' }}
+              >
+                {t('features.title')}
+              </h2>
+              <p className="text-xl text-white/90 text-shadow-medium mb-10 leading-relaxed">
+                {t('features.description')}
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                {[
+                  { name: t('features.wiFi'), icon: '📶' },
+                  { name: t('features.parking'), icon: '🚗' },
+                  { name: t('features.kitchen'), icon: '🍳' },
+                  { name: t('features.tv'), icon: '📺' },
+                  { name: t('features.linens'), icon: '🛏️' },
+                  { name: t('features.lakeAccess'), icon: '🏖️' },
+                  { name: t('features.bbq'), icon: '🔥' },
+                ].map((item) => (
+                  <div key={item.name} className="flex items-center gap-3 p-4 bg-white/80 rounded-xl shadow-sm border border-white/40 backdrop-blur-md">
+                    <span className="text-2xl">{item.icon}</span>
+                    <span className="font-bold text-foreground">{item.name}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="flex-1 relative">
+              {/* Removed skew-y-3 for cleaner old-site feel */}
+              <div className="aspect-square bg-white/30 rounded-3xl overflow-hidden shadow-2xl backdrop-blur-sm">
+                <LazyImage
+                  src="/images/gallery/vikendica sprat 1.jpg"
+                  alt={generateAltText('', 'apartment', params.lang as Locale, 'Vikendica Apartmani Jovča')}
+                  className="w-full h-full object-cover"
+                  priority
+                />
+              </div>
+              <div className="absolute -bottom-10 -left-10 bg-primary/90 p-6 rounded-2xl shadow-xl max-w-sm hidden lg:block text-primary-foreground transform -rotate-3 border-4 border-white/50 backdrop-blur-md">
+                <p className="font-bold italic text-lg mb-2">&quot;{t('testimonials.sampleQuote')}&quot;</p>
+                <div className="flex items-center gap-2">
+                  <div className="w-10 h-10 rounded-full bg-primary-foreground/20 flex items-center justify-center">{t('testimonials.sampleInitials')}</div>
+                  <div>
+                    <p className="font-bold">{t('testimonials.sampleName')}</p>
+                    <p className="text-xs opacity-80">{t('testimonials.guestFrom')} {t('testimonials.sampleLocation')}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Featured Apartments */}
       <section className="py-20">
         <div className="container mx-auto px-4">
@@ -379,62 +435,6 @@ export default async function HomePage({ params }: PageProps) {
                 </CardContent>
               </Card>
             )})}
-          </div>
-        </div>
-      </section>
-
-      {/* Amenities Section */}
-      <section className="py-20 bg-transparent">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row gap-16 items-center">
-            <div className="flex-1">
-              <h2
-                className="font-bold mb-6 text-white text-shadow-strong"
-                style={{ fontSize: 'clamp(1.8rem, 3.5vw, 3rem)' }}
-              >
-                {t('features.title')}
-              </h2>
-              <p className="text-xl text-white/90 text-shadow-medium mb-10 leading-relaxed">
-                {t('features.description')}
-              </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {[
-                  { name: t('features.wiFi'), icon: '📶' },
-                  { name: t('features.parking'), icon: '🚗' },
-                  { name: t('features.kitchen'), icon: '🍳' },
-                  { name: t('features.tv'), icon: '📺' },
-                  { name: t('features.linens'), icon: '🛏️' },
-                  { name: t('features.lakeAccess'), icon: '🏖️' },
-                  { name: t('features.bbq'), icon: '🔥' },
-                ].map((item) => (
-                  <div key={item.name} className="flex items-center gap-3 p-4 bg-white/80 rounded-xl shadow-sm border border-white/40 backdrop-blur-md">
-                    <span className="text-2xl">{item.icon}</span>
-                    <span className="font-bold text-foreground">{item.name}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="flex-1 relative">
-              {/* Removed skew-y-3 for cleaner old-site feel */}
-              <div className="aspect-square bg-white/30 rounded-3xl overflow-hidden shadow-2xl backdrop-blur-sm">
-                <LazyImage
-                  src="/images/gallery/vikendica sprat 1.jpg"
-                  alt={generateAltText('', 'apartment', params.lang as Locale, 'Vikendica Apartmani Jovča')}
-                  className="w-full h-full object-cover"
-                  priority
-                />
-              </div>
-              <div className="absolute -bottom-10 -left-10 bg-primary/90 p-6 rounded-2xl shadow-xl max-w-sm hidden lg:block text-primary-foreground transform -rotate-3 border-4 border-white/50 backdrop-blur-md">
-                <p className="font-bold italic text-lg mb-2">&quot;{t('testimonials.sampleQuote')}&quot;</p>
-                <div className="flex items-center gap-2">
-                  <div className="w-10 h-10 rounded-full bg-primary-foreground/20 flex items-center justify-center">{t('testimonials.sampleInitials')}</div>
-                  <div>
-                    <p className="font-bold">{t('testimonials.sampleName')}</p>
-                    <p className="text-xs opacity-80">{t('testimonials.guestFrom')} {t('testimonials.sampleLocation')}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
