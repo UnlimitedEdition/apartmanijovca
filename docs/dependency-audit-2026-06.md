@@ -223,3 +223,22 @@ jsdom 21→26, neki `expect` alias-i uklonjeni, `--testPathPattern` → `--testP
 - react-hook-form/resolvers — https://github.com/react-hook-form/resolvers
 - Nodemailer v9.0.0 release — https://github.com/nodemailer/nodemailer/releases/tag/v9.0.0
 - TypeScript 6.0 release notes — https://devblogs.microsoft.com/typescript/
+
+---
+
+## Tier A applied — 2026-06-18
+
+Applied the Tier A dependency refresh while keeping React 18 and Next.js 14:
+
+- Updated Tier A minor/patch-compatible packages in `package.json` / `package-lock.json`.
+- Removed unused `next-i18next` from runtime dependencies.
+- Removed unused `nodemailer` and `@types/nodemailer` after confirming no runtime imports.
+- Kept major migrations out of this pass: React 19, Next 16, next-intl 4, Zod 4, Tailwind 4, Jest 30, ESLint flat-config, React Email major, Resend major.
+
+Verification after the change:
+
+- `npm test` — 18 suites passed, 367 tests passed.
+- `npm run lint` — passed with no warnings or errors.
+- `npm run build` — passed. Build emits a non-fatal Supabase Edge Runtime warning from `@supabase/supabase-js` runtime metadata detection; no runtime code changes were made for that warning in this Tier A pass.
+
+Remaining audit items are the standalone safe PRs and Tier B migration listed above.
