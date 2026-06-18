@@ -194,7 +194,7 @@ export default async function HomePage({ params: paramsInput }: PageProps) {
       />
       <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="hero relative min-h-[100dvh] flex items-center justify-center overflow-hidden">
+      <section className="hero relative min-h-[76dvh] flex items-center justify-center overflow-hidden">
         {/* Subtle darkening overlay — old-site aesthetic */}
 
         {/* Hero content — stagger fade-in like old Astro hero */}
@@ -278,7 +278,7 @@ export default async function HomePage({ params: paramsInput }: PageProps) {
       </section>
 
       {/* Trust & Features Bar */}
-      <section className="border-y border-white/20 py-12">
+      <section className="border-y border-white/20 py-6">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             {[
