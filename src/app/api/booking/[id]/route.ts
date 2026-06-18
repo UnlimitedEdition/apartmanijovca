@@ -12,9 +12,9 @@ import {
 } from '../../../../lib/bookings/service'
 
 interface RouteParams {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
 /**
@@ -29,7 +29,7 @@ export async function GET(
     const denied = await requireAdmin(request)
     if (denied) return denied
 
-    const { id } = params
+    const { id } = await params
 
     // Validate UUID format
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
@@ -88,7 +88,7 @@ export async function PUT(
     const denied = await requireAdmin(request)
     if (denied) return denied
 
-    const { id } = params
+    const { id } = await params
 
     // Validate UUID format
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
@@ -172,7 +172,7 @@ export async function DELETE(
     const denied = await requireAdmin(request)
     if (denied) return denied
 
-    const { id } = params
+    const { id } = await params
 
     // Validate UUID format
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i

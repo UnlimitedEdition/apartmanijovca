@@ -10,7 +10,7 @@ const supabaseServiceKey = process.env.NEXT_SERVICE_ROLE_KEY || process.env.SUPA
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const authError = await requireAdmin(request)
   if (authError) return authError
@@ -21,7 +21,7 @@ export async function PATCH(
     const { error } = await supabase
       .from('messages')
       .update({ status })
-      .eq('id', params.id)
+      .eq('id', (await params).id)
 
     if (error) {
       console.error('Error updating message:', error)
@@ -37,7 +37,7 @@ export async function PATCH(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const authError = await requireAdmin(request)
   if (authError) return authError
@@ -47,7 +47,7 @@ export async function DELETE(
     const { error } = await supabase
       .from('messages')
       .delete()
-      .eq('id', params.id)
+      .eq('id', (await params).id)
 
     if (error) {
       console.error('Error deleting message:', error)

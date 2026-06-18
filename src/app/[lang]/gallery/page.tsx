@@ -16,10 +16,11 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 export const dynamic = 'force-dynamic'
 
 interface PageProps {
-  params: { lang: string }
+  params: Promise<{ lang: string }>
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({ params: paramsInput }: PageProps): Promise<Metadata> {
+  const params = await paramsInput
   const locale = params.lang as Locale
   const t = await getTranslations({ locale, namespace: 'seo' })
   const baseUrl = getBaseUrl()
@@ -109,10 +110,11 @@ async function getGalleryItems() {
 }
 
 export default async function GalleryPage({
-  params: { lang }
+  params
 }: {
-  params: { lang: string }
+  params: Promise<{ lang: string }>
 }) {
+  const { lang } = await params
   const items = await getGalleryItems()
 
   const title =

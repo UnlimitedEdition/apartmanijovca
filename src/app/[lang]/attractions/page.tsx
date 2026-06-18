@@ -10,12 +10,13 @@ import { getKeywordsString } from '@/lib/seo/keywords'
 import { STATIC_ATTRACTIONS, AttractionEntry } from '@/data/attractions'
 
 type PageProps = {
-  params: { lang: string }
+  params: Promise<{ lang: string }>
 }
 
 export const dynamic = 'force-dynamic'
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({ params: paramsInput }: PageProps): Promise<Metadata> {
+  const params = await paramsInput
   const locale = params.lang as Locale
   const t = await getTranslations({ locale, namespace: 'seo' })
   const baseUrl = getBaseUrl()
@@ -72,7 +73,8 @@ interface CustomAttraction {
   lng?: number | null
 }
 
-export default async function AttractionsPage({ params }: PageProps) {
+export default async function AttractionsPage({ params: paramsInput }: PageProps) {
+  const params = await paramsInput
   const lang = params.lang
   const t = await getTranslations({ locale: lang, namespace: 'attractions' })
 

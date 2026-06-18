@@ -5,10 +5,11 @@ import { Layout } from './components/layout/layout'
 
 interface LangLayoutProps {
   children: ReactNode
-  params: { lang: string }
+  params: Promise<{ lang: string }>
 }
 
-export default async function LangLayout({ children, params: { lang } }: LangLayoutProps) {
+export default async function LangLayout({ children, params }: LangLayoutProps) {
+  const { lang } = await params
   const messages = await getMessages()
 
   return (
