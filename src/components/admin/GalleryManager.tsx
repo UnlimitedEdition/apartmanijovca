@@ -36,20 +36,18 @@ const LANGUAGES = [
   { code: 'it', label: 'IT' }
 ]
 
+const ALL_FOLDER = 'Sve'
+
 const GALLERY_CATEGORIES = [
-  'Enterijer',
-  'Sobe',
-  'Kuhinja',
-  'Kupatilo',
-  'Terasa',
-  'Dvori?te',
+  ALL_FOLDER,
   'Eksterijer',
-  'Pogled',
   'Jezero',
-  'Parking',
-  'Detalji',
-  'Okolina'
+  'Sobe',
+  'Terasa',
+  'Pogled'
 ]
+
+const DEFAULT_IMAGE_FOLDER = 'Eksterijer'
 
 const EMPTY_CAPTIONS = { sr: '', en: '', de: '', it: '' }
 
@@ -62,7 +60,7 @@ export default function GalleryManager() {
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
   const [selectedLang, setSelectedLang] = useState('sr')
-  const [selectedFolder, setSelectedFolder] = useState(GALLERY_CATEGORIES[0])
+  const [selectedFolder, setSelectedFolder] = useState(ALL_FOLDER)
   const [formData, setFormData] = useState({
     url: '',
     publicId: '',
@@ -90,7 +88,7 @@ export default function GalleryManager() {
 
   const getItemsInFolder = useCallback((folder: string) => {
     return items
-      .filter(item => item.tags?.includes(folder))
+      .filter(item => folder === ALL_FOLDER || item.tags?.includes(folder))
       .sort((a, b) => {
         if (a.display_order !== b.display_order) return a.display_order - b.display_order
         return a.id.localeCompare(b.id)
@@ -98,7 +96,7 @@ export default function GalleryManager() {
   }, [items])
 
   const getNextFolderOrder = useCallback((folder: string) => {
-    const folderItems = getItemsInFolder(folder)
+    const folderItems = getItemsInFolder(folder === ALL_FOLDER ? DEFAULT_IMAGE_FOLDER : folder)
     if (folderItems.length === 0) return 1
     return Math.max(...folderItems.map(item => item.display_order)) + 1
   }, [getItemsInFolder])
@@ -136,11 +134,13 @@ export default function GalleryManager() {
 
   const openAddForm = () => {
     setError(null)
+    const targetFolder = selectedFolder === ALL_FOLDER ? DEFAULT_IMAGE_FOLDER : selectedFolder
+    if (selectedFolder === ALL_FOLDER) setSelectedFolder(targetFolder)
     setFormData({
       url: '',
       publicId: '',
       captions: { ...EMPTY_CAPTIONS },
-      display_order: getNextFolderOrder(selectedFolder)
+      display_order: getNextFolderOrder(targetFolder)
     })
     setIsEditing(false)
     setEditingId(null)
@@ -149,7 +149,10 @@ export default function GalleryManager() {
   }
 
   const handleEdit = (item: GalleryItem) => {
+    const itemFolder = GALLERY_CATEGORIES.find(category => category !== ALL_FOLDER && item.tags?.includes(category)) || DEFAULT_IMAGE_FOLDER
+
     setError(null)
+    setSelectedFolder(itemFolder)
     setFormData({
       url: item.url,
       publicId: '',
@@ -163,7 +166,7 @@ export default function GalleryManager() {
   }
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Da li ste sigurni da ?elite da obri?ete ovu sliku iz galerije?')) return
+    if (!confirm('Da li ste sigurni da želite da obrišete ovu sliku iz galerije?')) return
 
     try {
       setSaving(true)
@@ -174,7 +177,7 @@ export default function GalleryManager() {
       if (!response.ok) throw new Error('Failed to delete item')
 
       setItems(prev => prev.filter(a => a.id !== id))
-      setSuccess('Slika je uspe?no obrisana')
+      setSuccess('Slika je uspešno obrisana')
       setTimeout(() => setSuccess(null), 3000)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to delete item')
@@ -198,15 +201,15 @@ export default function GalleryManager() {
 
       if (!response.ok) {
         const data = await response.json()
-        throw new Error(data.error || 'Neuspe?no otpremanje slike')
+        throw new Error(data.error || 'Neuspešno otpremanje slike')
       }
 
       const { url, publicId } = await response.json()
       setFormData(prev => ({ ...prev, url, publicId: publicId || '' }))
-      setSuccess('Slika je uspe?no otpremljena!')
+      setSuccess('Slika je uspešno otpremljena!')
       setTimeout(() => setSuccess(null), 3000)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Gre?ka pri otpremanju')
+      setError(err instanceof Error ? err.message : 'Greška pri otpremanju')
     } finally {
       setUploading(false)
     }
@@ -255,11 +258,11 @@ export default function GalleryManager() {
           it: translations.it
         }
       }))
-      setSuccess('Prevodi su uspe?no generisani!')
+      setSuccess('Prevodi su uspešno generisani!')
       setTimeout(() => setSuccess(null), 2000)
     } catch (err) {
       console.error('Translation error:', err)
-      setError('Do?lo je do gre?ke prilikom prevo?enja.')
+      setError('Došlo je do greške prilikom prevođenja.')
     } finally {
       setTranslating(false)
     }
@@ -285,7 +288,7 @@ export default function GalleryManager() {
 
       const payload = {
         url: formData.url,
-        tags: [selectedFolder],
+        tags: [selectedFolder === ALL_FOLDER ? DEFAULT_IMAGE_FOLDER : selectedFolder],
         display_order: formData.display_order,
         caption: JSON.stringify(formData.captions)
       }
@@ -304,7 +307,7 @@ export default function GalleryManager() {
       await response.json()
       await fetchItems()
 
-      setSuccess(editingId ? 'Stavka je uspe?no a?urirana' : 'Slika je uspe?no dodata u galeriju')
+      setSuccess(editingId ? 'Stavka je uspešno ažurirana' : 'Slika je uspešno dodata u galeriju')
       resetForm()
       setTimeout(() => setSuccess(null), 3000)
     } catch (err) {
@@ -316,7 +319,9 @@ export default function GalleryManager() {
 
   const folderItems = getItemsInFolder(selectedFolder)
   const folderCounts = GALLERY_CATEGORIES.reduce<Record<string, number>>((counts, category) => {
-    counts[category] = items.filter(item => item.tags?.includes(category)).length
+    counts[category] = category === ALL_FOLDER
+      ? items.length
+      : items.filter(item => item.tags?.includes(category)).length
     return counts
   }, {})
 
@@ -349,7 +354,7 @@ export default function GalleryManager() {
           <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
             <div>
               <CardTitle className="text-base sm:text-lg">Galerija</CardTitle>
-              <CardDescription className="text-xs sm:text-sm">Izaberite folder i ure?ujte slike samo u tom folderu</CardDescription>
+              <CardDescription className="text-xs sm:text-sm">Izaberite folder i uređujte slike samo u tom folderu</CardDescription>
             </div>
             <Button onClick={openAddForm} className="h-9 gap-2 text-xs sm:text-sm sm:self-start">
               <Plus className="h-4 w-4" />
@@ -425,7 +430,7 @@ export default function GalleryManager() {
                       </Button>
                       <Button size="sm" variant="destructive" onClick={() => handleDelete(item.id)} className="text-[10px] sm:text-xs h-7 sm:h-8 px-2 sm:px-3">
                         <Trash2 className="h-3 w-3 sm:h-4 sm:w-4 sm:mr-1" />
-                        <span className="hidden sm:inline">Obri?i</span>
+                        <span className="hidden sm:inline">Obriši</span>
                       </Button>
                     </div>
                     <div className="absolute bottom-2 left-2 flex gap-1">
@@ -450,7 +455,7 @@ export default function GalleryManager() {
             <CardHeader className="flex flex-row items-start justify-between gap-4 border-b p-4 sm:p-6">
               <div>
                 <CardTitle className="text-base sm:text-lg">{isEditing ? 'Izmeni sliku' : 'Dodaj sliku'}</CardTitle>
-                <CardDescription className="text-xs sm:text-sm">Folder: {selectedFolder}</CardDescription>
+                <CardDescription className="text-xs sm:text-sm">Folder: {selectedFolder === ALL_FOLDER ? DEFAULT_IMAGE_FOLDER : selectedFolder}</CardDescription>
               </div>
               <Button type="button" variant="ghost" size="sm" onClick={resetForm} className="h-8 w-8 p-0">
                 <X className="h-4 w-4" />
@@ -559,10 +564,10 @@ export default function GalleryManager() {
 
                 <div className="flex flex-col sm:flex-row gap-2 pt-2">
                   <Button type="submit" disabled={saving || uploading} className="flex-1 text-xs sm:text-sm h-9">
-                    {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : isEditing ? 'Sa?uvaj' : 'Dodaj'}
+                    {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : isEditing ? 'Sačuvaj' : 'Dodaj'}
                   </Button>
                   <Button type="button" variant="outline" onClick={resetForm} className="text-xs sm:text-sm h-9">
-                    Otka?i
+                    Otkaži
                   </Button>
                 </div>
               </form>
