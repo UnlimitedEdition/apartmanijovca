@@ -3,12 +3,10 @@ import { getBaseUrl } from '@/lib/seo/config'
 
 export default function robots(): MetadataRoute.Robots {
   const baseUrl = getBaseUrl()
-  const isProduction = process.env.NODE_ENV === 'production' && 
-                       !baseUrl.includes('localhost') && 
-                       !baseUrl.includes('vercel.app')
+  const isLocal = baseUrl.includes('localhost') || baseUrl.includes('127.0.0.1')
 
-  // In development or staging, disallow all crawling
-  if (!isProduction) {
+  // In local development, disallow crawling
+  if (process.env.NODE_ENV !== 'production' || isLocal) {
     return {
       rules: {
         userAgent: '*',

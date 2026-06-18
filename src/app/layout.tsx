@@ -17,13 +17,13 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL(PRODUCTION_URL),
-  title: "Apartmani Jovča",
-  description: "Beautiful apartments in Jovča - Your perfect vacation destination",
+  title: "Apartmani Jovča - Smeštaj na Bovanskom jezeru",
+  description: "Rezervišite Apartmane Jovča na Bovanskom jezeru u Bovanu. Udoban smeštaj uz jezero, privatna plaža, WiFi, parking i priroda za porodični odmor.",
   manifest: '/manifest.json',
   robots: 'index, follow',
   openGraph: {
-    title: "Apartmani Jovča",
-    description: "Beautiful apartments in Jovča - Your perfect vacation destination",
+    title: "Apartmani Jovča - Smeštaj na Bovanskom jezeru",
+    description: "Rezervišite Apartmane Jovča na Bovanskom jezeru u Bovanu. Udoban smeštaj uz jezero, privatna plaža, WiFi, parking i priroda za porodični odmor.",
     type: 'website',
     url: PRODUCTION_URL,
     images: ['/images/logo2.png'],

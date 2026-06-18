@@ -568,6 +568,56 @@
           "answer": "Sì, i nostri ospiti hanno accesso privato alla riva del lago, a soli 2 minuti a piedi dagli appartamenti."
         }
       ]
+    },
+    "home": {
+      "title": "Appartamenti Jovča - Alloggio al Lago Bovan | Bovan, Serbia",
+      "description": "Prenota appartamenti di lusso al Lago Bovan. Alloggio moderno con WiFi, parcheggio e vista lago. Perfetto per vacanze in famiglia nella natura.",
+      "keywords": "appartamenti Lago Bovan, alloggio Bovan, appartamenti Jovča, casa vacanze Bovan, affitto appartamenti Serbia, vacanza al lago"
+    },
+    "apartments": {
+      "title": "I Nostri Appartamenti - Alloggio Moderno al Lago Bovan",
+      "description": "Scopri i nostri appartamenti moderni al Lago Bovan. Varie capacità, tutti con WiFi, aria condizionata e vista lago. Prenota ora!",
+      "keywords": "appartamenti Bovan, alloggio Lago Bovan, monolocale, bilocale, appartamento familiare"
+    },
+    "apartmentDetail": {
+      "titleTemplate": "{name} - Appartamento al Lago Bovan | Appartamenti Jovča",
+      "descriptionTemplate": "Prenota {name} al Lago Bovan. {capacity} ospiti, {beds}. Modernamente attrezzato con WiFi, aria condizionata. Da {price}€ a notte.",
+      "keywords": "appartamento Bovan, {name}, alloggio Bovan, casa vacanze lago, prenotazione appartamento"
+    },
+    "contact": {
+      "title": "Contatto - Appartamenti Jovča | Lago Bovan",
+      "description": "Contattaci per prenotare appartamenti al Lago Bovan. Disponibili 24/7 via telefono, email o WhatsApp. Risposta rapida garantita.",
+      "keywords": "contatto Appartamenti Jovča, prenotazione Bovan, telefono appartamenti, email prenotazione"
+    },
+    "location": {
+      "title": "Posizione - Come Raggiungere Appartamenti Jovča | Lago Bovan, Bovan",
+      "description": "Trovaci al Lago Bovan vicino ad Bovan. Indicazioni dettagliate in auto o autobus. Mappa e coordinate GPS disponibili.",
+      "keywords": "posizione Lago Bovan, come raggiungere Lago Bovan, alloggio Bovan, coordinate GPS, indicazioni stradali"
+    },
+    "gallery": {
+      "title": "Galleria - Foto degli Appartamenti e del Lago Bovan",
+      "description": "Guarda le foto dei nostri appartamenti, interni, viste sul Lago Bovan e dintorni. Scopri la qualità del nostro alloggio.",
+      "keywords": "galleria Appartamenti Jovča, foto Lago Bovan, immagini appartamenti, interni alloggio"
+    },
+    "attractions": {
+      "title": "Attrazioni - Cosa Visitare Intorno al Lago Bovan",
+      "description": "Scopri le attrazioni intorno al Lago Bovan: Soko Banja, Fortezza Sokolica, Niš, monasteri. Perfetto per escursioni e visite turistiche.",
+      "keywords": "attrazioni Bovan, Soko Banja, Fortezza Sokolica, attrazioni Niš, escursioni Bovan, monasteri Serbia"
+    },
+    "prices": {
+      "title": "Prezzi - Appartamenti Jovča | Migliori Tariffe al Lago Bovan",
+      "description": "Prezzi trasparenti per appartamenti al Lago Bovan. Nessun costo nascosto. Sconti per soggiorni più lunghi. Verifica disponibilità e prenota ora.",
+      "keywords": "prezzi appartamenti Bovan, tariffe alloggio, sconti appartamenti, prezzo prenotazione"
+    },
+    "privacy": {
+      "title": "Informativa sulla Privacy - Appartamenti Jovča",
+      "description": "Leggi la nostra informativa sulla privacy e scopri come proteggiamo i tuoi dati personali in conformità con le leggi serbe.",
+      "keywords": "informativa privacy, protezione dati, GDPR Serbia"
+    },
+    "terms": {
+      "title": "Termini di Servizio e Regolamento - Appartamenti Jovča",
+      "description": "Termini di prenotazione, regolamento interno, politica di cancellazione e regole di comportamento negli Appartamenti Jovča al Lago Bovan.",
+      "keywords": "termini di servizio, regolamento interno, politica cancellazione, regole appartamento"
     }
   },
   "admin": {
