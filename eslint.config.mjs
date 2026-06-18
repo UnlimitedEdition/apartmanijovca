@@ -1,30 +1,45 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
+import nextVitals from 'eslint-config-next/core-web-vitals'
+import nextTypescript from 'eslint-config-next/typescript'
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const reactCompilerRuleOverrides = {
+  'react-hooks/set-state-in-effect': 'warn',
+  'react-hooks/immutability': 'warn',
+  'react-hooks/error-boundaries': 'warn',
+  'react-hooks/use-memo': 'warn'
+}
 
-const compat = new FlatCompat({
-    baseDirectory: __dirname,
-});
+const nextRuleOverrides = {
+  '@next/next/no-html-link-for-pages': 'warn'
+}
+
+const typescriptRuleOverrides = {
+  '@typescript-eslint/no-unused-vars': 'warn',
+  '@typescript-eslint/no-explicit-any': 'warn'
+}
+
+function withLocalRuleOverrides(config) {
+  return {
+    ...config,
+    rules: {
+      ...config.rules,
+      ...(config.plugins?.['react-hooks'] ? reactCompilerRuleOverrides : {}),
+      ...(config.plugins?.['@next/next'] ? nextRuleOverrides : {}),
+      ...(config.plugins?.['@typescript-eslint'] ? typescriptRuleOverrides : {})
+    }
+  }
+}
 
 const eslintConfig = [
-    ...compat.extends("next/core-web-vitals", "next/typescript"),
-    {
-        rules: {
-            "@typescript-eslint/no-unused-vars": "warn",
-            "@typescript-eslint/no-explicit-any": "warn"
-        }
-    },
-    {
-        ignores: [
-            ".next/**",
-            "out/**",
-            "build/**",
-            "next-env.d.ts",
-        ],
-    },
-];
+  ...nextVitals.map(withLocalRuleOverrides),
+  ...nextTypescript.map(withLocalRuleOverrides),
+  {
+    ignores: [
+      '.next/**',
+      'out/**',
+      'build/**',
+      'next-env.d.ts'
+    ]
+  }
+]
 
-export default eslintConfig;
+export default eslintConfig

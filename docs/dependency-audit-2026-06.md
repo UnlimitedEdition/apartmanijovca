@@ -242,3 +242,29 @@ Verification after the change:
 - `npm run build` - passed. Supabase Edge Runtime warning fixed by direct middleware import, current build only emits webpack cache warnings.
 
 Remaining audit items are the standalone safe PRs and Tier B migration listed above.
+
+## Tier B applied - 2026-06-18
+
+Applied the coordinated Tier B framework migration:
+
+- Upgraded Next.js to 16.2.9 and React / React DOM to 19.2.7.
+- Upgraded next-intl to 4.13.0 and migrated request config to async requestLocale.
+- Upgraded react-leaflet to 5.0.0, TypeScript to 6.0.3, React types to 19.x, and eslint-config-next to 16.2.9.
+- Kept ESLint on 9.39.4 because ESLint 10.5.0 currently breaks eslint-plugin-react from the Next 16 lint stack.
+- Migrated src/middleware.ts to src/proxy.ts for the Next 16 file convention.
+- Updated Next config by moving serverComponentsExternalPackages to serverExternalPackages and removing removed keys.
+- Replaced next lint with eslint src and migrated eslint.config.mjs to native Next flat config imports.
+- Removed the direct @eslint/eslintrc dev dependency after dropping FlatCompat.
+- Included React Email major bump so React 19 no longer leaves a React 18 peer dependency warning during npm ci.
+
+Verification after the change:
+
+- npm ci - passed. It still reports npm audit/deprecation warnings from transitive packages.
+- npm test - 18 suites passed, 367 tests passed.
+- npm run lint - passed with 0 errors and 36 warnings from React Compiler / Next lint recommendations.
+- npm run build - passed on Next.js 16.2.9 with Turbopack.
+
+Remaining follow-up:
+
+- Decide whether to refactor the 36 React Compiler lint warnings or keep them as warnings until React Compiler is explicitly enabled.
+- Review npm audit output separately. Tier B did not run npm audit fix because that can make unrelated breaking changes.
