@@ -12,7 +12,9 @@ import { generateOpenGraphTags, generateTwitterCardTags } from '@/lib/seo/social
 import {
   generateLocalBusinessSchema,
   generateOrganizationSchema,
-  generateFAQSchema
+  generateFAQSchema,
+  generateWebSiteSchema,
+  generateReviewSchema
 } from '@/lib/seo/structured-data'
 import { getKeywordsString } from '@/lib/seo/keywords'
 import {
@@ -36,7 +38,7 @@ type PageProps = {
 //   ]
 // }
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 3600
 
 export async function generateMetadata({ params: paramsInput }: PageProps): Promise<Metadata> {
   const params = await paramsInput
@@ -88,20 +90,6 @@ export async function generateMetadata({ params: paramsInput }: PageProps): Prom
     }]
   })
 
-  // Generate structured data
-  const localBusinessSchema = generateLocalBusinessSchema(locale)
-  const organizationSchema = generateOrganizationSchema()
-
-  // Generate FAQ schema if FAQs exist
-  const faqTranslations = await getTranslations({ locale, namespace: 'faq' })
-  const faqs = [
-    { question: faqTranslations('q1'), answer: faqTranslations('a1') },
-    { question: faqTranslations('q2'), answer: faqTranslations('a2') },
-    { question: faqTranslations('q4'), answer: faqTranslations('a4') },
-    { question: faqTranslations('q5'), answer: faqTranslations('a5') }
-  ]
-  const faqSchema = generateFAQSchema(faqs, locale)
-
   return {
     title: metaTags.title,
     description: metaTags.description,
@@ -112,14 +100,7 @@ export async function generateMetadata({ params: paramsInput }: PageProps): Prom
       languages: convertHreflangToMetadata(hreflangTags)
     },
     openGraph: convertOpenGraphToMetadata(ogTags),
-    twitter: convertTwitterToMetadata(twitterTags),
-    other: {
-      'application/ld+json': JSON.stringify([
-        localBusinessSchema,
-        organizationSchema,
-        faqSchema
-      ])
-    }
+    twitter: convertTwitterToMetadata(twitterTags)
   }
 }
 
@@ -162,21 +143,44 @@ export default async function HomePage({ params: paramsInput }: PageProps) {
     }
   }
 
+  const locale = params.lang as Locale
+
+  // Build JSON-LD schema for body injection
+  const localBusinessSchema = generateLocalBusinessSchema(locale)
+  const organizationSchema = generateOrganizationSchema()
+  const webSiteSchema = generateWebSiteSchema(locale)
+
+  const faqTranslations = await getTranslations({ locale, namespace: 'faq' })
+  const faqItems = [
+    { question: faqTranslations('q1'), answer: faqTranslations('a1') },
+    { question: faqTranslations('q2'), answer: faqTranslations('a2') },
+    { question: faqTranslations('q4'), answer: faqTranslations('a4') },
+    { question: faqTranslations('q5'), answer: faqTranslations('a5') }
+  ]
+  const faqSchema = generateFAQSchema(faqItems, locale)
+
+  if (reviews && reviews.length > 0) {
+    const mapped = reviews.map((r: { id: string; guest_name?: string; rating: number; comment?: string; created_at: string }) => ({
+      id: r.id,
+      author: r.guest_name ?? 'Guest',
+      rating: r.rating,
+      comment: r.comment ?? '',
+      createdAt: r.created_at,
+      approved: true
+    }))
+    const reviewResult = generateReviewSchema(mapped)
+    if (reviewResult) {
+      localBusinessSchema.aggregateRating = reviewResult.aggregateRating
+      localBusinessSchema.review = reviewResult.review
+    }
+  }
+
+  const schemaArray = [webSiteSchema, localBusinessSchema, organizationSchema, faqSchema]
+  const schemaJson = JSON.stringify(schemaArray).replace(/</g, '\\u003c')
+
   const t = await getTranslations({ locale: params.lang, namespace: 'home' })
   const commonT = await getTranslations({ locale: params.lang, namespace: 'common' })
   const aptT = await getTranslations({ locale: params.lang, namespace: 'apartments' })
-  const faqT = await getTranslations({ locale: params.lang, namespace: 'faq' })
-  const pageLocale = params.lang as Locale
-  const homeStructuredData = [
-    generateLocalBusinessSchema(pageLocale),
-    generateOrganizationSchema(),
-    generateFAQSchema([
-      { question: faqT('q1'), answer: faqT('a1') },
-      { question: faqT('q2'), answer: faqT('a2') },
-      { question: faqT('q4'), answer: faqT('a4') },
-      { question: faqT('q5'), answer: faqT('a5') },
-    ], pageLocale)
-  ]
 
   interface Testimonial {
     id: string
@@ -190,9 +194,9 @@ export default async function HomePage({ params: paramsInput }: PageProps) {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(homeStructuredData) }}
+        dangerouslySetInnerHTML={{ __html: schemaJson }}
       />
-      <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
       <section className="hero relative min-h-[76dvh] flex items-center justify-center overflow-hidden">
         {/* Subtle darkening overlay — old-site aesthetic */}

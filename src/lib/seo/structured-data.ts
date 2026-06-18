@@ -222,9 +222,9 @@ export function mergeSchemas(schemas: object[]): object {
 // Schema Generators
 // ============================================================================
 
-import type { 
-  Locale, 
-  LocalBusinessSchema, 
+import type {
+  Locale,
+  LocalBusinessSchema,
   LodgingBusinessSchema,
   BreadcrumbSchema,
   FAQSchema,
@@ -232,10 +232,18 @@ import type {
   FAQ,
   PostalAddress,
   GeoCoordinates,
-  PropertyValue,
   AggregateRating,
-  Review as ReviewType
+  Review as ReviewType,
+  WebSiteSchema,
+  TouristAttractionSchema,
+  TouristDestinationSchema,
+  ImageObjectSchema,
+  LocationFeatureSpecification,
+  QuantitativeValue,
+  OfferSchema,
+  PlaceSchema
 } from '../types/seo'
+import type { AttractionEntry } from '../../data/attractions'
 import { getSEOConfig, getBaseUrl } from './config'
 import { makeAbsoluteUrl } from './utils'
 
@@ -252,6 +260,12 @@ export interface Apartment {
   capacity: number
   numberOfRooms?: number
   amenities: string[]
+  /** Apartment size in square metres (size_sqm) */
+  size_sqm?: number | null
+  /** Bed type description string */
+  bed_type?: string | null
+  /** Number of bathrooms (bathroom_count) — NOT mapped to numberOfRooms */
+  bathroom_count?: number | null
 }
 
 /**
@@ -303,9 +317,15 @@ export function generateLocalBusinessSchema(locale: Locale): LocalBusinessSchema
   if (config.social.instagram) sameAs.push(config.social.instagram)
   if (config.social.twitter) sameAs.push(config.social.twitter)
 
+  // Build areaServed Place array from config
+  const areaServed: PlaceSchema[] = config.business.areaServed.map(name => ({
+    '@type': 'Place' as const,
+    name
+  }))
+
   const schema: LocalBusinessSchema = {
     '@context': 'https://schema.org',
-    '@type': 'LocalBusiness',
+    '@type': ['LocalBusiness', 'LodgingBusiness'],
     '@id': `${baseUrl}/#business`,
     name: config.business.name,
     image: [
@@ -315,7 +335,11 @@ export function generateLocalBusinessSchema(locale: Locale): LocalBusinessSchema
     telephone: config.business.phone,
     email: config.business.email,
     address,
-    geo
+    geo,
+    areaServed,
+    checkinTime: config.business.checkinTime,
+    checkoutTime: config.business.checkoutTime,
+    petsAllowed: false
   }
 
   // Add social media links if available
@@ -329,13 +353,13 @@ export function generateLocalBusinessSchema(locale: Locale): LocalBusinessSchema
 /**
  * Generates LodgingBusiness schema for apartment detail pages
  * Includes name, description, images, address, geo, amenities, rooms, price range, and ratings
- * 
+ *
  * Requirements: 4.2, 4.9, 19.4
- * 
+ *
  * @param apartment - The apartment data
  * @param locale - The current locale
  * @returns LodgingBusiness schema object
- * 
+ *
  * @example
  * const schema = generateLodgingBusinessSchema(apartment, 'en')
  */
@@ -361,33 +385,72 @@ export function generateLodgingBusinessSchema(
     longitude: config.business.geo.longitude
   }
 
-  // Convert amenities to PropertyValue array
-  const amenityFeature: PropertyValue[] = apartment.amenities.map(amenity => ({
-    '@type': 'PropertyValue',
+  // Convert amenities to LocationFeatureSpecification array (schema.org preferred for LodgingBusiness)
+  const amenityFeature: LocationFeatureSpecification[] = apartment.amenities.map(amenity => ({
+    '@type': 'LocationFeatureSpecification' as const,
     name: amenity,
     value: true
   }))
 
+  const apartmentUrl = makeAbsoluteUrl(`/${locale}/apartments/${apartment.slug}`, baseUrl)
+
   // Generate price range (e.g., "€40-€80")
   const priceRange = `€${apartment.basePrice}-€${Math.round(apartment.basePrice * 1.5)}`
+
+  // Offer: price in EUR, InStock
+  const offers: OfferSchema[] = [
+    {
+      '@type': 'Offer',
+      priceCurrency: 'EUR',
+      price: apartment.basePrice,
+      availability: 'https://schema.org/InStock',
+      url: apartmentUrl
+    }
+  ]
 
   const schema: LodgingBusinessSchema = {
     '@context': 'https://schema.org',
     '@type': 'LodgingBusiness',
-    '@id': makeAbsoluteUrl(`/${locale}/apartments/${apartment.slug}`, baseUrl),
+    '@id': apartmentUrl,
     name: apartment.name,
     description: apartment.description,
     image: apartment.images.map(img => makeAbsoluteUrl(img, baseUrl)),
-    url: makeAbsoluteUrl(`/${locale}/apartments/${apartment.slug}`, baseUrl),
+    url: apartmentUrl,
+    telephone: config.business.phone,
+    email: config.business.email,
     address,
     geo,
     amenityFeature,
-    priceRange
+    priceRange,
+    offers,
+    checkinTime: config.business.checkinTime,
+    checkoutTime: config.business.checkoutTime,
+    petsAllowed: false,
+    // Occupancy based on capacity
+    occupancy: {
+      '@type': 'QuantitativeValue',
+      maxValue: apartment.capacity
+    }
   }
 
-  // Add number of rooms if available
+  // Add number of rooms if explicitly provided (NOT bathroom_count)
   if (apartment.numberOfRooms) {
     schema.numberOfRooms = apartment.numberOfRooms
+  }
+
+  // Floor size from size_sqm
+  if (apartment.size_sqm) {
+    const floorSize: QuantitativeValue = {
+      '@type': 'QuantitativeValue',
+      value: apartment.size_sqm,
+      unitCode: 'MTK'  // square metres (UN/CEFACT)
+    }
+    schema.floorSize = floorSize
+  }
+
+  // Bed type from bed_type string
+  if (apartment.bed_type) {
+    schema.bed = apartment.bed_type
   }
 
   return schema
@@ -546,13 +609,147 @@ export function generateReviewSchema(reviews: Review[]): {
 }
 
 /**
+ * Generates WebSite schema with SearchAction for sitelinks search box.
+ * Signals to Google/AI crawlers that this site is searchable.
+ *
+ * @param locale - The current locale
+ * @returns WebSite schema object
+ *
+ * @example
+ * const schema = generateWebSiteSchema('en')
+ */
+export function generateWebSiteSchema(locale: Locale): WebSiteSchema {
+  const config = getSEOConfig()
+  const baseUrl = getBaseUrl()
+
+  const schema: WebSiteSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${baseUrl}/#website`,
+    url: baseUrl,
+    name: config.siteName,
+    inLanguage: locale,
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: `${baseUrl}/${locale}/apartments?q={search_term_string}`
+      },
+      'query-input': 'required name=search_term_string'
+    }
+  }
+
+  return schema
+}
+
+/**
+ * Generates TouristAttraction schema for a single attraction entry.
+ *
+ * @param attraction - The attraction data (from src/data/attractions.ts)
+ * @param locale - The current locale (used for inLanguage signal, not translation here)
+ * @returns TouristAttraction schema object
+ *
+ * @example
+ * const schema = generateTouristAttractionSchema(attraction, 'en')
+ */
+export function generateTouristAttractionSchema(
+  attraction: AttractionEntry,
+  locale: Locale
+): TouristAttractionSchema {
+  void locale  // locale used for future inLanguage extension; suppress unused warning
+  const baseUrl = getBaseUrl()
+
+  const schema: TouristAttractionSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'TouristAttraction',
+    name: attraction.name,
+    description: attraction.description,
+    image: makeAbsoluteUrl(attraction.image, baseUrl),
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: attraction.lat,
+      longitude: attraction.lng
+    }
+  }
+
+  return schema
+}
+
+/**
+ * Generates TouristDestination schema for Bovansko jezero (Bovan Lake),
+ * including all local attractions as containsPlace entries.
+ * Boosts AI/GEO presence for "things to do near Bovan lake".
+ *
+ * @param locale - The current locale
+ * @param attractions - Array of attraction entries for the locale
+ * @returns TouristDestination schema object
+ *
+ * @example
+ * const schema = generateTouristDestinationSchema('en', STATIC_ATTRACTIONS['en'])
+ */
+export function generateTouristDestinationSchema(
+  locale: Locale,
+  attractions: AttractionEntry[]
+): TouristDestinationSchema {
+  const baseUrl = getBaseUrl()
+
+  const containsPlace: TouristAttractionSchema[] = attractions.map(a =>
+    generateTouristAttractionSchema(a, locale)
+  )
+
+  const schema: TouristDestinationSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'TouristDestination',
+    name: 'Bovansko jezero (Bovan Lake)',
+    description:
+      'Bovan Lake (Bovansko jezero) is a reservoir on the Moravica river near the village of Bovan, Aleksinac municipality, Serbia. Surrounded by forested hills, it offers swimming, fishing, and nature tourism.',
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: 43.64592019,
+      longitude: 21.70277774
+    },
+    image: makeAbsoluteUrl('/images/og-home.jpg', baseUrl),
+    url: makeAbsoluteUrl(`/${locale}/location`, baseUrl),
+    containsPlace
+  }
+
+  return schema
+}
+
+/**
+ * Generates ImageObject schema for a single image.
+ * Useful for rich results and AI image indexing.
+ *
+ * @param url - Absolute or relative URL of the image
+ * @param caption - Image caption / alt text
+ * @param baseUrl - Base URL for making relative paths absolute
+ * @returns ImageObject schema (without top-level @context — embed in @graph)
+ *
+ * @example
+ * const schema = generateImageSchema('/images/apartment.jpg', 'Studio apartment', baseUrl)
+ */
+export function generateImageSchema(
+  url: string,
+  caption: string,
+  baseUrl: string
+): ImageObjectSchema {
+  const absoluteUrl = makeAbsoluteUrl(url, baseUrl)
+  return {
+    '@type': 'ImageObject',
+    contentUrl: absoluteUrl,
+    url: absoluteUrl,
+    caption
+  }
+}
+
+/**
  * Generates Organization schema with logo and contact information
  * Includes social media links
- * 
+ *
  * Requirements: 4.12
- * 
+ *
  * @returns Organization schema object
- * 
+ *
  * @example
  * const schema = generateOrganizationSchema()
  */
@@ -575,6 +772,12 @@ export function generateOrganizationSchema(): OrganizationSchema {
   if (config.social.instagram) sameAs.push(config.social.instagram)
   if (config.social.twitter) sameAs.push(config.social.twitter)
 
+  // Build areaServed Place array from config
+  const areaServed: PlaceSchema[] = config.business.areaServed.map(name => ({
+    '@type': 'Place' as const,
+    name
+  }))
+
   const schema: OrganizationSchema = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
@@ -584,7 +787,9 @@ export function generateOrganizationSchema(): OrganizationSchema {
     logo: makeAbsoluteUrl('/images/logo.png', baseUrl),
     telephone: config.business.phone,
     email: config.business.email,
-    address
+    address,
+    foundingDate: String(config.business.foundingYear),
+    areaServed
   }
 
   // Add social media links if available

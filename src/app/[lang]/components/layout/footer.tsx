@@ -8,6 +8,13 @@ interface FooterProps {
   className?: string
 }
 
+const guideLabel = {
+  sr: 'Vodič za Bovansko jezero',
+  en: 'Bovan Lake Travel Guide',
+  de: 'Reiseführer Bovan-See',
+  it: 'Guida al Lago Bovan',
+}
+
 export function Footer({ className }: FooterProps) {
   const t = useTranslations('footer')
   const navT = useTranslations('header')
@@ -81,6 +88,15 @@ export function Footer({ className }: FooterProps) {
                 className="underline text-slate-50 hover:text-blue-400 transition-colors"
               >
                 {navT('contact')}
+              </Link>
+            </li>
+            <li className="text-slate-50/40 select-none">|</li>
+            <li>
+              <Link
+                href={`/${currentLang}/guide`}
+                className="underline text-slate-50 hover:text-blue-400 transition-colors"
+              >
+                {guideLabel[currentLang as keyof typeof guideLabel] ?? guideLabel.sr}
               </Link>
             </li>
             <li className="text-slate-50/40 select-none">|</li>

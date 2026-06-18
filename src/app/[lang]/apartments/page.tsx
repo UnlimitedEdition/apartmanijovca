@@ -35,8 +35,6 @@ export async function generateMetadata({ params: paramsInput }: PageProps): Prom
     locale
   })
 
-  const breadcrumbSchema = generateBreadcrumbSchema('/apartments', locale)
-
   return {
     title: metaTags.title,
     description: metaTags.description,
@@ -45,9 +43,7 @@ export async function generateMetadata({ params: paramsInput }: PageProps): Prom
     alternates: {
       canonical: metaTags.canonical,
       languages: hreflangTags.reduce((acc, tag) => {
-        if (tag.hreflang !== 'x-default') {
-          acc[tag.hreflang] = tag.href
-        }
+        acc[tag.hreflang] = tag.href
         return acc
       }, {} as Record<string, string>)
     },
@@ -69,9 +65,6 @@ export async function generateMetadata({ params: paramsInput }: PageProps): Prom
       description: t('apartments.description'),
       images: [`${baseUrl}/images/background.jpg`]
     },
-    other: {
-      'application/ld+json': JSON.stringify(breadcrumbSchema)
-    }
   }
 }
 
@@ -110,8 +103,15 @@ export default async function ApartmentsPage({ params: paramsInput }: PageProps)
     }
   })
 
+  const breadcrumbSchema = generateBreadcrumbSchema('/apartments', locale)
+
   return (
-    <div className="min-h-screen">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema).replace(/</g, '\\u003c') }}
+      />
+      <div className="min-h-screen">
       {/* Page Hero */}
       <div className="py-20 text-center px-4 stagger-fade-in">
         <h1
@@ -226,5 +226,6 @@ export default async function ApartmentsPage({ params: paramsInput }: PageProps)
         )}
       </div>
     </div>
+    </>
   )
 }

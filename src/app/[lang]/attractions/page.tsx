@@ -5,7 +5,13 @@ import { Locale } from '@/lib/types/database'
 import { getBaseUrl } from '@/lib/seo/config'
 import { generateMetaTags } from '@/lib/seo/meta-generator'
 import { generateHreflangTags } from '@/lib/seo/hreflang'
-import { generateBreadcrumbSchema } from '@/lib/seo/structured-data'
+import { generateTwitterCardTags } from '@/lib/seo/social-media'
+import { convertTwitterToMetadata } from '@/lib/seo/metadata-adapter'
+import {
+  generateBreadcrumbSchema,
+  generateTouristAttractionSchema,
+  generateTouristDestinationSchema,
+} from '@/lib/seo/structured-data'
 import { getKeywordsString } from '@/lib/seo/keywords'
 import { STATIC_ATTRACTIONS, AttractionEntry } from '@/data/attractions'
 
@@ -13,7 +19,7 @@ type PageProps = {
   params: Promise<{ lang: string }>
 }
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 7200
 
 export async function generateMetadata({ params: paramsInput }: PageProps): Promise<Metadata> {
   const params = await paramsInput
@@ -31,7 +37,16 @@ export async function generateMetadata({ params: paramsInput }: PageProps): Prom
   })
 
   const hreflangTags = generateHreflangTags({ path: '/attractions', locale })
-  const breadcrumbSchema = generateBreadcrumbSchema('/attractions', locale)
+
+  const twitterTags = generateTwitterCardTags({
+    title: t('attractions.title'),
+    description: t('attractions.description'),
+    url: `${baseUrl}/${locale}/attractions`,
+    type: 'website',
+    locale,
+    siteName: 'Apartmani Jovča',
+    images: [{ url: `${baseUrl}/images/background.jpg`, alt: t('attractions.ogImageAlt') }]
+  })
 
   return {
     title: metaTags.title,
@@ -41,7 +56,7 @@ export async function generateMetadata({ params: paramsInput }: PageProps): Prom
     alternates: {
       canonical: metaTags.canonical,
       languages: hreflangTags.reduce((acc, tag) => {
-        if (tag.hreflang !== 'x-default') acc[tag.hreflang] = tag.href
+        acc[tag.hreflang] = tag.href
         return acc
       }, {} as Record<string, string>)
     },
@@ -54,13 +69,7 @@ export async function generateMetadata({ params: paramsInput }: PageProps): Prom
       siteName: 'Apartmani Jovča',
       images: [{ url: `${baseUrl}/images/background.jpg`, alt: t('attractions.ogImageAlt') }]
     },
-    twitter: {
-      card: 'summary_large_image',
-      title: t('attractions.title'),
-      description: t('attractions.description'),
-      images: [`${baseUrl}/images/background.jpg`]
-    },
-    other: { 'application/ld+json': JSON.stringify(breadcrumbSchema) }
+    twitter: convertTwitterToMetadata(twitterTags),
   }
 }
 
@@ -76,6 +85,7 @@ interface CustomAttraction {
 export default async function AttractionsPage({ params: paramsInput }: PageProps) {
   const params = await paramsInput
   const lang = params.lang
+  const locale = lang as Locale
   const t = await getTranslations({ locale: lang, namespace: 'attractions' })
 
   // Load visibility and custom attractions in parallel
@@ -97,8 +107,30 @@ export default async function AttractionsPage({ params: paramsInput }: PageProps
 
   const attractions = [...staticList, ...customList]
 
+  // Structured data: one TouristAttraction per static attraction + one TouristDestination
+  const attractionSchemas = staticList.map(a => generateTouristAttractionSchema(a, locale))
+  const destinationSchema = generateTouristDestinationSchema(locale, staticList)
+
   return (
     <div className="container mx-auto px-4 py-6 sm:py-8 3xl:py-12 4xl:py-16">
+      {attractionSchemas.map((schema, i) => (
+        <script
+          key={"attraction-schema-" + i}
+          type="application/ld+json"
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        />
+      ))}
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(destinationSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(generateBreadcrumbSchema('/attractions', locale)).replace(/</g, '\\u003c') }}
+      />
       {/* Hero */}
       <div className="stagger-fade-in text-center py-20 text-white mb-8 sm:mb-12 3xl:mb-16 4xl:mb-20">
         <h1 className="text-4xl md:text-5xl font-extrabold text-shadow-strong tracking-wide mb-4">

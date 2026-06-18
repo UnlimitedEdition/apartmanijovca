@@ -152,6 +152,102 @@ export interface PropertyValue {
   value?: string | boolean
 }
 
+// Schema.org LocationFeatureSpecification (for amenity features on lodging)
+export interface LocationFeatureSpecification {
+  '@type': 'LocationFeatureSpecification'
+  name: string
+  value: boolean | string
+}
+
+// Schema.org QuantitativeValue (e.g. floorSize)
+export interface QuantitativeValue {
+  '@type': 'QuantitativeValue'
+  value: number
+  unitCode?: string  // e.g. 'MTK' for square metres
+}
+
+// Schema.org Offer
+export interface OfferSchema {
+  '@type': 'Offer'
+  priceCurrency: string
+  price: number
+  availability: string  // e.g. 'https://schema.org/InStock'
+  url?: string
+  validFrom?: string
+}
+
+// Schema.org EntryPoint (used in SearchAction)
+export interface EntryPoint {
+  '@type': 'EntryPoint'
+  urlTemplate: string
+}
+
+// Schema.org SearchAction
+export interface SearchAction {
+  '@type': 'SearchAction'
+  target: EntryPoint
+  'query-input': string
+}
+
+// Schema.org WebSite
+export interface WebSiteSchema {
+  '@context': 'https://schema.org'
+  '@type': 'WebSite'
+  '@id'?: string
+  url: string
+  name: string
+  inLanguage: string
+  potentialAction?: SearchAction
+}
+
+// Schema.org Place (used for areaServed / containsPlace)
+export interface PlaceSchema {
+  '@type': 'Place'
+  name: string
+  geo?: GeoCoordinates
+}
+
+// Schema.org TouristAttraction
+export interface TouristAttractionSchema {
+  '@context': 'https://schema.org'
+  '@type': 'TouristAttraction'
+  name: string
+  description?: string
+  image?: string | string[]
+  geo?: GeoCoordinates
+  address?: PostalAddress
+  url?: string
+  isAccessibleForFree?: boolean
+  touristType?: string | string[]
+}
+
+// Schema.org TouristDestination
+export interface TouristDestinationSchema {
+  '@context': 'https://schema.org'
+  '@type': 'TouristDestination'
+  name: string
+  description?: string
+  image?: string | string[]
+  geo?: GeoCoordinates
+  address?: PostalAddress
+  url?: string
+  containsPlace?: TouristAttractionSchema[]
+  touristType?: string | string[]
+}
+
+// Schema.org ImageObject (extended)
+export interface ImageObjectSchema {
+  '@context'?: 'https://schema.org'
+  '@type': 'ImageObject'
+  contentUrl: string
+  url?: string
+  caption?: string
+  width?: number
+  height?: number
+  description?: string
+  license?: string
+}
+
 // Schema.org AggregateRating
 export interface AggregateRating {
   '@type': 'AggregateRating'
@@ -179,7 +275,7 @@ export interface Review {
 // Schema.org LocalBusiness
 export interface LocalBusinessSchema {
   '@context': 'https://schema.org'
-  '@type': 'LocalBusiness'
+  '@type': 'LocalBusiness' | ['LocalBusiness', ...string[]]
   '@id': string
   name: string
   image: string[]
@@ -190,6 +286,20 @@ export interface LocalBusinessSchema {
   geo: GeoCoordinates
   openingHoursSpecification?: OpeningHoursSpecification[]
   sameAs?: string[]
+  /** Schema.org areaServed — regions / cities served */
+  areaServed?: PlaceSchema[]
+  /** Schema.org additionalType — extra type URI (e.g. LodgingBusiness) */
+  additionalType?: string | string[]
+  /** Check-in time in ISO 8601 time format (HH:MM) */
+  checkinTime?: string
+  /** Check-out time in ISO 8601 time format (HH:MM) */
+  checkoutTime?: string
+  /** Whether pets are allowed */
+  petsAllowed?: boolean
+  /** Aggregate rating from guest reviews */
+  aggregateRating?: AggregateRating
+  /** Individual guest reviews */
+  review?: Review[]
 }
 
 // Schema.org LodgingBusiness
@@ -201,13 +311,33 @@ export interface LodgingBusinessSchema {
   description: string
   image: string[]
   url?: string
+  telephone?: string
+  email?: string
   address: PostalAddress
   geo: GeoCoordinates
-  amenityFeature: PropertyValue[]
+  /** amenityFeature as LocationFeatureSpecification (preferred) or PropertyValue */
+  amenityFeature: LocationFeatureSpecification[] | PropertyValue[]
+  /** numberOfRooms — do NOT map bathroom_count here; use for actual room count */
   numberOfRooms?: number
+  /** Maximum occupancy (maps to schema:occupancy / maximumAttendeeCapacity) */
+  occupancy?: { '@type': 'QuantitativeValue'; maxValue: number }
+  /** Floor area (size_sqm) */
+  floorSize?: QuantitativeValue
+  /** Bed description string or BedDetails */
+  bed?: string
+  /** Price offers */
+  offers?: OfferSchema[]
   priceRange: string
   aggregateRating?: AggregateRating
   review?: Review[]
+  /** Check-in time in ISO 8601 time format (HH:MM) */
+  checkinTime?: string
+  /** Check-out time in ISO 8601 time format (HH:MM) */
+  checkoutTime?: string
+  /** Whether pets are allowed — always false for Jovča */
+  petsAllowed?: boolean
+  /** Star rating */
+  starRating?: { '@type': 'Rating'; ratingValue: number }
 }
 
 // Schema.org BreadcrumbList
@@ -266,6 +396,10 @@ export interface OrganizationSchema {
   email?: string
   address?: PostalAddress
   sameAs?: string[]
+  /** Founding date in ISO 8601 format (YYYY) or full date */
+  foundingDate?: string
+  /** Regions / cities served */
+  areaServed?: PlaceSchema[]
 }
 
 // ============================================================================

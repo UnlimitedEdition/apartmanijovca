@@ -8,7 +8,8 @@ import { Locale, ApartmentRecord, MultiLanguageText } from '@/lib/types/database
 import { getBaseUrl } from '@/lib/seo/config'
 import { generateMetaTags } from '@/lib/seo/meta-generator'
 import { generateHreflangTags } from '@/lib/seo/hreflang'
-import { generateOpenGraphTags } from '@/lib/seo/social-media'
+import { generateOpenGraphTags, generateTwitterCardTags } from '@/lib/seo/social-media'
+import { convertTwitterToMetadata } from '@/lib/seo/metadata-adapter'
 import { generateBreadcrumbSchema } from '@/lib/seo/structured-data'
 import { getKeywordsString } from '@/lib/seo/keywords'
 
@@ -51,7 +52,18 @@ export async function generateMetadata({ params: paramsInput }: PageProps): Prom
     }]
   })
 
-  const breadcrumbSchema = generateBreadcrumbSchema('/prices', locale)
+  const twitterTags = generateTwitterCardTags({
+    title: t('prices.title'),
+    description: t('prices.description'),
+    url: `${baseUrl}/${locale}/prices`,
+    type: 'website',
+    locale,
+    siteName: 'Apartmani Jovča',
+    images: [{
+      url: `${baseUrl}/images/background.jpg`,
+      alt: t('prices.ogImageAlt')
+    }]
+  })
 
   return {
     title: metaTags.title,
@@ -61,9 +73,7 @@ export async function generateMetadata({ params: paramsInput }: PageProps): Prom
     alternates: {
       canonical: metaTags.canonical,
       languages: hreflangTags.reduce((acc, tag) => {
-        if (tag.hreflang !== 'x-default') {
-          acc[tag.hreflang] = tag.href
-        }
+        acc[tag.hreflang] = tag.href
         return acc
       }, {} as Record<string, string>)
     },
@@ -79,15 +89,7 @@ export async function generateMetadata({ params: paramsInput }: PageProps): Prom
         alt: t('prices.ogImageAlt')
       }]
     },
-    twitter: {
-      card: 'summary_large_image',
-      title: t('prices.title'),
-      description: t('prices.description'),
-      images: [`${baseUrl}/images/background.jpg`]
-    },
-    other: {
-      'application/ld+json': JSON.stringify(breadcrumbSchema)
-    }
+    twitter: convertTwitterToMetadata(twitterTags),
   }
 }
 
@@ -110,8 +112,15 @@ export default async function PricesPage({ params: paramsInput }: PageProps) {
     bed_type: getLocalizedValue(apt.bed_type as unknown as MultiLanguageText, locale)
   }))
 
+  const breadcrumbSchema = generateBreadcrumbSchema('/prices', locale)
+
   return (
-    <div className="min-h-screen">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema).replace(/</g, '\\u003c') }}
+      />
+      <div className="min-h-screen">
       {/* Page Hero */}
       <div className="py-20 text-center px-4 stagger-fade-in">
         <h1
@@ -231,5 +240,6 @@ export default async function PricesPage({ params: paramsInput }: PageProps) {
         </div>
       </div>
     </div>
+    </>
   )
 }

@@ -36,12 +36,6 @@ export async function generateMetadata({ params: paramsInput }: PageProps): Prom
     locale
   })
 
-  // Generate LocalBusiness schema with NAP (Name, Address, Phone)
-  const localBusinessSchema = generateLocalBusinessSchema(locale)
-
-  // Generate Breadcrumb schema
-  const breadcrumbSchema = generateBreadcrumbSchema('/contact', locale)
-
   return {
     title: metaTags.title,
     description: metaTags.description,
@@ -50,9 +44,7 @@ export async function generateMetadata({ params: paramsInput }: PageProps): Prom
     alternates: {
       canonical: metaTags.canonical,
       languages: hreflangTags.reduce((acc, tag) => {
-        if (tag.hreflang !== 'x-default') {
-          acc[tag.hreflang] = tag.href
-        }
+        acc[tag.hreflang] = tag.href
         return acc
       }, {} as Record<string, string>)
     },
@@ -74,22 +66,27 @@ export async function generateMetadata({ params: paramsInput }: PageProps): Prom
       description: t('contact.description'),
       images: [`${baseUrl}/images/background.jpg`]
     },
-    other: {
-      'application/ld+json': JSON.stringify([
-        localBusinessSchema,
-        breadcrumbSchema
-      ])
-    }
   }
 }
 
 export default async function ContactPage({ params: paramsInput }: PageProps) {
   const params = await paramsInput
-  const contactT = await getTranslations({ locale: params.lang, namespace: 'contact' })
-  const commonT = await getTranslations({ locale: params.lang, namespace: 'common' })
+  const locale = params.lang as Locale
+  const contactT = await getTranslations({ locale, namespace: 'contact' })
+  const commonT = await getTranslations({ locale, namespace: 'common' })
+
+  const contactSchema = [
+    generateLocalBusinessSchema(locale),
+    generateBreadcrumbSchema('/contact', locale)
+  ]
 
   return (
-    <div className="container mx-auto px-4 py-8 sm:py-12 max-w-7xl 3xl:max-w-[2000px] 4xl:max-w-[2800px]">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(contactSchema).replace(/</g, '\\u003c') }}
+      />
+      <div className="container mx-auto px-4 py-8 sm:py-12 max-w-7xl 3xl:max-w-[2000px] 4xl:max-w-[2800px]">
       {/* Hero */}
       <div className="stagger-fade-in text-center py-20 text-white mb-10 sm:mb-16">
         <h1 className="text-4xl md:text-5xl font-extrabold text-shadow-strong tracking-wide mb-4">
@@ -188,5 +185,6 @@ export default async function ContactPage({ params: paramsInput }: PageProps) {
 
       {/* WhatsAppStatus removed for better conversion focus */}
     </div>
+    </>
   )
 }

@@ -9,18 +9,18 @@ import { getBaseUrl } from '@/lib/seo/config'
 import { generateMetaTags } from '@/lib/seo/meta-generator'
 import { generateHreflangTags } from '@/lib/seo/hreflang'
 import { generateOpenGraphTags, generateTwitterCardTags, optimizeImageForSocial } from '@/lib/seo/social-media'
-import { 
-  generateLodgingBusinessSchema, 
+import {
+  generateLodgingBusinessSchema,
   generateBreadcrumbSchema,
-  generateReviewSchema 
+  generateReviewSchema
 } from '@/lib/seo/structured-data'
 import { getKeywordsString } from '@/lib/seo/keywords'
 import { truncateText } from '@/lib/seo/utils'
 import { getTranslations } from 'next-intl/server'
-import { 
-  convertOpenGraphToMetadata, 
-  convertTwitterToMetadata, 
-  convertHreflangToMetadata 
+import {
+  convertOpenGraphToMetadata,
+  convertTwitterToMetadata,
+  convertHreflangToMetadata
 } from '@/lib/seo/metadata-adapter'
 
 interface PageProps {
@@ -66,10 +66,10 @@ export async function generateMetadata({ params: paramsInput }: PageProps): Prom
   }
 
   // Get first image for og:image
-  const firstImage = apartment.images && apartment.images.length > 0 
-    ? apartment.images[0] 
+  const firstImage = apartment.images && apartment.images.length > 0
+    ? apartment.images[0]
     : `${baseUrl}/images/background.jpg`
-  
+
   // Optimize image for social media (1200x630)
   const ogImage = optimizeImageForSocial(firstImage)
 
@@ -120,7 +120,30 @@ export async function generateMetadata({ params: paramsInput }: PageProps): Prom
     }]
   })
 
-  // Fetch apartment record for structured data
+  return {
+    title: metaTags.title,
+    description: metaTags.description,
+    keywords: getKeywordsString('apartment-detail', locale).split(', '),
+    robots: metaTags.robots,
+    alternates: {
+      canonical: metaTags.canonical,
+      languages: convertHreflangToMetadata(hreflangTags)
+    },
+    openGraph: convertOpenGraphToMetadata(ogTags),
+    twitter: convertTwitterToMetadata(twitterTags),
+  }
+}
+
+export default async function ApartmentPage({ params: paramsInput }: PageProps) {
+  const params = await paramsInput
+  const locale = params.lang
+  const apartment = await getApartment(params.slug, locale)
+
+  if (!apartment || !apartment.slug) {
+    notFound()
+  }
+
+  // Fetch raw apartment record + reviews for structured data
   const cookieStore = await cookies()
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -139,32 +162,13 @@ export async function generateMetadata({ params: paramsInput }: PageProps): Prom
     .eq('slug', params.slug)
     .single()
 
-  // Generate LodgingBusiness schema
-  const lodgingSchema = apartmentRecord 
-    ? generateLodgingBusinessSchema({
-        id: apartmentRecord.id,
-        slug: apartmentRecord.slug || '',
-        name: apartment.name,
-        description: apartment.description,
-        images: apartment.images,
-        basePrice: apartmentRecord.base_price_eur,
-        capacity: apartmentRecord.capacity,
-        numberOfRooms: apartmentRecord.bathroom_count || undefined,
-        amenities: apartment.amenities
-      }, locale)
-    : null
-
-  // Generate Breadcrumb schema
-  const breadcrumbSchema = generateBreadcrumbSchema(`/apartments/${params.slug}`, locale)
-
-  // Fetch reviews for Review schema
   const { data: reviews } = await supabase
     .from('reviews')
     .select('*')
     .eq('apartment_id', apartmentRecord?.id)
     .eq('status', 'approved')
 
-  const reviewSchema = reviews && reviews.length > 0 
+  const reviewData = reviews && reviews.length > 0
     ? generateReviewSchema(reviews.map(r => ({
         id: r.id,
         author: r.guest_name,
@@ -175,38 +179,41 @@ export async function generateMetadata({ params: paramsInput }: PageProps): Prom
       })))
     : null
 
-  // Combine structured data
-  const structuredData = [
-    lodgingSchema,
-    breadcrumbSchema,
-    reviewSchema
-  ].filter(Boolean)
+  const lodgingSchema = apartmentRecord
+    ? (() => {
+        const schema = generateLodgingBusinessSchema({
+          id: apartmentRecord.id,
+          slug: apartmentRecord.slug || '',
+          name: apartment.name,
+          description: apartment.description,
+          images: apartment.images,
+          basePrice: apartmentRecord.base_price_eur,
+          capacity: apartmentRecord.capacity,
+          amenities: apartment.amenities,
+          size_sqm: apartmentRecord.size_sqm ?? null,
+          bed_type: apartment.bed_type || null,
+          bathroom_count: apartmentRecord.bathroom_count ?? null
+        }, locale)
+        if (reviewData) {
+          schema.aggregateRating = reviewData.aggregateRating
+          schema.review = reviewData.review
+        }
+        return schema
+      })()
+    : null
 
-  return {
-    title: metaTags.title,
-    description: metaTags.description,
-    keywords: getKeywordsString('apartment-detail', locale).split(', '),
-    robots: metaTags.robots,
-    alternates: {
-      canonical: metaTags.canonical,
-      languages: convertHreflangToMetadata(hreflangTags)
-    },
-    openGraph: convertOpenGraphToMetadata(ogTags),
-    twitter: convertTwitterToMetadata(twitterTags),
-    other: {
-      'application/ld+json': JSON.stringify(structuredData)
-    }
-  }
-}
+  const breadcrumbSchema = generateBreadcrumbSchema(`/apartments/${params.slug}`, locale)
 
-export default async function ApartmentPage({ params: paramsInput }: PageProps) {
-  const params = await paramsInput
-  const apartment = await getApartment(params.slug, params.lang)
-
-  if (!apartment || !apartment.slug) {
-    notFound()
-  }
+  const structuredData = [lodgingSchema, breadcrumbSchema].filter(Boolean)
 
   // Type assertion is safe here because we've checked slug is not null
-  return <ApartmentDetailView apartment={apartment as typeof apartment & { slug: string }} locale={params.lang} />
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, '\\u003c') }}
+      />
+      <ApartmentDetailView apartment={apartment as typeof apartment & { slug: string }} locale={locale} />
+    </>
+  )
 }
