@@ -94,7 +94,7 @@ export const emptyApartment: Apartment = {
   features: [],
   address: '',
   city: '',
-  country: 'Crna Gora',
+  country: 'Srbija',
   postal_code: '',
   latitude: undefined,
   longitude: undefined
