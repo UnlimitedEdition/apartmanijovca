@@ -116,7 +116,7 @@ export default function EnhancedApartmentManager() {
             <Tabs value={activeTab} onValueChange={setActiveTab}>
               {/* Tabs - grid on all screens for even distribution */}
               <div className="mb-4 sm:mb-6">
-                <TabsList className="grid grid-cols-5 w-full h-auto gap-0.5 sm:gap-1 p-0.5 sm:p-1">
+                <TabsList className="grid grid-cols-6 w-full h-auto gap-0.5 sm:gap-1 p-0.5 sm:p-1">
                   <TabsTrigger value="basic" className="text-[10px] sm:text-xs lg:text-sm px-1 sm:px-3 lg:px-6 h-8 sm:h-9">
                     Osnovne
                   </TabsTrigger>
@@ -1225,9 +1225,9 @@ export default function EnhancedApartmentManager() {
                   <div>
                     <label className="block text-xs sm:text-sm font-semibold mb-2">Država</label>
                     <Input
-                      value={selectedApartment.country || 'Crna Gora'}
+                      value={selectedApartment.country || 'Srbija'}
                       onChange={(e) => setSelectedApartment({ ...selectedApartment, country: e.target.value })}
-                      placeholder="Crna Gora"
+                      placeholder="Srbija"
                       className="text-xs sm:text-sm h-8 sm:h-9"
                     />
                   </div>
