@@ -568,6 +568,56 @@
           "answer": "Ja, unsere Gäste haben privaten Zugang zum Seeufer, nur 2 Gehminuten von den Apartments entfernt."
         }
       ]
+    },
+    "home": {
+      "title": "Apartments Jovča - Unterkunft am Bovan See | Bovan, Serbien",
+      "description": "Buchen Sie luxuriöse Ferienwohnungen am Bovan See. Moderne Unterkunft mit WLAN, Parkplatz und Seeblick. Perfekt für Familienurlaub in der Natur.",
+      "keywords": "Ferienwohnung Bovan See, Unterkunft Bovan, Apartments Jovča, Ferienhaus Bovan, Wohnung mieten Serbien, Urlaub am See"
+    },
+    "apartments": {
+      "title": "Unsere Apartments - Moderne Unterkunft am Bovan See",
+      "description": "Entdecken Sie unsere modernen Apartments am Bovan See. Verschiedene Kapazitäten, alle mit WLAN, Klimaanlage und Seeblick. Jetzt buchen!",
+      "keywords": "Bovan Apartments, Bovan See Unterkunft, Studio Apartment, Zwei-Zimmer-Wohnung, Familienwohnung"
+    },
+    "apartmentDetail": {
+      "titleTemplate": "{name} - Ferienwohnung am Bovan See | Apartments Jovča",
+      "descriptionTemplate": "Buchen Sie {name} am Bovan See. {capacity} Gäste, {beds}. Modern ausgestattet mit WLAN, Klimaanlage. Ab {price}€ pro Nacht.",
+      "keywords": "Bovan Apartment, {name}, Bovan Unterkunft, Ferienhaus See, Apartment Buchung"
+    },
+    "contact": {
+      "title": "Kontakt - Apartments Jovča | Bovan See",
+      "description": "Kontaktieren Sie uns für Apartment-Buchungen am Bovan See. 24/7 erreichbar per Telefon, E-Mail oder WhatsApp. Schnelle Antwort garantiert.",
+      "keywords": "Kontakt Apartments Jovča, Bovan Buchung, Apartment Telefon, Reservierung E-Mail"
+    },
+    "location": {
+      "title": "Lage - Anfahrt zu Apartments Jovča | Bovan See, Bovan",
+      "description": "Finden Sie uns am Bovan See bei Bovan. Detaillierte Anfahrtsbeschreibung mit Auto oder Bus. Karte und GPS-Koordinaten verfügbar.",
+      "keywords": "Bovan See Lage, Anfahrt Bovan See, Bovan Unterkunft, GPS Koordinaten, Wegbeschreibung"
+    },
+    "gallery": {
+      "title": "Galerie - Fotos der Apartments und des Bovan Sees",
+      "description": "Sehen Sie Fotos unserer Apartments, Innenräume, Bovan See Ausblicke und Umgebung. Überzeugen Sie sich von der Qualität unserer Unterkunft.",
+      "keywords": "Apartments Jovča Galerie, Bovan See Fotos, Apartment Bilder, Unterkunft Interieur"
+    },
+    "attractions": {
+      "title": "Sehenswürdigkeiten - Was man rund um den Bovan See besuchen kann",
+      "description": "Entdecken Sie Sehenswürdigkeiten rund um den Bovan See: Soko Banja, Festung Sokolica, Niš, Klöster. Perfekt für Ausflüge und Besichtigungen.",
+      "keywords": "Bovan Sehenswürdigkeiten, Soko Banja, Festung Sokolica, Niš Attraktionen, Bovan Ausflüge, Serbien Klöster"
+    },
+    "prices": {
+      "title": "Preise - Apartments Jovča | Beste Preise am Bovan See",
+      "description": "Transparente Apartment-Preise am Bovan See. Keine versteckten Gebühren. Rabatte für längere Aufenthalte. Verfügbarkeit prüfen und jetzt buchen.",
+      "keywords": "Bovan Apartment Preise, Unterkunft Tarife, Apartment Rabatte, Buchungspreis"
+    },
+    "privacy": {
+      "title": "Datenschutzerklärung - Apartments Jovča",
+      "description": "Lesen Sie unsere Datenschutzerklärung und erfahren Sie, wie wir Ihre persönlichen Daten gemäß serbischen Gesetzen schützen.",
+      "keywords": "Datenschutzerklärung, Datenschutz, DSGVO Serbien"
+    },
+    "terms": {
+      "title": "Nutzungsbedingungen & Hausordnung - Apartments Jovča",
+      "description": "Buchungsbedingungen, Hausordnung, Stornierungsbedingungen und Verhaltensregeln in den Apartments Jovča am Bovan See.",
+      "keywords": "Nutzungsbedingungen, Hausordnung, Stornierungsbedingungen, Apartment Regeln"
     }
   },
   "admin": {

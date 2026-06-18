@@ -580,6 +580,56 @@
           "answer": "Yes, our guests have private access to the lake shore, just a 2-minute walk from the apartments."
         }
       ]
+    },
+    "home": {
+      "title": "Jovča Apartments - Bovan Lake Accommodation | Bovan, Serbia",
+      "description": "Book luxury apartments at Bovan Lake. Modern accommodation with WiFi, parking, and lake views. Perfect for family vacation in nature.",
+      "keywords": "Bovan Lake apartments, Bovan accommodation, Jovča apartments, Bovan vacation rental, Serbia apartments, lake holiday"
+    },
+    "apartments": {
+      "title": "Our Apartments - Modern Accommodation at Bovan Lake",
+      "description": "Browse our modern apartments at Bovan Lake. Various capacities, all with WiFi, AC, and lake views. Book now!",
+      "keywords": "Bovan apartments, Bovan Lake accommodation, studio apartment, two-bedroom apartment, family apartment"
+    },
+    "apartmentDetail": {
+      "titleTemplate": "{name} - Apartment at Bovan Lake | Jovča Apartments",
+      "descriptionTemplate": "Book {name} at Bovan Lake. {capacity} guests, {beds}. Modern equipped with WiFi, AC. From {price}€ per night.",
+      "keywords": "Bovan apartment, {name}, Bovan accommodation, lake cottage, apartment booking"
+    },
+    "contact": {
+      "title": "Contact - Jovča Apartments | Bovan Lake",
+      "description": "Contact us to book apartments at Bovan Lake. Available 24/7 via phone, email, or WhatsApp. Fast response guaranteed.",
+      "keywords": "contact Jovča apartments, Bovan booking, apartment phone, reservation email"
+    },
+    "location": {
+      "title": "Location - How to Reach Jovča Apartments | Bovan Lake, Bovan",
+      "description": "Find us at Bovan Lake near Bovan. Detailed directions by car or bus. Map and GPS coordinates available.",
+      "keywords": "Bovan Lake location, how to reach Bovan Lake, Bovan accommodation, GPS coordinates, directions"
+    },
+    "gallery": {
+      "title": "Gallery - Photos of Apartments and Bovan Lake",
+      "description": "View photos of our apartments, interiors, Bovan Lake views, and surroundings. See the quality of our accommodation.",
+      "keywords": "Jovča apartments gallery, Bovan Lake photos, apartment pictures, accommodation interior"
+    },
+    "attractions": {
+      "title": "Attractions - What to Visit Around Bovan Lake",
+      "description": "Discover attractions around Bovan Lake: Soko Banja, Sokolica Fortress, Niš, monasteries. Perfect for excursions and sightseeing.",
+      "keywords": "Bovan attractions, Soko Banja, Sokolica Fortress, Niš sights, Bovan excursions, Serbia monasteries"
+    },
+    "prices": {
+      "title": "Prices - Jovča Apartments | Best Rates at Bovan Lake",
+      "description": "Transparent apartment prices at Bovan Lake. No hidden fees. Discounts for longer stays. Check availability and book now.",
+      "keywords": "Bovan apartment prices, accommodation rates, apartment discounts, booking price"
+    },
+    "privacy": {
+      "title": "Privacy Policy - Jovča Apartments",
+      "description": "Read our privacy policy and learn how we protect your personal data in accordance with Serbian laws.",
+      "keywords": "privacy policy, data protection, GDPR Serbia"
+    },
+    "terms": {
+      "title": "Terms of Service & House Rules - Jovča Apartments",
+      "description": "Booking terms, house rules, cancellation policy, and behavior rules at Jovča Apartments at Bovan Lake.",
+      "keywords": "terms of service, house rules, cancellation policy, apartment rules"
     }
   },
   "admin": {

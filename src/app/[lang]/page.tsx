@@ -163,6 +163,18 @@ export default async function HomePage({ params }: PageProps) {
   const t = await getTranslations({ locale: params.lang, namespace: 'home' })
   const commonT = await getTranslations({ locale: params.lang, namespace: 'common' })
   const aptT = await getTranslations({ locale: params.lang, namespace: 'apartments' })
+  const faqT = await getTranslations({ locale: params.lang, namespace: 'faq' })
+  const pageLocale = params.lang as Locale
+  const homeStructuredData = [
+    generateLocalBusinessSchema(pageLocale),
+    generateOrganizationSchema(),
+    generateFAQSchema([
+      { question: faqT('q1'), answer: faqT('a1') },
+      { question: faqT('q2'), answer: faqT('a2') },
+      { question: faqT('q4'), answer: faqT('a4') },
+      { question: faqT('q5'), answer: faqT('a5') },
+    ], pageLocale)
+  ]
 
   interface Testimonial {
     id: string
@@ -173,7 +185,12 @@ export default async function HomePage({ params }: PageProps) {
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(homeStructuredData) }}
+      />
+      <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
       <section className="hero relative min-h-[100dvh] flex items-center justify-center overflow-hidden">
         {/* Subtle darkening overlay — old-site aesthetic */}
@@ -534,6 +551,7 @@ export default async function HomePage({ params }: PageProps) {
           </div>
         </div>
       </section>
-    </div>
+      </div>
+    </>
   )
 }
