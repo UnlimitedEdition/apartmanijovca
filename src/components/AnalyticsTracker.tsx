@@ -6,7 +6,7 @@ import { trackEvent } from '../hooks/useAnalytics'
 
 export default function AnalyticsTracker() {
   const pathname = usePathname()
-  const previousPathname = useRef<string>()
+  const previousPathname = useRef<string | undefined>(undefined)
 
   useEffect(() => {
     // Track page view

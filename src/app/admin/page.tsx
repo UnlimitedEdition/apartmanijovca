@@ -6,7 +6,7 @@ import AdminDashboard from './AdminDashboard'
 export const dynamic = 'force-dynamic'
 
 export default async function AdminPage() {
-  const cookieStore = cookies()
+  const cookieStore = await cookies()
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
   const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 

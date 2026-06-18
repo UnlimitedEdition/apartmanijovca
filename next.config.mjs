@@ -8,13 +8,6 @@ const withNextIntl = createNextIntlPlugin();
  */
 
 const nextConfig = {
-  // ESLint configuration for build
-  eslint: {
-    // Warning: This allows production builds to successfully complete even if
-    // your project has ESLint errors.
-    ignoreDuringBuilds: true,
-  },
-  
   // TypeScript configuration for build
   typescript: {
     // Warning: This allows production builds to successfully complete even if
@@ -70,13 +63,11 @@ const nextConfig = {
   },
 
   // External packages for server components
-  experimental: {
-    serverComponentsExternalPackages: [
-      '@supabase/supabase-js',
-      '@supabase/auth-helpers-nextjs',
-      '@supabase/ssr',
-    ],
-  },
+  serverExternalPackages: [
+    '@supabase/supabase-js',
+    '@supabase/auth-helpers-nextjs',
+    '@supabase/ssr',
+  ],
 
   // Redirects for SEO and user experience
   async redirects() {
@@ -172,9 +163,6 @@ const nextConfig = {
     // Remove console.log in production
     removeConsole: process.env.NODE_ENV === 'production',
   },
-
-  // Enable SWC minification for faster builds
-  swcMinify: true,
 
   // Generate ETags for caching
   generateEtags: true,

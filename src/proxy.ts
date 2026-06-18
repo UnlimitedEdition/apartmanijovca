@@ -10,7 +10,7 @@ const intlMiddleware = createIntlMiddleware({
   localePrefix: 'always'
 })
 
-export default async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
   const host = request.headers.get('host') || ''
 
