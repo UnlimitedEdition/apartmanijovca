@@ -36,7 +36,7 @@ const locationContent = {
     'location.byCarTitle': 'Automobilom',
     'location.byCarDesc': 'Iz pravca Beograda/Niša (autoput E75): Isključite se kod Bovana i pratite znakove za Bovansko jezero. Nalazimo se u naselju "Vikend naselje".',
     'location.byBusTitle': 'Autobusom',
-    'location.byBusDesc': 'Idite autobusom do Bovana. Sa stanice, taksi do jezera Bovan traje oko 15 minuta (oko 10€).',
+    'location.byBusDesc': 'Idite autobusom do Aleksinca. Sa autobuske stanice u Aleksincu, taksi do Bovanskog jezera traje oko 15 minuta (oko 10€).',
     'location.nearbyTitle': 'U blizini',
     'location.bovanLake': 'Bovansko jezero',
     'location.bovanLakeDesc': 'Na samom pragu - kupanje, ribolov i sportovi na vodi',
