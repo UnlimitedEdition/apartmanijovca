@@ -1,4 +1,5 @@
 'use client'
+/* eslint-disable @next/next/no-img-element -- Custom lazy image handles observer loading and cached image detection. */
 
 import { useEffect, useRef, useState } from 'react'
 

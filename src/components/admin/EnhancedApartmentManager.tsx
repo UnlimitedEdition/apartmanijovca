@@ -1,6 +1,6 @@
 'use client'
+/* eslint-disable @next/next/no-img-element -- Admin previews support arbitrary uploaded image URLs with inline fallback. */
 
-import { useState, useEffect } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs'
 import { Button } from '../ui/button'
@@ -24,283 +24,32 @@ import {
   VIEW_OPTIONS 
 } from '../../lib/apartment-options'
 
-interface Apartment {
-  id?: string
-  slug: string
-  name: { sr: string; en: string; de: string; it: string }
-  description: { sr: string; en: string; de: string; it: string }
-  bed_type: { sr: string; en: string; de: string; it: string }
-  capacity: number
-  base_price_eur: number
-  status: 'active' | 'inactive' | 'maintenance'
-  display_order?: number
-  
-  // New fields
-  size_sqm?: number
-  floor?: number
-  bathroom_count?: number
-  balcony?: boolean
-  view_type?: { sr: string; en: string; de: string; it: string }
-  kitchen_type?: { sr: string; en: string; de: string; it: string }
-  features?: Array<{ sr: string; en: string; de: string; it: string }>
-  house_rules?: { sr: string; en: string; de: string; it: string }
-  check_in_time?: string
-  check_out_time?: string
-  min_stay_nights?: number
-  max_stay_nights?: number
-  cancellation_policy?: { sr: string; en: string; de: string; it: string }
-  
-  // Gallery
-  images?: string[]
-  gallery?: Array<{ url: string; caption: { sr: string; en: string; de: string; it: string }; order: number }>
-  video_url?: string
-  virtual_tour_url?: string
-  
-  // SEO
-  meta_title?: { sr: string; en: string; de: string; it: string }
-  meta_description?: { sr: string; en: string; de: string; it: string }
-  meta_keywords?: { sr: string; en: string; de: string; it: string }
-  
-  // Pricing
-  weekend_price_eur?: number
-  weekly_discount_percent?: number
-  monthly_discount_percent?: number
-  seasonal_pricing?: Array<{ season: string; start_date: string; end_date: string; price_eur: number }>
-  
-  // Checkbox/Counter selections
-  bed_counts?: Record<string, number>  // { 'double_bed': 1, 'single_bed': 2 }
-  selected_amenities?: string[]
-  selected_rules?: string[]
-  selected_view?: string
-  
-  // Location
-  address?: string
-  city?: string
-  country?: string
-  postal_code?: string
-  latitude?: number
-  longitude?: number
-}
-
-const emptyApartment: Apartment = {
-  slug: '',
-  name: { sr: '', en: '', de: '', it: '' },
-  description: { sr: '', en: '', de: '', it: '' },
-  bed_type: { sr: '', en: '', de: '', it: '' },
-  capacity: 2,
-  base_price_eur: 35,
-  status: 'active',
-  display_order: 0,
-  size_sqm: 45,
-  floor: 1,
-  bathroom_count: 1,
-  balcony: true,
-  check_in_time: '14:00',
-  check_out_time: '10:00',
-  min_stay_nights: 1,
-  max_stay_nights: 0,
-  weekly_discount_percent: 10,
-  monthly_discount_percent: 20,
-  weekend_price_eur: 0,
-  video_url: '',
-  virtual_tour_url: '',
-  images: [],
-  gallery: [],
-  seasonal_pricing: [],
-  bed_counts: {},
-  selected_amenities: [],
-  selected_rules: [],
-  selected_view: '',
-  meta_title: { sr: '', en: '', de: '', it: '' },
-  meta_description: { sr: '', en: '', de: '', it: '' },
-  meta_keywords: { sr: '', en: '', de: '', it: '' },
-  kitchen_type: { sr: '', en: '', de: '', it: '' },
-  house_rules: { sr: '', en: '', de: '', it: '' },
-  cancellation_policy: { sr: '', en: '', de: '', it: '' },
-  features: [],
-  address: '',
-  city: '',
-  country: 'Crna Gora',
-  postal_code: '',
-  latitude: undefined,
-  longitude: undefined
-}
+import { useAdminApartments } from './apartments/useAdminApartments'
 
 export default function EnhancedApartmentManager() {
-  const [apartments, setApartments] = useState<Apartment[]>([])
-  const [selectedApartment, setSelectedApartment] = useState<Apartment | null>(null)
-  const [isEditing, setIsEditing] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [saving, setSaving] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [success, setSuccess] = useState<string | null>(null)
-  const [activeTab, setActiveTab] = useState('basic')
-
-  // Load apartments
-  useEffect(() => {
-    loadApartments()
-  }, [])
-
-  const loadApartments = async () => {
-    setLoading(true)
-    try {
-      // Request raw data (not localized) for admin editing
-      const response = await fetch('/api/admin/apartments?raw=true')
-      if (!response.ok) throw new Error('Failed to load apartments')
-      const data = await response.json()
-      // API always returns { apartments: [...] }
-      setApartments(data.apartments || [])
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load apartments')
-    } finally {
-      setLoading(false)
-    }
-  }
-  const handleEdit = (apartment: Apartment) => {
-    // Ensure all optional fields are initialized to prevent uncontrolled input warnings
-    setSelectedApartment({
-      ...apartment,
-      slug: apartment.slug || '',
-      display_order: apartment.display_order ?? 0,
-      video_url: apartment.video_url || '',
-      virtual_tour_url: apartment.virtual_tour_url || '',
-      weekend_price_eur: apartment.weekend_price_eur ?? 0,
-      max_stay_nights: apartment.max_stay_nights ?? 0,
-      weekly_discount_percent: apartment.weekly_discount_percent ?? 0,
-      monthly_discount_percent: apartment.monthly_discount_percent ?? 0,
-      meta_title: apartment.meta_title || { sr: '', en: '', de: '', it: '' },
-      meta_description: apartment.meta_description || { sr: '', en: '', de: '', it: '' },
-      meta_keywords: apartment.meta_keywords || { sr: '', en: '', de: '', it: '' },
-      kitchen_type: apartment.kitchen_type || { sr: '', en: '', de: '', it: '' },
-      house_rules: apartment.house_rules || { sr: '', en: '', de: '', it: '' },
-      cancellation_policy: apartment.cancellation_policy || { sr: '', en: '', de: '', it: '' },
-      features: apartment.features || [],
-      gallery: apartment.gallery || [],
-      seasonal_pricing: apartment.seasonal_pricing || [],
-      bed_counts: apartment.bed_counts || {},
-      selected_amenities: apartment.selected_amenities || [],
-      selected_rules: apartment.selected_rules || [],
-      selected_view: apartment.selected_view || '',
-      images: apartment.images || []
-    })
-    setIsEditing(true)
-    setActiveTab('basic')
-  }
-
-  const handleSave = async () => {
-    if (!selectedApartment) return
-
-    setSaving(true)
-    setError(null)
-    setSuccess(null)
-
-    try {
-      const url = selectedApartment.id 
-        ? `/api/admin/apartments/${selectedApartment.id}`
-        : '/api/admin/apartments'
-      
-      const method = selectedApartment.id ? 'PUT' : 'POST'
-
-      const response = await fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(selectedApartment)
-      })
-
-      if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.error || 'Failed to save apartment')
-      }
-
-      setSuccess('Apartman je uspešno sačuvan!')
-      setIsEditing(false)
-      setSelectedApartment(null)
-      await loadApartments()
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to save apartment')
-    } finally {
-      setSaving(false)
-    }
-  }
-
-  const handleDelete = async (id: string) => {
-    if (!confirm('Da li ste sigurni da želite da obrišete ovaj apartman?')) return
-
-    try {
-      const response = await fetch(`/api/admin/apartments/${id}`, {
-        method: 'DELETE'
-      })
-
-      if (!response.ok) throw new Error('Failed to delete apartment')
-
-      setSuccess('Apartman je uspešno obrisan!')
-      await loadApartments()
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to delete apartment')
-    }
-  }
-
-  const handleNew = () => {
-    setSelectedApartment(emptyApartment)
-    setIsEditing(true)
-    setActiveTab('basic')
-    setError(null)
-    setSuccess(null)
-  }
-
-  
-
-  const generateSlug = (name: string) => {
-    return name
-      .toLowerCase()
-      .replace(/[^a-z0-9\s-]/g, '')
-      .replace(/\s+/g, '-')
-      .replace(/-+/g, '-')
-      .trim()
-  }
-
-  const handleNameChange = (lang: 'sr' | 'en' | 'de' | 'it', value: string) => {
-    if (!selectedApartment) return
-
-    const newName = { ...selectedApartment.name, [lang]: value }
-    const newSlug = lang === 'sr' ? generateSlug(value) : selectedApartment.slug
-
-    setSelectedApartment({
-      ...selectedApartment,
-      name: newName,
-      slug: newSlug
-    })
-  }
-
-  // Checkbox/Counter handlers
-  const updateBedCount = (bedId: string, count: number) => {
-    if (!selectedApartment) return
-    const newCounts = { ...(selectedApartment.bed_counts || {}) }
-    if (count === 0) {
-      delete newCounts[bedId]
-    } else {
-      newCounts[bedId] = count
-    }
-    setSelectedApartment({ ...selectedApartment, bed_counts: newCounts })
-  }
-
-  const toggleAmenity = (amenityId: string) => {
-    if (!selectedApartment) return
-    const current = selectedApartment.selected_amenities || []
-    const updated = current.includes(amenityId)
-      ? current.filter(id => id !== amenityId)
-      : [...current, amenityId]
-    setSelectedApartment({ ...selectedApartment, selected_amenities: updated })
-  }
-
-  const toggleRule = (ruleId: string) => {
-    if (!selectedApartment) return
-    const current = selectedApartment.selected_rules || []
-    const updated = current.includes(ruleId)
-      ? current.filter(id => id !== ruleId)
-      : [...current, ruleId]
-    setSelectedApartment({ ...selectedApartment, selected_rules: updated })
-  }
+  const {
+    apartments,
+    selectedApartment,
+    setSelectedApartment,
+    isEditing,
+    setIsEditing,
+    loading,
+    saving,
+    error,
+    setError,
+    success,
+    setSuccess,
+    activeTab,
+    setActiveTab,
+    handleEdit,
+    handleSave,
+    handleDelete,
+    handleNew,
+    handleNameChange,
+    updateBedCount,
+    toggleAmenity,
+    toggleRule,
+  } = useAdminApartments()
 
   if (loading) {
     return (
