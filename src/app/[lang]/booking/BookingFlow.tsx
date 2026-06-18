@@ -601,7 +601,7 @@ export default function BookingFlow() {
                   </button>
                   <button
                     onClick={handleSubmit}
-                    disabled={!bookingData.contact.name || !bookingData.contact.email || !bookingData.acceptedTerms || isSubmitting}
+                    disabled={!bookingData.contact.name || !bookingData.contact.email || !bookingData.contact.phone || !bookingData.acceptedTerms || isSubmitting}
                     className="cta-pill primary flex-1 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isSubmitting ? commonT('loading') : t('form.submit')}
