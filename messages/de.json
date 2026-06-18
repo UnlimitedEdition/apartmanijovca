@@ -103,7 +103,7 @@
     },
     "featured": {
       "title": "Wählen Sie Ihren perfekten Ausblick",
-      "subtitle": "Unsere modernsten Apartments am Bovan-See",
+      "subtitle": "Unsere modernsten Apartments am Ufer des Bovan-Sees — gestaltet für Komfort und vollkommene Entspannung.",
       "viewAll": "Alle Apartments ansehen",
       "checkAvailability": "Verfügbarkeit prüfen",
       "badge": "Empfohlen"
@@ -133,7 +133,7 @@
       "q2": "Gibt es Parkplätze vor Ort?",
       "a2": "Ja, wir bieten kostenlose Privatparkplätze für alle unsere Gäste direkt am Haus.",
       "q3": "Sind Haustiere erlaubt?",
-      "a3": "Bitte kontaktieren Sie uns vorab bezüglich Haustieren, da dies vom jeweiligen Apartment abhängt.",
+      "a3": "Leider sind Haustiere in den Apartments nicht erlaubt.",
       "q4": "Wie weit ist der Strand entfernt?",
       "a4": "Ja, wir haben einen privaten Strand für unsere Gäste, nur 2-3 Gehminuten entfernt.",
       "q5": "Ist WLAN verfügbar?",
@@ -147,7 +147,7 @@
       "q9": "Sind Bettwäsche und Handtücher vorhanden?",
       "a9": "Ja, frische Bettwäsche und Handtücher liegen bei Ihrer Ankunft für Sie bereit.",
       "q10": "Gibt es Geschäfte in der Nähe?",
-      "a10": "Es gibt kleine Geschäfte in der Nähe für den täglichen Bedarf, größere Supermärkte sind in Sokobanja (10 Min. Fahrt).",
+      "a10": "Es gibt kleine Geschäfte in der Nähe für den täglichen Bedarf, größere Supermärkte sind in Aleksinac (15 km).",
       "moreQuestions": "Haben Sie weitere Fragen? Kontaktieren Sie uns direkt über WhatsApp"
     },
     "testimonials": {
@@ -437,13 +437,13 @@
     "directions": "Wegbeschreibung",
     "reachTitle": "So erreichen Sie uns",
     "byCarTitle": "Mit dem Auto",
-    "byCarDesc": "Aus Richtung Belgrad/Niš (Autobahn E75): Nehmen Sie die Ausfahrt Bovan und folgen Sie der Beschilderung zum Bovan-See. Wir befinden uns im Bereich \"Vikend naselje\".",
+    "byCarDesc": "Aus Richtung Belgrad/Niš (Autobahn E75): Nehmen Sie die Ausfahrt Aleksinac und folgen Sie der Beschilderung zum Bovan-See. Wir befinden uns im Bereich \"Vikend naselje\".",
     "byBusTitle": "Mit dem Bus",
     "byBusDesc": "Nehmen Sie einen Bus nach Bovan. Vom Bahnhof dauert ein Taxi zum Bovan-See ca. 15 Minuten (ca. 10€).",
     "googleMaps": "In Google Maps öffnen",
     "callDirections": "Anrufen für Wegbeschreibung",
     "addressName": "Apartments Jovča",
-    "addressStreet": "Wochenendsiedlung (Jovča)",
+    "addressStreet": "Bukovička 125",
     "addressLake": "Bovan See",
     "addressCity": "18230 Bovan, Serbien",
     "nearbyTitle": "In der Nähe",
@@ -452,7 +452,7 @@
     "sokolica": "Festung Sokolica",
     "sokolicaDesc": "Mittelalterliche Festung mit Panoramablick - 20 km entfernt",
     "nis": "Niš",
-    "nisDesc": "Historische Stadt mit vielen Sehenswürdigkeiten - 30 km entfernt"
+    "nisDesc": "Historische Stadt mit vielen Sehenswürdigkeiten - 55 km entfernt"
   },
   "reviews": {
     "title": "Gästebewertungen",
@@ -561,11 +561,11 @@
         },
         {
           "question": "Sind Haustiere erlaubt?",
-          "answer": "Um den Komfort aller Gäste zu gewährleisten, sind Haustiere generell nicht erlaubt. Bitte kontaktieren Sie uns jedoch für besondere Anfragen."
+          "answer": "Um den Komfort und die Sauberkeit für alle Gäste zu gewährleisten, sind Haustiere in unseren Apartments leider nicht erlaubt."
         },
         {
           "question": "Ist der Strand zugänglich?",
-          "answer": "Ja, unsere Gäste haben privaten Zugang zum Seeufer, nur 2 Gehminuten von den Apartments entfernt."
+          "answer": "Ja, unsere Gäste haben privaten Zugang zum Seeufer, nur 2-3 Gehminuten von den Apartments entfernt."
         }
       ]
     },
@@ -800,7 +800,7 @@
         "item1": "Ruhezeiten: 22:00 - 08:00 Uhr. Laute Musik, Schreien und Lärm sind streng verboten. Verstöße können zur Beendigung des Aufenthalts ohne Rückerstattung führen.",
         "item2": "Maximale Gästezahl: gemäß Apartment-Kapazität. Zusätzliche Gäste sind ohne vorherige Ankündigung und Aufpreis (20€/Person/Nacht) nicht erlaubt.",
         "item3": "Rauchen ist in Innenräumen streng verboten. Nur auf der ausgewiesenen Terrasse erlaubt. Strafe für Rauchen in Innenräumen: 100€.",
-        "item4": "Haustiere sind mit vorheriger Ankündigung und einem Aufpreis von 15€/Tag erlaubt. Der Eigentümer ist für Verhalten und Sauberkeit verantwortlich."
+        "item4": "Haustiere sind nicht erlaubt."
       },
       "s5": {
         "title": "5. Verbote und Sicherheit",

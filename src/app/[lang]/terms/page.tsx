@@ -1,11 +1,9 @@
 import { Metadata } from 'next'
-import { useTranslations } from 'next-intl'
 import { getTranslations } from 'next-intl/server'
 import { Locale } from '@/lib/types/database'
 import { getBaseUrl, CONTACT_EMAIL, CONTACT_PHONE, WHATSAPP_NUMBER } from '@/lib/seo/config'
 import { generateMetaTags } from '@/lib/seo/meta-generator'
 import { generateHreflangTags } from '@/lib/seo/hreflang'
-import { generateOpenGraphTags } from '@/lib/seo/social-media'
 import { generateBreadcrumbSchema } from '@/lib/seo/structured-data'
 import { getKeywordsString } from '@/lib/seo/keywords'
 
@@ -33,23 +31,6 @@ export async function generateMetadata({ params: paramsInput }: PageProps): Prom
     locale
   })
 
-  generateOpenGraphTags({
-    title: t('terms.title'),
-    description: t('terms.description'),
-    url: `${baseUrl}/${locale}/terms`,
-    type: 'website',
-    locale,
-    siteName: 'Apartmani Jovča',
-    images: [{
-      url: `${baseUrl}/images/background.jpg`,
-      width: 1200,
-      height: 630,
-      alt: t('terms.ogImageAlt')
-    }]
-  })
-
-  const breadcrumbSchema = generateBreadcrumbSchema('/terms', locale)
-
   return {
     title: metaTags.title,
     description: metaTags.description,
@@ -58,9 +39,7 @@ export async function generateMetadata({ params: paramsInput }: PageProps): Prom
     alternates: {
       canonical: metaTags.canonical,
       languages: hreflangTags.reduce((acc, tag) => {
-        if (tag.hreflang !== 'x-default') {
-          acc[tag.hreflang] = tag.href
-        }
+        acc[tag.hreflang] = tag.href
         return acc
       }, {} as Record<string, string>)
     },
@@ -82,17 +61,22 @@ export async function generateMetadata({ params: paramsInput }: PageProps): Prom
       description: t('terms.description'),
       images: [`${baseUrl}/images/background.jpg`]
     },
-    other: {
-      'application/ld+json': JSON.stringify(breadcrumbSchema)
-    }
   }
 }
 
-export default function TermsPage() {
-  const t = useTranslations('legal.terms')
+export default async function TermsPage({ params: paramsInput }: PageProps) {
+  const params = await paramsInput
+  const locale = params.lang as Locale
+  const t = await getTranslations({ locale, namespace: 'legal.terms' })
+  const breadcrumbSchema = generateBreadcrumbSchema('/terms', locale)
 
   return (
-    <div className="container mx-auto px-4 py-16 3xl:py-20 4xl:py-24">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema).replace(/</g, '\\u003c') }}
+      />
+      <div className="container mx-auto px-4 py-16 3xl:py-20 4xl:py-24">
       {/* Hero */}
       <div className="stagger-fade-in text-center py-20 text-white mb-12">
         <h1 className="text-4xl md:text-5xl font-extrabold text-shadow-strong tracking-wide mb-4">
@@ -209,5 +193,6 @@ export default function TermsPage() {
         </div>
       </div>
     </div>
+    </>
   )
 }

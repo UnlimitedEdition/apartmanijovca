@@ -103,7 +103,7 @@
     },
     "featured": {
       "title": "Scegli la tua vista perfetta",
-      "subtitle": "I nostri appartamenti più moderni sul Lago Bovan",
+      "subtitle": "I nostri appartamenti più moderni sulla riva del Lago di Bovan — progettati per comfort e completo relax.",
       "viewAll": "Vedi tutti gli appartamenti",
       "checkAvailability": "Verifica disponibilità",
       "badge": "In primo piano"
@@ -133,7 +133,7 @@
       "q2": "C'è un parcheggio disponibile?",
       "a2": "Sì, offriamo un parcheggio privato gratuito per tutti i nostri ospiti direttamente presso la struttura.",
       "q3": "Sono ammessi animali domestici?",
-      "a3": "Vi preghiamo di contattarci in anticipo per gli animali domestici, poiché dipende dall'appartamento specifico.",
+      "a3": "Purtroppo, gli animali domestici non sono ammessi negli appartamenti.",
       "q4": "Quanto dista la spiaggia?",
       "a4": "Sì, abbiamo una spiaggia privata per i nostri ospiti, a soli 2-3 minuti a piedi.",
       "q5": "C'è il WiFi disponibile?",
@@ -147,7 +147,7 @@
       "q9": "Lenzuola e asciugamani sono forniti?",
       "a9": "Sì, lenzuola e asciugamani puliti sono pronti per voi al vostro arrivo.",
       "q10": "Ci sono negozi nelle vicinanze?",
-      "a10": "Ci sono piccoli negozi nelle vicinanze per le necessità quotidiane, i supermercati più grandi si trovano a Sokobanja (10 minuti in auto).",
+      "a10": "Ci sono piccoli negozi nelle vicinanze per le necessità quotidiane, i supermercati più grandi si trovano ad Aleksinac (15 km).",
       "moreQuestions": "Hai altre domande? Contattaci direttamente tramite WhatsApp"
     },
     "testimonials": {
@@ -437,13 +437,13 @@
     "directions": "Ottieni indicazioni",
     "reachTitle": "Come raggiungerci",
     "byCarTitle": "In auto",
-    "byCarDesc": "Da Belgrado/Niš (autostrada E75): uscire ad Bovan e seguire le indicazioni per il Lago Bovan. Ci troviamo nella zona \"Vikend naselje\".",
+    "byCarDesc": "Da Belgrado/Niš (autostrada E75): uscire ad Aleksinac e seguire le indicazioni per il Lago Bovan. Ci troviamo nella zona \"Vikend naselje\".",
     "byBusTitle": "In autobus",
     "byBusDesc": "Prendere un autobus per Bovan. Dalla stazione, un taxi per il Lago Bovan impiega circa 15 minuti (circa 10€).",
     "googleMaps": "Apri in Google Maps",
     "callDirections": "Chiama per indicazioni",
     "addressName": "Appartamenti Jovča",
-    "addressStreet": "Residenza estiva (Jovča)",
+    "addressStreet": "Bukovička 125",
     "addressLake": "Lago di Bovan",
     "addressCity": "18230 Bovan, Serbia",
     "nearbyTitle": "Attrazioni vicine",
@@ -452,7 +452,7 @@
     "sokolica": "Fortezza di Sokolica",
     "sokolicaDesc": "Fortezza medievale con vista panoramica - a 20 km",
     "nis": "Niš",
-    "nisDesc": "Città storica con molte attrazioni - a 30 km"
+    "nisDesc": "Città storica con molte attrazioni - a 55 km"
   },
   "reviews": {
     "title": "Recensioni degli ospiti",
@@ -561,11 +561,11 @@
         },
         {
           "question": "Sono ammessi animali domestici?",
-          "answer": "Per garantire il comfort di tutti gli ospiti, gli animali domestici generalmente non sono ammessi. Tuttavia, contattateci per richieste speciali."
+          "answer": "Per garantire il comfort e la pulizia per tutti gli ospiti, gli animali domestici non sono ammessi nei nostri appartamenti."
         },
         {
           "question": "La spiaggia è accessibile?",
-          "answer": "Sì, i nostri ospiti hanno accesso privato alla riva del lago, a soli 2 minuti a piedi dagli appartamenti."
+          "answer": "Sì, i nostri ospiti hanno accesso privato alla riva del lago, a soli 2-3 minuti a piedi dagli appartamenti."
         }
       ]
     },
@@ -800,7 +800,7 @@
         "item1": "Orario di silenzio: 22:00 - 08:00. Musica ad alto volume, urla e rumori sono severamente vietati. La violazione può comportare la cessazione del soggiorno senza rimborso.",
         "item2": "Numero massimo di ospiti: secondo la capacità dell'appartamento. Ospiti aggiuntivi non sono ammessi senza preavviso e supplemento (20€/persona/notte).",
         "item3": "È severamente vietato fumare all'interno. Consentito solo sulla terrazza designata. Penale per fumare all'interno: 100€.",
-        "item4": "Gli animali domestici sono ammessi con preavviso e un supplemento di 15€/giorno. Il proprietario è responsabile del comportamento e della pulizia."
+        "item4": "Gli animali domestici non sono ammessi."
       },
       "s5": {
         "title": "5. Divieti e Sicurezza",

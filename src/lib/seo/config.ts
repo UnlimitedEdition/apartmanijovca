@@ -8,7 +8,7 @@
 // ============================================
 // CENTRALIZED CONFIGURATION - EDIT HERE ONLY
 // ============================================
-export const PRODUCTION_URL = 'https://apartmani-jovca.vercel.app'
+export const PRODUCTION_URL = (process.env.NEXT_PUBLIC_BASE_URL?.replace(/\/$/, '')) || 'https://apartmani-jovca.vercel.app'
 export const CONTACT_EMAIL = 'apartmanijovca@gmail.com'
 export const CONTACT_PHONE = '+381 65 237 8080'
 export const WHATSAPP_NUMBER = '+381 65 237 8080'
@@ -47,6 +47,16 @@ export interface SEOConfig {
       latitude: number
       longitude: number
     }
+    /** Founding year of the business (for schema.org foundingDate) */
+    foundingYear: number
+    /** Standard check-in time in HH:MM format */
+    checkinTime: string
+    /** Standard check-out time in HH:MM format */
+    checkoutTime: string
+    /** Regions/cities served — for schema.org areaServed */
+    areaServed: string[]
+    /** Geographic service radius in meters — for schema.org GeoCircle */
+    geoRadius: number
   }
 }
 
@@ -116,16 +126,21 @@ export function getSEOConfig(): SEOConfig {
       phone: CONTACT_PHONE,
       email: CONTACT_EMAIL,
       address: {
-        street: 'Jovča bb',
+        street: 'Bukovička 125',
         city: 'Bovan',
         region: 'Nišavski okrug',
-        postalCode: '18220',
-        country: 'Serbia',
+        postalCode: '18230',
+        country: 'RS',
       },
       geo: {
-        latitude: 43.5333,
-        longitude: 21.7000,
+        latitude: 43.64592019,
+        longitude: 21.70277774,
       },
+      foundingYear: 2015,
+      checkinTime: '14:00',
+      checkoutTime: '10:00',
+      areaServed: ['Bovansko jezero', 'Bovan', 'Aleksinac', 'Sokobanja', 'Niš'],
+      geoRadius: 50000,
     },
   }
 }

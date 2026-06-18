@@ -12,9 +12,9 @@
     "q3": "Koliko je brz WiFi?",
     "a3": "Nudimo brzi optički WiFi u celom objektu, pogodan za rad na daljinu i strimovanje sadržaja visoke definicije.",
     "q4": "Da li dozvoljavate kućne ljubimce?",
-    "a4": "Kako bismo osigurali udobnost svih gostiju, ljubimci generalno nisu dozvoljeni. Ipak, kontaktirajte nas za posebne zahteve.",
+    "a4": "Nažalost, kućni ljubimci nisu dozvoljeni u apartmanima.",
     "q5": "Da li je plaža blizu?",
-    "a5": "Da, imamo privatnu plažu za naše goste, samo 2 minuta hoda od apartmana."
+    "a5": "Da, imamo privatnu plažu za naše goste, samo 2–3 minuta hoda od apartmana."
   },
   "header": {
     "home": "Početna",
@@ -123,7 +123,7 @@
     },
     "featured": {
       "title": "Izaberite svoj savršen pogled",
-      "subtitle": "Svaki apartman je jedinstveno dizajniran za udobnost i opuštanje.",
+      "subtitle": "Naši najmoderniji apartmani na obali Bovanskog jezera — dizajnirani za udobnost i potpuno opuštanje.",
       "viewAll": "Pogledaj sve apartmane",
       "checkAvailability": "Proveri dostupnost",
       "badge": "Izdvajamo"
@@ -168,13 +168,13 @@
       "q3": "Koliko je brz WiFi?",
       "a3": "Nudimo brzi optički WiFi u celom objektu, pogodan za rad na daljinu i strimovanje sadržaja visoke definicije.",
       "q4": "Da li dozvoljavate kućne ljubimce?",
-      "a4": "Kako bismo osigurali udobnost svih gostiju, ljubimci generalno nisu dozvoljeni. Ipak, kontaktirajte nas za posebne zahteve.",
+      "a4": "Nažalost, kućni ljubimci nisu dozvoljeni u apartmanima.",
       "q5": "Da li je plaža blizu?",
-      "a5": "Da, imamo privatnu plažu za naše goste, samo 2 minuta hoda od apartmana.",
+      "a5": "Da, imamo privatnu plažu za naše goste, samo 2–3 minuta hoda od apartmana.",
       "q6": "Da li su apartmani klimatizovani?",
       "a6": "Da, svaki apartman je opremljen modernim, tihim klima uređajima za vaš savršen boravak tokom leta.",
       "q7": "Gde je najbliža prodavnica?",
-      "a7": "Najbliža prodavnica je u selu Bovan (500m), a veći supermarketi su u Bovanu (15km).",
+      "a7": "Najbliža prodavnica je u selu Bovan (500m), a veći supermarketi su u Aleksincu (15km).",
       "q8": "Da li obezbeđujete peškire i posteljinu?",
       "a8": "Da, sveži peškiri i kvalitetna posteljina su obezbeđeni za svakog gosta i menjaju se nedeljno ili po potrebi.",
       "q9": "Kakva je politika otkazivanja?",
@@ -460,13 +460,13 @@
     "directions": "Uputstva za dolazak",
     "reachTitle": "Kako do nas",
     "byCarTitle": "Automobilom",
-    "byCarDesc": "Iz pravca Beograda/Niša (autoput E75): Isključite se kod Bovana i pratite znakove za Bovansko jezero. Nalazimo se u naselju \"Vikend naselje\".",
+    "byCarDesc": "Iz pravca Beograda/Niša (autoput E75): Isključite se kod Aleksinca i pratite znakove za Bovansko jezero. Nalazimo se u naselju \"Vikend naselje\".",
     "byBusTitle": "Autobusom",
     "byBusDesc": "Idite autobusom do Bovana. Sa stanice, taksi do jezera Bovan traje oko 15 minuta (oko 10€).",
     "googleMaps": "Otvori u Google Mapama",
     "callDirections": "Pozovite za instrukcije",
     "addressName": "Apartmani Jovča",
-    "addressStreet": "Vikend naselje (Jovča)",
+    "addressStreet": "Bukovička 125",
     "addressLake": "Bovansko jezero",
     "addressCity": "18230 Bovan, Srbija",
     "nearbyTitle": "U blizini",
@@ -475,7 +475,7 @@
     "sokolica": "Tvrđava Sokolica",
     "sokolicaDesc": "Srednjovekovna tvrđava sa panoramskim pogledom - 20 km udaljena",
     "nis": "Niš",
-    "nisDesc": "Istorijski grad sa many atrakcijama - 30 km udaljen"
+    "nisDesc": "Istorijski grad sa mnogo atrakcija - 55 km udaljen"
   },
   "reviews": {
     "title": "Recenzije gostiju",
@@ -610,7 +610,7 @@
       "s2": {
         "title": "2. Prijava i odjava",
         "content": "Pravila za check-in i check-out:",
-        "item1": "Prijava (check-in): od 14:00 časova. Ranija prijava moguća uz prethodnu najavu i dostupnost (dopl ata 10€/sat)",
+        "item1": "Prijava (check-in): od 14:00 časova. Ranija prijava moguća uz prethodnu najavu i dostupnost (doplata 10€/sat)",
         "item2": "Odjava (check-out): do 10:00 časova. Kasnija odjava moguća uz prethodnu najavu i dostupnost (doplata 10€/sat)",
         "item3": "Prijava gostiju je zakonski obavezna - potreban je važeći lični dokument (lična karta ili pasoš) za sve goste"
       },
@@ -628,7 +628,7 @@
         "item1": "Vreme tišine: 22:00 - 08:00. Glasna muzika, vikanje i buka su strogo zabranjeni. Kršenje može dovesti do preke ida boravka bez povraćaja novca.",
         "item2": "Maksimalan broj gostiju: prema kapacitetu apartmana. Dodatni gosti nisu dozvoljeni bez prethodne najave i dop late (20€/osoba/noć).",
         "item3": "Pušenje je strogo zabranjeno u zatvorenom prostoru. Dozvoljeno je samo na označenoj terasi. Kazna za pušenje u objektu: 100€.",
-        "item4": "Kućni ljubimci su dozvoljeni uz prethodnu najavu i doplatu od 15€/dan. Vlasnik je odgovoran za ponašanje i čistoću."
+        "item4": "Kućni ljubimci nisu dozvoljeni."
       },
       "s5": {
         "title": "5. Zabrane i bezbednost",

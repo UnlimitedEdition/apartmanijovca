@@ -4,7 +4,6 @@ import { Locale } from '@/lib/types/database'
 import { getBaseUrl } from '@/lib/seo/config'
 import { generateMetaTags } from '@/lib/seo/meta-generator'
 import { generateHreflangTags } from '@/lib/seo/hreflang'
-import { generateOpenGraphTags } from '@/lib/seo/social-media'
 import { generateLocalBusinessSchema, generateBreadcrumbSchema } from '@/lib/seo/structured-data'
 import { getKeywordsString } from '@/lib/seo/keywords'
 
@@ -34,28 +33,6 @@ export async function generateMetadata({ params: paramsInput }: PageProps): Prom
     locale
   })
 
-  // Generate Open Graph tags
-  generateOpenGraphTags({
-    title: t('location.title'),
-    description: t('location.description'),
-    url: `${baseUrl}/${locale}/location`,
-    type: 'website',
-    locale,
-    siteName: 'Apartmani Jovča',
-    images: [{
-      url: `${baseUrl}/images/background.jpg`,
-      width: 1200,
-      height: 630,
-      alt: t('location.ogImageAlt')
-    }]
-  })
-
-  // Generate LocalBusiness schema with geo coordinates
-  const localBusinessSchema = generateLocalBusinessSchema(locale)
-
-  // Generate Breadcrumb schema
-  const breadcrumbSchema = generateBreadcrumbSchema('/location', locale)
-
   return {
     title: metaTags.title,
     description: metaTags.description,
@@ -64,9 +41,7 @@ export async function generateMetadata({ params: paramsInput }: PageProps): Prom
     alternates: {
       canonical: metaTags.canonical,
       languages: hreflangTags.reduce((acc, tag) => {
-        if (tag.hreflang !== 'x-default') {
-          acc[tag.hreflang] = tag.href
-        }
+        acc[tag.hreflang] = tag.href
         return acc
       }, {} as Record<string, string>)
     },
@@ -87,22 +62,27 @@ export async function generateMetadata({ params: paramsInput }: PageProps): Prom
       title: t('location.title'),
       description: t('location.description'),
       images: [`${baseUrl}/images/background.jpg`]
-    },
-    other: {
-      'application/ld+json': JSON.stringify([
-        localBusinessSchema,
-        breadcrumbSchema
-      ])
     }
   }
 }
 
 export default async function LocationPage({ params: paramsInput }: PageProps) {
   const params = await paramsInput
-  const t = await getTranslations({ locale: params.lang, namespace: 'location' })
+  const locale = params.lang as Locale
+  const t = await getTranslations({ locale, namespace: 'location' })
+
+  const locationSchema = [
+    generateLocalBusinessSchema(locale),
+    generateBreadcrumbSchema('/location', locale)
+  ]
 
   return (
-    <div className="container py-10 3xl:py-14 4xl:py-16">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(locationSchema).replace(/</g, '\\u003c') }}
+      />
+      <div className="container py-10 3xl:py-14 4xl:py-16">
       {/* Hero */}
       <div className="stagger-fade-in text-center py-20 text-white mb-8 3xl:mb-12 4xl:mb-16">
         <h1 className="text-4xl md:text-5xl font-extrabold text-shadow-strong tracking-wide mb-4">
@@ -206,5 +186,6 @@ export default async function LocationPage({ params: paramsInput }: PageProps) {
         </div>
       </div>
     </div>
+    </>
   )
 }

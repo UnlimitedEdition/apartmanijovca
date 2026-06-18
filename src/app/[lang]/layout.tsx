@@ -8,6 +8,10 @@ interface LangLayoutProps {
   params: Promise<{ lang: string }>
 }
 
+export function generateStaticParams() {
+  return [{ lang: 'sr' }, { lang: 'en' }, { lang: 'de' }, { lang: 'it' }]
+}
+
 export default async function LangLayout({ children, params }: LangLayoutProps) {
   const { lang } = await params
   const messages = await getMessages()

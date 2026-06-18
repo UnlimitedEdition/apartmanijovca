@@ -44,9 +44,7 @@ export function convertTwitterToMetadata(twitterTags: TwitterCardTags) {
  */
 export function convertHreflangToMetadata(hreflangTags: HreflangTag[]) {
   return hreflangTags.reduce((acc, tag) => {
-    if (tag.hreflang !== 'x-default') {
-      acc[tag.hreflang] = tag.href
-    }
+    acc[tag.hreflang] = tag.href
     return acc
   }, {} as Record<string, string>)
 }

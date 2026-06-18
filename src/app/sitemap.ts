@@ -32,6 +32,7 @@ const STATIC_PAGES = [
   { path: '/gallery', priority: 0.7, changeFreq: 'weekly' as const },
   { path: '/attractions', priority: 0.7, changeFreq: 'monthly' as const },
   { path: '/prices', priority: 0.7, changeFreq: 'weekly' as const },
+  { path: '/guide', priority: 0.8, changeFreq: 'monthly' as const },
   { path: '/privacy', priority: 0.3, changeFreq: 'yearly' as const },
   { path: '/terms', priority: 0.3, changeFreq: 'yearly' as const },
 ]
@@ -51,11 +52,14 @@ function getStaticPages(): SitemapEntry[] {
 
       entries.push({
         url,
-        lastModified: new Date(),
+        lastModified: '2026-06-18',
         changeFrequency: page.changeFreq,
         priority: page.priority,
         alternates: {
-          languages: alternates
+          languages: {
+            ...alternates,
+            'x-default': `${BASE_URL}/sr${page.path}`,
+          }
         }
       })
     }
@@ -98,11 +102,14 @@ async function getDynamicPages(): Promise<SitemapEntry[]> {
 
         entries.push({
           url,
-          lastModified: apartment.updated_at ? new Date(apartment.updated_at) : new Date(),
+          lastModified: apartment.updated_at ? new Date(apartment.updated_at) : undefined,
           changeFrequency: 'weekly',
           priority: 0.7,
           alternates: {
-            languages: alternates
+            languages: {
+              ...alternates,
+              'x-default': `${BASE_URL}/sr/apartments/${apartment.slug}`,
+            }
           }
         })
       }

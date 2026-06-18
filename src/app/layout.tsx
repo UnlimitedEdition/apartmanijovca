@@ -21,6 +21,9 @@ export const metadata: Metadata = {
   description: "Rezervišite Apartmane Jovča na Bovanskom jezeru u Bovanu. Udoban smeštaj uz jezero, privatna plaža, WiFi, parking i priroda za porodični odmor.",
   manifest: '/manifest.json',
   robots: 'index, follow',
+  verification: {
+    google: process.env.NEXT_PUBLIC_GSC_VERIFICATION || 'YIGD6gW3_j4Io_M_YNs3mZAJ9AQlKMc4e0cwNBcVaWM',
+  },
   openGraph: {
     title: "Apartmani Jovča - Smeštaj na Bovanskom jezeru",
     description: "Rezervišite Apartmane Jovča na Bovanskom jezeru u Bovanu. Udoban smeštaj uz jezero, privatna plaža, WiFi, parking i priroda za porodični odmor.",
@@ -46,6 +49,11 @@ function RootLayout({
       <head>
         <meta name="theme-color" content="#2563eb" />
         <meta name="color-scheme" content="light" />
+        <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="anonymous" />
+        {process.env.NEXT_PUBLIC_SUPABASE_URL && (
+          <link rel="preconnect" href={process.env.NEXT_PUBLIC_SUPABASE_URL} crossOrigin="anonymous" />
+        )}
+        <link rel="dns-prefetch" href="https://images.unsplash.com" />
       </head>
       <body
         className="antialiased bg-transparent"
