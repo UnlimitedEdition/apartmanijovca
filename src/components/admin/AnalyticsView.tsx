@@ -31,6 +31,7 @@ interface AnalyticsData {
 export default function AnalyticsView() {
   const [data, setData] = useState<AnalyticsData | null>(null)
   const [loading, setLoading] = useState(true)
+  const [showAllTopPages, setShowAllTopPages] = useState(false)
 
   useEffect(() => {
     async function fetchAnalytics() {
@@ -60,6 +61,7 @@ export default function AnalyticsView() {
 
   if (!data) return null
 
+  const visibleTopPages = showAllTopPages ? data.topPages : data.topPages.slice(0, 3)
   const maxPageViews = Math.max(...data.topPages.map(p => p.count), 1)
 
   return (
@@ -137,7 +139,7 @@ export default function AnalyticsView() {
           </CardHeader>
           <CardContent className="p-4 sm:p-6 pt-0">
             <div className="space-y-3 sm:space-y-4">
-              {data.topPages.map((page, idx) => (
+              {visibleTopPages.map((page, idx) => (
                 <div key={idx} className="space-y-1">
                   <div className="flex items-center justify-between text-xs sm:text-sm gap-2">
                     <span className="font-medium truncate flex-1">{page.name}</span>
@@ -152,6 +154,7 @@ export default function AnalyticsView() {
                 </div>
               ))}
             </div>
+            {data.topPages.length > 3 && (showAllTopPages ? <button data-admin-analytics-toggle onClick={() => setShowAllTopPages(false)}>Prikaži manje</button> : <button data-admin-analytics-toggle onClick={() => setShowAllTopPages(true)}>Vidi još</button>)}
           </CardContent>
         </Card>
 
