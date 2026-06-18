@@ -36,16 +36,25 @@ export async function POST(request: NextRequest) {
   if (authError) return authError
   try {
     const body = await request.json()
-    const { url, caption, tags, display_order } = body
+    const { url, caption, display_order } = body
+    const tags = Array.isArray(body.tags)
+      ? body.tags.filter((tag: unknown): tag is string => typeof tag === 'string' && tag.trim().length > 0)
+      : []
+    const folder = tags[0]
 
     if (!url) {
       return NextResponse.json({ error: 'URL is required' }, { status: 400 })
+    }
+
+    if (!folder) {
+      return NextResponse.json({ error: 'Folder is required' }, { status: 400 })
     }
 
     const requestedOrder = normalizeDisplayOrder(display_order)
     const { data: orderItems, error: orderError } = await supabaseAdmin
       .from('gallery')
       .select('id, display_order')
+      .contains('tags', [folder])
 
     if (orderError) throw orderError
 
@@ -65,7 +74,7 @@ export async function POST(request: NextRequest) {
       .insert([{
         url,
         caption,
-        tags: Array.isArray(tags) ? tags : [],
+        tags,
         display_order: targetOrder
       }])
       .select()

@@ -130,7 +130,7 @@ export function getSEOConfig(): SEOConfig {
         city: 'Bovan',
         region: 'Nišavski okrug',
         postalCode: '18230',
-        country: 'RS',
+        country: 'Serbia',
       },
       geo: {
         latitude: 43.64592019,
