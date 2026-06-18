@@ -5,7 +5,7 @@ import { createBrowserClient } from '@supabase/ssr'
 import { Card } from '../../components/ui/card'
 import { Tabs, TabsContent } from '../../components/ui/tabs'
 import { Button } from '../../components/ui/button'
-import StatsCards from '../../components/admin/StatsCards'
+import StatsCards, { type StatCardFilter } from '../../components/admin/StatsCards'
 import BookingList from '../../components/admin/BookingList'
 import EnhancedApartmentManager from '../../components/admin/EnhancedApartmentManager'
 import ContentEditor from '../../components/admin/ContentEditor'
@@ -56,6 +56,7 @@ export default function AdminDashboard({ stats: initialStats }: AdminDashboardPr
   const [statsKey, setStatsKey] = useState(0) // Key to force StatsCards refresh
   const [messageCount, setMessageCount] = useState<number | null>(null)
   const [bookingCount, setBookingCount] = useState<number | null>(getActiveBookingCount(initialStats))
+  const [bookingFilter, setBookingFilter] = useState<{ status?: 'pending' | 'confirmed'; arrivalOn?: string; departureOn?: string; title?: string }>({})
 
   // Create Supabase client for logout
   const supabase = createBrowserClient(
@@ -130,6 +131,29 @@ export default function AdminDashboard({ stats: initialStats }: AdminDashboardPr
     // Refresh stats when a booking status changes
     refreshStats()
   }
+
+  // Klik na statističku karticu -> otvori Rezervacije tab sa odgovarajućim filterom (svi apartmani)
+  const goToBookings = useCallback((filter: StatCardFilter) => {
+    if (filter.type === 'arrivals') {
+      setBookingFilter({ arrivalOn: filter.date, title: 'Dolasci danas' })
+    } else if (filter.type === 'departures') {
+      setBookingFilter({ departureOn: filter.date, title: 'Odlasci danas' })
+    } else if (filter.type === 'status') {
+      setBookingFilter({
+        status: filter.status,
+        title: filter.status === 'pending' ? 'Rezervacije na čekanju' : 'Potvrđene rezervacije',
+      })
+    } else {
+      setBookingFilter({ title: 'Sve rezervacije' })
+    }
+    setActiveTab('bookings')
+  }, [])
+
+  // Otvaranje Rezervacija iz menija -> bez filtera
+  const openBookingsTab = useCallback(() => {
+    setBookingFilter({})
+    setActiveTab('bookings')
+  }, [])
 
   if (!Card || !Tabs || !Button) {
     return (
@@ -210,7 +234,7 @@ export default function AdminDashboard({ stats: initialStats }: AdminDashboardPr
               </button>
               <button
                 onClick={() => {
-                  setActiveTab('bookings')
+                  openBookingsTab()
                   document.getElementById('mobile-menu')?.classList.add('hidden')
                 }}
                 className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
@@ -350,7 +374,7 @@ export default function AdminDashboard({ stats: initialStats }: AdminDashboardPr
               Pregled
             </button>
             <button
-              onClick={() => setActiveTab('bookings')}
+              onClick={openBookingsTab}
               className={`flex items-center gap-3 w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                 activeTab === 'bookings' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted'
               }`}
@@ -432,13 +456,19 @@ export default function AdminDashboard({ stats: initialStats }: AdminDashboardPr
           
           {/* Dashboard Tab */}
           <TabsContent value="dashboard" className="space-y-6">
-            <StatsCards key={statsKey} />
-            <BookingList limit={5} title="Nedavne rezervacije" onStatusChange={handleStatusChange} />
+            <StatsCards key={statsKey} onCardClick={goToBookings} />
           </TabsContent>
 
           {/* Bookings Tab */}
           <TabsContent value="bookings">
-            <BookingList onStatusChange={handleStatusChange} />
+            <BookingList
+              key={`bk-${bookingFilter.status || ''}-${bookingFilter.arrivalOn || ''}-${bookingFilter.departureOn || ''}`}
+              title={bookingFilter.title}
+              initialStatus={bookingFilter.status}
+              arrivalOn={bookingFilter.arrivalOn}
+              departureOn={bookingFilter.departureOn}
+              onStatusChange={handleStatusChange}
+            />
           </TabsContent>
 
           {/* Apartments Tab */}

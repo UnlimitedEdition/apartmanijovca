@@ -29,6 +29,8 @@ export async function GET(request: NextRequest) {
     const startDate = searchParams.get('start_date')
     const endDate = searchParams.get('end_date')
     const occupiedOn = searchParams.get('occupied_on')
+    const arrivalOn = searchParams.get('arrival_on')
+    const departureOn = searchParams.get('departure_on')
     const search = searchParams.get('search')
     const sortBy = searchParams.get('sort_by') || 'created_at'
     const sortOrder = searchParams.get('sort_order') || 'desc'
@@ -61,6 +63,18 @@ export async function GET(request: NextRequest) {
     // Filter by occupied on specific date (check_in <= date < check_out)
     if (occupiedOn) {
       query = query.lte('check_in', occupiedOn).gt('check_out', occupiedOn)
+    }
+
+    // Filter by arrivals on a specific day (check_in === date)
+    if (arrivalOn) {
+      query = query.eq('check_in', arrivalOn)
+      if (!status || status === 'all') query = query.neq('status', 'cancelled')
+    }
+
+    // Filter by departures on a specific day (check_out === date)
+    if (departureOn) {
+      query = query.eq('check_out', departureOn)
+      if (!status || status === 'all') query = query.neq('status', 'cancelled')
     }
 
     // Apply sorting

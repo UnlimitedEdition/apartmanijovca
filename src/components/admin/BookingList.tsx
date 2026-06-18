@@ -48,6 +48,9 @@ interface BookingListProps {
   apartmentId?: string
   limit?: number
   title?: string
+  initialStatus?: StatusFilter
+  arrivalOn?: string
+  departureOn?: string
   onStatusChange?: (bookingId: string, newStatus: string) => void
 }
 
@@ -64,13 +67,18 @@ const statusConfig: Record<string, { label: string; variant: 'default' | 'second
 
 const statusOrder: StatusFilter[] = ['pending', 'confirmed', 'checked_in', 'checked_out', 'cancelled']
 
-export default function BookingList({ apartmentId, limit: propLimit, title, onStatusChange }: BookingListProps) {
+export default function BookingList({ apartmentId, limit: propLimit, title, initialStatus, arrivalOn: initialArrivalOn, departureOn: initialDepartureOn, onStatusChange }: BookingListProps) {
   const [bookings, setBookings] = useState<Booking[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
-  const [statusFilter, setStatusFilter] = useState<StatusFilter>('all')
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>(initialStatus ?? 'all')
   const [occupiedOnDate, setOccupiedOnDate] = useState<string>('')
+  const [arrivalOn, setArrivalOn] = useState<string>(initialArrivalOn ?? '')
+  const [departureOn, setDepartureOn] = useState<string>(initialDepartureOn ?? '')
+  // Debounced + guarded vrednosti koje stvarno pokreću fetch (sprečava fetch-na-svaki-keystroke)
+  const [debouncedSearch, setDebouncedSearch] = useState('')
+  const [debouncedOccupiedOn, setDebouncedOccupiedOn] = useState('')
   const [page, setPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const [updatingStatus, setUpdatingStatus] = useState<string | null>(null)
@@ -95,16 +103,22 @@ export default function BookingList({ apartmentId, limit: propLimit, title, onSt
       if (apartmentId) {
         params.append('apartment_id', apartmentId)
       }
-      if (occupiedOnDate) {
-        params.append('occupied_on', occupiedOnDate)
+      if (debouncedOccupiedOn) {
+        params.append('occupied_on', debouncedOccupiedOn)
       }
-      if (searchQuery) {
-        params.append('search', searchQuery)
+      if (arrivalOn) {
+        params.append('arrival_on', arrivalOn)
+      }
+      if (departureOn) {
+        params.append('departure_on', departureOn)
+      }
+      if (debouncedSearch) {
+        params.append('search', debouncedSearch)
       }
 
       const response = await fetch(`/api/admin/bookings?${params}`)
       if (!response.ok) throw new Error('Failed to fetch bookings')
-      
+
       const data = await response.json()
       setBookings(data.bookings || [])
       setTotalPages(data.totalPages || 1)
@@ -113,11 +127,29 @@ export default function BookingList({ apartmentId, limit: propLimit, title, onSt
     } finally {
       setLoading(false)
     }
-  }, [page, statusFilter, apartmentId, occupiedOnDate, searchQuery, limit])
+  }, [page, statusFilter, apartmentId, debouncedOccupiedOn, arrivalOn, departureOn, debouncedSearch, limit])
 
   useEffect(() => {
     fetchBookings()
   }, [fetchBookings])
+
+  // Debounce slobodne pretrage (~400ms) — ne šalji GET na svaki karakter
+  useEffect(() => {
+    const t = setTimeout(() => setDebouncedSearch(searchQuery), 400)
+    return () => clearTimeout(t)
+  }, [searchQuery])
+
+  // Debounce + sanity-guard za "Zauzeto na dan". Native date input zero-paduje godinu dok kucaš
+  // (0002 → 0020 → 0202 → 2026), pa je svaki međukorak validan ISO datum koji bi okinuo prazan fetch.
+  // Filter se primeni tek kad je datum kompletan i godina realna (2000–2100); inače = bez filtera.
+  useEffect(() => {
+    const t = setTimeout(() => {
+      const m = occupiedOnDate.match(/^(\d{4})-(\d{2})-(\d{2})$/)
+      const year = m ? Number(m[1]) : 0
+      setDebouncedOccupiedOn(m && year >= 2000 && year <= 2100 ? occupiedOnDate : '')
+    }, 450)
+    return () => clearTimeout(t)
+  }, [occupiedOnDate])
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -273,6 +305,22 @@ export default function BookingList({ apartmentId, limit: propLimit, title, onSt
         
         {/* Filters */}
         <div className="space-y-3">
+          {(arrivalOn || departureOn) && (
+            <div className="flex items-center justify-between gap-2 rounded-md border border-primary/30 bg-primary/5 px-3 py-2 text-sm">
+              <span className="font-medium">
+                {arrivalOn ? `Dolasci na dan ${formatDate(arrivalOn)}` : `Odlasci na dan ${formatDate(departureOn)}`}
+                <span className="text-muted-foreground font-normal"> · svi apartmani</span>
+              </span>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-7 px-2 shrink-0"
+                onClick={() => { setArrivalOn(''); setDepartureOn(''); setPage(1) }}
+              >
+                <X className="h-4 w-4 mr-1" /> Očisti
+              </Button>
+            </div>
+          )}
           {/* Search Bar - Full Width */}
           <div className="relative w-full">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />

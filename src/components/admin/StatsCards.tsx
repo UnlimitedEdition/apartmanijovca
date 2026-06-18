@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type KeyboardEvent } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { 
   Calendar, 
@@ -25,8 +25,15 @@ interface DashboardStats {
   totalApartments: number
 }
 
+export type StatCardFilter =
+  | { type: 'arrivals'; date: string }
+  | { type: 'departures'; date: string }
+  | { type: 'status'; status: 'pending' | 'confirmed' }
+  | { type: 'all' }
+
 interface StatsCardsProps {
   initialStats?: Partial<DashboardStats>
+  onCardClick?: (filter: StatCardFilter) => void
 }
 
 const defaultStats: DashboardStats = {
@@ -41,10 +48,35 @@ const defaultStats: DashboardStats = {
   totalApartments: 0
 }
 
-export default function StatsCards({ initialStats }: StatsCardsProps) {
+export default function StatsCards({ initialStats, onCardClick }: StatsCardsProps) {
   const [stats, setStats] = useState<DashboardStats>({ ...defaultStats, ...initialStats })
   const [loading, setLoading] = useState(!initialStats)
   const [error, setError] = useState<string | null>(null)
+
+  const todayStr = (() => {
+    const d = new Date()
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+  })()
+
+  const cardClickProps = (filter: StatCardFilter) =>
+    onCardClick
+      ? {
+          onClick: () => onCardClick(filter),
+          role: 'button' as const,
+          tabIndex: 0,
+          onKeyDown: (e: KeyboardEvent<HTMLDivElement>) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault()
+              onCardClick(filter)
+            }
+          },
+          title: 'Klikni za prikaz rezervacija (svi apartmani)',
+        }
+      : {}
+
+  const clickableClass = onCardClick
+    ? 'cursor-pointer transition-shadow hover:shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-primary'
+    : ''
 
   useEffect(() => {
     if (initialStats) {
@@ -112,7 +144,10 @@ export default function StatsCards({ initialStats }: StatsCardsProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       {/* Today's Check-ins */}
-      <Card className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-950 dark:to-green-900">
+      <Card
+        className={`bg-gradient-to-br from-green-50 to-green-100 dark:from-green-950 dark:to-green-900 ${clickableClass}`}
+        {...cardClickProps({ type: 'arrivals', date: todayStr })}
+      >
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium text-green-800 dark:text-green-200">
             Dolasci danas
@@ -130,7 +165,10 @@ export default function StatsCards({ initialStats }: StatsCardsProps) {
       </Card>
 
       {/* Today's Check-outs */}
-      <Card className="bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-950 dark:to-orange-900">
+      <Card
+        className={`bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-950 dark:to-orange-900 ${clickableClass}`}
+        {...cardClickProps({ type: 'departures', date: todayStr })}
+      >
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium text-orange-800 dark:text-orange-200">
             Odlasci danas
@@ -148,7 +186,10 @@ export default function StatsCards({ initialStats }: StatsCardsProps) {
       </Card>
 
       {/* Pending Bookings */}
-      <Card className="bg-gradient-to-br from-yellow-50 to-yellow-100 dark:from-yellow-950 dark:to-yellow-900">
+      <Card
+        className={`bg-gradient-to-br from-yellow-50 to-yellow-100 dark:from-yellow-950 dark:to-yellow-900 ${clickableClass}`}
+        {...cardClickProps({ type: 'status', status: 'pending' })}
+      >
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium text-yellow-800 dark:text-yellow-200">
             Na čekanju
@@ -166,7 +207,10 @@ export default function StatsCards({ initialStats }: StatsCardsProps) {
       </Card>
 
       {/* Confirmed Bookings */}
-      <Card className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900">
+      <Card
+        className={`bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900 ${clickableClass}`}
+        {...cardClickProps({ type: 'status', status: 'confirmed' })}
+      >
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium text-blue-800 dark:text-blue-200">
             Potvrđeno
@@ -184,7 +228,7 @@ export default function StatsCards({ initialStats }: StatsCardsProps) {
       </Card>
 
       {/* Total Bookings */}
-      <Card>
+      <Card className={clickableClass} {...cardClickProps({ type: 'all' })}>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Ukupno rezervacija</CardTitle>
           <Users className="h-5 w-5 md:h-4 md:w-4 text-muted-foreground" />
