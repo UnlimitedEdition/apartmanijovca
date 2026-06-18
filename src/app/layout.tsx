@@ -54,6 +54,8 @@ function RootLayout({
           <link rel="preconnect" href={process.env.NEXT_PUBLIC_SUPABASE_URL} crossOrigin="anonymous" />
         )}
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
+        {/* Preload the global fixed background (LCP/FCP element on every page) */}
+        <link rel="preload" as="image" href="/images/background.jpg" fetchPriority="high" />
       </head>
       <body
         className="antialiased bg-transparent"
