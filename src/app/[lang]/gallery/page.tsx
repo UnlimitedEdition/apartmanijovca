@@ -169,10 +169,10 @@ export default async function GalleryPage({
     lang === 'it' ? 'Galleria' : 'Galerija'
 
   const subtitle =
-    lang === 'sr' ? 'Uživajte u prelepim prizorima Bovanaskog jezera i enterijeru naših apartmana.' :
+    lang === 'sr' ? 'Uživajte u prelepim prizorima Bovanskog jezera i enterijeru naših apartmana.' :
     lang === 'en' ? 'Enjoy the beautiful views of Lake Bovan and the interior of our apartments.' :
-    lang === 'de' ? 'Genießen Sie die schöne Aussicht auf den Bovan-See und das Innere naših Apartments.' :
-    lang === 'it' ? "Godeti le bellisime viste del lago Bovan e l'interno dei nostri appartamenti." : ''
+    lang === 'de' ? 'Genießen Sie die schöne Aussicht auf den Bovan-See und das Interieur unserer Apartments.' :
+    lang === 'it' ? "Godetevi le bellissime viste del lago Bovan e gli interni dei nostri appartamenti." : ''
 
   return (
     <div className="min-h-screen">
