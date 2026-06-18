@@ -1,4 +1,4 @@
-import { Html, Head, Body, Container, Section, Text, Heading } from '@react-email/components'
+import { Html, Head, Body, Container, Section, Text, Heading } from './components'
 
 interface CheckInInstructionsEmailProps {
   booking: {
