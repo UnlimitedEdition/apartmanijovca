@@ -62,11 +62,16 @@ const nextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
 
-  // External packages for server components
+  // External packages for server components.
+  // NOTE: @supabase/ssr must NOT be externalized under Next 16 / Turbopack —
+  // its ESM build uses an extensionless relative import (`./version`) which
+  // Node's strict ESM resolver cannot load when the package is external,
+  // causing ERR_MODULE_NOT_FOUND -> HTTP 500 on every route that uses
+  // createServerClient (middleware + all /[lang] routes). Letting the bundler
+  // transpile it resolves the import at build time.
   serverExternalPackages: [
     '@supabase/supabase-js',
     '@supabase/auth-helpers-nextjs',
-    '@supabase/ssr',
   ],
 
   // Redirects for SEO and user experience
