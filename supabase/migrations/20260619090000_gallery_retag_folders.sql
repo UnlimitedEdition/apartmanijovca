@@ -19,9 +19,9 @@ SET tags = (
 )
 WHERE tags && ARRAY['exterior','rooms','lake','terrace','view'];
 
--- 2) Slike bez tagova -> default folder 'Okolina' (da nisu nevidljive)
+-- 2) Slike bez tagova -> 'Eksterijer' (postoji u Nikolinim novim folderima; ionako se vide u "Sve")
 UPDATE public.gallery
-SET tags = ARRAY['Okolina']
+SET tags = ARRAY['Eksterijer']
 WHERE tags IS NULL OR array_length(tags, 1) IS NULL;
 
 -- Provera posle:
