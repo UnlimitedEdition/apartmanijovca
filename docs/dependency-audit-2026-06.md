@@ -239,6 +239,6 @@ Verification after the change:
 
 - `npm test` — 18 suites passed, 367 tests passed.
 - `npm run lint` — passed with no warnings or errors.
-- `npm run build` — passed. Build emits a non-fatal Supabase Edge Runtime warning from `@supabase/supabase-js` runtime metadata detection; no runtime code changes were made for that warning in this Tier A pass.
+- `npm run build` - passed. Supabase Edge Runtime warning fixed by direct middleware import, current build only emits webpack cache warnings.
 
 Remaining audit items are the standalone safe PRs and Tier B migration listed above.

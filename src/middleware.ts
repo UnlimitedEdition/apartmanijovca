@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createServerClient } from '@supabase/ssr'
+import { createServerClient } from '@supabase/ssr/dist/module/createServerClient.js'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import createIntlMiddleware from 'next-intl/middleware'
