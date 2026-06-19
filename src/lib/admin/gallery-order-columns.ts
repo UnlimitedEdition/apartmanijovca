@@ -47,3 +47,12 @@ export function getGalleryFolderOrder(item: GalleryOrderColumnRecord, folder: st
   if (typeof value === 'number' && Number.isFinite(value)) return value
   return typeof item.display_order === 'number' && Number.isFinite(item.display_order) ? item.display_order : 1
 }
+
+export function getGalleryVisibleFolderOrder(
+  item: GalleryOrderColumnRecord,
+  folder: string,
+  listIndex: number
+): number {
+  if (Number.isInteger(listIndex) && listIndex >= 0) return listIndex + 1
+  return getGalleryFolderOrder(item, folder)
+}

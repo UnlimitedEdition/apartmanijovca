@@ -24,6 +24,7 @@ import {
   DEFAULT_GALLERY_FOLDER,
   GALLERY_FOLDERS,
   getGalleryFolderOrder,
+  getGalleryVisibleFolderOrder,
 } from '@/lib/admin/gallery-order-columns'
 
 interface GalleryItem {
@@ -103,6 +104,12 @@ export default function GalleryManager() {
     return getItemsInFolder(folder === ALL_FOLDER ? DEFAULT_IMAGE_FOLDER : folder).length + 1
   }, [getItemsInFolder])
 
+  const getVisibleFolderOrder = useCallback((item: GalleryItem, folder: string) => {
+    const sortedItems = getItemsInFolder(folder)
+    const index = sortedItems.findIndex(folderItem => folderItem.id === item.id)
+    return getGalleryVisibleFolderOrder(item, folder, index)
+  }, [getItemsInFolder])
+
   const fetchItems = useCallback(async () => {
     try {
       setLoading(true)
@@ -152,7 +159,7 @@ export default function GalleryManager() {
 
   const handleEdit = (item: GalleryItem) => {
     const itemFolder = GALLERY_CATEGORIES.find(category => category !== ALL_FOLDER && item.tags?.includes(category)) || DEFAULT_IMAGE_FOLDER
-    const folderOrder = getGalleryFolderOrder(item, itemFolder)
+    const folderOrder = getVisibleFolderOrder(item, itemFolder)
 
     setError(null)
     setSelectedFolder(itemFolder)
@@ -320,9 +327,9 @@ export default function GalleryManager() {
     }
   }
 
-  const folderItems = getItemsInFolder(selectedFolder).map(item => ({
+  const folderItems = getItemsInFolder(selectedFolder).map((item, index) => ({
     ...item,
-    folderOrder: getGalleryFolderOrder(item, selectedFolder)
+    folderOrder: getGalleryVisibleFolderOrder(item, selectedFolder, index)
   }))
   const folderCounts = GALLERY_CATEGORIES.reduce<Record<string, number>>((counts, category) => {
     counts[category] = category === ALL_FOLDER

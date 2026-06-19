@@ -4,6 +4,7 @@ import {
   GALLERY_FOLDERS,
   getGalleryFolderOrder,
   getGalleryOrderColumn,
+  getGalleryVisibleFolderOrder,
   isGalleryFolder,
 } from '@/lib/admin/gallery-order-columns'
 
@@ -23,6 +24,16 @@ describe('gallery folder order columns', () => {
   it('guards valid gallery folders', () => {
     expect(isGalleryFolder('Sobe')).toBe(true)
     expect(isGalleryFolder('Okolina')).toBe(false)
+  })
+
+  it('shows normalized one-based numbers for folder lists', () => {
+    const item = {
+      display_order: 20,
+      rooms_order: null,
+    }
+
+    expect(getGalleryVisibleFolderOrder(item, 'Sobe', 2)).toBe(3)
+    expect(getGalleryVisibleFolderOrder(item, 'Sobe', -1)).toBe(20)
   })
 
   it('reads folder-specific order before falling back to global order', () => {

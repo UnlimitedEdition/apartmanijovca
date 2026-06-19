@@ -258,64 +258,20 @@ export default function EnhancedApartmentManager() {
               {/* Tab 2: Description with Checklists */}
               <TabsContent value="description" className="space-y-4 sm:space-y-6">
                 <div className="space-y-4 sm:space-y-6">
-                  {/* Description for all languages */}
+                  {/* Serbian description only */}
                   <div>
-                    <label className="block text-xs sm:text-sm font-semibold mb-2">Detaljan opis apartmana *</label>
-                    <div className="space-y-2 sm:space-y-3">
-                      <div>
-                        <label className="text-[10px] sm:text-xs text-gray-600">Srpski (SR)</label>
-                        <Textarea
-                          value={selectedApartment.description.sr}
-                          onChange={(e) => setSelectedApartment({ 
-                            ...selectedApartment, 
-                            description: { ...selectedApartment.description, sr: e.target.value }
-                          })}
-                          placeholder="Opišite apartman..."
-                          rows={3}
-                          required
-                          className="text-xs sm:text-sm"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-[10px] sm:text-xs text-gray-600">English (EN)</label>
-                        <Textarea
-                          value={selectedApartment.description.en}
-                          onChange={(e) => setSelectedApartment({ 
-                            ...selectedApartment, 
-                            description: { ...selectedApartment.description, en: e.target.value }
-                          })}
-                          placeholder="Describe the apartment..."
-                          rows={3}
-                          className="text-xs sm:text-sm"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-[10px] sm:text-xs text-gray-600">Deutsch (DE)</label>
-                        <Textarea
-                          value={selectedApartment.description.de}
-                          onChange={(e) => setSelectedApartment({ 
-                            ...selectedApartment, 
-                            description: { ...selectedApartment.description, de: e.target.value }
-                          })}
-                          placeholder="Beschreiben Sie..."
-                          rows={3}
-                          className="text-xs sm:text-sm"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-[10px] sm:text-xs text-gray-600">Italiano (IT)</label>
-                        <Textarea
-                          value={selectedApartment.description.it}
-                          onChange={(e) => setSelectedApartment({ 
-                            ...selectedApartment, 
-                            description: { ...selectedApartment.description, it: e.target.value }
-                          })}
-                          placeholder="Descrivi..."
-                          rows={3}
-                          className="text-xs sm:text-sm"
-                        />
-                      </div>
-                    </div>
+                    <label className="block text-xs sm:text-sm font-semibold mb-2">Detaljan opis apartmana (srpski) *</label>
+                    <Textarea
+                      value={selectedApartment.description.sr}
+                      onChange={(e) => setSelectedApartment({
+                        ...selectedApartment,
+                        description: { ...selectedApartment.description, sr: e.target.value }
+                      })}
+                      placeholder="Opišite apartman..."
+                      rows={4}
+                      required
+                      className="text-xs sm:text-sm"
+                    />
                   </div>
 
                   {/* BEDS WITH COUNTER */}
