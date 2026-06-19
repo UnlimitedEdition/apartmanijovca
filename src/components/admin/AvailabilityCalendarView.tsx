@@ -26,9 +26,11 @@ interface AvailabilityData {
   [date: string]: DayRecord
 }
 
-type DayStatus = 'booked' | 'external' | 'maintenance' | 'blocked' | 'available' | 'empty'
+type DayStatus = 'booked' | 'maintenance' | 'blocked' | 'available' | 'empty'
 
-type BlockReason = 'external' | 'maintenance' | 'blocked' | 'free'
+// Vrednosti moraju da budu u skladu sa DB CHECK constraint-om:
+// availability.reason ∈ (NULL, 'booked', 'maintenance', 'blocked'). 'free' = oslobodi (reason NULL).
+type BlockReason = 'booked' | 'maintenance' | 'blocked' | 'free'
 
 interface PopoverState {
   dateStr: string
@@ -68,17 +70,16 @@ function leadingEmptyCells(year: number, month: number): number {
 
 function getDayStatus(record: DayRecord | undefined): DayStatus {
   if (!record) return 'empty'
-  if (record.booking_id && record.reason === 'booking') return 'booked'
-  if (record.reason === 'external') return 'external'
+  if (record.booking_id) return 'booked'              // prava rezervacija (merge iz bookings tabele)
   if (record.reason === 'maintenance') return 'maintenance'
-  if (!record.is_available) return 'blocked'
+  if (record.reason === 'blocked') return 'blocked'
+  if (!record.is_available) return 'booked'           // ručno "Zauzeto" (reason 'booked')
   return 'available'
 }
 
 function getDayColors(status: DayStatus): string {
   switch (status) {
     case 'booked':
-    case 'external':
       return 'bg-red-100 text-red-900 border-red-300'
     case 'maintenance':
       return 'bg-yellow-100 text-yellow-900 border-yellow-300'
@@ -98,7 +99,7 @@ function getDayColors(status: DayStatus): string {
 const WEEKDAYS = ['Pon', 'Uto', 'Sre', 'Čet', 'Pet', 'Sub', 'Ned']
 
 const BLOCK_REASON_OPTIONS: { value: BlockReason; label: string }[] = [
-  { value: 'external', label: 'Zauzeto (Booking.com)' },
+  { value: 'booked', label: 'Zauzeto (Booking.com)' },
   { value: 'maintenance', label: 'Održavanje' },
   { value: 'blocked', label: 'Blokirano' },
   { value: 'free', label: 'Oslobodi (Dostupno)' },
@@ -122,7 +123,7 @@ export default function AvailabilityCalendarView() {
   // Range form
   const [rangeFrom, setRangeFrom] = useState('')
   const [rangeTo, setRangeTo] = useState('')
-  const [rangeReason, setRangeReason] = useState<BlockReason>('external')
+  const [rangeReason, setRangeReason] = useState<BlockReason>('booked')
   const [rangeSaving, setRangeSaving] = useState(false)
   const [rangeMessage, setRangeMessage] = useState<{ type: 'ok' | 'err'; text: string } | null>(null)
 
@@ -303,8 +304,8 @@ export default function AvailabilityCalendarView() {
     dateStr: string,
     record: DayRecord | undefined,
   ) => {
-    const status = getDayStatus(record)
-    const isRealBooking = status === 'booked'
+    // Samo PRAVE rezervacije (booking_id iz bookings tabele) su zaključane; ručni blokovi su izmenljivi.
+    const isRealBooking = !!record?.booking_id
     const dayNum = dateStr.split('-')[2]
     const rect = (e.currentTarget as HTMLElement).getBoundingClientRect()
     const scrollY = window.scrollY
@@ -321,7 +322,8 @@ export default function AvailabilityCalendarView() {
   const handlePopoverAction = async (action: 'available' | 'booked' | 'maintenance' | 'blocked') => {
     if (!popover || !selectedApartment) return
     const isAvailable = action === 'available'
-    const reason = action === 'available' ? null : action === 'booked' ? 'external' : action
+    // action ∈ {available, booked, maintenance, blocked}; svi osim 'available' su validni DB reason-i.
+    const reason = action === 'available' ? null : action
     setPopoverSaving(true)
     try {
       await postSingleDate(popover.dateStr, isAvailable, reason)
