@@ -14,6 +14,10 @@
 
 ### ✅ Završeno (najnovije gore)
 
+**2026-06-19 (sesija — push + migracije izvršene)**
+- Commiti `5638e561` (kalendar reason→`booked`) i `e75414f7` (adresa) **push-ovani na `origin/master`** — deploy prošao.
+- Supabase migracije **IZVRŠENE** u SQL Editoru: `20260619110000_attractions_cyrillic_to_latin.sql` + `20260619090000_gallery_retag_folders.sql`.
+
 **2026-06-19 (sesija — admin panel)**
 - Statističke kartice: svih 8 klikabilno. Dolasci/Odlasci danas, Na čekanju, Potvrđeno, Ukupno → Rezervacije (filtrirano, svi apartmani); Ukupan/Mesečni prihod → Analitika; Popunjenost → Dostupnost. Uklonjene „Nedavne rezervacije" sa početne.
 - Bookings API: dodati `arrival_on` / `departure_on` filteri.
@@ -25,10 +29,6 @@
 - Migracije napisane (čekaju pokretanje u SQL Editoru): atrakcije ćirilica→latinica (`20260619110000_*`), gallery re-tag (`20260619090000_*`).
 
 ### 📋 Planirano / u toku
-
-**0 — Odmah (mehanički)**
-- [ ] `git push origin master` (commiti `5638e561` kalendar + `e75414f7` adresa) → deploy → kalendar manuelno blokiranje radi.
-- [ ] Supabase SQL Editor: pokreni `supabase/migrations/20260619110000_attractions_cyrillic_to_latin.sql` i `supabase/migrations/20260619090000_gallery_retag_folders.sql`.
 
 **1 — „Upravljanje sadržajem" (ContentEditor) je 100% ODVOJEN od sajta** — čeka odluku korisnika
 - Nalaz: svih 9 sekcija / ~60 polja nepovezano. Editor piše u `content` tabelu (`PUT /api/admin/content`); jedini čitač `getContent`/`getContentValue` (`src/lib/content.ts`) se **nigde ne poziva**; stranice čitaju next-intl JSON (`messages/*.json`). Upis u editor = zabluda.
