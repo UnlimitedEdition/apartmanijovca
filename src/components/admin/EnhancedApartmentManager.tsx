@@ -695,75 +695,22 @@ export default function EnhancedApartmentManager() {
                   </div>
                 </div>
 
-                {/* CANCELLATION POLICY - JSONB Multi-language */}
+                {/* Cancellation Policy - Serbian only */}
                 <div>
                   <label className="block text-xs sm:text-sm font-semibold mb-2">Politika otkazivanja</label>
-                  <div className="space-y-2">
-                    <div>
-                      <label className="text-[10px] sm:text-xs text-gray-600">Srpski (SR)</label>
-                      <Textarea
-                        value={selectedApartment.cancellation_policy?.sr || ''}
-                        onChange={(e) => setSelectedApartment({ 
-                          ...selectedApartment, 
-                          cancellation_policy: { 
-                            ...selectedApartment.cancellation_policy || { sr: '', en: '', de: '', it: '' },
-                            sr: e.target.value
-                          }
-                        })}
-                        placeholder="Besplatno otkazivanje do 7 dana pre dolaska..."
-                        rows={3}
-                        className="text-xs sm:text-sm"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-[10px] sm:text-xs text-gray-600">English (EN)</label>
-                      <Textarea
-                        value={selectedApartment.cancellation_policy?.en || ''}
-                        onChange={(e) => setSelectedApartment({ 
-                          ...selectedApartment, 
-                          cancellation_policy: { 
-                            ...selectedApartment.cancellation_policy || { sr: '', en: '', de: '', it: '' },
-                            en: e.target.value
-                          }
-                        })}
-                        placeholder="Free cancellation up to 7 days before arrival..."
-                        rows={3}
-                        className="text-xs sm:text-sm"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-[10px] sm:text-xs text-gray-600">Deutsch (DE)</label>
-                      <Textarea
-                        value={selectedApartment.cancellation_policy?.de || ''}
-                        onChange={(e) => setSelectedApartment({ 
-                          ...selectedApartment, 
-                          cancellation_policy: { 
-                            ...selectedApartment.cancellation_policy || { sr: '', en: '', de: '', it: '' },
-                            de: e.target.value
-                          }
-                        })}
-                        placeholder="Kostenlose Stornierung bis 7 Tage vor Anreise..."
-                        rows={3}
-                        className="text-xs sm:text-sm"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-[10px] sm:text-xs text-gray-600">Italiano (IT)</label>
-                      <Textarea
-                        value={selectedApartment.cancellation_policy?.it || ''}
-                        onChange={(e) => setSelectedApartment({ 
-                          ...selectedApartment, 
-                          cancellation_policy: { 
-                            ...selectedApartment.cancellation_policy || { sr: '', en: '', de: '', it: '' },
-                            it: e.target.value
-                          }
-                        })}
-                        placeholder="Cancellazione gratuita fino a 7 giorni prima dell'arrivo..."
-                        rows={3}
-                        className="text-xs sm:text-sm"
-                      />
-                    </div>
-                  </div>
+                  <Textarea
+                    value={selectedApartment.cancellation_policy?.sr || ''}
+                    onChange={(e) => setSelectedApartment({
+                      ...selectedApartment,
+                      cancellation_policy: {
+                        ...(selectedApartment.cancellation_policy || { sr: '', en: '', de: '', it: '' }),
+                        sr: e.target.value
+                      }
+                    })}
+                    placeholder="Besplatno otkazivanje do 7 dana pre dolaska..."
+                    rows={3}
+                    className="text-xs sm:text-sm"
+                  />
                 </div>
 
                 {/* SEASONAL PRICING - JSONB */}
