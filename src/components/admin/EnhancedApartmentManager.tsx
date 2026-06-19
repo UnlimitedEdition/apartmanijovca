@@ -373,71 +373,21 @@ export default function EnhancedApartmentManager() {
                     </div>
                   </div>
 
-                  {/* Kitchen Type - ALL 4 LANGUAGES */}
+                  {/* Kitchen Type - Serbian only */}
                   <div>
                     <label className="block text-xs sm:text-sm font-semibold mb-2">Tip kuhinje</label>
-                    <div className="space-y-2">
-                      <div>
-                        <label className="text-[10px] sm:text-xs text-gray-600">Srpski (SR)</label>
-                        <Input
-                          value={selectedApartment.kitchen_type?.sr || ''}
-                          onChange={(e) => setSelectedApartment({ 
-                            ...selectedApartment, 
-                            kitchen_type: { 
-                              ...selectedApartment.kitchen_type || { sr: '', en: '', de: '', it: '' },
-                              sr: e.target.value
-                            }
-                          })}
-                          placeholder="Potpuno opremljena kuhinja"
-                          className="text-xs sm:text-sm h-8 sm:h-9"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-[10px] sm:text-xs text-gray-600">English (EN)</label>
-                        <Input
-                          value={selectedApartment.kitchen_type?.en || ''}
-                          onChange={(e) => setSelectedApartment({ 
-                            ...selectedApartment, 
-                            kitchen_type: { 
-                              ...selectedApartment.kitchen_type || { sr: '', en: '', de: '', it: '' },
-                              en: e.target.value
-                            }
-                          })}
-                          placeholder="Fully equipped kitchen"
-                          className="text-xs sm:text-sm h-8 sm:h-9"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-[10px] sm:text-xs text-gray-600">Deutsch (DE)</label>
-                        <Input
-                          value={selectedApartment.kitchen_type?.de || ''}
-                          onChange={(e) => setSelectedApartment({ 
-                            ...selectedApartment, 
-                            kitchen_type: { 
-                              ...selectedApartment.kitchen_type || { sr: '', en: '', de: '', it: '' },
-                              de: e.target.value
-                            }
-                          })}
-                          placeholder="Voll ausgestattete Küche"
-                          className="text-xs sm:text-sm h-8 sm:h-9"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-[10px] sm:text-xs text-gray-600">Italiano (IT)</label>
-                        <Input
-                          value={selectedApartment.kitchen_type?.it || ''}
-                          onChange={(e) => setSelectedApartment({ 
-                            ...selectedApartment, 
-                            kitchen_type: { 
-                              ...selectedApartment.kitchen_type || { sr: '', en: '', de: '', it: '' },
-                              it: e.target.value
-                            }
-                          })}
-                          placeholder="Cucina completamente attrezzata"
-                          className="text-xs sm:text-sm h-8 sm:h-9"
-                        />
-                      </div>
-                    </div>
+                    <Input
+                      value={selectedApartment.kitchen_type?.sr || ''}
+                      onChange={(e) => setSelectedApartment({
+                        ...selectedApartment,
+                        kitchen_type: {
+                          ...(selectedApartment.kitchen_type || { sr: '', en: '', de: '', it: '' }),
+                          sr: e.target.value
+                        }
+                      })}
+                      placeholder="Potpuno opremljena kuhinja"
+                      className="text-xs sm:text-sm h-8 sm:h-9"
+                    />
                   </div>
 
                   {/* FEATURES - JSONB Array */}
@@ -460,75 +410,22 @@ export default function EnhancedApartmentManager() {
                     />
                   </div>
 
-                  {/* HOUSE RULES - JSONB Multi-language */}
+                  {/* House Rules - Serbian only */}
                   <div>
                     <label className="block text-xs sm:text-sm font-semibold mb-2">Pravila kuće (detaljan tekst)</label>
-                    <div className="space-y-2">
-                      <div>
-                        <label className="text-[10px] sm:text-xs text-gray-600">Srpski (SR)</label>
-                        <Textarea
-                          value={selectedApartment.house_rules?.sr || ''}
-                          onChange={(e) => setSelectedApartment({ 
-                            ...selectedApartment, 
-                            house_rules: { 
-                              ...selectedApartment.house_rules || { sr: '', en: '', de: '', it: '' },
-                              sr: e.target.value
-                            }
-                          })}
-                          placeholder="Molimo vas da poštujete pravila kuće..."
-                          rows={3}
-                          className="text-xs sm:text-sm"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-[10px] sm:text-xs text-gray-600">English (EN)</label>
-                        <Textarea
-                          value={selectedApartment.house_rules?.en || ''}
-                          onChange={(e) => setSelectedApartment({ 
-                            ...selectedApartment, 
-                            house_rules: { 
-                              ...selectedApartment.house_rules || { sr: '', en: '', de: '', it: '' },
-                              en: e.target.value
-                            }
-                          })}
-                          placeholder="Please respect the house rules..."
-                          rows={3}
-                          className="text-xs sm:text-sm"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-[10px] sm:text-xs text-gray-600">Deutsch (DE)</label>
-                        <Textarea
-                          value={selectedApartment.house_rules?.de || ''}
-                          onChange={(e) => setSelectedApartment({ 
-                            ...selectedApartment, 
-                            house_rules: { 
-                              ...selectedApartment.house_rules || { sr: '', en: '', de: '', it: '' },
-                              de: e.target.value
-                            }
-                          })}
-                          placeholder="Bitte beachten Sie die Hausregeln..."
-                          rows={3}
-                          className="text-xs sm:text-sm"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-[10px] sm:text-xs text-gray-600">Italiano (IT)</label>
-                        <Textarea
-                          value={selectedApartment.house_rules?.it || ''}
-                          onChange={(e) => setSelectedApartment({ 
-                            ...selectedApartment, 
-                            house_rules: { 
-                              ...selectedApartment.house_rules || { sr: '', en: '', de: '', it: '' },
-                              it: e.target.value
-                            }
-                          })}
-                          placeholder="Si prega di rispettare le regole della casa..."
-                          rows={3}
-                          className="text-xs sm:text-sm"
-                        />
-                      </div>
-                    </div>
+                    <Textarea
+                      value={selectedApartment.house_rules?.sr || ''}
+                      onChange={(e) => setSelectedApartment({
+                        ...selectedApartment,
+                        house_rules: {
+                          ...(selectedApartment.house_rules || { sr: '', en: '', de: '', it: '' }),
+                          sr: e.target.value
+                        }
+                      })}
+                      placeholder="Molimo vas da poštujete pravila kuće..."
+                      rows={3}
+                      className="text-xs sm:text-sm"
+                    />
                   </div>
                 </div>
               </TabsContent>
