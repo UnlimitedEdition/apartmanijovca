@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
+import { Card, CardContent } from '../ui/card'
 import { Badge } from '../ui/badge'
 import { Button } from '../ui/button'
 import { Loader2, Mail, Phone, Calendar, Eye, Archive, Trash2 } from 'lucide-react'
@@ -136,34 +136,36 @@ export default function MessagesManager() {
           <Loader2 className="w-8 h-8 animate-spin text-primary" />
         </div>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Messages List */}
-          <div className="lg:col-span-1 space-y-3 max-h-[calc(100vh-400px)] overflow-y-auto">
-            {messages.length === 0 ? (
-              <Card className="p-8 text-center">
-                <p className="text-muted-foreground">Nema poruka</p>
-              </Card>
-            ) : (
-              messages.map((msg) => (
+        <div className="space-y-3">
+          {messages.length === 0 ? (
+            <Card className="p-8 text-center">
+              <p className="text-muted-foreground">Nema poruka</p>
+            </Card>
+          ) : (
+            messages.map((msg) => {
+              const isSelected = selectedMessage?.id === msg.id
+              return (
                 <Card
                   key={msg.id}
                   className={`cursor-pointer transition-all hover:shadow-lg ${
-                    selectedMessage?.id === msg.id ? 'ring-2 ring-primary' : ''
+                    isSelected ? 'ring-2 ring-primary' : ''
                   } ${msg.status === 'new' ? 'bg-blue-50/50' : ''}`}
                   onClick={() => {
-                    setSelectedMessage(msg)
-                    if (msg.status === 'new') {
+                    setSelectedMessage(isSelected ? null : msg)
+                    if (!isSelected && msg.status === 'new') {
                       updateMessageStatus(msg.id, 'read')
                     }
                   }}
                 >
                   <CardContent className="p-4">
-                    <div className="flex items-start justify-between mb-2">
-                      <h3 className="font-bold text-sm">{msg.full_name}</h3>
+                    <div className="flex items-start justify-between gap-3 mb-2">
+                      <div className="min-w-0">
+                        <h3 className="font-bold text-sm">{msg.full_name}</h3>
+                        <p className="text-xs text-muted-foreground break-words">{msg.email}</p>
+                      </div>
                       {getStatusBadge(msg.status)}
                     </div>
-                    <p className="text-xs text-muted-foreground mb-2">{msg.email}</p>
-                    <p className="text-sm line-clamp-2 mb-2">{msg.message}</p>
+                    <p className={`text-sm mb-2 ${isSelected ? 'whitespace-pre-wrap' : 'line-clamp-2'}`}>{msg.message}</p>
                     <div className="flex items-center gap-2 text-xs text-muted-foreground">
                       <Calendar className="w-3 h-3" />
                       {new Date(msg.created_at).toLocaleDateString('sr-RS', {
@@ -174,99 +176,65 @@ export default function MessagesManager() {
                         minute: '2-digit'
                       })}
                     </div>
-                  </CardContent>
-                </Card>
-              ))
-            )}
-          </div>
 
-          {/* Message Detail */}
-          <div className="lg:col-span-2">
-            {selectedMessage ? (
-              <Card>
-                <CardHeader className="border-b">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <CardTitle className="text-2xl mb-2">{selectedMessage.full_name}</CardTitle>
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <Mail className="w-4 h-4" />
-                          <a href={`mailto:${selectedMessage.email}`} className="hover:text-primary">
-                            {selectedMessage.email}
-                          </a>
-                        </div>
-                        {selectedMessage.phone && (
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <Phone className="w-4 h-4" />
-                            <a href={`tel:${selectedMessage.phone}`} className="hover:text-primary">
-                              {selectedMessage.phone}
+                    {isSelected && (
+                      <div className="mt-4 border-t pt-4" onClick={(e) => e.stopPropagation()}>
+                        <div className="grid gap-2 text-sm text-muted-foreground mb-4">
+                          <div className="flex items-center gap-2">
+                            <Mail className="w-4 h-4" />
+                            <a href={`mailto:${msg.email}`} className="hover:text-primary break-all">
+                              {msg.email}
                             </a>
                           </div>
-                        )}
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <Calendar className="w-4 h-4" />
-                          {new Date(selectedMessage.created_at).toLocaleDateString('sr-RS', {
-                            day: '2-digit',
-                            month: 'long',
-                            year: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit'
-                          })}
+                          {msg.phone && (
+                            <div className="flex items-center gap-2">
+                              <Phone className="w-4 h-4" />
+                              <a href={`tel:${msg.phone}`} className="hover:text-primary">
+                                {msg.phone}
+                              </a>
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="flex flex-wrap gap-2">
+                          {msg.status !== 'replied' && (
+                            <Button
+                              onClick={() => updateMessageStatus(msg.id, 'replied')}
+                              className="gap-2"
+                              size="sm"
+                            >
+                              <Eye className="w-4 h-4" />
+                              Oznaci kao odgovoreno
+                            </Button>
+                          )}
+                          {msg.status !== 'archived' && (
+                            <Button
+                              variant="outline"
+                              onClick={() => updateMessageStatus(msg.id, 'archived')}
+                              className="gap-2"
+                              size="sm"
+                            >
+                              <Archive className="w-4 h-4" />
+                              Arhiviraj
+                            </Button>
+                          )}
+                          <Button
+                            variant="destructive"
+                            onClick={() => deleteMessage(msg.id)}
+                            className="gap-2 sm:ml-auto"
+                            size="sm"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                            Obrisi
+                          </Button>
                         </div>
                       </div>
-                    </div>
-                    {getStatusBadge(selectedMessage.status)}
-                  </div>
-                </CardHeader>
-                <CardContent className="p-6">
-                  <div className="mb-6">
-                    <h4 className="font-bold text-sm text-muted-foreground mb-2">Poruka:</h4>
-                    <p className="text-base leading-relaxed whitespace-pre-wrap">{selectedMessage.message}</p>
-                  </div>
-
-                  <div className="flex flex-wrap gap-2 pt-4 border-t">
-                    {selectedMessage.status !== 'replied' && (
-                      <Button
-                        onClick={() => updateMessageStatus(selectedMessage.id, 'replied')}
-                        className="gap-2"
-                        size="sm"
-                      >
-                        <Eye className="w-4 h-4" />
-                        Označi kao odgovoreno
-                      </Button>
                     )}
-                    {selectedMessage.status !== 'archived' && (
-                      <Button
-                        variant="outline"
-                        onClick={() => updateMessageStatus(selectedMessage.id, 'archived')}
-                        className="gap-2"
-                        size="sm"
-                      >
-                        <Archive className="w-4 h-4" />
-                        Arhiviraj
-                      </Button>
-                    )}
-                    <Button
-                      variant="destructive"
-                      onClick={() => deleteMessage(selectedMessage.id)}
-                      className="gap-2 ml-auto"
-                      size="sm"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                      Obriši
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ) : (
-              <Card className="h-full flex items-center justify-center p-12">
-                <div className="text-center text-muted-foreground">
-                  <Mail className="w-16 h-16 mx-auto mb-4 opacity-20" />
-                  <p>Izaberite poruku za pregled</p>
-                </div>
-              </Card>
-            )}
-          </div>
+                  </CardContent>
+                </Card>
+              )
+            })
+          )}
         </div>
       )}
     </div>

@@ -297,26 +297,25 @@ export default function AvailabilityCalendarView() {
     }
   }
 
-  // --- single-day click ---
+  // --- calendar range click ---
 
-  const handleDayClick = (
-    e: React.MouseEvent<HTMLButtonElement>,
-    dateStr: string,
-    record: DayRecord | undefined,
-  ) => {
-    // Samo PRAVE rezervacije (booking_id iz bookings tabele) su zaključane; ručni blokovi su izmenljivi.
-    const isRealBooking = !!record?.booking_id
-    const dayNum = dateStr.split('-')[2]
-    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect()
-    const scrollY = window.scrollY
-    setPopover({
-      dateStr,
-      dayLabel: `${dayNum}. ${currentMonth.toLocaleDateString('sr-RS', { month: 'long' })}`,
-      isRealBooking,
-      anchorTop: rect.bottom + scrollY + 4,
-      anchorLeft: rect.left,
-    })
-    setPopoverSaving(false)
+  const handleDayClick = (dateStr: string) => {
+    setPopover(null)
+    setRangeMessage(null)
+
+    if (!rangeFrom || rangeTo) {
+      setRangeFrom(dateStr)
+      setRangeTo('')
+      return
+    }
+
+    if (dateStr < rangeFrom) {
+      setRangeTo(rangeFrom)
+      setRangeFrom(dateStr)
+      return
+    }
+
+    setRangeTo(dateStr)
   }
 
   const handlePopoverAction = async (action: 'available' | 'booked' | 'maintenance' | 'blocked') => {
@@ -411,18 +410,26 @@ export default function AvailabilityCalendarView() {
                   const status = getDayStatus(record)
                   const colors = getDayColors(status)
                   const isToday = dateStr === today
+                  const hasRange = !!rangeFrom && !!rangeTo
+                  const rangeStart = hasRange && rangeFrom > rangeTo ? rangeTo : rangeFrom
+                  const rangeEnd = hasRange && rangeFrom > rangeTo ? rangeFrom : rangeTo
+                  const isRangeSelected = !!rangeFrom && (
+                    dateStr === rangeFrom ||
+                    (hasRange && dateStr >= rangeStart && dateStr <= rangeEnd)
+                  )
 
                   return (
                     <button
                       key={dateStr}
                       type="button"
-                      onClick={(e) => handleDayClick(e, dateStr, record)}
+                      onClick={() => handleDayClick(dateStr)}
                       className={[
                         'h-9 sm:h-11 flex items-center justify-center rounded border',
                         'text-[10px] sm:text-xs font-medium transition-colors',
                         'hover:opacity-75 active:opacity-60',
                         colors,
                         isToday ? 'ring-2 ring-primary ring-offset-1' : '',
+                        isRangeSelected ? 'ring-2 ring-blue-600 ring-offset-1 border-blue-500' : '',
                       ].join(' ')}
                     >
                       {day}
@@ -511,9 +518,14 @@ export default function AvailabilityCalendarView() {
               {rangeMessage.text}
             </p>
           )}
+          {rangeFrom && !rangeTo && (
+            <p className="mt-1 text-xs text-blue-700">
+              Izabran pocetak: {formatDateStr(rangeFrom)}. Kliknite drugi datum za kraj raspona.
+            </p>
+          )}
           {rangeFrom && rangeTo && rangeFrom <= rangeTo && (
             <p className="mt-1 text-xs text-gray-500">
-              Blokira: {formatDateStr(rangeFrom)} – {formatDateStr(rangeTo)} (check-out dan nije uključen)
+              Blokira: {formatDateStr(rangeFrom)} - {formatDateStr(rangeTo)} (check-out dan nije ukljucen)
             </p>
           )}
         </CardContent>

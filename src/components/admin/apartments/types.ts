@@ -93,7 +93,7 @@ export const emptyApartment: Apartment = {
   cancellation_policy: { sr: '', en: '', de: '', it: '' },
   features: [],
   address: '',
-  city: '',
+  city: 'Bovan',
   country: 'Srbija',
   postal_code: '',
   latitude: undefined,
