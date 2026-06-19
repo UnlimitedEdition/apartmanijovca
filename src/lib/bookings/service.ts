@@ -233,12 +233,23 @@ export async function createBooking(
     // Get apartment details for pricing
     const { data: apartment, error: apartmentError } = await supabaseAdmin
       .from('apartments')
-      .select('id, name, base_price_eur')
+      .select('id, name, base_price_eur, min_stay_nights, max_stay_nights')
       .eq('id', input.apartmentId)
       .single()
 
     if (apartmentError || !apartment) {
       return { error: 'Apartment not found' }
+    }
+
+    // Enforce minimum / maximum stay per apartment — server-side, cannot be bypassed by the client
+    const requestedNights = calculateNights(input.checkIn, input.checkOut)
+    const minStay = (apartment as { min_stay_nights?: number | null }).min_stay_nights ?? 1
+    if (requestedNights < minStay) {
+      return { error: `Minimalan boravak za ovaj apartman je ${minStay} ${minStay === 1 ? 'noć' : 'noći'}.` }
+    }
+    const maxStay = (apartment as { max_stay_nights?: number | null }).max_stay_nights ?? null
+    if (maxStay && requestedNights > maxStay) {
+      return { error: `Maksimalan boravak za ovaj apartman je ${maxStay} ${maxStay === 1 ? 'noć' : 'noći'}.` }
     }
 
     // Localize apartment name
