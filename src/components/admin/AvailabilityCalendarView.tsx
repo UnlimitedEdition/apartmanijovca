@@ -92,6 +92,33 @@ function getDayColors(status: DayStatus): string {
   }
 }
 
+/**
+ * Returns the range-highlight role for a given dateStr, given rangeFrom / rangeTo
+ * (confirmed selection) OR rangeFrom + hoverDate (live preview).
+ * Returns: 'start' | 'end' | 'middle' | 'single' | null
+ */
+function getRangeRole(
+  dateStr: string,
+  rangeFrom: string,
+  rangeTo: string,
+  hoverDate: string,
+): 'start' | 'end' | 'middle' | 'single' | null {
+  // Determine effective end: confirmed rangeTo takes priority; else hoverDate
+  const effectiveEnd = rangeTo || hoverDate
+  if (!rangeFrom || !effectiveEnd) return null
+
+  // Normalize order
+  const [start, end] = rangeFrom <= effectiveEnd
+    ? [rangeFrom, effectiveEnd]
+    : [effectiveEnd, rangeFrom]
+
+  if (dateStr < start || dateStr > end) return null
+  if (start === end) return 'single'
+  if (dateStr === start) return 'start'
+  if (dateStr === end) return 'end'
+  return 'middle'
+}
+
 // ---------------------------------------------------------------------------
 // Sub-components
 // ---------------------------------------------------------------------------
@@ -126,6 +153,9 @@ export default function AvailabilityCalendarView() {
   const [rangeReason, setRangeReason] = useState<BlockReason>('booked')
   const [rangeSaving, setRangeSaving] = useState(false)
   const [rangeMessage, setRangeMessage] = useState<{ type: 'ok' | 'err'; text: string } | null>(null)
+
+  // Hover preview for range selection
+  const [hoverDate, setHoverDate] = useState<string>('')
 
   // Single-day popover
   const [popover, setPopover] = useState<PopoverState | null>(null)
@@ -395,7 +425,10 @@ export default function AvailabilityCalendarView() {
               </div>
 
               {/* Day cells */}
-              <div className="grid grid-cols-7 gap-0.5 sm:gap-1">
+              <div
+                className="grid grid-cols-7 gap-0.5 sm:gap-1"
+                onMouseLeave={() => setHoverDate('')}
+              >
                 {/* Leading empty cells */}
                 {Array.from({ length: leading }).map((_, i) => (
                   <div key={`empty-${i}`} className="h-9 sm:h-11" />
@@ -410,26 +443,43 @@ export default function AvailabilityCalendarView() {
                   const status = getDayStatus(record)
                   const colors = getDayColors(status)
                   const isToday = dateStr === today
-                  const hasRange = !!rangeFrom && !!rangeTo
-                  const rangeStart = hasRange && rangeFrom > rangeTo ? rangeTo : rangeFrom
-                  const rangeEnd = hasRange && rangeFrom > rangeTo ? rangeFrom : rangeTo
-                  const isRangeSelected = !!rangeFrom && (
-                    dateStr === rangeFrom ||
-                    (hasRange && dateStr >= rangeStart && dateStr <= rangeEnd)
-                  )
+
+                  // Compute range role considering live hover preview
+                  const rangeRole = getRangeRole(dateStr, rangeFrom, rangeTo, hoverDate)
+
+                  // Range overlay classes (applied on top of status colours)
+                  let rangeClasses = ''
+                  if (rangeRole === 'start' || rangeRole === 'end' || rangeRole === 'single') {
+                    rangeClasses = 'bg-blue-600 text-white border-blue-600'
+                  } else if (rangeRole === 'middle') {
+                    // Only highlight middle cells that are not already "busy" (booked/maintenance/blocked)
+                    // For busy days show a ring so the status colour remains readable
+                    if (status === 'available' || status === 'empty') {
+                      rangeClasses = 'bg-blue-100 border-blue-300 text-blue-900'
+                    } else {
+                      rangeClasses = 'ring-2 ring-blue-400 ring-offset-1'
+                    }
+                  }
 
                   return (
                     <button
                       key={dateStr}
                       type="button"
                       onClick={() => handleDayClick(dateStr)}
+                      onMouseEnter={() => setHoverDate(dateStr)}
                       className={[
                         'h-9 sm:h-11 flex items-center justify-center rounded border',
                         'text-[10px] sm:text-xs font-medium transition-colors',
-                        'hover:opacity-75 active:opacity-60',
-                        colors,
-                        isToday ? 'ring-2 ring-primary ring-offset-1' : '',
-                        isRangeSelected ? 'ring-2 ring-blue-600 ring-offset-1 border-blue-500' : '',
+                        'active:opacity-60',
+                        // Base status colour only when no range overlay replaces it
+                        rangeRole === 'start' || rangeRole === 'end' || rangeRole === 'single'
+                          ? ''
+                          : rangeRole === 'middle' && (status === 'available' || status === 'empty')
+                            ? ''
+                            : colors,
+                        rangeRole ? rangeClasses : 'hover:opacity-75',
+                        isToday && !rangeRole ? 'ring-2 ring-primary ring-offset-1' : '',
+                        isToday && rangeRole ? 'ring-2 ring-primary ring-offset-1' : '',
                       ].join(' ')}
                     >
                       {day}
