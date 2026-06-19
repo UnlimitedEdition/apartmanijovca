@@ -390,43 +390,6 @@ export default function EnhancedApartmentManager() {
                     />
                   </div>
 
-                  {/* FEATURES - JSONB Array */}
-                  <div className="border rounded-lg p-3 sm:p-4 bg-yellow-50">
-                    <label className="block text-xs sm:text-sm font-bold mb-2 sm:mb-3 text-yellow-900">⭐ Dodatne karakteristike</label>
-                    <p className="text-[10px] sm:text-xs text-gray-600 mb-2">JSON format: [{'{'}&#34;sr&#34;: &#34;Tekst&#34;, &#34;en&#34;: &#34;Text&#34;, &#34;de&#34;: &#34;Text&#34;, &#34;it&#34;: &#34;Testo&#34;{'}'}]</p>
-                    <Textarea
-                      value={JSON.stringify(selectedApartment.features || [], null, 2)}
-                      onChange={(e) => {
-                        try {
-                          const parsed = JSON.parse(e.target.value)
-                          setSelectedApartment({ ...selectedApartment, features: parsed })
-                        } catch {
-                          // Invalid JSON, don't update
-                        }
-                      }}
-                      placeholder='[{"sr": "Besplatan WiFi", "en": "Free WiFi", "de": "Kostenloses WLAN", "it": "WiFi gratuito"}]'
-                      rows={4}
-                      className="text-xs sm:text-sm font-mono"
-                    />
-                  </div>
-
-                  {/* House Rules - Serbian only */}
-                  <div>
-                    <label className="block text-xs sm:text-sm font-semibold mb-2">Pravila kuće (detaljan tekst)</label>
-                    <Textarea
-                      value={selectedApartment.house_rules?.sr || ''}
-                      onChange={(e) => setSelectedApartment({
-                        ...selectedApartment,
-                        house_rules: {
-                          ...(selectedApartment.house_rules || { sr: '', en: '', de: '', it: '' }),
-                          sr: e.target.value
-                        }
-                      })}
-                      placeholder="Molimo vas da poštujete pravila kuće..."
-                      rows={3}
-                      className="text-xs sm:text-sm"
-                    />
-                  </div>
                 </div>
               </TabsContent>
 
@@ -713,25 +676,6 @@ export default function EnhancedApartmentManager() {
                   />
                 </div>
 
-                {/* SEASONAL PRICING - JSONB */}
-                <div className="border rounded-lg p-3 sm:p-4 bg-teal-50">
-                  <label className="block text-xs sm:text-sm font-bold mb-2 sm:mb-3 text-teal-900">📅 Sezonske cene</label>
-                  <p className="text-[10px] sm:text-xs text-gray-600 mb-2">JSON format: [{'{'}&#34;season&#34;: &#34;summer&#34;, &#34;start_date&#34;: &#34;2024-06-01&#34;, &#34;end_date&#34;: &#34;2024-08-31&#34;, &#34;price_eur&#34;: 60{'}'}]</p>
-                  <Textarea
-                    value={JSON.stringify(selectedApartment.seasonal_pricing || [], null, 2)}
-                    onChange={(e) => {
-                      try {
-                        const parsed = JSON.parse(e.target.value)
-                        setSelectedApartment({ ...selectedApartment, seasonal_pricing: parsed })
-                      } catch {
-                        // Invalid JSON, don't update
-                      }
-                    }}
-                    placeholder='[{"season": "summer", "start_date": "2024-06-01", "end_date": "2024-08-31", "price_eur": 60}]'
-                    rows={5}
-                    className="text-xs sm:text-sm font-mono"
-                  />
-                </div>
               </TabsContent>
 
               {/* Tab 5: SEO */}
@@ -751,158 +695,43 @@ export default function EnhancedApartmentManager() {
                     </p>
                   </div>
 
-                  {/* Meta Title */}
+                  {/* Meta Title - Serbian only */}
                   <div>
                     <label className="block text-xs sm:text-sm font-semibold mb-2">Meta naslov (SEO)</label>
-                    <div className="space-y-2 sm:space-y-3">
-                      <div>
-                        <label className="text-[10px] sm:text-xs text-gray-600">Srpski (SR)</label>
-                        <Input
-                          value={selectedApartment.meta_title?.sr || ''}
-                          onChange={(e) => setSelectedApartment({ 
-                            ...selectedApartment, 
-                            meta_title: { 
-                              ...selectedApartment.meta_title || { sr: '', en: '', de: '', it: '' },
-                              sr: e.target.value
-                            }
-                          })}
-                          placeholder="Apartman Standard - Komforan smeštaj"
-                          maxLength={60}
-                          className="text-xs sm:text-sm h-8 sm:h-9"
-                        />
-                        <p className="text-[10px] sm:text-xs text-gray-500 mt-1">{(selectedApartment.meta_title?.sr || '').length}/60</p>
-                      </div>
-                      <div>
-                        <label className="text-[10px] sm:text-xs text-gray-600">English (EN)</label>
-                        <Input
-                          value={selectedApartment.meta_title?.en || ''}
-                          onChange={(e) => setSelectedApartment({ 
-                            ...selectedApartment, 
-                            meta_title: { 
-                              ...selectedApartment.meta_title || { sr: '', en: '', de: '', it: '' },
-                              en: e.target.value
-                            }
-                          })}
-                          placeholder="Standard Apartment - Comfortable"
-                          maxLength={60}
-                          className="text-xs sm:text-sm h-8 sm:h-9"
-                        />
-                        <p className="text-[10px] sm:text-xs text-gray-500 mt-1">{(selectedApartment.meta_title?.en || '').length}/60</p>
-                      </div>
-                      <div>
-                        <label className="text-[10px] sm:text-xs text-gray-600">Deutsch (DE)</label>
-                        <Input
-                          value={selectedApartment.meta_title?.de || ''}
-                          onChange={(e) => setSelectedApartment({ 
-                            ...selectedApartment, 
-                            meta_title: { 
-                              ...selectedApartment.meta_title || { sr: '', en: '', de: '', it: '' },
-                              de: e.target.value
-                            }
-                          })}
-                          placeholder="Standard Wohnung - Komfortabel"
-                          maxLength={60}
-                          className="text-xs sm:text-sm h-8 sm:h-9"
-                        />
-                        <p className="text-[10px] sm:text-xs text-gray-500 mt-1">{(selectedApartment.meta_title?.de || '').length}/60</p>
-                      </div>
-                      <div>
-                        <label className="text-[10px] sm:text-xs text-gray-600">Italiano (IT)</label>
-                        <Input
-                          value={selectedApartment.meta_title?.it || ''}
-                          onChange={(e) => setSelectedApartment({ 
-                            ...selectedApartment, 
-                            meta_title: { 
-                              ...selectedApartment.meta_title || { sr: '', en: '', de: '', it: '' },
-                              it: e.target.value
-                            }
-                          })}
-                          placeholder="Appartamento Standard - Confortevole"
-                          maxLength={60}
-                          className="text-xs sm:text-sm h-8 sm:h-9"
-                        />
-                        <p className="text-[10px] sm:text-xs text-gray-500 mt-1">{(selectedApartment.meta_title?.it || '').length}/60</p>
-                      </div>
-                    </div>
+                    <Input
+                      value={selectedApartment.meta_title?.sr || ''}
+                      onChange={(e) => setSelectedApartment({
+                        ...selectedApartment,
+                        meta_title: {
+                          ...(selectedApartment.meta_title || { sr: '', en: '', de: '', it: '' }),
+                          sr: e.target.value
+                        }
+                      })}
+                      placeholder="Apartman Standard - Komforan smestaj"
+                      maxLength={60}
+                      className="text-xs sm:text-sm h-8 sm:h-9"
+                    />
+                    <p className="text-[10px] sm:text-xs text-gray-500 mt-1">{(selectedApartment.meta_title?.sr || '').length}/60</p>
                   </div>
 
-                  {/* Meta Description */}
+                  {/* Meta Description - Serbian only */}
                   <div>
                     <label className="block text-xs sm:text-sm font-semibold mb-2">Meta opis (SEO)</label>
-                    <div className="space-y-2 sm:space-y-3">
-                      <div>
-                        <label className="text-[10px] sm:text-xs text-gray-600">Srpski (SR)</label>
-                        <Textarea
-                          value={selectedApartment.meta_description?.sr || ''}
-                          onChange={(e) => setSelectedApartment({ 
-                            ...selectedApartment, 
-                            meta_description: { 
-                              ...selectedApartment.meta_description || { sr: '', en: '', de: '', it: '' },
-                              sr: e.target.value
-                            }
-                          })}
-                          placeholder="Udoban apartman sa 2 spavaće sobe..."
-                          rows={2}
-                          maxLength={160}
-                          className="text-xs sm:text-sm"
-                        />
-                        <p className="text-[10px] sm:text-xs text-gray-500 mt-1">{(selectedApartment.meta_description?.sr || '').length}/160</p>
-                      </div>
-                      <div>
-                        <label className="text-[10px] sm:text-xs text-gray-600">English (EN)</label>
-                        <Textarea
-                          value={selectedApartment.meta_description?.en || ''}
-                          onChange={(e) => setSelectedApartment({ 
-                            ...selectedApartment, 
-                            meta_description: { 
-                              ...selectedApartment.meta_description || { sr: '', en: '', de: '', it: '' },
-                              en: e.target.value
-                            }
-                          })}
-                          placeholder="Comfortable apartment with 2 bedrooms..."
-                          rows={2}
-                          maxLength={160}
-                          className="text-xs sm:text-sm"
-                        />
-                        <p className="text-[10px] sm:text-xs text-gray-500 mt-1">{(selectedApartment.meta_description?.en || '').length}/160</p>
-                      </div>
-                      <div>
-                        <label className="text-[10px] sm:text-xs text-gray-600">Deutsch (DE)</label>
-                        <Textarea
-                          value={selectedApartment.meta_description?.de || ''}
-                          onChange={(e) => setSelectedApartment({ 
-                            ...selectedApartment, 
-                            meta_description: { 
-                              ...selectedApartment.meta_description || { sr: '', en: '', de: '', it: '' },
-                              de: e.target.value
-                            }
-                          })}
-                          placeholder="Komfortable Wohnung mit 2 Schlafzimmern..."
-                          rows={2}
-                          maxLength={160}
-                          className="text-xs sm:text-sm"
-                        />
-                        <p className="text-[10px] sm:text-xs text-gray-500 mt-1">{(selectedApartment.meta_description?.de || '').length}/160</p>
-                      </div>
-                      <div>
-                        <label className="text-[10px] sm:text-xs text-gray-600">Italiano (IT)</label>
-                        <Textarea
-                          value={selectedApartment.meta_description?.it || ''}
-                          onChange={(e) => setSelectedApartment({ 
-                            ...selectedApartment, 
-                            meta_description: { 
-                              ...selectedApartment.meta_description || { sr: '', en: '', de: '', it: '' },
-                              it: e.target.value
-                            }
-                          })}
-                          placeholder="Appartamento confortevole con 2 camere da letto..."
-                          rows={2}
-                          maxLength={160}
-                          className="text-xs sm:text-sm"
-                        />
-                        <p className="text-[10px] sm:text-xs text-gray-500 mt-1">{(selectedApartment.meta_description?.it || '').length}/160</p>
-                      </div>
-                    </div>
+                    <Textarea
+                      value={selectedApartment.meta_description?.sr || ''}
+                      onChange={(e) => setSelectedApartment({
+                        ...selectedApartment,
+                        meta_description: {
+                          ...(selectedApartment.meta_description || { sr: '', en: '', de: '', it: '' }),
+                          sr: e.target.value
+                        }
+                      })}
+                      placeholder="Udoban apartman sa 2 spavace sobe..."
+                      rows={2}
+                      maxLength={160}
+                      className="text-xs sm:text-sm"
+                    />
+                    <p className="text-[10px] sm:text-xs text-gray-500 mt-1">{(selectedApartment.meta_description?.sr || '').length}/160</p>
                   </div>
 
                   {/* Meta Keywords */}
@@ -964,7 +793,7 @@ export default function EnhancedApartmentManager() {
                       <Input
                         value={selectedApartment.city || ''}
                         onChange={(e) => setSelectedApartment({ ...selectedApartment, city: e.target.value })}
-                        placeholder="Herceg Novi"
+                        placeholder="Bovan"
                         className="text-xs sm:text-sm h-8 sm:h-9"
                       />
                     </div>

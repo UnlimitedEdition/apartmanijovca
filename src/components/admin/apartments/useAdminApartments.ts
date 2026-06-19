@@ -59,6 +59,7 @@ export function useAdminApartments() {
       selected_amenities: apartment.selected_amenities || [],
       selected_rules: apartment.selected_rules || [],
       selected_view: apartment.selected_view || '',
+      city: !apartment.city || apartment.city === 'Aleksinac' ? 'Bovan' : apartment.city,
       images: apartment.images || []
     })
     setIsEditing(true)
