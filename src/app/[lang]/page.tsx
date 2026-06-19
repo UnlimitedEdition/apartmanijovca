@@ -116,6 +116,7 @@ export default async function HomePage({ params: paramsInput }: PageProps) {
         .from('apartments')
         .select('*')
         .eq('status', 'active')
+        .order('display_order', { ascending: true })
         .limit(4)
       apartments = apartmentsData
 
