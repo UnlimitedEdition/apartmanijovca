@@ -1,4 +1,4 @@
-# Resend Email Setup - Apartmani Jovča
+# Email Setup - Apartmani Jovča
 
 ## 🚀 Trenutna Konfiguracija
 
@@ -7,7 +7,37 @@
 
 ## ⚠️ Važno: Resend bez Custom Domena
 
-Resend zahteva **verifikovan domen** za slanje email-ova u produkciji. Bez domena, možeš koristiti **Test Mode**.
+Resend zahteva **verifikovan domen** za slanje email-ova u produkciji. Bez domena, Resend
+**test mode šalje SAMO na email adresu vlasnika Resend naloga** — pravi gosti NEĆE primiti email.
+
+---
+
+## ✅ PREPORUKA: Brevo kao most do domena (bez domena, bez App Password-a)
+
+Dok ne stigne custom domen, koristi **Brevo** (bivši Sendinblue). Brevo dozvoljava slanje na
+**bilo koju adresu** nakon što verifikuješ **jedan jedini sender email klikom** — bez domena i
+bez Gmail App Password-a. Besplatno do **300 mejlova/dan**.
+
+Kod automatski bira provajdera: **ako je `BREVO_API_KEY` postavljen → koristi Brevo**, u
+suprotnom pada na Resend. Nikakva izmena koda nije potrebna pri prebacivanju.
+
+### Setup (jednokratno, ~5 min):
+
+1. Registruj se na [Brevo](https://www.brevo.com/) (besplatno).
+2. **Senders, Domains & Dedicated IPs → Senders → Add a sender:**
+   - Unesi `apartmanijovca@gmail.com` i potvrdi klikom na link iz verifikacionog mejla.
+3. **SMTP & API → API Keys → Generate a new API key**, kopiraj ga.
+4. U **Vercel → Environment Variables** dodaj:
+   ```bash
+   BREVO_API_KEY=xkeysib-...
+   # Opcionalno (default je apartmanijovca@gmail.com):
+   BREVO_SENDER_EMAIL=apartmanijovca@gmail.com
+   ```
+   > ⚠️ `BREVO_SENDER_EMAIL` MORA biti tačno ona adresa koju si verifikovao u koraku 2.
+5. Redeploy. Od tog trenutka **svi gosti primaju email**.
+
+Kad kasnije verifikuješ domen u Resend-u, samo ukloni `BREVO_API_KEY` iz Vercel-a (ili ostavi
+Brevo + dodaj domen u Brevo) — kod se sam vraća na Resend.
 
 ---
 

@@ -1,11 +1,11 @@
 // Email Service for Apartmani Jovca
 // Provides functions to send all types of booking-related emails
 
-import { 
-  sendEmail, 
-  isResendConfigured, 
-  EMAIL_CONFIG, 
-  logEmailEvent 
+import {
+  sendEmail,
+  isEmailConfigured,
+  EMAIL_CONFIG,
+  logEmailEvent
 } from '../resend'
 import type { 
   EmailLanguage, 
@@ -65,7 +65,7 @@ export async function sendBookingConfirmation(
     bookingId: booking.bookingId,
   })
 
-  if (!isResendConfigured()) {
+  if (!isEmailConfigured()) {
     console.log('[Email Mock] Booking Confirmation:', {
       to: guest.email,
       bookingNumber: booking.bookingNumber,
@@ -142,7 +142,7 @@ export async function sendBookingRequest(
     bookingId: booking.bookingId,
   })
 
-  if (!isResendConfigured()) {
+  if (!isEmailConfigured()) {
     console.log('[Email Mock] Booking Request to Admin:', {
       to: EMAIL_CONFIG.adminEmail,
       bookingNumber: booking.bookingNumber,
@@ -223,7 +223,7 @@ export async function sendCheckInInstructions(
     bookingId: booking.bookingId,
   })
 
-  if (!isResendConfigured()) {
+  if (!isEmailConfigured()) {
     console.log('[Email Mock] Check-In Instructions:', {
       to: guest.email,
       bookingNumber: booking.bookingNumber,
@@ -300,7 +300,7 @@ export async function sendPreArrivalReminder(
     bookingId: booking.bookingId,
   })
 
-  if (!isResendConfigured()) {
+  if (!isEmailConfigured()) {
     console.log('[Email Mock] Pre-Arrival Reminder:', {
       to: guest.email,
       bookingNumber: booking.bookingNumber,
@@ -378,7 +378,7 @@ export async function sendReviewRequest(
     bookingId: booking.bookingId,
   })
 
-  if (!isResendConfigured()) {
+  if (!isEmailConfigured()) {
     console.log('[Email Mock] Review Request:', {
       to: guest.email,
       bookingNumber: booking.bookingNumber,

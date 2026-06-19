@@ -5,12 +5,15 @@ import { PRODUCTION_URL, CONTACT_PHONE, EMAIL_FROM, EMAIL_ADMIN } from './seo/co
 // Initialize Resend client with error handling
 const getResendClient = () => {
   const apiKey = process?.env?.RESEND_API_KEY
-  
+
   if (!apiKey) {
-    console.warn('RESEND_API_KEY is not configured. Email sending will be disabled.')
+    // Brevo may still be configured; only warn when no provider is set at all.
+    if (!process?.env?.BREVO_API_KEY) {
+      console.warn('No email provider configured (RESEND_API_KEY / BREVO_API_KEY missing). Email sending will be disabled.')
+    }
     return null
   }
-  
+
   return new Resend(apiKey)
 }
 
@@ -24,11 +27,27 @@ export const EMAIL_CONFIG = {
   companyName: 'Apartmani Jovča',
   websiteUrl: PRODUCTION_URL,
   supportPhone: CONTACT_PHONE,
+  // Brevo sender must be a verified email on the Brevo account (single-sender
+  // verification). Falls back to the admin/contact inbox which is what gets verified.
+  brevoSenderEmail: process?.env?.BREVO_SENDER_EMAIL || process?.env?.ADMIN_EMAIL || EMAIL_ADMIN,
 } as const
 
 // Check if Resend is properly configured
 export function isResendConfigured(): boolean {
   return resend !== null && !!process?.env?.RESEND_API_KEY
+}
+
+// Check if Brevo is configured. Brevo allows sending to ANY recipient after a
+// one-click single-sender verification — no custom domain required — so it's the
+// preferred bridge until a domain is verified in Resend.
+export function isBrevoConfigured(): boolean {
+  return !!process?.env?.BREVO_API_KEY
+}
+
+// True when ANY email provider is usable. Services use this to decide between a
+// real send and the mock/log fallback.
+export function isEmailConfigured(): boolean {
+  return isBrevoConfigured() || isResendConfigured()
 }
 
 // Interface for email options
@@ -42,11 +61,70 @@ export interface SendEmailOptions {
   headers?: Record<string, string>
 }
 
-// Send email with comprehensive error handling
+// Send email via Brevo (transactional email API).
+// Docs: https://developers.brevo.com/reference/sendtransacemail
+// Brevo needs no custom domain — only a one-click verified sender — and can send
+// to any recipient, which is why it's preferred over Resend test mode.
+async function sendViaBrevo(options: SendEmailOptions): Promise<EmailSendResult> {
+  try {
+    const recipients = (Array.isArray(options.to) ? options.to : [options.to]).map((email) => ({ email }))
+
+    const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+      method: 'POST',
+      headers: {
+        'api-key': process.env.BREVO_API_KEY as string,
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify({
+        sender: {
+          name: EMAIL_CONFIG.companyName,
+          email: EMAIL_CONFIG.brevoSenderEmail,
+        },
+        to: recipients,
+        replyTo: options.replyTo ? { email: options.replyTo } : undefined,
+        subject: options.subject,
+        htmlContent: options.html,
+        textContent: options.text || generatePlainText(options.html),
+        // Brevo tags are a flat list of strings.
+        tags: options.tags ? Object.values(options.tags) : undefined,
+        headers: options.headers,
+      }),
+    })
+
+    if (!response.ok) {
+      let detail = `HTTP ${response.status}`
+      try {
+        const body = await response.json()
+        detail = body?.message || body?.code || detail
+      } catch {
+        // ignore non-JSON error bodies
+      }
+      console.error('Failed to send email via Brevo:', detail)
+      return { success: false, error: detail }
+    }
+
+    const data = await response.json().catch(() => ({}))
+    console.log(`Email sent successfully via Brevo. Message ID: ${data?.messageId}`)
+    return { success: true, messageId: data?.messageId }
+  } catch (err) {
+    const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred'
+    console.error('Exception while sending email via Brevo:', errorMessage)
+    return { success: false, error: errorMessage }
+  }
+}
+
+// Send email with comprehensive error handling.
+// Provider priority: Brevo (if configured) → Resend. This lets us deliver to real
+// guests via Brevo's verified single sender while Resend stays domain-gated.
 export async function sendEmail(options: SendEmailOptions): Promise<EmailSendResult> {
+  if (isBrevoConfigured()) {
+    return sendViaBrevo(options)
+  }
+
   // Check if Resend is configured
   if (!isResendConfigured()) {
-    console.error('Resend is not configured. Cannot send email.')
+    console.error('No email provider is configured. Cannot send email.')
     return {
       success: false,
       error: 'Email service is not configured',

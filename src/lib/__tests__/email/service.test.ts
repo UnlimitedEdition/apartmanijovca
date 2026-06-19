@@ -9,7 +9,7 @@ jest.mock('../../resend', () => ({
     success: true,
     messageId: 'test-message-id',
   }),
-  isResendConfigured: jest.fn().mockReturnValue(true),
+  isEmailConfigured: jest.fn().mockReturnValue(true),
   EMAIL_CONFIG: {
     adminEmail: 'admin@apartmani-jovca.vercel.app',
     fromEmail: 'noreply@apartmani-jovca.vercel.app',

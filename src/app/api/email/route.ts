@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { isResendConfigured, logEmailEvent, EMAIL_CONFIG } from '@/lib/resend'
+import { isEmailConfigured, logEmailEvent, EMAIL_CONFIG } from '@/lib/resend'
 import { sendEmailByType } from '@/lib/email/service'
 import { EmailType } from '@/lib/email/types'
 import { requireAdmin } from '@/lib/auth/require-admin'
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if Resend is configured
-    if (!isResendConfigured()) {
+    if (!isEmailConfigured()) {
       // In development/missing API key, just log and return success
       logEmailEvent('send_attempt', {
         emailType: type,
@@ -98,7 +98,7 @@ export async function GET(request: NextRequest) {
   // Return email service status
   if (action === 'status') {
     return NextResponse.json({
-      configured: isResendConfigured(),
+      configured: isEmailConfigured(),
       fromEmail: EMAIL_CONFIG.fromEmail,
       adminEmail: EMAIL_CONFIG.adminEmail,
       supportPhone: EMAIL_CONFIG.supportPhone,
@@ -109,7 +109,7 @@ export async function GET(request: NextRequest) {
   return NextResponse.json({
     service: 'Apartmani Jovca Email API',
     version: '1.0.0',
-    status: isResendConfigured() ? 'active' : 'mock',
+    status: isEmailConfigured() ? 'active' : 'mock',
     endpoints: {
       POST: {
         description: 'Send an email',
