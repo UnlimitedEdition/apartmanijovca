@@ -23,6 +23,8 @@ interface ApartmentAvailability {
   bed_type: string
   available: boolean
   unavailableDates: string[]
+  min_stay_nights?: number | null
+  max_stay_nights?: number | null
 }
 
 interface AvailabilityResponse {
@@ -95,8 +97,8 @@ export async function GET(request: NextRequest): Promise<NextResponse<Availabili
     // Fetch apartments
     let apartmentsQuery = supabase
       .from('apartments')
-      .select('id, name, capacity, base_price_eur, bed_type, status, amenities, images, description')
-    
+      .select('id, name, capacity, base_price_eur, bed_type, status, amenities, images, description, min_stay_nights, max_stay_nights')
+
     if (apartmentId) {
       apartmentsQuery = apartmentsQuery.eq('id', apartmentId)
     }
@@ -172,7 +174,9 @@ export async function GET(request: NextRequest): Promise<NextResponse<Availabili
         base_price_eur: localizedApartment.base_price_eur,
         bed_type: localizedApartment.bed_type,
         available: isAvailable,
-        unavailableDates: [...new Set(unavailableDates)].sort()
+        unavailableDates: [...new Set(unavailableDates)].sort(),
+        min_stay_nights: localizedApartment.min_stay_nights,
+        max_stay_nights: localizedApartment.max_stay_nights
       }
     })
 
@@ -242,7 +246,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<Availabil
     // Get apartment details
     const { data: apartment, error: apartmentError } = await supabase
       .from('apartments')
-      .select('id, name, capacity, base_price_eur, bed_type, status, amenities, images, description')
+      .select('id, name, capacity, base_price_eur, bed_type, status, amenities, images, description, min_stay_nights, max_stay_nights')
       .eq('id', apartmentId)
       .single()
 
@@ -268,7 +272,9 @@ export async function POST(request: NextRequest): Promise<NextResponse<Availabil
           base_price_eur: localizedApartment.base_price_eur,
           bed_type: localizedApartment.bed_type,
           available: isAvailable,
-          unavailableDates: []
+          unavailableDates: [],
+          min_stay_nights: localizedApartment.min_stay_nights,
+          max_stay_nights: localizedApartment.max_stay_nights
         }],
         checkIn: formatDate(checkInDate),
         checkOut: formatDate(checkOutDate),

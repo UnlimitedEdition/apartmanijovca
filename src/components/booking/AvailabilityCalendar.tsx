@@ -329,54 +329,59 @@ export default function AvailabilityCalendar({
   // Handle date click
   const handleDateClick = useCallback((date: Date) => {
     if (!selectedApartment) return
-    
+
+    // Resolve effective min/max nights from per-apartment settings (fallback to prop)
+    const selectedAptObj = data?.apartments.find(apt => apt.id === selectedApartment)
+    const effectiveMinNights = selectedAptObj?.min_stay_nights ?? minNights
+    const effectiveMaxNights = selectedAptObj?.max_stay_nights ?? maxNights
+
     // Helper function to check if two dates are the same day
     const isSameDay = (date1: Date, date2: Date) => {
       return date1.getFullYear() === date2.getFullYear() &&
              date1.getMonth() === date2.getMonth() &&
              date1.getDate() === date2.getDate()
     }
-    
+
     // If clicking the same check-in date, reset selection
     if (selection.checkIn && isSameDay(date, selection.checkIn)) {
       setSelection({ checkIn: null, checkOut: null })
       return
     }
-    
+
     // If clicking the same check-out date, reset only check-out
     if (selection.checkOut && isSameDay(date, selection.checkOut)) {
       setSelection({ ...selection, checkOut: null })
       return
     }
-    
+
     // If no check-in selected, set check-in
     if (!selection.checkIn) {
       setSelection({ checkIn: date, checkOut: null })
       return
     }
-    
+
     // If clicking a date before check-in, reset check-in
     if (date < selection.checkIn) {
       setSelection({ checkIn: date, checkOut: null })
       return
     }
-    
+
     // Calculate nights
     const nightsNum = Math.ceil((date.getTime() - selection.checkIn.getTime()) / (1000 * 60 * 60 * 24))
-    
-    // Validate min/max nights
-    if (nightsNum < minNights) {
+
+    // Validate min/max nights using per-apartment effective values
+    if (nightsNum < effectiveMinNights) {
       return // Too short
     }
-    
-    if (nightsNum > maxNights) {
+
+    if (nightsNum > effectiveMaxNights) {
       return // Too long
     }
-    
+
     // Check if range is available
     if (data && isDateRangeAvailable(data.availability, selectedApartment, selection.checkIn, date)) {
       setSelection({ ...selection, checkOut: date })
-      
+
       // Track event
       trackEvent('date_range_selected', {
         apartmentId: selectedApartment,
@@ -384,7 +389,7 @@ export default function AvailabilityCalendar({
         checkOut: formatDate(date),
         nights: nightsNum
       })
-      
+
       // Callback
       if (onDateSelect) {
         onDateSelect(selection.checkIn, date)
