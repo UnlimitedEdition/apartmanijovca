@@ -102,6 +102,7 @@ export default async function PricesPage({ params: paramsInput }: PageProps) {
     ?.from('apartments')
     .select('*')
     .eq('status', 'active')
+    .order('display_order', { ascending: true })
     .order('base_price_eur', { ascending: true })) as { data: ApartmentRecord[] | null } || { data: [] }
 
   const locale = params.lang as Locale

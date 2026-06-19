@@ -77,6 +77,7 @@ export default async function ApartmentsPage({ params: paramsInput }: PageProps)
     ?.from('apartments')
     .select('*')
     .eq('status', 'active')
+    .order('display_order', { ascending: true })
     .order('base_price_eur', { ascending: true }) || { data: [] }
 
   const localizedApartments = apartments?.map((apartment: ApartmentRecord) => {

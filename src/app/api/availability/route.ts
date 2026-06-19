@@ -98,6 +98,7 @@ export async function GET(request: NextRequest): Promise<NextResponse<Availabili
     let apartmentsQuery = supabase
       .from('apartments')
       .select('id, name, capacity, base_price_eur, bed_type, status, amenities, images, description, min_stay_nights, max_stay_nights')
+      .order('display_order', { ascending: true })
 
     if (apartmentId) {
       apartmentsQuery = apartmentsQuery.eq('id', apartmentId)
