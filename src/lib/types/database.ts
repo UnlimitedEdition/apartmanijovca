@@ -265,6 +265,11 @@ export interface GalleryRecord {
   caption: Json | null  // JSONB: MultiLanguageText
   tags: Json | null  // JSONB array: string[]
   display_order: number
+  exterior_order?: number | null
+  lake_order?: number | null
+  rooms_order?: number | null
+  terrace_order?: number | null
+  view_order?: number | null
   created_at: string
   updated_at: string
 }
