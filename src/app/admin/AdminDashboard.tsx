@@ -8,7 +8,7 @@ import { Button } from '../../components/ui/button'
 import StatsCards, { type StatCardFilter } from '../../components/admin/StatsCards'
 import BookingList from '../../components/admin/BookingList'
 import EnhancedApartmentManager from '../../components/admin/EnhancedApartmentManager'
-import ContentEditor from '../../components/admin/ContentEditor'
+import ContentEditor, { CONTENT_SECTIONS } from '../../components/admin/ContentEditor'
 import AnalyticsView from '../../components/admin/AnalyticsView'
 import GalleryManager from '../../components/admin/GalleryManager'
 import AvailabilityCalendarView from '../../components/admin/AvailabilityCalendarView'
@@ -52,6 +52,7 @@ function getActiveBookingCount(stats: Pick<Stats, 'pendingBookings' | 'confirmed
 
 export default function AdminDashboard({ stats: initialStats }: AdminDashboardProps) {
   const [activeTab, setActiveTab] = useState('dashboard')
+  const [activeContentSection, setActiveContentSection] = useState('home')
   const [refreshing, setRefreshing] = useState(false)
   const [statsKey, setStatsKey] = useState(0) // Key to force StatsCards refresh
   const [messageCount, setMessageCount] = useState<number | null>(null)
@@ -161,6 +162,11 @@ export default function AdminDashboard({ stats: initialStats }: AdminDashboardPr
   const openBookingsTab = useCallback(() => {
     setBookingFilter({})
     setActiveTab('bookings')
+  }, [])
+
+  const openContentSection = useCallback((sectionId: string) => {
+    setActiveContentSection(sectionId)
+    setActiveTab('content')
   }, [])
 
   if (!Card || !Tabs || !Button) {
@@ -277,18 +283,37 @@ export default function AdminDashboard({ stats: initialStats }: AdminDashboardPr
                 <CalendarCheck className="h-4 w-4" />
                 Dostupnost
               </button>
-              <button
-                onClick={() => {
-                  setActiveTab('content')
-                  document.getElementById('mobile-menu')?.classList.add('hidden')
-                }}
-                className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  activeTab === 'content' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted'
-                }`}
-              >
-                <FileText className="h-4 w-4" />
-                Tekstovi
-              </button>
+              <div className="space-y-1">
+                <button
+                  onClick={() => setActiveTab('content')}
+                  className={`flex items-center gap-3 w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    activeTab === 'content' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted'
+                  }`}
+                >
+                  <FileText className="h-4 w-4" />
+                  Tekstovi
+                </button>
+                {activeTab === 'content' && (
+                  <div className="ml-7 mt-1 space-y-1 border-l pl-3">
+                    {CONTENT_SECTIONS.map(section => (
+                      <button
+                        key={section.id}
+                        onClick={() => {
+                          openContentSection(section.id)
+                          document.getElementById('mobile-menu')?.classList.add('hidden')
+                        }}
+                        className={`w-full rounded-md px-3 py-1.5 text-left text-xs font-medium transition-colors ${
+                          activeContentSection === section.id
+                            ? 'bg-primary/10 text-primary'
+                            : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                        }`}
+                      >
+                        {section.name}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
               <button
                 onClick={() => {
                   setActiveTab('messages')
@@ -409,15 +434,34 @@ export default function AdminDashboard({ stats: initialStats }: AdminDashboardPr
               <CalendarCheck className="h-4 w-4" />
               Dostupnost
             </button>
-            <button
-              onClick={() => setActiveTab('content')}
-              className={`flex items-center gap-3 w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                activeTab === 'content' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted'
-              }`}
-            >
-              <FileText className="h-4 w-4" />
-              Tekstovi
-            </button>
+            <div className="space-y-1">
+              <button
+                onClick={() => setActiveTab('content')}
+                className={`flex items-center gap-3 w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  activeTab === 'content' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted'
+                }`}
+              >
+                <FileText className="h-4 w-4" />
+                Tekstovi
+              </button>
+              {activeTab === 'content' && (
+                <div className="ml-7 mt-1 space-y-1 border-l pl-3">
+                  {CONTENT_SECTIONS.map(section => (
+                    <button
+                      key={section.id}
+                      onClick={() => openContentSection(section.id)}
+                      className={`w-full rounded-md px-3 py-1.5 text-left text-xs font-medium transition-colors ${
+                        activeContentSection === section.id
+                          ? 'bg-primary/10 text-primary'
+                          : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                      }`}
+                    >
+                      {section.name}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
             <button
               onClick={() => setActiveTab('messages')}
               className={`flex items-center gap-3 w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
@@ -491,7 +535,7 @@ export default function AdminDashboard({ stats: initialStats }: AdminDashboardPr
 
           {/* Content Tab */}
           <TabsContent value="content">
-            <ContentEditor />
+            <ContentEditor selectedSection={activeContentSection} />
           </TabsContent>
 
           {/* Messages Tab */}

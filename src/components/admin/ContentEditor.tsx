@@ -13,7 +13,6 @@ import {
   AlertCircle, 
   CheckCircle2,
   Globe,
-  Edit3,
   RefreshCw,
   Download,
   Upload
@@ -23,14 +22,14 @@ import {
 
 type Language = 'en' | 'de' | 'it' | 'sr'
 
-interface ContentField {
+export interface ContentField {
   key: string
   label: string
   type: 'text' | 'textarea'
   required?: boolean
 }
 
-interface ContentSection {
+export interface ContentSection {
   id: string
   name: string
   description: string
@@ -49,7 +48,7 @@ const LANGUAGES: { code: Language; label: string; flag: string }[] = [
 ]
 
 // ONLY MEANINGFUL TEXTUAL CONTENT - NO button labels, form labels, or UI messages
-const SECTIONS: ContentSection[] = [
+export const CONTENT_SECTIONS: ContentSection[] = [
   {
     id: 'home',
     name: 'Početna strana',
@@ -215,8 +214,11 @@ const SECTIONS: ContentSection[] = [
   },
 ]
 
-export default function ContentEditor() {
-  const [selectedSection, setSelectedSection] = useState<string>('home')
+interface ContentEditorProps {
+  selectedSection?: string
+}
+
+export default function ContentEditor({ selectedSection = 'home' }: ContentEditorProps) {
   const [selectedLanguage, setSelectedLanguage] = useState<Language>('sr')
   const [content, setContent] = useState<Record<Language, ContentData>>({
     en: {},
@@ -278,7 +280,7 @@ export default function ContentEditor() {
       const timestamp = new Date().toISOString()
       const fetchTimestamps: Record<string, string> = {}
       LANGUAGES.forEach(lang => {
-        SECTIONS.forEach(section => {
+        CONTENT_SECTIONS.forEach(section => {
           fetchTimestamps[`${section.id}.${lang.code}`] = timestamp
         })
       })
@@ -325,7 +327,7 @@ export default function ContentEditor() {
       setError(null)
       setSuccess(null)
 
-      const currentSection = SECTIONS.find(s => s.id === selectedSection)
+      const currentSection = CONTENT_SECTIONS.find(s => s.id === selectedSection)
       if (!currentSection) {
         throw new Error('Sekcija nije pronađena')
       }
@@ -453,7 +455,7 @@ export default function ContentEditor() {
     await fetchContent()
   }
 
-  const currentSection = SECTIONS.find(s => s.id === selectedSection)
+  const currentSection = CONTENT_SECTIONS.find(s => s.id === selectedSection)
 
   if (loading) {
     return (
@@ -570,33 +572,6 @@ export default function ContentEditor() {
               >
                 <span>{lang.flag}</span>
                 <span>{lang.label}</span>
-              </Button>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Section Selector */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Edit3 className="w-5 h-5" />
-            Izaberite sekciju
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {SECTIONS.map(section => (
-              <Button
-                key={section.id}
-                variant={selectedSection === section.id ? 'default' : 'outline'}
-                onClick={() => setSelectedSection(section.id)}
-                className="h-auto py-3 px-4 justify-start text-left"
-              >
-                <div>
-                  <div className="font-bold">{section.name}</div>
-                  <div className="text-xs opacity-70 mt-1">{section.description}</div>
-                </div>
               </Button>
             ))}
           </div>
