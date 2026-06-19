@@ -17,6 +17,10 @@ import {
   Download,
   Upload
 } from 'lucide-react'
+import srMessages from '../../../messages/sr.json'
+import enMessages from '../../../messages/en.json'
+import deMessages from '../../../messages/de.json'
+import itMessages from '../../../messages/it.json'
 import { 
 } from '../../lib/validations/content'
 
@@ -40,6 +44,26 @@ interface ContentData {
   [key: string]: string
 }
 
+type MessagesFile = Record<string, unknown>
+
+const MESSAGES_BY_LANGUAGE: Record<Language, MessagesFile> = {
+  sr: srMessages as MessagesFile,
+  en: enMessages as MessagesFile,
+  de: deMessages as MessagesFile,
+  it: itMessages as MessagesFile
+}
+
+function getNestedText(source: MessagesFile, key: string): string | undefined {
+  const value = key.split('.').reduce<unknown>((current, part) => {
+    if (current && typeof current === 'object' && part in current) {
+      return (current as Record<string, unknown>)[part]
+    }
+    return undefined
+  }, source)
+
+  return typeof value === 'string' ? value : undefined
+}
+
 const LANGUAGES: { code: Language; label: string; flag: string }[] = [
   { code: 'sr', label: 'Srpski', flag: '��' },
   { code: 'en', label: 'English', flag: '��' },
@@ -60,6 +84,8 @@ export const CONTENT_SECTIONS: ContentSection[] = [
       { key: 'home.about.title', label: 'O nama - naslov', type: 'text' },
       { key: 'home.about.content', label: 'O nama - tekst', type: 'textarea' },
       { key: 'home.hero.book', label: 'Hero dugme - rezervacija', type: 'text' },
+      { key: 'home.hero.whatsAppLabel', label: 'Hero dugme - WhatsApp', type: 'text' },
+      { key: 'home.hero.viberLabel', label: 'Hero dugme - Viber', type: 'text' },
       { key: 'home.trust.secure', label: 'Trust traka - sigurna rezervacija', type: 'text' },
       { key: 'home.trust.flexible', label: 'Trust traka - fleksibilno otkazivanje', type: 'text' },
       { key: 'home.trust.prime', label: 'Trust traka - lokacija', type: 'text' },
@@ -68,6 +94,8 @@ export const CONTENT_SECTIONS: ContentSection[] = [
       { key: 'home.featured.subtitle', label: 'Izdvojeni apartmani - opis', type: 'textarea' },
       { key: 'home.featured.viewAll', label: 'Izdvojeni apartmani - dugme svi apartmani', type: 'text' },
       { key: 'home.featured.checkAvailability', label: 'Izdvojeni apartmani - dugme dostupnost', type: 'text' },
+      { key: 'home.featured.badge', label: 'Izdvojeni apartmani - bedz', type: 'text' },
+      { key: 'home.featured.perNight', label: 'Izdvojeni apartmani - cena po noci', type: 'text' },
       { key: 'home.features.title', label: 'Sadrzaji - naslov', type: 'text' },
       { key: 'home.features.description', label: 'Sadrzaji - opis', type: 'textarea' },
       { key: 'home.features.wiFi', label: 'Sadrzaji - WiFi', type: 'text' },
@@ -77,6 +105,13 @@ export const CONTENT_SECTIONS: ContentSection[] = [
       { key: 'home.features.linens', label: 'Sadrzaji - posteljina', type: 'text' },
       { key: 'home.features.lakeAccess', label: 'Sadrzaji - jezero', type: 'text' },
       { key: 'home.features.bbq', label: 'Sadrzaji - rostilj', type: 'text' },
+      { key: 'home.testimonials.title', label: 'Utisci gostiju - naslov', type: 'text' },
+      { key: 'home.testimonials.guestFrom', label: 'Utisci gostiju - gost iz', type: 'text' },
+      { key: 'home.testimonials.guestFallback', label: 'Utisci gostiju - nepoznat gost', type: 'text' },
+      { key: 'home.testimonials.sampleQuote', label: 'Utisci gostiju - primer citata', type: 'textarea' },
+      { key: 'home.testimonials.sampleName', label: 'Utisci gostiju - primer ime', type: 'text' },
+      { key: 'home.testimonials.sampleLocation', label: 'Utisci gostiju - primer lokacija', type: 'text' },
+      { key: 'home.testimonials.sampleInitials', label: 'Utisci gostiju - primer inicijali', type: 'text' },
       { key: 'home.faq.title', label: 'FAQ - naslov', type: 'text' },
       { key: 'home.faq.q1', label: 'FAQ 1 - pitanje', type: 'text' },
       { key: 'home.faq.a1', label: 'FAQ 1 - odgovor', type: 'textarea' },
@@ -86,7 +121,16 @@ export const CONTENT_SECTIONS: ContentSection[] = [
       { key: 'home.faq.a4', label: 'FAQ 3 - odgovor', type: 'textarea' },
       { key: 'home.faq.q5', label: 'FAQ 4 - pitanje', type: 'text' },
       { key: 'home.faq.a5', label: 'FAQ 4 - odgovor', type: 'textarea' },
+      { key: 'home.faq.q7', label: 'FAQ 5 - pitanje', type: 'text' },
+      { key: 'home.faq.a7', label: 'FAQ 5 - odgovor', type: 'textarea' },
+      { key: 'home.faq.q8', label: 'FAQ 6 - pitanje', type: 'text' },
+      { key: 'home.faq.a8', label: 'FAQ 6 - odgovor', type: 'textarea' },
+      { key: 'home.faq.q9', label: 'FAQ 7 - pitanje', type: 'text' },
+      { key: 'home.faq.a9', label: 'FAQ 7 - odgovor', type: 'textarea' },
+      { key: 'home.faq.q10', label: 'FAQ 8 - pitanje', type: 'text' },
+      { key: 'home.faq.a10', label: 'FAQ 8 - odgovor', type: 'textarea' },
       { key: 'home.faq.moreQuestions', label: 'FAQ - dodatna pitanja', type: 'text' },
+      { key: 'home.faq.contactLink', label: 'FAQ - link kontakt', type: 'text' },
       { key: 'home.cta.ready', label: 'Zavrsni CTA - naslov', type: 'text' },
       { key: 'home.cta.subtitle', label: 'Zavrsni CTA - opis', type: 'textarea' },
       { key: 'home.cta.book', label: 'Zavrsni CTA - dugme rezervisi', type: 'text' },
@@ -214,18 +258,48 @@ export const CONTENT_SECTIONS: ContentSection[] = [
   },
 ]
 
+function buildDefaultContent(language: Language): ContentData {
+  const messages = MESSAGES_BY_LANGUAGE[language]
+  const data: ContentData = {}
+
+  CONTENT_SECTIONS.forEach(section => {
+    section.fields.forEach(field => {
+      const value = getNestedText(messages, field.key)
+      if (value !== undefined) data[field.key] = value
+    })
+  })
+
+  data['home.hero.whatsAppLabel'] = 'WhatsApp'
+  data['home.hero.viberLabel'] = 'Viber'
+
+  const contactUs = getNestedText(messages, 'common.contactUs')
+  if (contactUs !== undefined) data['home.faq.contactLink'] = contactUs
+
+  const guest = getNestedText(messages, 'common.guest')
+  if (guest !== undefined) data['home.testimonials.guestFallback'] = guest
+
+  const perNight = getNestedText(messages, 'apartments.perNight')
+  if (perNight !== undefined) data['home.featured.perNight'] = perNight
+
+  return data
+}
+
+function createDefaultContentState(): Record<Language, ContentData> {
+  return {
+    en: buildDefaultContent('en'),
+    de: buildDefaultContent('de'),
+    it: buildDefaultContent('it'),
+    sr: buildDefaultContent('sr')
+  }
+}
+
 interface ContentEditorProps {
   selectedSection?: string
 }
 
 export default function ContentEditor({ selectedSection = 'home' }: ContentEditorProps) {
   const [selectedLanguage, setSelectedLanguage] = useState<Language>('sr')
-  const [content, setContent] = useState<Record<Language, ContentData>>({
-    en: {},
-    de: {},
-    it: {},
-    sr: {}
-  })
+  const [content, setContent] = useState<Record<Language, ContentData>>(() => createDefaultContentState())
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | ReactNode | null>(null)
@@ -259,12 +333,7 @@ export default function ContentEditor({ selectedSection = 'home' }: ContentEdito
       const data = await response.json()
       
       // Transform flat key-value pairs into nested structure
-      const transformedContent: Record<Language, ContentData> = {
-        en: {},
-        de: {},
-        it: {},
-        sr: {}
-      }
+      const transformedContent: Record<Language, ContentData> = createDefaultContentState()
 
       if (data.content && Array.isArray(data.content)) {
         data.content.forEach((item: { key: string; language: Language; value: string }) => {
