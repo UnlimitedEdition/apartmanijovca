@@ -12,7 +12,6 @@ import {
   Loader2,
   AlertCircle,
   CheckCircle2,
-  RefreshCw,
   Camera,
   Image as ImageIcon,
   Plus,
@@ -41,13 +40,6 @@ interface GalleryItem {
   created_at: string
 }
 
-const LANGUAGES = [
-  { code: 'sr', label: 'SR' },
-  { code: 'en', label: 'EN' },
-  { code: 'de', label: 'DE' },
-  { code: 'it', label: 'IT' }
-]
-
 const ALL_FOLDER = ALL_GALLERY_FOLDER
 const GALLERY_CATEGORIES = [...GALLERY_FOLDERS]
 const DEFAULT_IMAGE_FOLDER = DEFAULT_GALLERY_FOLDER
@@ -62,7 +54,6 @@ export default function GalleryManager() {
   const [isEditing, setIsEditing] = useState(false)
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
-  const [selectedLang, setSelectedLang] = useState('sr')
   const [selectedFolder, setSelectedFolder] = useState(ALL_FOLDER)
   const [formData, setFormData] = useState({
     url: '',
@@ -71,7 +62,6 @@ export default function GalleryManager() {
     display_order: 1
   })
   const [saving, setSaving] = useState(false)
-  const [translating, setTranslating] = useState(false)
   const [uploading, setUploading] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -138,7 +128,6 @@ export default function GalleryManager() {
     setIsEditing(false)
     setIsFormOpen(false)
     setEditingId(null)
-    setSelectedLang('sr')
   }
 
   const openAddForm = () => {
@@ -153,7 +142,6 @@ export default function GalleryManager() {
     })
     setIsEditing(false)
     setEditingId(null)
-    setSelectedLang('sr')
     setIsFormOpen(true)
   }
 
@@ -171,7 +159,6 @@ export default function GalleryManager() {
     })
     setEditingId(item.id)
     setIsEditing(true)
-    setSelectedLang('sr')
     setIsFormOpen(true)
   }
 
@@ -235,47 +222,6 @@ export default function GalleryManager() {
 
   const triggerFileInput = () => {
     fileInputRef.current?.click()
-  }
-
-  const handleAutoTranslate = async () => {
-    const textToTranslate = formData.captions.sr
-    if (!textToTranslate) {
-      setError('Prvo unesite naslov na srpskom jeziku.')
-      return
-    }
-
-    try {
-      setTranslating(true)
-      setError(null)
-      const response = await fetch('/api/admin/translate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          text: textToTranslate,
-          targetLangs: ['en', 'de', 'it']
-        })
-      })
-
-      if (!response.ok) throw new Error('Translation failed')
-      const { translations } = await response.json()
-
-      setFormData(prev => ({
-        ...prev,
-        captions: {
-          ...prev.captions,
-          en: translations.en,
-          de: translations.de,
-          it: translations.it
-        }
-      }))
-      setSuccess('Prevodi su uspešno generisani!')
-      setTimeout(() => setSuccess(null), 2000)
-    } catch (err) {
-      console.error('Translation error:', err)
-      setError('Došlo je do greške prilikom prevođenja.')
-    } finally {
-      setTranslating(false)
-    }
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -512,55 +458,23 @@ export default function GalleryManager() {
                 </div>
 
                 <div className="space-y-2 sm:space-y-3 pb-2 border-b">
-                  <div className="flex items-center justify-between gap-2">
-                    <Label className="text-xs sm:text-sm">Naslov / Opis</Label>
-                    <div className="flex bg-muted rounded-md p-0.5">
-                      {LANGUAGES.map(lang => (
-                        <button
-                          key={lang.code}
-                          type="button"
-                          onClick={() => setSelectedLang(lang.code)}
-                          className={`px-1.5 sm:px-2 py-0.5 sm:py-1 text-[9px] sm:text-[10px] font-bold rounded transition-colors ${
-                            selectedLang === lang.code ? 'bg-background shadow-sm' : 'hover:bg-background/50'
-                          }`}
-                        >
-                          {lang.label}
-                        </button>
-                      ))}
-                    </div>
+                  <Label htmlFor="caption" className="text-xs sm:text-sm">Opis slike (SEO — alt tekst, srpski)</Label>
+                  <div className="relative">
+                    <Input
+                      id="caption"
+                      value={formData.captions.sr || ''}
+                      onChange={(e) => setFormData(prev => ({
+                        ...prev,
+                        captions: { ...prev.captions, sr: e.target.value }
+                      }))}
+                      placeholder="npr. Pogled na Bovansko jezero sa terase apartmana"
+                      className="pr-10 text-xs sm:text-sm"
+                    />
+                    <Badge variant="outline" className="absolute right-2 top-2 py-0 px-1 text-[8px] opacity-70">SR</Badge>
                   </div>
-
-                  <div className="space-y-2 sm:space-y-3">
-                    <div className="relative">
-                      <Input
-                        id="caption"
-                        value={formData.captions[selectedLang] || ''}
-                        onChange={(e) => setFormData(prev => ({
-                          ...prev,
-                          captions: { ...prev.captions, [selectedLang]: e.target.value }
-                        }))}
-                        placeholder={selectedLang === 'sr' ? 'npr. Pogled na jezero' : `Prevod ${selectedLang.toUpperCase()}...`}
-                        className="pr-10 text-xs sm:text-sm"
-                      />
-                      <Badge variant="outline" className="absolute right-2 top-2 py-0 px-1 text-[8px] opacity-70">
-                        {selectedLang.toUpperCase()}
-                      </Badge>
-                    </div>
-
-                    {selectedLang === 'sr' && (
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        onClick={handleAutoTranslate}
-                        disabled={translating || !formData.captions.sr}
-                        className="w-full text-blue-600 hover:text-blue-700 hover:bg-blue-50 text-[10px] sm:text-xs gap-1.5 h-7 sm:h-8"
-                      >
-                        {translating ? <Loader2 className="h-3 w-3 animate-spin" /> : <RefreshCw className="h-3 w-3" />}
-                        <span className="truncate">Prevedi automatski</span>
-                      </Button>
-                    )}
-                  </div>
+                  <p className="text-[10px] sm:text-xs text-muted-foreground">
+                    Koristi se kao <strong>alt tekst</strong> slike na sajtu (SEO). Unosi se samo srpski; ostali jezici se dopunjuju kasnije direktno u bazi, do tada se prikazuje srpski.
+                  </p>
                 </div>
 
                 <div className="space-y-2">
