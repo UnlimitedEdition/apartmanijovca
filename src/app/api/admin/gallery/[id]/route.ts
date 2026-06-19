@@ -2,7 +2,14 @@ import { NextRequest, NextResponse } from 'next/server'
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@supabase/supabase-js'
 import { requireAdmin } from '@/lib/auth/require-admin'
-import { getMoveOrderUpdates, normalizeDisplayOrder, normalizeMoveTargetOrder } from '@/lib/admin/gallery-order'
+import {
+  getInsertOrderUpdates,
+  getMoveOrderUpdates,
+  normalizeDisplayOrder,
+  normalizeInsertTargetOrder,
+  normalizeMoveTargetOrder,
+} from '@/lib/admin/gallery-order'
+import { ALL_GALLERY_FOLDER, getGalleryOrderColumn, isGalleryFolder } from '@/lib/admin/gallery-order-columns'
 
 
 export const dynamic = 'force-dynamic'
@@ -10,9 +17,30 @@ export const dynamic = 'force-dynamic'
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 const supabaseAdmin = createClient(
-  supabaseUrl, 
+  supabaseUrl,
   process.env.NEXT_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || supabaseAnonKey
 )
+
+type GalleryOrderRow = {
+  id: string
+  display_order?: number | null
+  [key: string]: string | number | null | undefined
+}
+
+function mapOrderItems(rows: GalleryOrderRow[], orderColumn: string) {
+  return rows.map(row => ({
+    id: row.id,
+    display_order: normalizeDisplayOrder(row[orderColumn] ?? row.display_order)
+  }))
+}
+
+function revalidateGalleryPages() {
+  revalidatePath('/[lang]/gallery', 'page')
+  revalidatePath('/sr/gallery', 'page')
+  revalidatePath('/en/gallery', 'page')
+  revalidatePath('/de/gallery', 'page')
+  revalidatePath('/it/gallery', 'page')
+}
 
 export async function DELETE(
   request: NextRequest,
@@ -30,12 +58,7 @@ export async function DELETE(
 
     if (error) throw error
 
-    // Invalidate the public gallery page cache
-    revalidatePath('/[lang]/gallery', 'page')
-    revalidatePath('/sr/gallery', 'page')
-    revalidatePath('/en/gallery', 'page')
-    revalidatePath('/de/gallery', 'page')
-    revalidatePath('/it/gallery', 'page')
+    revalidateGalleryPages()
 
     return NextResponse.json({ success: true })
   } catch (err: unknown) {
@@ -53,12 +76,7 @@ export async function PATCH(
   try {
     const id = (await params).id
     const body = await request.json()
-    const updateData: {
-      url?: string
-      caption?: string | Record<string, string> | null
-      tags?: string[]
-      display_order?: number
-    } = {}
+    const updateData: Record<string, unknown> = {}
     let targetOrder: number | undefined
 
     const tags = Array.isArray(body.tags)
@@ -73,25 +91,26 @@ export async function PATCH(
       targetOrder = normalizeDisplayOrder(body.display_order)
     }
 
-    if (targetOrder !== undefined && !folder) {
-      return NextResponse.json({ error: 'Folder is required' }, { status: 400 })
+    if (targetOrder !== undefined && (!folder || folder === ALL_GALLERY_FOLDER || !isGalleryFolder(folder))) {
+      return NextResponse.json({ error: 'Valid folder is required' }, { status: 400 })
     }
 
     if (Object.keys(updateData).length === 0 && targetOrder === undefined) {
       return NextResponse.json({ error: 'No valid fields to update' }, { status: 400 })
     }
 
-    if (targetOrder !== undefined) {
-      const { data: orderItems, error: orderError } = await supabaseAdmin
+    if (targetOrder !== undefined && folder) {
+      const orderColumn = getGalleryOrderColumn(folder)
+      const { data: folderRows, error: folderOrderError } = await supabaseAdmin
         .from('gallery')
-        .select('id, display_order')
+        .select(`id, display_order, ${orderColumn}`)
         .contains('tags', [folder])
 
-      if (orderError) throw orderError
+      if (folderOrderError) throw folderOrderError
 
       const { data: existingItem, error: existingError } = await supabaseAdmin
         .from('gallery')
-        .select('id, display_order')
+        .select(`id, display_order, ${orderColumn}`)
         .eq('id', id)
         .single()
 
@@ -100,22 +119,36 @@ export async function PATCH(
         return NextResponse.json({ error: 'Gallery item not found' }, { status: 404 })
       }
 
-      const currentItem = (orderItems || []).find(item => item.id === id) || existingItem
+      const folderOrderItems = mapOrderItems(folderRows || [], orderColumn)
+      const currentItem = folderOrderItems.find(item => item.id === id)
 
-      targetOrder = normalizeMoveTargetOrder(orderItems || [], targetOrder)
-      updateData.display_order = targetOrder
+      if (currentItem) {
+        targetOrder = normalizeMoveTargetOrder(folderOrderItems, targetOrder)
+        const orderUpdates = getMoveOrderUpdates(folderOrderItems, id, currentItem.display_order, targetOrder)
+        for (const orderUpdate of orderUpdates) {
+          const { error: updateError } = await supabaseAdmin
+            .from('gallery')
+            .update({ [orderColumn]: orderUpdate.display_order })
+            .eq('id', orderUpdate.id)
 
-      const orderUpdates = getMoveOrderUpdates(orderItems || [], id, currentItem.display_order, targetOrder)
-      for (const orderUpdate of orderUpdates) {
-        const { error: updateError } = await supabaseAdmin
-          .from('gallery')
-          .update({ display_order: orderUpdate.display_order })
-          .eq('id', orderUpdate.id)
+          if (updateError) throw updateError
+        }
+      } else {
+        targetOrder = normalizeInsertTargetOrder(folderOrderItems, targetOrder)
+        const orderUpdates = getInsertOrderUpdates(folderOrderItems, targetOrder)
+        for (const orderUpdate of orderUpdates) {
+          const { error: updateError } = await supabaseAdmin
+            .from('gallery')
+            .update({ [orderColumn]: orderUpdate.display_order })
+            .eq('id', orderUpdate.id)
 
-        if (updateError) throw updateError
+          if (updateError) throw updateError
+        }
       }
+
+      updateData[orderColumn] = targetOrder
     }
-    
+
     const { data, error } = await supabaseAdmin
       .from('gallery')
       .update(updateData)
@@ -125,12 +158,7 @@ export async function PATCH(
 
     if (error) throw error
 
-    // Invalidate the public gallery page cache
-    revalidatePath('/[lang]/gallery', 'page')
-    revalidatePath('/sr/gallery', 'page')
-    revalidatePath('/en/gallery', 'page')
-    revalidatePath('/de/gallery', 'page')
-    revalidatePath('/it/gallery', 'page')
+    revalidateGalleryPages()
 
     return NextResponse.json(data)
   } catch (err: unknown) {

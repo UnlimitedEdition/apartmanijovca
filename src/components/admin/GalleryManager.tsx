@@ -19,6 +19,12 @@ import {
   X,
   FolderOpen
 } from 'lucide-react'
+import {
+  ALL_GALLERY_FOLDER,
+  DEFAULT_GALLERY_FOLDER,
+  GALLERY_FOLDERS,
+  getGalleryFolderOrder,
+} from '@/lib/admin/gallery-order-columns'
 
 interface GalleryItem {
   id: string
@@ -26,6 +32,11 @@ interface GalleryItem {
   caption: string | Record<string, string> | null
   tags: string[]
   display_order: number
+  exterior_order?: number | null
+  lake_order?: number | null
+  rooms_order?: number | null
+  terrace_order?: number | null
+  view_order?: number | null
   created_at: string
 }
 
@@ -36,18 +47,9 @@ const LANGUAGES = [
   { code: 'it', label: 'IT' }
 ]
 
-const ALL_FOLDER = 'Sve'
-
-const GALLERY_CATEGORIES = [
-  ALL_FOLDER,
-  'Eksterijer',
-  'Jezero',
-  'Sobe',
-  'Terasa',
-  'Pogled'
-]
-
-const DEFAULT_IMAGE_FOLDER = 'Eksterijer'
+const ALL_FOLDER = ALL_GALLERY_FOLDER
+const GALLERY_CATEGORIES = [...GALLERY_FOLDERS]
+const DEFAULT_IMAGE_FOLDER = DEFAULT_GALLERY_FOLDER
 
 const EMPTY_CAPTIONS = { sr: '', en: '', de: '', it: '' }
 
@@ -90,7 +92,9 @@ export default function GalleryManager() {
     return items
       .filter(item => folder === ALL_FOLDER || item.tags?.includes(folder))
       .sort((a, b) => {
-        if (a.display_order !== b.display_order) return a.display_order - b.display_order
+        const aOrder = getGalleryFolderOrder(a, folder)
+        const bOrder = getGalleryFolderOrder(b, folder)
+        if (aOrder !== bOrder) return aOrder - bOrder
         return a.id.localeCompare(b.id)
       })
   }, [items])
@@ -148,7 +152,7 @@ export default function GalleryManager() {
 
   const handleEdit = (item: GalleryItem) => {
     const itemFolder = GALLERY_CATEGORIES.find(category => category !== ALL_FOLDER && item.tags?.includes(category)) || DEFAULT_IMAGE_FOLDER
-    const folderOrder = getItemsInFolder(itemFolder).findIndex(folderItem => folderItem.id === item.id) + 1
+    const folderOrder = getGalleryFolderOrder(item, itemFolder)
 
     setError(null)
     setSelectedFolder(itemFolder)
@@ -316,9 +320,9 @@ export default function GalleryManager() {
     }
   }
 
-  const folderItems = getItemsInFolder(selectedFolder).map((item, index) => ({
+  const folderItems = getItemsInFolder(selectedFolder).map(item => ({
     ...item,
-    folderOrder: index + 1
+    folderOrder: getGalleryFolderOrder(item, selectedFolder)
   }))
   const folderCounts = GALLERY_CATEGORIES.reduce<Record<string, number>>((counts, category) => {
     counts[category] = category === ALL_FOLDER
