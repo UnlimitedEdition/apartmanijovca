@@ -330,10 +330,15 @@ export default function AvailabilityCalendar({
   const handleDateClick = useCallback((date: Date) => {
     if (!selectedApartment) return
 
-    // Resolve effective min/max nights from per-apartment settings (fallback to prop)
+    // Resolve effective min/max nights from per-apartment settings (fallback to prop).
+    // NOTE: max_stay_nights === 0 (or null) means "no limit" by admin convention;
+    // min_stay_nights === 0/null falls back to the prop minimum. Using `??` here would
+    // wrongly treat 0 as a real max and block ALL check-out selection.
     const selectedAptObj = data?.apartments.find(apt => apt.id === selectedApartment)
-    const effectiveMinNights = selectedAptObj?.min_stay_nights ?? minNights
-    const effectiveMaxNights = selectedAptObj?.max_stay_nights ?? maxNights
+    const aptMin = selectedAptObj?.min_stay_nights
+    const aptMax = selectedAptObj?.max_stay_nights
+    const effectiveMinNights = aptMin && aptMin > 0 ? aptMin : minNights
+    const effectiveMaxNights = aptMax && aptMax > 0 ? aptMax : maxNights
 
     // Helper function to check if two dates are the same day
     const isSameDay = (date1: Date, date2: Date) => {
