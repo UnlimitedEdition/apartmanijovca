@@ -1,5 +1,8 @@
 # apartmani-jovca-next — CLAUDE.md
 
+> ⚠️ **OBAVEZNO PRE RADA:** pročitaj `AGENTS.md` (root) — deljeni izvor istine za Claude Code i Codex.
+> Na **kraju svake izmene** ažuriraj STATUS blok (✅ Završeno / 📋 Planirano) na vrhu `AGENTS.md`.
+
 ## Projekat
 
 Sajt za kratkoročni najam apartmana (Čačak). Next.js 14 App Router + Supabase + Vercel.
