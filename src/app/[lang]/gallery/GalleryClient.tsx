@@ -5,11 +5,11 @@ import Image from 'next/image'
 import { Maximize2, X, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react'
 
 const CATEGORY_LABELS: Record<string, Record<string, string>> = {
-  exterior: { sr: 'Eksterijer', en: 'Exterior', de: 'Außenbereich', it: 'Esterno' },
-  lake: { sr: 'Jezero', en: 'Lake', de: 'See', it: 'Lago' },
-  rooms: { sr: 'Sobe', en: 'Rooms', de: 'Zimmer', it: 'Camere' },
-  terrace: { sr: 'Terasa', en: 'Terrace', de: 'Terrasse', it: 'Terrazza' },
-  view: { sr: 'Pogled', en: 'View', de: 'Aussicht', it: 'Vista' },
+  Eksterijer: { sr: 'Eksterijer', en: 'Exterior', de: 'Außenbereich', it: 'Esterno' },
+  Jezero: { sr: 'Jezero', en: 'Lake', de: 'See', it: 'Lago' },
+  Sobe: { sr: 'Sobe', en: 'Rooms', de: 'Zimmer', it: 'Camere' },
+  Terasa: { sr: 'Terasa', en: 'Terrace', de: 'Terrasse', it: 'Terrazza' },
+  Pogled: { sr: 'Pogled', en: 'View', de: 'Aussicht', it: 'Vista' },
 }
 
 function tagLabel(tag: string, lang: string): string {
