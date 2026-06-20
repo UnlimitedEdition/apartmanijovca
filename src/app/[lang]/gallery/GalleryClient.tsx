@@ -3,6 +3,7 @@
 import { useState, useMemo, useEffect, useCallback } from 'react'
 import Image from 'next/image'
 import { Maximize2, X, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react'
+import { cldThumb, cldFull, cldBlur, cldSrcSet } from '@/lib/images/cloudinary'
 
 const CATEGORY_LABELS: Record<string, Record<string, string>> = {
   Eksterijer: { sr: 'Eksterijer', en: 'Exterior', de: 'Außenbereich', it: 'Esterno' },
@@ -23,6 +24,99 @@ interface GalleryItem {
   tags: string[]
   display_order: number
   created_at: string
+}
+
+/**
+ * Jedna pločica u grid-u. Servira optimizovanu Cloudinary varijantu
+ * (resize + AVIF/WebP, ~40 KB umesto sirovog originala od više MB), sa LQIP
+ * blur placeholder-om i responsive srcset-om. Prvih 6 (above-the-fold) ima
+ * eager + fetchPriority=high zbog LCP-a.
+ */
+function GalleryTile({
+  item,
+  caption,
+  lang,
+  idx,
+  onOpen,
+}: {
+  item: GalleryItem
+  caption: string
+  lang: string
+  idx: number
+  onOpen: () => void
+}) {
+  const [loaded, setLoaded] = useState(false)
+  const priority = idx < 6
+  const blur = cldBlur(item.url)
+
+  return (
+    <div
+      onClick={onOpen}
+      className="relative overflow-hidden cursor-pointer group"
+      style={{
+        borderRadius: '15px',
+        boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+        transition: 'all 0.3s ease',
+        background: 'white',
+      }}
+      onMouseEnter={(e) => {
+        const el = e.currentTarget as HTMLDivElement
+        el.style.transform = 'translateY(-5px)'
+        el.style.boxShadow = '0 8px 30px rgba(0,0,0,0.15)'
+      }}
+      onMouseLeave={(e) => {
+        const el = e.currentTarget as HTMLDivElement
+        el.style.transform = 'translateY(0)'
+        el.style.boxShadow = '0 4px 20px rgba(0,0,0,0.1)'
+      }}
+    >
+      {/* 4:3 aspect ratio container — blur LQIP kao pozadina dok se prava slika učita */}
+      <div
+        className="relative w-full bg-zinc-200"
+        style={{
+          aspectRatio: '4/3',
+          overflow: 'hidden',
+          backgroundImage: blur ? `url("${blur}")` : undefined,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={cldThumb(item.url, 600)}
+          srcSet={cldSrcSet(item.url) || undefined}
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 350px"
+          alt={caption || 'Gallery image'}
+          loading={priority ? 'eager' : 'lazy'}
+          fetchPriority={priority ? 'high' : 'auto'}
+          decoding="async"
+          onLoad={() => setLoaded(true)}
+          onError={() => setLoaded(true)}
+          className="absolute inset-0 w-full h-full object-cover transition-[transform,opacity] duration-300 group-hover:scale-105"
+          style={{ opacity: loaded ? 1 : 0 }}
+        />
+        {/* Hover overlay */}
+        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-5">
+          <Maximize2 className="absolute top-4 right-4 text-white w-5 h-5" />
+          {caption && (
+            <p className="text-white font-bold text-base mb-1.5 transform translate-y-4 group-hover:translate-y-0 transition-transform">
+              {caption}
+            </p>
+          )}
+          <div className="flex flex-wrap gap-1">
+            {item.tags?.map((tag) => (
+              <span
+                key={tag}
+                className="text-[10px] uppercase tracking-wider bg-primary/80 text-white px-2 py-0.5 rounded backdrop-blur-sm"
+              >
+                {tagLabel(tag, lang)}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 export default function GalleryClient({
@@ -104,6 +198,19 @@ export default function GalleryClient({
     return () => window.removeEventListener('keydown', handler)
   }, [lightboxIndex, nextLightbox, prevLightbox])
 
+  // Preload susednih slika (prev/next) za instant navigaciju u lightbox-u
+  useEffect(() => {
+    if (lightboxIndex === null || filteredItems.length === 0) return
+    const preload = (i: number) => {
+      const it = filteredItems[(i + filteredItems.length) % filteredItems.length]
+      if (!it) return
+      const img = new window.Image()
+      img.src = cldFull(it.url, 1920)
+    }
+    preload(lightboxIndex + 1)
+    preload(lightboxIndex - 1)
+  }, [lightboxIndex, filteredItems])
+
   if (!mounted) {
     return (
       <div className="min-h-[400px] flex items-center justify-center">
@@ -151,60 +258,16 @@ export default function GalleryClient({
           gap: '1.5rem'
         }}
       >
-        {filteredItems.map((item, idx) => {
-          const caption = getLocalizedCaption(item.caption, lang)
-          return (
-            <div
-              key={item.id}
-              onClick={() => openLightbox(idx)}
-              className="relative overflow-hidden cursor-pointer group"
-              style={{
-                borderRadius: '15px',
-                boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
-                transition: 'all 0.3s ease',
-                background: 'white',
-              }}
-              onMouseEnter={e => {
-                const el = e.currentTarget as HTMLDivElement
-                el.style.transform = 'translateY(-5px)'
-                el.style.boxShadow = '0 8px 30px rgba(0,0,0,0.15)'
-              }}
-              onMouseLeave={e => {
-                const el = e.currentTarget as HTMLDivElement
-                el.style.transform = 'translateY(0)'
-                el.style.boxShadow = '0 4px 20px rgba(0,0,0,0.1)'
-              }}
-            >
-              {/* 4:3 aspect ratio container */}
-              <div className="relative w-full bg-zinc-200" style={{ aspectRatio: '4/3', overflow: 'hidden' }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={item.url}
-                  alt={caption || 'Gallery image'}
-                  loading={idx < 6 ? 'eager' : 'lazy'}
-                  decoding="async"
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                />
-                {/* Hover overlay */}
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-5">
-                  <Maximize2 className="absolute top-4 right-4 text-white w-5 h-5" />
-                  {caption && (
-                    <p className="text-white font-bold text-base mb-1.5 transform translate-y-4 group-hover:translate-y-0 transition-transform">
-                      {caption}
-                    </p>
-                  )}
-                  <div className="flex flex-wrap gap-1">
-                    {item.tags?.map(tag => (
-                      <span key={tag} className="text-[10px] uppercase tracking-wider bg-primary/80 text-white px-2 py-0.5 rounded backdrop-blur-sm">
-                        {tagLabel(tag, lang)}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          )
-        })}
+        {filteredItems.map((item, idx) => (
+          <GalleryTile
+            key={item.id}
+            item={item}
+            caption={getLocalizedCaption(item.caption, lang)}
+            lang={lang}
+            idx={idx}
+            onOpen={() => openLightbox(idx)}
+          />
+        ))}
       </div>
 
       {/* Lightbox with keyboard nav */}
@@ -238,10 +301,11 @@ export default function GalleryClient({
             onClick={e => e.stopPropagation()}
           >
             <Image
-              src={filteredItems[lightboxIndex].url}
+              src={cldFull(filteredItems[lightboxIndex].url, 1920)}
               alt={getLocalizedCaption(filteredItems[lightboxIndex].caption, lang) || 'Gallery image'}
               fill
               unoptimized
+              priority
               className="object-contain rounded-lg"
               sizes="100vw"
             />
