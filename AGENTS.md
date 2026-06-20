@@ -1,5 +1,10 @@
 # AGENTS.md — jedinstveni izvor istine (Claude Code + Codex / ChatGPT)
 
+> # 🔴 PRE SVEGA pročitaj [`READ-FIRST-SECURITY.md`](READ-FIRST-SECURITY.md)
+> Git istorija je prepisana 2026-06-21 (uklonjeni procureli secrets, ključevi rotirani).
+> **Ako imaš stari klon (pre 2026-06-21): NE guraj ga i NE pull-uj — kloniraj iznova.**
+> Izvrši korake iz `READ-FIRST-SECURITY.md` PRE bilo kog rada na repo-u.
+
 > **OBAVEZNO ZA OBA AGENTA (Claude Code I Codex).**
 > 1. **Pre rada:** pročitaj ovaj fajl (+ projektni `CLAUDE.md`).
 > 2. **Na kraju SVAKE izmene:** ažuriraj **STATUS** blok ispod — prebaci urađeno u „✅ Završeno" (sa datumom, najnovije gore) i dopuni/skini iz „📋 Planirano".

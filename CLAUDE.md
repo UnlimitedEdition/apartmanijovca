@@ -1,5 +1,10 @@
 # apartmani-jovca-next — CLAUDE.md
 
+> # 🔴 PRE SVEGA pročitaj `READ-FIRST-SECURITY.md` (root)
+> Git istorija je prepisana 2026-06-21 (uklonjeni procureli secrets). Ako imaš stari
+> klon (pre 2026-06-21): NE guraj ga i NE pull-uj — kloniraj iznova. Detalji + obavezni
+> koraci u `READ-FIRST-SECURITY.md`.
+
 > ⚠️ **OBAVEZNO PRE RADA:** pročitaj `AGENTS.md` (root) — deljeni izvor istine za Claude Code i Codex.
 > Na **kraju svake izmene** ažuriraj STATUS blok (✅ Završeno / 📋 Planirano) na vrhu `AGENTS.md`.
 
