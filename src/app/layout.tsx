@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   manifest: '/manifest.json',
   robots: 'index, follow',
   verification: {
-    google: process.env.NEXT_PUBLIC_GSC_VERIFICATION || 'YIGD6gW3_j4Io_M_YNs3mZAJ9AQlKMc4e0cwNBcVaWM',
+    google: process.env.NEXT_PUBLIC_GSC_VERIFICATION,
   },
   openGraph: {
     title: "Apartmani Jovča - Smeštaj na Bovanskom jezeru",

@@ -2,6 +2,7 @@ import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import AdminDashboard from './AdminDashboard'
+import { getAdminEmails } from '@/lib/auth/require-admin'
 
 export const dynamic = 'force-dynamic'
 
@@ -25,13 +26,8 @@ export default async function AdminPage() {
     redirect('/admin/login')
   }
 
-  // List of authorized admin emails
-  const ADMIN_EMAILS = [
-    'mtosic0450@gmail.com',
-    'apartmanijovca@gmail.com'
-  ]
-
-  if (!ADMIN_EMAILS.includes(user.email || '')) {
+  // Admin emailovi iz env-a (ADMIN_EMAILS) — bez hardkodovanih adresa
+  if (!getAdminEmails().includes((user.email || '').toLowerCase())) {
     redirect('/admin/login')
   }
 

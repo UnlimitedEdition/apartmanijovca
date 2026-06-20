@@ -1,10 +1,18 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextRequest, NextResponse } from 'next/server'
 
-const ADMIN_EMAILS = [
-  'mtosic0450@gmail.com',
-  'apartmanijovca@gmail.com',
-]
+/**
+ * Lista admin emailova iz env-a (`ADMIN_EMAILS`, comma-separated). NEMA
+ * hardkodovanih adresa u kodu. Postaviti `ADMIN_EMAILS` u Vercel env, npr.
+ * `ADMIN_EMAILS=a@example.com,b@example.com`. Ako env nije postavljen, lista je
+ * prazna → niko nema admin pristup (fail-closed).
+ */
+export function getAdminEmails(): string[] {
+  return (process.env.ADMIN_EMAILS ?? '')
+    .split(',')
+    .map((e) => e.trim().toLowerCase())
+    .filter(Boolean)
+}
 
 /**
  * Call at the top of every /api/admin/* route handler.
@@ -36,7 +44,7 @@ export async function requireAdmin(
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  if (!ADMIN_EMAILS.includes(user.email ?? '')) {
+  if (!getAdminEmails().includes((user.email ?? '').toLowerCase())) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
   }
 
