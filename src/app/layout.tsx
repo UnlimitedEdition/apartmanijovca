@@ -25,6 +25,9 @@ export const metadata: Metadata = {
   verification: {
     google: process.env.NEXT_PUBLIC_GSC_VERIFICATION,
   },
+  other: {
+    'scanner-verify': '2973615e8fe6a66e02ab7c3bc492dff9',
+  },
   openGraph: {
     title: "Apartmani Jovča - Smeštaj na Bovanskom jezeru",
     description: "Rezervišite Apartmane Jovča na Bovanskom jezeru u Bovanu. Udoban smeštaj uz jezero, privatna plaža, WiFi, parking i priroda za porodični odmor.",
