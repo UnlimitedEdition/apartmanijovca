@@ -89,7 +89,17 @@ export function getBaseUrl(): string {
     }
   }
 
-  // 2. Check for Vercel deployment URL
+  // 2. On the PRODUCTION Vercel deployment, always use the stable production URL.
+  // VERCEL_URL is deployment-specific (e.g. ...-1fxfb2xhs-milans-projects.vercel.app)
+  // and changes every deploy — using it for og:url/og:image/hreflang creates
+  // signals inconsistent with the canonical (which uses PRODUCTION_URL), which
+  // confuses Google. Preview deploys (VERCEL_ENV='preview') still fall through to
+  // VERCEL_URL below so their OG/links resolve on the preview host.
+  if (process.env.VERCEL_ENV === 'production') {
+    return PRODUCTION_URL
+  }
+
+  // 3. Check for Vercel deployment URL (preview/branch deploys)
   if (process.env.NEXT_PUBLIC_VERCEL_URL) {
     return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
   }
@@ -98,7 +108,7 @@ export function getBaseUrl(): string {
     return `https://${process.env.VERCEL_URL}`
   }
 
-  // 3. Use production URL if in production
+  // 4. Use production URL if in production
   if (process.env.NODE_ENV === 'production') {
     return PRODUCTION_URL
   }

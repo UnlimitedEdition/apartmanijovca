@@ -14,6 +14,11 @@
 
 ### ✅ Završeno (najnovije gore)
 
+**2026-06-20 (fix — baseUrl konzistentnost, otkriven proverom prod HTML-a)**
+- BUG (AI SEO analize ga PROMAŠILE — našao se tek `curl`-om produkcije): `og:url`, `og:image` i svih 5 `hrefLang` koristili **deployment URL** (`...1fxfb2xhs-milans-projects.vercel.app`, menja se svakim deploy-om), dok je `canonical` na stabilnom `apartmani-jovca.vercel.app` → nekonzistentni signali zbunjuju Google.
+- Uzrok/fix: `getBaseUrl()` (`config.ts`) je na produkciji vraćao `VERCEL_URL`; dodato `VERCEL_ENV==='production' → PRODUCTION_URL` pre `VERCEL_URL`. Preview deploy-ovi i dalje koriste deployment host; `.rs` domen kasnije preko `NEXT_PUBLIC_BASE_URL` (najviši prioritet).
+- Napomena: 2 AI (Gemini) SEO „revizije" tvrdile da nema meta/OG/canonical/alt/sitemap — SVE postoji (provereno prod HTML-om). Pravi preostali levci su EKSTERNI: `.rs` domen, Google Business (Mape) link, GSC sitemap submit.
+
 **2026-06-20 (sesija — SEO krug 2)**
 - `<html lang>` dinamičan po locale — **klijentski sync** (`src/app/[lang]/HtmlLang.tsx`) umesto SSR refaktora root layout-a. Razlog: root `<html>` (`app/layout.tsx`) nosi font/theme/analytics/background, a admin/portal/root-redirect zavise od njega — premeštanje je previše rizično bez vizuelne verifikacije. Googlebot renderuje JS → čita tačan `lang`.
 - **`GeoCircle` areaServed** (radius 50 km iz `config.geoRadius`) u LocalBusiness + Organization schema — regionalni AI doseg (Aleksinac/Niš/Sokobanja). Nov `GeoCircleSchema` tip; `areaServed` sada `(Place | GeoCircle)[]`.
