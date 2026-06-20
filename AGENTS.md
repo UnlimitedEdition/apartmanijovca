@@ -14,6 +14,12 @@
 
 ### ✅ Završeno (najnovije gore)
 
+**2026-06-20 (sesija — SEO krug 2)**
+- `<html lang>` dinamičan po locale — **klijentski sync** (`src/app/[lang]/HtmlLang.tsx`) umesto SSR refaktora root layout-a. Razlog: root `<html>` (`app/layout.tsx`) nosi font/theme/analytics/background, a admin/portal/root-redirect zavise od njega — premeštanje je previše rizično bez vizuelne verifikacije. Googlebot renderuje JS → čita tačan `lang`.
+- **`GeoCircle` areaServed** (radius 50 km iz `config.geoRadius`) u LocalBusiness + Organization schema — regionalni AI doseg (Aleksinac/Niš/Sokobanja). Nov `GeoCircleSchema` tip; `areaServed` sada `(Place | GeoCircle)[]`.
+- Build ✅ + 379 testova ✅.
+- **Ostaje (marginalno / traži sadržaj):** SSR `<html lang>` (refaktor root + admin/portal vizuelni test), `@graph` `@id` linkovanje (`mergeSchemas` postoji; mnogo mesta, marginalan efekat), `openingHoursSpecification` (semantika za smeštaj nejasna), FAQPage na prices/location (zahteva vidljiv FAQ sadržaj + prevode × 4 — Faza 4 long-form).
+
 **2026-06-20 (sesija — perf javnih stranica + SEO krug 1)**
 - **Perf (Lighthouse mobilni 72)** — analiza (2 agenta) pokazala: nije JS/bundle, nego slike/LCP. Popravke:
   - Logo 206 KB PNG (`header.tsx`) → `next/image` (AVIF/WebP, priority).

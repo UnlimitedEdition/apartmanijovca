@@ -232,6 +232,7 @@ import type {
   FAQ,
   PostalAddress,
   GeoCoordinates,
+  GeoCircleSchema,
   AggregateRating,
   Review as ReviewType,
   WebSiteSchema,
@@ -318,10 +319,21 @@ export function generateLocalBusinessSchema(locale: Locale): LocalBusinessSchema
   if (config.social.twitter) sameAs.push(config.social.twitter)
 
   // Build areaServed Place array from config
-  const areaServed: PlaceSchema[] = config.business.areaServed.map(name => ({
-    '@type': 'Place' as const,
-    name
-  }))
+  const areaServed: (PlaceSchema | GeoCircleSchema)[] = [
+    {
+      '@type': 'GeoCircle',
+      geoMidpoint: {
+        '@type': 'GeoCoordinates',
+        latitude: config.business.geo.latitude,
+        longitude: config.business.geo.longitude
+      },
+      geoRadius: config.business.geoRadius
+    },
+    ...config.business.areaServed.map(name => ({
+      '@type': 'Place' as const,
+      name
+    }))
+  ]
 
   const schema: LocalBusinessSchema = {
     '@context': 'https://schema.org',
@@ -773,10 +785,21 @@ export function generateOrganizationSchema(): OrganizationSchema {
   if (config.social.twitter) sameAs.push(config.social.twitter)
 
   // Build areaServed Place array from config
-  const areaServed: PlaceSchema[] = config.business.areaServed.map(name => ({
-    '@type': 'Place' as const,
-    name
-  }))
+  const areaServed: (PlaceSchema | GeoCircleSchema)[] = [
+    {
+      '@type': 'GeoCircle',
+      geoMidpoint: {
+        '@type': 'GeoCoordinates',
+        latitude: config.business.geo.latitude,
+        longitude: config.business.geo.longitude
+      },
+      geoRadius: config.business.geoRadius
+    },
+    ...config.business.areaServed.map(name => ({
+      '@type': 'Place' as const,
+      name
+    }))
+  ]
 
   const schema: OrganizationSchema = {
     '@context': 'https://schema.org',

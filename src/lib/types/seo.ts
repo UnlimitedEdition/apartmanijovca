@@ -207,6 +207,13 @@ export interface PlaceSchema {
   geo?: GeoCoordinates
 }
 
+// Schema.org GeoCircle — areaServed sa geografskim radijusom (regionalni doseg)
+export interface GeoCircleSchema {
+  '@type': 'GeoCircle'
+  geoMidpoint: GeoCoordinates
+  geoRadius: number
+}
+
 // Schema.org TouristAttraction
 export interface TouristAttractionSchema {
   '@context': 'https://schema.org'
@@ -287,7 +294,7 @@ export interface LocalBusinessSchema {
   openingHoursSpecification?: OpeningHoursSpecification[]
   sameAs?: string[]
   /** Schema.org areaServed — regions / cities served */
-  areaServed?: PlaceSchema[]
+  areaServed?: (PlaceSchema | GeoCircleSchema)[]
   /** Schema.org additionalType — extra type URI (e.g. LodgingBusiness) */
   additionalType?: string | string[]
   /** Check-in time in ISO 8601 time format (HH:MM) */
@@ -399,7 +406,7 @@ export interface OrganizationSchema {
   /** Founding date in ISO 8601 format (YYYY) or full date */
   foundingDate?: string
   /** Regions / cities served */
-  areaServed?: PlaceSchema[]
+  areaServed?: (PlaceSchema | GeoCircleSchema)[]
 }
 
 // ============================================================================
