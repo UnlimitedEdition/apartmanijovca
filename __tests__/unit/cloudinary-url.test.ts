@@ -7,7 +7,7 @@ const NON_CLD = 'https://example.com/photo.jpg'
 describe('cloudinary url helpers', () => {
   it('ubacuje transformaciju ispred verzije za Cloudinary URL', () => {
     expect(cldThumb(RAW, 600)).toBe(
-      'https://res.cloudinary.com/dp2aulqeb/image/upload/c_fill,ar_4:3,w_600,f_auto,q_auto/v1781654418/apartmani-jovca/gallery/xxx.jpg'
+      'https://res.cloudinary.com/dp2aulqeb/image/upload/c_fill,ar_4:3,w_600,f_auto,q_auto:eco/v1781654418/apartmani-jovca/gallery/xxx.jpg'
     )
   })
 

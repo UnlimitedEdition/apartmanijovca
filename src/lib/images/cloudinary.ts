@@ -41,7 +41,7 @@ function applyTransform(url: string | null | undefined, transform: string): stri
  * `f_auto` → AVIF/WebP, `q_auto` → pametna kompresija.
  */
 export function cldThumb(url: string, width = 600, aspectRatio = '4:3'): string {
-  return applyTransform(url, `c_fill,ar_${aspectRatio},w_${width},f_auto,q_auto`)
+  return applyTransform(url, `c_fill,ar_${aspectRatio},w_${width},f_auto,q_auto:eco`)
 }
 
 /**
@@ -67,7 +67,7 @@ export function cldBlur(url: string): string {
  */
 export function cldSrcSet(
   url: string,
-  widths: number[] = [400, 600, 800, 1200],
+  widths: number[] = [400, 600, 800],
   aspectRatio = '4:3'
 ): string {
   if (!url || !UPLOAD_RE.test(url)) return ''

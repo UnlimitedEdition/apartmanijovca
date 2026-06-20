@@ -14,6 +14,12 @@
 
 ### ✅ Završeno (najnovije gore)
 
+**2026-06-20 (fix — galerija LCP, mobilni Lighthouse Perf 74→cilj 90+)**
+- Lighthouse mobilni galerije: Performance 74, **LCP 10.6s** uz FCP 1.1s. Uzrok (potvrđen `curl`-om prod HTML-a — SSR je vraćao SAMO spinner, 0 grid slika): galerija iza `mounted` gate-a → grid+slike se renderuju tek posle JS hydratacije → na sporom mobilnom CPU-u slike kreću ~10s.
+- Fix: uklonjen `mounted` gate u `GalleryClient` → grid se **SSR-uje** (`●` prerendered), slike u inicijalnom HTML-u, prvih 6 `eager`+`fetchPriority` kreće odmah. Uklonjen `opacity/onLoad` fade iz `GalleryTile` (bez `img.complete` check-a keširana slika bi mogla ostati nevidljiva u SSR-u); blur LQIP ostaje za percepciju.
+- Slike dodatno stegnute: `cldThumb` `q_auto`→`q_auto:eco`, `cldSrcSet` bez 1200w (grid je max ~360px).
+- Build `● /[lang]/gallery` prerendered + 379 testova ✅. (AI Lighthouse „image delivery" savet je promašio uzrok — problem je bio KAD slike krenu, ne veličina.)
+
 **2026-06-20 (fix — baseUrl konzistentnost, otkriven proverom prod HTML-a)**
 - BUG (AI SEO analize ga PROMAŠILE — našao se tek `curl`-om produkcije): `og:url`, `og:image` i svih 5 `hrefLang` koristili **deployment URL** (`...1fxfb2xhs-milans-projects.vercel.app`, menja se svakim deploy-om), dok je `canonical` na stabilnom `apartmani-jovca.vercel.app` → nekonzistentni signali zbunjuju Google.
 - Uzrok/fix: `getBaseUrl()` (`config.ts`) je na produkciji vraćao `VERCEL_URL`; dodato `VERCEL_ENV==='production' → PRODUCTION_URL` pre `VERCEL_URL`. Preview deploy-ovi i dalje koriste deployment host; `.rs` domen kasnije preko `NEXT_PUBLIC_BASE_URL` (najviši prioritet).

@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect, useCallback } from 'react'
 import Image from 'next/image'
-import { Maximize2, X, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react'
+import { Maximize2, X, ChevronLeft, ChevronRight } from 'lucide-react'
 import { cldThumb, cldFull, cldBlur, cldSrcSet } from '@/lib/images/cloudinary'
 
 const CATEGORY_LABELS: Record<string, Record<string, string>> = {
@@ -31,6 +31,11 @@ interface GalleryItem {
  * (resize + AVIF/WebP, ~40 KB umesto sirovog originala od više MB), sa LQIP
  * blur placeholder-om i responsive srcset-om. Prvih 6 (above-the-fold) ima
  * eager + fetchPriority=high zbog LCP-a.
+ *
+ * Renderuje se SERVER-SIDE (nema `mounted` gate) — slike su u inicijalnom HTML-u
+ * i počinju da se učitavaju odmah (bez čekanja na hydration → bolji LCP). Zato
+ * NEMA opacity/onLoad fade gate (keširana slika bi inače mogla ostati nevidljiva
+ * ako onLoad okine pre hydration-a); blur pozadina daje percepciju učitavanja.
  */
 function GalleryTile({
   item,
@@ -45,7 +50,6 @@ function GalleryTile({
   idx: number
   onOpen: () => void
 }) {
-  const [loaded, setLoaded] = useState(false)
   const priority = idx < 6
   const blur = cldBlur(item.url)
 
@@ -85,15 +89,12 @@ function GalleryTile({
         <img
           src={cldThumb(item.url, 600)}
           srcSet={cldSrcSet(item.url) || undefined}
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 350px"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 360px"
           alt={caption || 'Gallery image'}
           loading={priority ? 'eager' : 'lazy'}
           fetchPriority={priority ? 'high' : 'auto'}
           decoding="async"
-          onLoad={() => setLoaded(true)}
-          onError={() => setLoaded(true)}
-          className="absolute inset-0 w-full h-full object-cover transition-[transform,opacity] duration-300 group-hover:scale-105"
-          style={{ opacity: loaded ? 1 : 0 }}
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
         />
         {/* Hover overlay */}
         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-5">
@@ -126,13 +127,8 @@ export default function GalleryClient({
   initialItems: GalleryItem[]
   lang: string
 }) {
-  const [mounted, setMounted] = useState(false)
   const [selectedTag, setSelectedTag] = useState<string | null>(null)
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
 
   const getLocalizedCaption = (caption: string | Record<string, string> | null, currentLang: string) => {
     if (!caption) return ''
@@ -210,14 +206,6 @@ export default function GalleryClient({
     preload(lightboxIndex + 1)
     preload(lightboxIndex - 1)
   }, [lightboxIndex, filteredItems])
-
-  if (!mounted) {
-    return (
-      <div className="min-h-[400px] flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-white/60" />
-      </div>
-    )
-  }
 
   const allLabel = lang === 'sr' ? 'Sve' : lang === 'en' ? 'All' : lang === 'de' ? 'Alle' : 'Tutte'
 
