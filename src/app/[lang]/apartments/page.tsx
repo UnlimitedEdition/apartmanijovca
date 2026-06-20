@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import { getTranslations } from 'next-intl/server'
 import { supabase } from '../lib/supabase/client'
@@ -14,6 +15,9 @@ import { getKeywordsString } from '@/lib/seo/keywords'
 interface PageProps {
   params: Promise<{ lang: string }>
 }
+
+// ISR — lista apartmana se prerenderuje i kešira na CDN-u (revalidate 1h).
+export const revalidate = 3600
 
 export async function generateMetadata({ params: paramsInput }: PageProps): Promise<Metadata> {
   const params = await paramsInput
@@ -148,11 +152,12 @@ export default async function ApartmentsPage({ params: paramsInput }: PageProps)
                     €{apartment.base_price_eur}
                     <span className="text-muted-foreground font-medium text-[10px]"> / {t('perNight')}</span>
                   </div>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <Image
                     src={firstImage}
                     alt={apartment.name}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                 </Link>
 

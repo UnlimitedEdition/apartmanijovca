@@ -329,7 +329,7 @@ export function generateLocalBusinessSchema(locale: Locale): LocalBusinessSchema
     '@id': `${baseUrl}/#business`,
     name: config.business.name,
     image: [
-      makeAbsoluteUrl('/images/og-home.jpg', baseUrl)
+      makeAbsoluteUrl('/images/background.jpg', baseUrl)
     ],
     url: makeAbsoluteUrl(`/${locale}`, baseUrl),
     telephone: config.business.phone,
@@ -784,7 +784,7 @@ export function generateOrganizationSchema(): OrganizationSchema {
     '@id': `${baseUrl}/#organization`,
     name: config.business.name,
     url: baseUrl,
-    logo: makeAbsoluteUrl('/images/logo.png', baseUrl),
+    logo: makeAbsoluteUrl('/images/logo2.png', baseUrl),
     telephone: config.business.phone,
     email: config.business.email,
     address,

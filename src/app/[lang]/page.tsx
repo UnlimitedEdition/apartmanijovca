@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
@@ -24,7 +25,6 @@ import {
   convertHreflangToMetadata
 } from '@/lib/seo/metadata-adapter'
 import { generateApartmentImageAlt, generateAltText } from '@/lib/seo/alt-text'
-import LazyImage from '@/components/LazyImage'
 
 type PageProps = {
   params: Promise<{ lang: string }>
@@ -348,12 +348,13 @@ export default async function HomePage({ params: paramsInput }: PageProps) {
             </div>
             <div className="flex-1 relative">
               {/* Removed skew-y-3 for cleaner old-site feel */}
-              <div className="aspect-square bg-white/30 rounded-3xl overflow-hidden shadow-2xl backdrop-blur-sm">
-                <LazyImage
+              <div className="relative aspect-square bg-white/30 rounded-3xl overflow-hidden shadow-2xl backdrop-blur-sm">
+                <Image
                   src="/images/gallery/vikendica sprat 1.jpg"
                   alt={generateAltText('', 'apartment', params.lang as Locale, 'Vikendica Apartmani Jovča')}
-                  className="w-full h-full object-cover"
-                  priority
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover"
                 />
               </div>
               <div className="absolute -bottom-10 -left-10 bg-primary/90 p-6 rounded-2xl shadow-xl max-w-sm hidden lg:block text-primary-foreground transform -rotate-3 border-4 border-white/50 backdrop-blur-md">
@@ -405,10 +406,12 @@ export default async function HomePage({ params: paramsInput }: PageProps) {
                     <div className="absolute top-4 left-4 z-10 bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-bold shadow-sm">
                       {homeText('featured.badge')}
                     </div>
-                    <LazyImage
+                    <Image
                       src={firstImage}
                       alt={generateApartmentImageAlt(apt.name, params.lang as Locale)}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover transition-transform duration-500 group-hover:scale-110"
                     />
                     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
                       <p className="text-white font-bold text-xl">{apt.name}</p>

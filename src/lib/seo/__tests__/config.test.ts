@@ -124,7 +124,7 @@ describe('SEO Config Module', () => {
       
       expect(config.business.address.street).toBeDefined()
       expect(config.business.address.city).toBe('Bovan')
-      expect(config.business.address.country).toBe('Serbia')
+      expect(config.business.address.country).toBe('RS')
       
       expect(config.business.geo.latitude).toBeDefined()
       expect(config.business.geo.longitude).toBeDefined()

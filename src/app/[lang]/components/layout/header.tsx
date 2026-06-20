@@ -1,7 +1,7 @@
 'use client'
-/* eslint-disable @next/next/no-img-element -- Header logo uses existing fixed asset styling. */
 
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { Phone } from 'lucide-react'
@@ -103,9 +103,13 @@ export function Header({ className }: HeaderProps) {
       >
         {/* Logo */}
         <Link href={`/${currentLang}`} className="flex items-center flex-shrink-0">
-          <img
+          <Image
             src="/images/logo2.png"
             alt="Apartmani Jovča Logo"
+            width={1280}
+            height={724}
+            priority
+            sizes="72px"
             className="h-10 w-auto"
             style={{ filter: 'drop-shadow(1px 1px 2px rgba(0,0,0,0.5))' }}
           />

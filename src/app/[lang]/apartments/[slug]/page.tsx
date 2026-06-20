@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { createServerClient } from '@supabase/ssr'
-import { cookies } from 'next/headers'
+import { cache } from 'react'
+import { createClient } from '@supabase/supabase-js'
 import ApartmentDetailView from './ApartmentDetailView'
 import { transformApartmentRecord } from '@/lib/transformers/database'
 import type { ApartmentRecord, Locale } from '@/lib/types/database'
@@ -27,20 +27,22 @@ interface PageProps {
   params: Promise<{ lang: Locale; slug: string }>
 }
 
-async function getApartment(slug: string, locale: Locale) {
-  const cookieStore = await cookies()
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll: () => cookieStore.getAll(),
-        setAll: () => {},
-      },
-    }
-  )
+const LOCALES: Locale[] = ['sr', 'en', 'de', 'it']
 
-  const { data, error } = await supabase
+// ISR — apartman stranice se prerenderuju i keširaju na CDN-u (revalidate 1h).
+export const revalidate = 3600
+
+// Public anon client (BEZ cookies) — drži rutu statički renderibilnom (ISR/SSG).
+// Korišćenje cookies()/createServerClient bi rutu prebacilo na force-dynamic
+// (bez CDN keša → visok TTFB → loš mobilni LCP).
+const supabasePublic = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+)
+
+// Dedupe apartment fetch između generateMetadata + page u istom request-u.
+const getApartmentRaw = cache(async (slug: string): Promise<ApartmentRecord | null> => {
+  const { data, error } = await supabasePublic
     .from('apartments')
     .select('*')
     .eq('slug', slug)
@@ -48,22 +50,34 @@ async function getApartment(slug: string, locale: Locale) {
     .single()
 
   if (error || !data) return null
+  return data as ApartmentRecord
+})
 
-  return transformApartmentRecord(data as ApartmentRecord, locale)
+export async function generateStaticParams() {
+  const { data } = await supabasePublic
+    .from('apartments')
+    .select('slug')
+    .eq('status', 'active')
+
+  return (data ?? []).flatMap((a: { slug: string | null }) =>
+    a.slug ? LOCALES.map((lang) => ({ lang, slug: a.slug as string })) : []
+  )
 }
 
 export async function generateMetadata({ params: paramsInput }: PageProps): Promise<Metadata> {
   const params = await paramsInput
   const locale = params.lang
-  const apartment = await getApartment(params.slug, locale)
+  const raw = await getApartmentRaw(params.slug)
   const t = await getTranslations({ locale, namespace: 'seo' })
   const baseUrl = getBaseUrl()
 
-  if (!apartment) {
+  if (!raw) {
     return {
       title: t('apartmentDetail.notFound'),
     }
   }
+
+  const apartment = transformApartmentRecord(raw, locale)
 
   // Get first image for og:image
   const firstImage = apartment.images && apartment.images.length > 0
@@ -137,35 +151,19 @@ export async function generateMetadata({ params: paramsInput }: PageProps): Prom
 export default async function ApartmentPage({ params: paramsInput }: PageProps) {
   const params = await paramsInput
   const locale = params.lang
-  const apartment = await getApartment(params.slug, locale)
+  const raw = await getApartmentRaw(params.slug)
 
-  if (!apartment || !apartment.slug) {
+  if (!raw || !raw.slug) {
     notFound()
   }
 
-  // Fetch raw apartment record + reviews for structured data
-  const cookieStore = await cookies()
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll: () => cookieStore.getAll(),
-        setAll: () => {},
-      },
-    }
-  )
+  const apartment = transformApartmentRecord(raw, locale)
 
-  const { data: apartmentRecord } = await supabase
-    .from('apartments')
-    .select('*')
-    .eq('slug', params.slug)
-    .single()
-
-  const { data: reviews } = await supabase
+  // Reviews for structured data (separate table, single query)
+  const { data: reviews } = await supabasePublic
     .from('reviews')
     .select('*')
-    .eq('apartment_id', apartmentRecord?.id)
+    .eq('apartment_id', raw.id)
     .eq('status', 'approved')
 
   const reviewData = reviews && reviews.length > 0
@@ -179,28 +177,26 @@ export default async function ApartmentPage({ params: paramsInput }: PageProps) 
       })))
     : null
 
-  const lodgingSchema = apartmentRecord
-    ? (() => {
-        const schema = generateLodgingBusinessSchema({
-          id: apartmentRecord.id,
-          slug: apartmentRecord.slug || '',
-          name: apartment.name,
-          description: apartment.description,
-          images: apartment.images,
-          basePrice: apartmentRecord.base_price_eur,
-          capacity: apartmentRecord.capacity,
-          amenities: apartment.amenities,
-          size_sqm: apartmentRecord.size_sqm ?? null,
-          bed_type: apartment.bed_type || null,
-          bathroom_count: apartmentRecord.bathroom_count ?? null
-        }, locale)
-        if (reviewData) {
-          schema.aggregateRating = reviewData.aggregateRating
-          schema.review = reviewData.review
-        }
-        return schema
-      })()
-    : null
+  const lodgingSchema = (() => {
+    const schema = generateLodgingBusinessSchema({
+      id: raw.id,
+      slug: raw.slug || '',
+      name: apartment.name,
+      description: apartment.description,
+      images: apartment.images,
+      basePrice: raw.base_price_eur,
+      capacity: raw.capacity,
+      amenities: apartment.amenities,
+      size_sqm: raw.size_sqm ?? null,
+      bed_type: apartment.bed_type || null,
+      bathroom_count: raw.bathroom_count ?? null
+    }, locale)
+    if (reviewData) {
+      schema.aggregateRating = reviewData.aggregateRating
+      schema.review = reviewData.review
+    }
+    return schema
+  })()
 
   const breadcrumbSchema = generateBreadcrumbSchema(`/apartments/${params.slug}`, locale)
 

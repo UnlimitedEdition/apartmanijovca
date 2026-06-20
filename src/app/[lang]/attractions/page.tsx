@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import Image from 'next/image'
 import { getTranslations } from 'next-intl/server'
 import { Locale } from '@/lib/types/database'
 import { getBaseUrl } from '@/lib/seo/config'
@@ -134,12 +135,24 @@ export default async function AttractionsPage({ params: paramsInput }: PageProps
             >
               {attraction.image && (
                 <div className="relative aspect-[4/3] bg-muted">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={attraction.image}
-                    alt={attraction.name}
-                    className="w-full h-full object-cover"
-                  />
+                  {attraction.image.startsWith('/') ? (
+                    <Image
+                      src={attraction.image}
+                      alt={attraction.name}
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      className="object-cover"
+                    />
+                  ) : (
+                    /* eslint-disable-next-line @next/next/no-img-element -- DB image host nije garantovano u remotePatterns; siguran fallback */
+                    <img
+                      src={attraction.image}
+                      alt={attraction.name}
+                      loading="lazy"
+                      decoding="async"
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                  )}
                   {attraction.distance && (
                     <span className="absolute top-2 right-2 bg-black/70 text-white text-xs font-semibold px-2 py-1 rounded-full backdrop-blur-sm">
                       {attraction.distance}

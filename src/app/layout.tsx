@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from 'next/image';
 import { Inter } from 'next/font/google';
 import { ThemeProvider } from 'next-themes';
 import AnalyticsTracker from '../components/AnalyticsTracker';
@@ -54,19 +55,23 @@ function RootLayout({
           <link rel="preconnect" href={process.env.NEXT_PUBLIC_SUPABASE_URL} crossOrigin="anonymous" />
         )}
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
-        {/* Preload the global fixed background (LCP/FCP element on every page) */}
-        <link rel="preload" as="image" href="/images/background.jpg" fetchPriority="high" />
       </head>
       <body
         className="antialiased bg-transparent"
         style={{ colorScheme: 'light' }}
       >
-        {/* Global fixed background — replicates Astro .fixed-background pattern */}
-        <div
-          aria-hidden
-          className="fixed inset-0 -z-10 bg-cover bg-center bg-no-repeat md:bg-fixed"
-          style={{ backgroundImage: "url('/images/background.jpg')" }}
-        />
+        {/* Global fixed background — next/image serves AVIF/WebP, resized + cached on Vercel */}
+        <div aria-hidden className="fixed inset-0 -z-10">
+          <Image
+            src="/images/background.jpg"
+            alt=""
+            fill
+            priority
+            quality={70}
+            sizes="100vw"
+            className="object-cover object-center"
+          />
+        </div>
         <ThemeProvider
           attribute="class"
           defaultTheme="light"

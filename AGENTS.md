@@ -14,6 +14,28 @@
 
 ### ✅ Završeno (najnovije gore)
 
+**2026-06-20 (sesija — perf javnih stranica + SEO krug 1)**
+- **Perf (Lighthouse mobilni 72)** — analiza (2 agenta) pokazala: nije JS/bundle, nego slike/LCP. Popravke:
+  - Logo 206 KB PNG (`header.tsx`) → `next/image` (AVIF/WebP, priority).
+  - Globalni `background.jpg` 188 KB (`layout.tsx`) → `next/image fill priority q70` (AVIF preko Vercel); uklonjen zastareli `.jpg` preload.
+  - `apartments/[slug]`: **dynamic → ISR/SSG** — uklonjen `cookies()` (činио rutu dinamičnom), anon `createClient`, `generateStaticParams` + `revalidate=3600`, `cache()` dedup (3–4 ista upita → 1). Build potvrdio `●` prerendered.
+  - `next/image` migracija: attractions (lokalne; DB-eksterne ostaju `<img loading=lazy>` zbog nepoznatog host-a), apartments-lista (+`revalidate`), home (amenities + featured; skinut pogrešan `priority` s below-fold slike; `LazyImage` uklonjen).
+- **SEO krug 1:**
+  - `addressCountry` `Serbia` → **`RS`** (ISO; curi u sve PostalAddress schema). Test ažuriran.
+  - Schema 404 slike popravljene: `/images/og-home.jpg` → `background.jpg` (×2), `/images/logo.png` → `logo2.png`.
+  - `sitemap.ts`: dodati **image entries** (`<image:image>`) — home/gallery/location + prva slika svakog apartmana (Image Search).
+  - Nov **`/llms.txt`** route (AEO za ChatGPT/Perplexity/Gemini) — NAP iz config-a + svih 9 stranica × 4 jezika.
+  - `manifest.json` description → NAP-usklađen SR. (manifest ikone rade — `/icon.png`,`/apple-icon.png` su Next rute, NISU 404.)
+- Build ✅ + 379 testova ✅ + `tsc --noEmit` ✅.
+- **Ostaje (rizično, krug 2):** `<html lang>` dinamičan po locale (refaktor root layout-a, admin/portal), `@graph` `@id` linkovanje (`mergeSchemas` postoji, ne koristi se), `GeoCircle`/`openingHoursSpecification` u schema, FAQPage na prices/location.
+
+**2026-06-20 (sesija — performanse galerije / brzina slika)**
+- Nalaz: galerija je servirala **sirove Cloudinary originale** (grid `<img src={url}>` bez transformacije; lightbox `<Image unoptimized>` bez transformacije) → par MB po slici. Slike NISU bile optimizovane uprkos tome što su na Cloudinary-ju.
+- Nov helper `src/lib/images/cloudinary.ts` — `cldThumb`/`cldFull`/`cldBlur`/`cldSrcSet`; čiste string fn bez SDK-a (bezbedne za client), no-op za ne-Cloudinary URL. Obrazac kao `optimizeImageForSocial`.
+- Grid: `c_fill,ar_4:3,w_600,f_auto,q_auto` + responsive `srcSet`/`sizes` + LQIP blur (~100 B) + fade-in + `fetchPriority=high` za prvih 6 (LCP). Lightbox: `cldFull` (`c_limit,w_1920`) + preload susednih za instant nav. `unoptimized` zadržan **namerno** → Cloudinary CDN keš, nula Vercel Image kvote ([[gallery-images-cloudinary-onfly]]).
+- Rezultat: grid 448 KB → 58 KB (**7.7×**; krupnije slike 10–40×). Apartmani (`ApartmentDetailView`) nedirani (već koriste Vercel optimizer + `sizes`, rade).
+- Build ✅ + 379 testova + 7 novih helper testova ✅; Cloudinary sintaksa HTTP-provereno (200). Commit `4e23e15b`, **push-ovan na master** (deploy fra1).
+
 **2026-06-19 (sesija — admin panel)**
 - Statističke kartice: svih 8 klikabilno. Dolasci/Odlasci danas, Na čekanju, Potvrđeno, Ukupno → Rezervacije (filtrirano, svi apartmani); Ukupan/Mesečni prihod → Analitika; Popunjenost → Dostupnost. Uklonjene „Nedavne rezervacije" sa početne.
 - Bookings API: dodati `arrival_on` / `departure_on` filteri.

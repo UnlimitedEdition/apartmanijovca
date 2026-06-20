@@ -21,21 +21,39 @@ interface SitemapEntry {
   alternates?: {
     languages?: Record<string, string>
   }
+  /** Image URLs for Google Image Search (image sitemap extension). */
+  images?: string[]
 }
 
 // Static pages configuration
-const STATIC_PAGES = [
-  { path: '', priority: 1.0, changeFreq: 'daily' as const },
-  { path: '/apartments', priority: 0.9, changeFreq: 'daily' as const },
-  { path: '/location', priority: 0.8, changeFreq: 'monthly' as const },
-  { path: '/contact', priority: 0.8, changeFreq: 'monthly' as const },
-  { path: '/gallery', priority: 0.7, changeFreq: 'weekly' as const },
-  { path: '/attractions', priority: 0.7, changeFreq: 'monthly' as const },
-  { path: '/prices', priority: 0.7, changeFreq: 'weekly' as const },
-  { path: '/guide', priority: 0.8, changeFreq: 'monthly' as const },
-  { path: '/privacy', priority: 0.3, changeFreq: 'yearly' as const },
-  { path: '/terms', priority: 0.3, changeFreq: 'yearly' as const },
+const STATIC_PAGES: Array<{
+  path: string
+  priority: number
+  changeFreq: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never'
+  images?: string[]
+}> = [
+  { path: '', priority: 1.0, changeFreq: 'daily', images: ['/images/background.jpg', '/images/bovansko-jezero.jpg'] },
+  { path: '/apartments', priority: 0.9, changeFreq: 'daily' },
+  { path: '/location', priority: 0.8, changeFreq: 'monthly', images: ['/images/bovansko-jezero.jpg'] },
+  { path: '/contact', priority: 0.8, changeFreq: 'monthly' },
+  { path: '/gallery', priority: 0.7, changeFreq: 'weekly', images: ['/images/bovansko-jezero.jpg', '/images/background.jpg'] },
+  { path: '/attractions', priority: 0.7, changeFreq: 'monthly' },
+  { path: '/prices', priority: 0.7, changeFreq: 'weekly' },
+  { path: '/guide', priority: 0.8, changeFreq: 'monthly' },
+  { path: '/privacy', priority: 0.3, changeFreq: 'yearly' },
+  { path: '/terms', priority: 0.3, changeFreq: 'yearly' },
 ]
+
+/** Extract the first usable image URL from an apartment's JSONB images field. */
+function firstImageUrl(images: unknown): string | undefined {
+  if (!Array.isArray(images) || images.length === 0) return undefined
+  const first = images[0]
+  if (typeof first === 'string') return first
+  if (first && typeof first === 'object' && 'url' in first) {
+    return (first as { url: string }).url
+  }
+  return undefined
+}
 
 function getStaticPages(): SitemapEntry[] {
   const entries: SitemapEntry[] = []
@@ -43,7 +61,7 @@ function getStaticPages(): SitemapEntry[] {
   for (const page of STATIC_PAGES) {
     for (const locale of LOCALES) {
       const url = `${BASE_URL}/${locale}${page.path}`
-      
+
       // Generate alternate language URLs
       const alternates: Record<string, string> = {}
       for (const altLocale of LOCALES) {
@@ -52,7 +70,7 @@ function getStaticPages(): SitemapEntry[] {
 
       entries.push({
         url,
-        lastModified: '2026-06-18',
+        lastModified: '2026-06-20',
         changeFrequency: page.changeFreq,
         priority: page.priority,
         alternates: {
@@ -60,7 +78,8 @@ function getStaticPages(): SitemapEntry[] {
             ...alternates,
             'x-default': `${BASE_URL}/sr${page.path}`,
           }
-        }
+        },
+        ...(page.images ? { images: page.images.map((img) => `${BASE_URL}${img}`) } : {}),
       })
     }
   }
@@ -72,10 +91,10 @@ async function getDynamicPages(): Promise<SitemapEntry[]> {
   const entries: SitemapEntry[] = []
 
   try {
-    // Fetch all active apartments
+    // Fetch all active apartments (incl. images for image sitemap)
     const { data: apartments, error } = await supabase
       .from('apartments')
-      .select('slug, updated_at')
+      .select('slug, updated_at, images')
       .eq('status', 'active')
 
     if (error) {
@@ -91,9 +110,11 @@ async function getDynamicPages(): Promise<SitemapEntry[]> {
     for (const apartment of apartments) {
       if (!apartment.slug) continue
 
+      const apartmentImage = firstImageUrl(apartment.images)
+
       for (const locale of LOCALES) {
         const url = `${BASE_URL}/${locale}/apartments/${apartment.slug}`
-        
+
         // Generate alternate language URLs
         const alternates: Record<string, string> = {}
         for (const altLocale of LOCALES) {
@@ -110,7 +131,8 @@ async function getDynamicPages(): Promise<SitemapEntry[]> {
               ...alternates,
               'x-default': `${BASE_URL}/sr/apartments/${apartment.slug}`,
             }
-          }
+          },
+          ...(apartmentImage ? { images: [apartmentImage] } : {}),
         })
       }
     }
