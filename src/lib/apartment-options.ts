@@ -50,6 +50,24 @@ export const BED_OPTIONS: ApartmentOption[] = [
     }
   },
   {
+    id: 'single_room',
+    label: {
+      sr: 'Jednokrevetna',
+      en: 'Single room',
+      de: 'Einzelzimmer',
+      it: 'Camera singola'
+    }
+  },
+  {
+    id: 'double_room',
+    label: {
+      sr: 'Dvokrevetna',
+      en: 'Double room',
+      de: 'Doppelzimmer',
+      it: 'Camera doppia'
+    }
+  },
+  {
     id: 'sofa_bed',
     label: {
       sr: '1 kauč na razvlačenje',
@@ -570,6 +588,18 @@ const BED_COUNT_FORMATTERS: Record<string, Record<ApartmentOptionLocale, BedCoun
     en: count => String(count * 2) + " single beds",
     de: count => String(count * 2) + " Einzelbetten",
     it: count => String(count * 2) + " letti singoli"
+},
+  single_room: {
+    sr: count => String(count) + ' ' + (count === 1 ? 'jednokrevetna' : 'jednokrevetne'),
+    en: count => String(count) + ' single ' + (count === 1 ? 'room' : 'rooms'),
+    de: count => String(count) + ' ' + (count === 1 ? 'Einzelzimmer' : 'Einzelzimmer'),
+    it: count => String(count) + ' ' + (count === 1 ? 'camera singola' : 'camere singole')
+  },
+  double_room: {
+    sr: count => String(count) + ' ' + (count === 1 ? 'dvokrevetna' : 'dvokrevetne'),
+    en: count => String(count) + ' double ' + (count === 1 ? 'room' : 'rooms'),
+    de: count => String(count) + ' ' + (count === 1 ? 'Doppelzimmer' : 'Doppelzimmer'),
+    it: count => String(count) + ' ' + (count === 1 ? 'camera doppia' : 'camere doppie')
   },
   sofa_bed: {
     sr: count => String(count) + " " + (count === 1 ? "kauč" : "kauča") + " na razvlačenje",

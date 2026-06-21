@@ -10,6 +10,8 @@ import {
   Phone,
   Mail,
   ChevronLeft,
+ChevronDown,
+ChevronUp,
   AlertCircle,
   CheckCircle,
   XCircle,
@@ -96,6 +98,7 @@ const statusIcons: Record<string, React.ElementType> = {
 export default function AdminBookingDetails({ booking, onBack, onStatusChange }: AdminBookingDetailsProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null)
+const [showSecurityDetails, setShowSecurityDetails] = useState(false)
   const [currentBooking, setCurrentBooking] = useState(booking)
 
   const checkInDate = parseISO(currentBooking.check_in)
@@ -180,6 +183,13 @@ export default function AdminBookingDetails({ booking, onBack, onStatusChange }:
 
   const apartment = currentBooking.apartments
   const StatusIcon = statusIcons[currentBooking.status]
+const hasSecurityDetails = [
+currentBooking.ip_address,
+currentBooking.fingerprint,
+currentBooking.user_agent,
+currentBooking.metadata,
+currentBooking.consent_given !== undefined
+].some(Boolean)
 
   return (
     <div className="space-y-6">
@@ -298,77 +308,6 @@ export default function AdminBookingDetails({ booking, onBack, onStatusChange }:
               </div>
             </CardContent>
           </Card>
-
-          {/* Security & Metadata Info */}
-          {currentBooking.ip_address && (
-            <Card className="border-amber-200 bg-amber-50/50">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-amber-900">
-                  <AlertCircle className="h-5 w-5" />
-                  Безбедносни подаци
-                </CardTitle>
-                <CardDescription className="text-amber-700">
-                  Информације за превенцију злоупотребе
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3 text-sm">
-                {currentBooking.ip_address && (
-                  <div>
-                    <p className="text-amber-900 font-medium">IP Адреса</p>
-                    <p className="font-mono text-amber-800">{currentBooking.ip_address}</p>
-                  </div>
-                )}
-                {currentBooking.fingerprint && (
-                  <div>
-                    <p className="text-amber-900 font-medium">Fingerprint</p>
-                    <p className="font-mono text-xs text-amber-800 break-all">
-                      {currentBooking.fingerprint}
-                    </p>
-                  </div>
-                )}
-                {currentBooking.user_agent && (
-                  <div>
-                    <p className="text-amber-900 font-medium">Прегледач</p>
-                    <p className="text-xs text-amber-800 break-all">
-                      {currentBooking.user_agent}
-                    </p>
-                  </div>
-                )}
-                {currentBooking.metadata && (
-                  <div>
-                    <p className="text-amber-900 font-medium">Уређај</p>
-                    <div className="text-amber-800 space-y-1">
-                      {currentBooking.metadata.deviceInfo?.platform && (
-                        <p>Платформа: {currentBooking.metadata.deviceInfo.platform}</p>
-                      )}
-                      {currentBooking.metadata.deviceInfo?.screenResolution && (
-                        <p>Резолуција: {currentBooking.metadata.deviceInfo.screenResolution}</p>
-                      )}
-                      {currentBooking.metadata.deviceInfo?.timezone && (
-                        <p>Временска зона: {currentBooking.metadata.deviceInfo.timezone}</p>
-                      )}
-                      {currentBooking.metadata.deviceInfo?.language && (
-                        <p>Језик прегледача: {currentBooking.metadata.deviceInfo.language}</p>
-                      )}
-                    </div>
-                  </div>
-                )}
-                {currentBooking.consent_given !== undefined && (
-                  <div className="pt-2 border-t border-amber-200">
-                    <p className="text-amber-900 font-medium">GDPR Сагласност</p>
-                    <p className="text-amber-800">
-                      {currentBooking.consent_given ? '✓ Дата' : '✗ Није дата'}
-                    </p>
-                    {currentBooking.consent_timestamp && (
-                      <p className="text-xs text-amber-700">
-                        {new Date(currentBooking.consent_timestamp).toLocaleString('sr-RS')}
-                      </p>
-                    )}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          )}
 
           {/* Booking Dates */}
           <Card>
@@ -524,6 +463,93 @@ export default function AdminBookingDetails({ booking, onBack, onStatusChange }:
           </Card>
         </div>
       </div>
+
+      {hasSecurityDetails && (
+        <div className='border-t pt-4'>
+          <Button
+            type='button'
+            variant='outline'
+            className='w-full justify-between border-amber-200 bg-amber-50 text-amber-900 hover:bg-amber-100 hover:text-amber-950'
+            onClick={() => setShowSecurityDetails(prev => !prev)}
+          >
+            <span className='flex items-center gap-2'>
+              <AlertCircle className='h-4 w-4' />
+              Безбедносни подаци
+            </span>
+            {showSecurityDetails ? <ChevronUp className='h-4 w-4' /> : <ChevronDown className='h-4 w-4' />}
+          </Button>
+
+          {showSecurityDetails && (
+            <Card className='mt-3 border-amber-200 bg-amber-50/50'>
+              <CardHeader>
+                <CardTitle className='flex items-center gap-2 text-amber-900'>
+                  <AlertCircle className='h-5 w-5' />
+                  Безбедносни подаци
+                </CardTitle>
+                <CardDescription className='text-amber-700'>
+                  Информације за превенцију злоупотребе
+                </CardDescription>
+              </CardHeader>
+              <CardContent className='space-y-3 text-sm'>
+                {currentBooking.ip_address && (
+                  <div>
+                    <p className='text-amber-900 font-medium'>IP Адреса</p>
+                    <p className='font-mono text-amber-800'>{currentBooking.ip_address}</p>
+                  </div>
+                )}
+                {currentBooking.fingerprint && (
+                  <div>
+                    <p className='text-amber-900 font-medium'>Fingerprint</p>
+                    <p className='font-mono text-xs text-amber-800 break-all'>
+                      {currentBooking.fingerprint}
+                    </p>
+                  </div>
+                )}
+                {currentBooking.user_agent && (
+                  <div>
+                    <p className='text-amber-900 font-medium'>Прегледач</p>
+                    <p className='text-xs text-amber-800 break-all'>
+                      {currentBooking.user_agent}
+                    </p>
+                  </div>
+                )}
+                {currentBooking.metadata && (
+                  <div>
+                    <p className='text-amber-900 font-medium'>Уређај</p>
+                    <div className='text-amber-800 space-y-1'>
+                      {currentBooking.metadata.deviceInfo?.platform && (
+                        <p>Платформа: {currentBooking.metadata.deviceInfo.platform}</p>
+                      )}
+                      {currentBooking.metadata.deviceInfo?.screenResolution && (
+                        <p>Резолуција: {currentBooking.metadata.deviceInfo.screenResolution}</p>
+                      )}
+                      {currentBooking.metadata.deviceInfo?.timezone && (
+                        <p>Временска зона: {currentBooking.metadata.deviceInfo.timezone}</p>
+                      )}
+                      {currentBooking.metadata.deviceInfo?.language && (
+                        <p>Језик прегледача: {currentBooking.metadata.deviceInfo.language}</p>
+                      )}
+                    </div>
+                  </div>
+                )}
+                {currentBooking.consent_given !== undefined && (
+                  <div className='pt-2 border-t border-amber-200'>
+                    <p className='text-amber-900 font-medium'>GDPR Сагласност</p>
+                    <p className='text-amber-800'>
+                      {currentBooking.consent_given ? '✓ Дата' : '✗ Није дата'}
+                    </p>
+                    {currentBooking.consent_timestamp && (
+                      <p className='text-xs text-amber-700'>
+                        {new Date(currentBooking.consent_timestamp).toLocaleString('sr-RS')}
+                      </p>
+                    )}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          )}
+        </div>
+      )}
     </div>
   )
 }
