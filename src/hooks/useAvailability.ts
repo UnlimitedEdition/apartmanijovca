@@ -48,9 +48,14 @@ interface UseAvailabilityReturn {
   isRealtimeConnected: boolean
 }
 
-// Timezone helper for Europe/Belgrade
+// LOCAL date (YYYY-MM-DD). MUST NOT use toISOString() — a calendar Date at local midnight
+// (e.g. 9 Jul 00:00 in UTC+2 = 8 Jul 22:00 UTC) would shift a day back, so isDateRangeAvailable
+// would check the WRONG (previous) night and block a checkout day that is actually free.
 const formatDateForDB = (date: Date): string => {
-  return date.toISOString().split('T')[0]
+  const y = date.getFullYear()
+  const m = String(date.getMonth() + 1).padStart(2, '0')
+  const d = String(date.getDate()).padStart(2, '0')
+  return `${y}-${m}-${d}`
 }
 
 // Generate array of dates between start and end (inclusive)
