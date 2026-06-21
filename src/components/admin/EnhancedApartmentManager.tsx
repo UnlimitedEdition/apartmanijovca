@@ -21,8 +21,9 @@ import {
   BED_OPTIONS, 
   AMENITY_OPTIONS, 
   RULE_OPTIONS, 
-  VIEW_OPTIONS 
+  VIEW_OPTIONS
 } from '../../lib/apartment-options'
+import { pluralizeGuests, pluralizeBeds, pluralizeBathrooms } from '../../lib/utils'
 
 import { useAdminApartments } from './apartments/useAdminApartments'
 
@@ -961,7 +962,7 @@ export default function EnhancedApartmentManager() {
                               </div>
                             </div>
                             <p className="text-xs text-gray-600 mb-1">
-                              {apt.capacity} gostiju • {apt.size_sqm}m²
+                              {pluralizeGuests(apt.capacity)} • {apt.size_sqm}m²
                             </p>
                             <div className="text-sm font-bold text-primary">€{apt.base_price_eur}/noć</div>
                           </div>
@@ -1046,7 +1047,7 @@ export default function EnhancedApartmentManager() {
                             <div className="grid grid-cols-2 gap-x-4 gap-y-2 mb-3 text-xs">
                               <div className="flex items-center gap-1.5">
                                 <span className="text-gray-500">👥</span>
-                                <span className="font-medium">{apt.capacity} gostiju</span>
+                                <span className="font-medium">{pluralizeGuests(apt.capacity)}</span>
                               </div>
                               <div className="flex items-center gap-1.5">
                                 <span className="text-gray-500">📐</span>
@@ -1056,13 +1057,13 @@ export default function EnhancedApartmentManager() {
                                 <span className="text-gray-500">🛏️</span>
                                 <span className="font-medium">
                                   {apt.bed_counts && Object.keys(apt.bed_counts).length > 0 
-                                    ? `${Object.values(apt.bed_counts).reduce((a, b) => a + b, 0)} kreveta`
+                                    ? pluralizeBeds(Object.values(apt.bed_counts).reduce((a, b) => a + b, 0))
                                     : 'N/A'}
                                 </span>
                               </div>
                               <div className="flex items-center gap-1.5">
                                 <span className="text-gray-500">🚿</span>
-                                <span className="font-medium">{apt.bathroom_count || 1} kupatilo</span>
+                                <span className="font-medium">{pluralizeBathrooms(apt.bathroom_count || 1)}</span>
                               </div>
                               {apt.floor !== undefined && (
                                 <div className="flex items-center gap-1.5">

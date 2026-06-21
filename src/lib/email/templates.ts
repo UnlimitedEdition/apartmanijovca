@@ -94,7 +94,7 @@ const emailStrings: Record<EmailLanguage, {
     cantWaitToWelcome: 'Jedva čekamo da vas ugostimo!',
     howWasYourStay: 'Kako je bilo tokom boravka?',
     enjoyedStay: 'Dragi {name}, nadamo se da ste uživali u boravku u Apartmanima Jovča!',
-    feedbackHelps: 'Vaš nam pomaže da poboljšamo usluge i pomaže drugim putnicima da pronađu savršen smeštaj.',
+    feedbackHelps: 'Vaš utisak nam pomaže da poboljšamo usluge i pomaže drugim putnicima da pronađu savršen smeštaj.',
     leaveReview: 'Ostavite utisak',
     thankYouForChoosing: 'Hvala što ste izabrali Apartmane Jovča.',
     daysUntilArrival: 'Do vašeg dolaska je ostalo {days} dana',

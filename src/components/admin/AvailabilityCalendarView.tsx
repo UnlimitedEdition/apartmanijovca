@@ -570,12 +570,12 @@ export default function AvailabilityCalendarView() {
           )}
           {rangeFrom && !rangeTo && (
             <p className="mt-1 text-xs text-blue-700">
-              Izabran pocetak: {formatDateStr(rangeFrom)}. Kliknite drugi datum za kraj raspona.
+              Izabran početak: {formatDateStr(rangeFrom)}. Kliknite drugi datum za kraj raspona.
             </p>
           )}
           {rangeFrom && rangeTo && rangeFrom <= rangeTo && (
             <p className="mt-1 text-xs text-gray-500">
-              Blokira: {formatDateStr(rangeFrom)} - {formatDateStr(rangeTo)} (check-out dan nije ukljucen)
+              Blokira: {formatDateStr(rangeFrom)} - {formatDateStr(rangeTo)} (check-out dan nije uključen)
             </p>
           )}
         </CardContent>

@@ -40,7 +40,7 @@ const it: GuideContent = {
     {
       heading: 'Quando venire — le stagioni',
       paragraphs: [
-        "L'estate (giugno–agosto) è il periodo più frequentato: tempo caldo, bagni nel lago e massima animazione sul water. Prenotate in anticipo perché la disponibilità è limitata.",
+        "L'estate (giugno–agosto) è il periodo più frequentato: tempo caldo, bagni nel lago e massima animazione sull'acqua. Prenotate in anticipo perché la disponibilità è limitata.",
         "La primavera (aprile–maggio) e l'autunno (settembre–ottobre) sono ideali per escursioni, gite nei dintorni e un soggiorno rilassato lontano dalla folla. La natura è particolarmente bella in questi periodi.",
         "L'inverno (novembre–marzo) è adatto a un riposo nella quiete, alle terme di Sokobanja e alle passeggiate invernali. Gli appartamenti sono aperti tutto l'anno.",
       ],
@@ -85,7 +85,7 @@ const it: GuideContent = {
     {
       question: 'La pesca è consentita nel Lago di Bovan?',
       answer:
-        'La pesca è una attività molto popolare sul Lago di Bovan. Si consiglia di verificare la normativa vigente in materia di licenze di pesca in Serbia prima di arrivare.',
+        'La pesca è un\'attività molto popolare sul Lago di Bovan. Si consiglia di verificare la normativa vigente in materia di licenze di pesca in Serbia prima di arrivare.',
     },
     {
       question: "Dov'è il negozio e il supermercato più vicini?",

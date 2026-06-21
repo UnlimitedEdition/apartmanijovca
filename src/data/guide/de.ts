@@ -13,7 +13,7 @@ const de: GuideContent = {
       heading: 'Lage des Bovan-Sees',
       paragraphs: [
         'Der Bovan-See liegt in der Gemeinde Aleksinac, Bezirk Nišava, Südostserbien. GPS-Koordinaten: 43.64592, 21.70278. Der See entstand durch die Aufstauung der Moravica und ist von Wäldern und sanften Hügeln umgeben.',
-        'Verwaltungsmäßig gehört er zum Dorf Bovan (Postleitzahl 18230). Die nächste Stadt Aleksinac liegt etwa 15 km entfernt, Niš rund 55 km und Belgrad etwa 200 km (ca. 2 Std. 45 Min. Fahrtzeit). Das bekannte Kurort Sokobanja befindet sich in etwa 15 km Entfernung.',
+        'Verwaltungsmäßig gehört er zum Dorf Bovan (Postleitzahl 18230). Die nächste Stadt Aleksinac liegt etwa 15 km entfernt, Niš rund 55 km und Belgrad etwa 200 km (ca. 2 Std. 45 Min. Fahrtzeit). Der bekannte Kurort Sokobanja befindet sich in etwa 15 km Entfernung.',
       ],
     },
     {
@@ -21,7 +21,7 @@ const de: GuideContent = {
       paragraphs: [
         'Mit dem Auto: Am einfachsten über die Autobahn E75 (Belgrad–Niš). Ausfahrt Aleksinac, dann ca. 15 km auf der Lokalstraße den Schildern zum Bovan-See folgen. Kostenlose Parkplätze befinden sich direkt neben den Apartments.',
         'Mit dem Bus: Von Belgrad und Niš gibt es regelmäßige Busverbindungen nach Aleksinac. Von dort erreicht man den See am besten per Taxi oder eigenem Fahrzeug – die Strecke beträgt etwa 15 km. Aktuelle Fahrpläne empfehlen wir vorab auf den Websites der Busbahnhöfe zu prüfen.',
-        'Mit dem Flugzeug: Der nächste Flughafen ist Niš „Konstantin der Große" in rund 60 km Entfernung. Der Flughafen Belgrad „Nikola Tesla" liegt etwa 210 km entfernt. Von beiden Flughäfen empfehlen wir einen Mietwagen oder ein Taxi nach Aleksinac und von dort auf der Lokalstraße weiter zum See.',
+        'Mit dem Flugzeug: Der nächste Flughafen ist Niš „Konstantin der Große“ in rund 60 km Entfernung. Der Flughafen Belgrad „Nikola Tesla“ liegt etwa 210 km entfernt. Von beiden Flughäfen empfehlen wir einen Mietwagen oder ein Taxi nach Aleksinac und von dort auf der Lokalstraße weiter zum See.',
       ],
     },
     {

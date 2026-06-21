@@ -14,6 +14,14 @@
 
 ### ✅ Završeno (najnovije gore)
 
+**2026-06-21 (gramatika/pravopis — sve 4 lokalizacije, 4 agenta)**
+- **SR pluralizacija (glavni bug):** `{apt.capacity} gostiju` je hardkodirao množinu bez obzira na broj (npr. „2 gostiju" umesto „2 gosta", „1 gostiju" umesto „1 gost"). Nov `serbianPlural(n, {one, few, many})` helper u `src/lib/utils.ts` (tačan one/few/many selektor, izuzetak 11–14) + `pluralizeGuests/Beds/Nights/Bathrooms`. Primenjeno u `EnhancedApartmentManager.tsx` (gosti/kreveti/kupatila).
+- **SR ijekavica→ekavica + dijakritici:** `Proljeće→Proleće`, `namijenjen→namenjen`, `mješovite→mešovite` (×2, `guide/sr.ts`), `Smještaj→smeštaj` (`common.json`), `pocetak→početak`, `ukljucen→uključen` (`AvailabilityCalendarView.tsx`), `po noci→po noći` (`ContentEditor.tsx`), ispušteno „utisak" (`email/templates.ts`).
+- **DE:** rod `Das→Der bekannte Kurort`, nemački navodnici (`guide/de.ts`).
+- **IT:** `sentire da te→sentirti` (`common.json`), `sul water→sull'acqua`, `una attività→un'attività` (`guide/it.ts`).
+- **EN:** pregledano, bez izmena (plural ključevi već ispravni preko i18next).
+- Type-check (`tsc --noEmit`) čist van pre-postojećih `__tests__` jest-types grešaka.
+
 **2026-06-20 (fix — galerija LCP, mobilni Lighthouse Perf 74→cilj 90+)**
 - Lighthouse mobilni galerije: Performance 74, **LCP 10.6s** uz FCP 1.1s. Uzrok (potvrđen `curl`-om prod HTML-a — SSR je vraćao SAMO spinner, 0 grid slika): galerija iza `mounted` gate-a → grid+slike se renderuju tek posle JS hydratacije → na sporom mobilnom CPU-u slike kreću ~10s.
 - Fix: uklonjen `mounted` gate u `GalleryClient` → grid se **SSR-uje** (`●` prerendered), slike u inicijalnom HTML-u, prvih 6 `eager`+`fetchPriority` kreće odmah. Uklonjen `opacity/onLoad` fade iz `GalleryTile` (bez `img.complete` check-a keširana slika bi mogla ostati nevidljiva u SSR-u); blur LQIP ostaje za percepciju.

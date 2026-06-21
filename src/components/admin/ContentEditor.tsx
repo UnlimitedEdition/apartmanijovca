@@ -95,7 +95,7 @@ export const CONTENT_SECTIONS: ContentSection[] = [
       { key: 'home.featured.viewAll', label: 'Izdvojeni apartmani - dugme svi apartmani', type: 'text' },
       { key: 'home.featured.checkAvailability', label: 'Izdvojeni apartmani - dugme dostupnost', type: 'text' },
       { key: 'home.featured.badge', label: 'Izdvojeni apartmani - bedz', type: 'text' },
-      { key: 'home.featured.perNight', label: 'Izdvojeni apartmani - cena po noci', type: 'text' },
+      { key: 'home.featured.perNight', label: 'Izdvojeni apartmani - cena po noći', type: 'text' },
       { key: 'home.features.title', label: 'Sadrzaji - naslov', type: 'text' },
       { key: 'home.features.description', label: 'Sadrzaji - opis', type: 'textarea' },
       { key: 'home.features.wiFi', label: 'Sadrzaji - WiFi', type: 'text' },

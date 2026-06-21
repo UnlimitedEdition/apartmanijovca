@@ -41,7 +41,7 @@ const sr: GuideContent = {
       heading: 'Kada doći — sezone',
       paragraphs: [
         'Leto (jun–avgust) je najpopularnije vreme za posetu: toplo vreme, kupanje u jezeru i maksimalna aktivnost na vodi. Rezervišite unapred jer je kapacitet ograničen.',
-        'Proljeće (april–maj) i jesen (septembar–oktobar) odlični su za planinarenje, izlete u okolinu i odmor bez gužve. Priroda je u ovom periodu posebno lepa.',
+        'Proleće (april–maj) i jesen (septembar–oktobar) odlični su za planinarenje, izlete u okolinu i odmor bez gužve. Priroda je u ovom periodu posebno lepa.',
         'Zima (novembar–mart) pogodna je za odmor u tišini, posete Sokobanjskim termama i zimske šetnje. Apartmani rade tokom cele godine.',
       ],
     },
@@ -49,7 +49,7 @@ const sr: GuideContent = {
       heading: 'Zašto odabrati Apartmane Jovča',
       paragraphs: [
         'Apartmani Jovča su porodični smeštaj direktno uz Bovansko jezero, u radu od 2015. godine. Privatni pristup obali jezera nalazi se na 2–3 minute hoda od apartmana.',
-        'Smeštaj je namijenjen porodicama i parovima koji traže odmor u prirodi, daleko od gradske vreve. Domaćinska atmosfera i lokalno poznavanje okoline doprinose kvalitetu boravka.',
+        'Smeštaj je namenjen porodicama i parovima koji traže odmor u prirodi, daleko od gradske vreve. Domaćinska atmosfera i lokalno poznavanje okoline doprinose kvalitetu boravka.',
         'Adresa: Bukovička 125, 18230 Bovan, opština Aleksinac. Kontakt: +381 65 237 8080 (WhatsApp/Viber), apartmanijovca@gmail.com.',
       ],
     },
@@ -58,7 +58,7 @@ const sr: GuideContent = {
       paragraphs: [
         'Apartmani su opremljeni: WiFi, TV, opremljena kuhinja, posteljina i peškiri, parking (besplatan, neposredno uz objekat), roštilj i pristup jezeru.',
         'Check-in je od 14:00, check-out do 10:00. Ljubimci nisu dozvoljeni.',
-        'Najbliža prodavnica mješovite robe nalazi se na oko 500 m. Veći supermarketi i prodavnice dostupni su u Aleksincu, na oko 15 km.',
+        'Najbliža prodavnica mešovite robe nalazi se na oko 500 m. Veći supermarketi i prodavnice dostupni su u Aleksincu, na oko 15 km.',
       ],
     },
   ],
@@ -90,7 +90,7 @@ const sr: GuideContent = {
     {
       question: 'Gde je najbliža prodavnica i supermarket?',
       answer:
-        'Najbliža prodavnica mješovite robe nalazi se na oko 500 m od apartmana. Veći supermarketi i širi izbor prehrambenih proizvoda dostupni su u Aleksincu, na oko 15 km.',
+        'Najbliža prodavnica mešovite robe nalazi se na oko 500 m od apartmana. Veći supermarketi i širi izbor prehrambenih proizvoda dostupni su u Aleksincu, na oko 15 km.',
     },
     {
       question: 'Ima li restorana u blizini jezera?',
