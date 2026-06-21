@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { getTranslations } from 'next-intl/server'
 import { supabase } from '../lib/supabase/client'
 import { Badge } from '../components/ui/badge'
+import { AvailabilityBadge } from './AvailabilityBadge'
 import { getLocalizedValue } from '@/lib/localization/helpers'
 import type { Locale, ApartmentRecord, MultiLanguageText, Json } from '@/lib/types/database'
 import { getBaseUrl } from '@/lib/seo/config'
@@ -145,9 +146,11 @@ export default async function ApartmentsPage({ params: paramsInput }: PageProps)
               >
                 {/* Image */}
                 <Link href={`/${params.lang}/apartments/${apartment.slug}`} className="relative aspect-[16/10] overflow-hidden block">
-                  <Badge className="absolute top-3 left-3 z-10 bg-primary/90 backdrop-blur text-primary-foreground border-0 shadow-lg px-2 py-0.5 text-[10px] font-bold">
-                    {t('available')}
-                  </Badge>
+                  <AvailabilityBadge
+                    apartmentId={apartment.id}
+                    availableLabel={t('available')}
+                    bookedLabel={t('booked')}
+                  />
                   <div className="absolute top-3 right-3 z-10 bg-white/95 backdrop-blur px-3 py-1 rounded-full text-xs font-black shadow-lg text-foreground">
                     €{apartment.base_price_eur}
                     <span className="text-muted-foreground font-medium text-[10px]"> / {t('perNight')}</span>

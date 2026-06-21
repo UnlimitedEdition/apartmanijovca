@@ -9,6 +9,7 @@ import {
   isDateRangeAvailable
 } from '../../hooks/useAvailability'
 import { trackEvent } from '../../hooks/useAnalytics'
+import { pluralizeGuests } from '@/lib/utils'
 
 // Types
 interface DateSelection {
@@ -520,7 +521,7 @@ export default function AvailabilityCalendar({
                   <div>
                     <h4 className="font-medium">{apartment.name}</h4>
                     <p className="text-sm text-gray-500">
-                      {apartment.bed_type} · {apartment.capacity} {aptT('guests')}
+                      {apartment.bed_type} · {locale === 'sr' ? pluralizeGuests(apartment.capacity) : `${apartment.capacity} ${aptT('guests')}`}
                     </p>
                   </div>
                   <p className="font-bold text-blue-600">

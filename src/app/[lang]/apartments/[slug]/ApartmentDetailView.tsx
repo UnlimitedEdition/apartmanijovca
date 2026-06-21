@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
+import { pluralizeGuests } from '@/lib/utils'
 import ApartmentMap from '@/components/apartments/ApartmentMap'
 import {
   Users,
@@ -96,7 +97,7 @@ export default function ApartmentDetailView({ apartment, locale }: Props) {
   const [showGallery, setShowGallery] = useState(false)
 
   const features = [
-    { icon: Users, label: `${apartment.capacity} ${t('guests')}`, value: apartment.capacity },
+    { icon: Users, label: locale === 'sr' ? pluralizeGuests(apartment.capacity) : `${apartment.capacity} ${t('guests')}`, value: apartment.capacity },
     { icon: Bed, label: apartment.bed_type, value: apartment.bed_type },
     ...(apartment.bathroom_count ? [{
       icon: Bath,
