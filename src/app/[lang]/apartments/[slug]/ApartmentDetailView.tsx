@@ -244,28 +244,6 @@ export default function ApartmentDetailView({ apartment, locale }: Props) {
                   </div>
                 ))}
               </div>
-
-              {apartment.bed_counts && Object.keys(apartment.bed_counts).length > 0 && (
-                <div className="mt-6 pt-6 border-t border-border">
-                  <h3 className="font-semibold mb-3 text-foreground">{t('bedDetails')}</h3>
-                  <div className="grid grid-cols-2 gap-3">
-                    {Object.entries(apartment.bed_counts).map(([bedId, count]) => {
-                      const bedLabels: Record<string, string> = {
-                        'double_bed': t('doubleBed'),
-                        'single_bed': t('singleBed'),
-                        'sofa_bed': t('sofaBed'),
-                        'bunk_bed': t('bunkBed'),
-                      }
-                      return (
-                        <div key={bedId} className="flex items-center gap-2">
-                          <Bed className="h-4 w-4 text-primary" />
-                          <span className="text-sm text-foreground">{count}x {bedLabels[bedId] || bedId}</span>
-                        </div>
-                      )
-                    })}
-                  </div>
-                </div>
-              )}
             </div>
 
             {/* Description */}
