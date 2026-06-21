@@ -10,7 +10,7 @@
 
 ## Projekat
 
-Sajt za kratkoročni najam apartmana (Čačak). Next.js 14 App Router + Supabase + Vercel.
+Sajt za kratkoročni najam apartmana (Bovan). Next.js 14 App Router + Supabase + Vercel.
 Naslednik starog Astro sajta; DB ima stare slike, planirana migracija na Cloudinary.
 
 ## Komande
