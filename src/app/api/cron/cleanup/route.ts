@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
+import { processScheduledEmails } from '@/lib/email/triggers'
 
 // Daily cleanup cron (configured in vercel.json: "0 0 * * *").
 // Enforces GDPR storage limitation + clears stale operational rows.
@@ -65,6 +66,13 @@ export async function GET(request: NextRequest) {
       .lt('created_at', piiCutoff)
       .not('ip_address', 'is', null)
     result.bookingPii = bError ? `error: ${bError.message}` : 'ok'
+
+    // 4) Send scheduled guest emails (check-in instructions, pre-arrival reminders, review requests).
+    try {
+      result.scheduledEmails = await processScheduledEmails()
+    } catch (e) {
+      result.scheduledEmails = `error: ${e instanceof Error ? e.message : 'unknown'}`
+    }
 
     return NextResponse.json({ success: true, ...result })
   } catch (error) {

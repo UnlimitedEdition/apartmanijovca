@@ -18,6 +18,8 @@ import {
   renderCheckInInstructionsEmail,
   renderPreArrivalReminderEmail,
   renderReviewRequestEmail,
+  renderRequestReceivedEmail,
+  renderRejectionEmail,
 } from './templates'
 
 // Booking data interface (simplified from full booking)
@@ -47,9 +49,9 @@ interface GuestData {
   language?: EmailLanguage
 }
 
-// Helper to determine language from guest or default to English
+// Helper to determine language from guest (sourced from booking.language) or default to Serbian
 function getEmailLanguage(guest: GuestData): EmailLanguage {
-  return guest.language || 'en'
+  return guest.language || 'sr'
 }
 
 // Send booking confirmation email to guest
@@ -134,7 +136,7 @@ export async function sendBookingRequest(
   booking: BookingData,
   guest: GuestData
 ): Promise<EmailSendResult> {
-  const language: EmailLanguage = 'en' // Admin emails always in English
+  const language: EmailLanguage = 'sr' // Admin notifications always in Serbian (owner reads Serbian)
   
   logEmailEvent('send_attempt', {
     emailType: 'booking_request',
@@ -322,6 +324,7 @@ export async function sendPreArrivalReminder(
         full_name: guest.full_name,
       },
       language,
+      daysUntilArrival,
     })
 
     const result = await sendEmail({
@@ -441,6 +444,108 @@ export async function sendReviewRequest(
   }
 }
 
+// Send "request received" acknowledgement to guest (on pending)
+export async function sendRequestReceived(
+  booking: BookingData,
+  guest: GuestData
+): Promise<EmailSendResult> {
+  const language = getEmailLanguage(guest)
+
+  logEmailEvent('send_attempt', {
+    emailType: 'request_received',
+    recipient: guest.email,
+    bookingId: booking.bookingId,
+  })
+
+  if (!isResendConfigured()) {
+    console.log('[Email Mock] Request Received:', { to: guest.email, bookingNumber: booking.bookingNumber, language })
+    return { success: true, messageId: 'mock-message-id' }
+  }
+
+  try {
+    const emailContent = await renderRequestReceivedEmail({
+      booking: {
+        bookingNumber: booking.bookingNumber,
+        checkIn: booking.checkIn,
+        checkOut: booking.checkOut,
+        totalPrice: booking.totalPrice,
+        apartment: booking.apartment,
+      },
+      guest: { full_name: guest.full_name },
+      language,
+    })
+
+    const result = await sendEmail({
+      to: guest.email,
+      subject: emailContent.subject,
+      html: emailContent.html,
+      text: emailContent.text,
+      tags: { type: 'request_received', bookingId: booking.bookingId },
+    })
+
+    logEmailEvent(result.success ? 'send_success' : 'send_failure', {
+      emailType: 'request_received',
+      recipient: guest.email,
+      bookingId: booking.bookingId,
+      messageId: result.messageId,
+      error: result.error,
+    })
+    return result
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+    logEmailEvent('send_failure', { emailType: 'request_received', recipient: guest.email, bookingId: booking.bookingId, error: errorMessage })
+    return { success: false, error: errorMessage }
+  }
+}
+
+// Send booking rejection/decline to guest (on cancelled)
+export async function sendBookingRejection(
+  booking: BookingData,
+  guest: GuestData
+): Promise<EmailSendResult> {
+  const language = getEmailLanguage(guest)
+
+  logEmailEvent('send_attempt', {
+    emailType: 'booking_rejection',
+    recipient: guest.email,
+    bookingId: booking.bookingId,
+  })
+
+  if (!isResendConfigured()) {
+    console.log('[Email Mock] Booking Rejection:', { to: guest.email, bookingNumber: booking.bookingNumber, language })
+    return { success: true, messageId: 'mock-message-id' }
+  }
+
+  try {
+    const emailContent = await renderRejectionEmail({
+      booking: { bookingNumber: booking.bookingNumber },
+      guest: { full_name: guest.full_name },
+      language,
+    })
+
+    const result = await sendEmail({
+      to: guest.email,
+      subject: emailContent.subject,
+      html: emailContent.html,
+      text: emailContent.text,
+      tags: { type: 'booking_rejection', bookingId: booking.bookingId },
+    })
+
+    logEmailEvent(result.success ? 'send_success' : 'send_failure', {
+      emailType: 'booking_rejection',
+      recipient: guest.email,
+      bookingId: booking.bookingId,
+      messageId: result.messageId,
+      error: result.error,
+    })
+    return result
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+    logEmailEvent('send_failure', { emailType: 'booking_rejection', recipient: guest.email, bookingId: booking.bookingId, error: errorMessage })
+    return { success: false, error: errorMessage }
+  }
+}
+
 // Generic function to send any type of email
 export async function sendEmailByType(
   type: EmailType,
@@ -463,6 +568,10 @@ export async function sendEmailByType(
       )
     case 'review_request':
       return sendReviewRequest(booking, guest, additionalOptions?.reviewUrl as string)
+    case 'request_received':
+      return sendRequestReceived(booking, guest)
+    case 'booking_rejection':
+      return sendBookingRejection(booking, guest)
     default:
       return { success: false, error: `Unknown email type: ${type}` }
   }

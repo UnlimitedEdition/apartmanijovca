@@ -12,10 +12,11 @@ import type {
 import type { EmailLanguage } from '../email/types'
 import type { Locale, MultiLanguageText } from '../types/database'
 import { getLocalizedValue } from '../localization/helpers'
-import { 
-  triggerBookingConfirmation, 
+import {
+  triggerBookingConfirmation,
   triggerBookingRequestNotification,
-  triggerReviewRequest 
+  triggerRequestReceived,
+  triggerBookingRejection
 } from '../email/triggers'
 
 // Constants for pricing
@@ -343,6 +344,27 @@ export async function createBooking(
         full_name: input.guest.name,
         email: input.guest.email,
         phone: input.guest.phone,
+      }
+    ).catch(console.error)
+
+    // Acknowledge the request to the guest, in the language they booked in
+    triggerRequestReceived(
+      {
+        bookingId: booking.id,
+        bookingNumber,
+        checkIn: input.checkIn,
+        checkOut: input.checkOut,
+        totalPrice,
+        apartment: {
+          id: input.apartmentId,
+          name: getLocalizedValue(apartment.name as MultiLanguageText, bookingLanguage as Locale),
+        },
+      },
+      {
+        full_name: input.guest.name,
+        email: input.guest.email,
+        phone: input.guest.phone,
+        language: bookingLanguage as EmailLanguage,
       }
     ).catch(console.error)
 
@@ -695,17 +717,18 @@ export async function updateBooking(
     console.log('[updateBooking] Updated booking from DB:', updatedData)
 
     // Trigger email notifications based on status change
-    if (input.status === 'confirmed' || input.status === 'checked_out') {
+    if (input.status === 'confirmed' || input.status === 'cancelled') {
       // Get booking details for email
       const { data: updatedBooking } = await client
         .from('bookings')
         .select(`
-          id, 
-          booking_number, 
-          status, 
-          check_in, 
-          check_out, 
+          id,
+          booking_number,
+          status,
+          check_in,
+          check_out,
           total_price,
+          language,
           apartment_id,
           guest_id
         `)
@@ -727,7 +750,7 @@ export async function updateBooking(
 
         if (input.status === 'confirmed') {
           // Extract localized apartment name
-          const guestLocale = (guest?.language as Locale) || 'sr'
+          const guestLocale = ((updatedBooking as { language?: string }).language as Locale) || (guest?.language as Locale) || 'sr'
           const apartmentName = apartment?.name 
             ? getLocalizedValue(apartment.name as MultiLanguageText, guestLocale)
             : ''
@@ -748,35 +771,29 @@ export async function updateBooking(
               full_name: guest?.full_name || '',
               email: guest?.email || '',
               phone: guest?.phone,
-              language: (guest?.language as EmailLanguage) || 'en',
+              language: ((updatedBooking as { language?: string }).language as EmailLanguage) || (guest?.language as EmailLanguage) || 'sr',
             }
           ).catch(console.error)
         }
 
-        if (input.status === 'checked_out') {
-          // Extract localized apartment name
-          const guestLocale = (guest?.language as Locale) || 'sr'
-          const apartmentName = apartment?.name 
-            ? getLocalizedValue(apartment.name as MultiLanguageText, guestLocale)
-            : ''
-          
-          triggerReviewRequest(
+        // Review request is sent 1 day after checkout by the daily cron
+        // (processScheduledEmails), not immediately on status change — avoids duplicates.
+
+        if (input.status === 'cancelled') {
+          triggerBookingRejection(
             {
               bookingId: updatedBooking.id,
               bookingNumber: updatedBooking.booking_number,
               checkIn: updatedBooking.check_in,
               checkOut: updatedBooking.check_out,
               totalPrice: updatedBooking.total_price,
-              apartment: {
-                id: apartment?.id || '',
-                name: apartmentName,
-              },
+              apartment: { id: apartment?.id || '', name: '' },
             },
             {
               full_name: guest?.full_name || '',
               email: guest?.email || '',
               phone: guest?.phone,
-              language: (guest?.language as EmailLanguage) || 'en',
+              language: ((updatedBooking as { language?: string }).language as EmailLanguage) || (guest?.language as EmailLanguage) || 'sr',
             }
           ).catch(console.error)
         }

@@ -19,6 +19,16 @@
 
 ### ✅ Završeno (najnovije gore)
 
+**2026-06-21 (feature — kompletan email sistem: svi mejlovi, 4 jezika, prefinjen dizajn + fix dostupnosti)**
+- **Email — jezik gosta:** glavni bug — mejlovi su čitali jezik iz `guests.language` (uvek NULL) umesto `bookings.language` (gde se beleži iz URL locale). Sad svi guest mejlovi idu na jeziku rezervacije; izvor = `bookings.language` u `updateBooking` + `processScheduledEmails` (fallback `sr`).
+- **Dizajn:** nov `EmailLayout.tsx` (brend plava #2563eb, kartica s detaljima, footer NAP, skriveni preheader, table-based/Outlook-safe) + generički `TransactionalEmail.tsx` (blokovi: lead/para/details/list/button/muted). Stari 5 `emails/*Email.tsx` → re-export (bez brisanja). Telo mejla više NIJE hardkodirano englesko.
+- **Svi tipovi aktivni (4 jezika):** potvrda, **zahtev primljen** (novo, na `pending` gostu), **odbijeno** (novo, na `cancelled` gostu), check-in uputstva, podsetnik, recenzija. Admin notifikacija → **srpski**. Cena u **€** (bio `$`); popravljen DE `transportationArrangements` (bili kineski znakovi).
+- **Recenzija → Google** (`?cid=` link; swap na `g.page/r/.../review` kad stigne). Review se šalje SAMO iz cron-a (1 dan posle checkout-a) — uklonjen duplikat iz `updateBooking`.
+- **Cron:** scheduled mejlovi (check-in/podsetnik/recenzija) integrisani u postojeći `/api/cron/cleanup` (zaštita `CRON_SECRET`). Ranija „dangling cron" napomena više ne važi — ruta postoji.
+- **Fix dostupnosti (apartmani lista):** „Dostupno" je bio statičan badge (uvek isti). Nov client island `AvailabilityBadge.tsx` povlači uživo `/api/availability` (danas→sutra) → „Dostupno"/„Zauzeto" realno; stranica ostaje ISR-keširana (badge je jedina živa stvar).
+- **Gramatika:** booking flow SR `"Od 12:00 č"` → `"Od 12:00 h"`.
+- `tsc --noEmit` ✅ + 380 testova ✅. Brevo provider live (`provider: brevo` na produkciji).
+
 **2026-06-21 (feature — email: dodat Brevo provider uz Resend)**
 - Email sloj sada podržava 2 providera. `sendEmail()` u `src/lib/resend.ts` rutira preko `getEmailProvider()`: poštuje `EMAIL_PROVIDER` env, inače auto-detekcija (Brevo ako postoji `BREVO_API_KEY`, pa Resend). Nov `src/lib/email/brevo.ts` (`sendViaBrevo`/`isBrevoConfigured`) — Brevo REST `v3/smtp/email` preko `fetch`, bez novog npm paketa.
 - `isResendConfigured()` zadržan kao alias za novi `isEmailConfigured()` → `service.ts`/`route.ts`/testovi netaknuti. `/api/email?action=status` sada vraća i aktivni `provider`.

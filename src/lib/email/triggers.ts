@@ -2,12 +2,14 @@
 // This module provides functions to trigger emails at various booking lifecycle events
 
 
-import { 
-  sendBookingConfirmation, 
-  sendBookingRequest, 
-  sendCheckInInstructions, 
-  sendPreArrivalReminder, 
-  sendReviewRequest 
+import {
+  sendBookingConfirmation,
+  sendBookingRequest,
+  sendCheckInInstructions,
+  sendPreArrivalReminder,
+  sendReviewRequest,
+  sendRequestReceived,
+  sendBookingRejection
 } from './service'
 import type { BookingData, GuestData } from './service'
 import type { EmailLanguage } from './types'
@@ -90,6 +92,36 @@ export async function triggerReviewRequest(
   }
 }
 
+// Trigger "request received" acknowledgement to guest when booking is created (pending)
+export async function triggerRequestReceived(
+  booking: BookingData,
+  guest: GuestData
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    const result = await sendRequestReceived(booking, guest)
+    return { success: result.success, error: result.error }
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+    console.error('[Email Trigger] Request received failed:', errorMessage)
+    return { success: false, error: errorMessage }
+  }
+}
+
+// Trigger rejection/decline email to guest when booking is cancelled
+export async function triggerBookingRejection(
+  booking: BookingData,
+  guest: GuestData
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    const result = await sendBookingRejection(booking, guest)
+    return { success: result.success, error: result.error }
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+    console.error('[Email Trigger] Booking rejection failed:', errorMessage)
+    return { success: false, error: errorMessage }
+  }
+}
+
 function toDateOnlyString(date: Date): string {
   return date.toISOString().split('T')[0]
 }
@@ -143,6 +175,7 @@ export async function processScheduledEmails(): Promise<{
         check_out,
         total_price,
         status,
+        language,
         apartment:apartments!inner(
           id,
           name,
@@ -152,10 +185,9 @@ export async function processScheduledEmails(): Promise<{
         ),
         guest:guests!inner(
           id,
-          name,
+          full_name,
           email,
-          phone,
-          language
+          phone
         )
       `)
       .eq('status', 'confirmed')
@@ -195,7 +227,7 @@ export async function processScheduledEmails(): Promise<{
         full_name: gst.full_name,
         email: gst.email,
         phone: gst.phone,
-        language: (gst.language as EmailLanguage) || 'en',
+        language: ((booking as { language?: string }).language as EmailLanguage) || 'sr',
       }
 
       try {
@@ -228,6 +260,7 @@ export async function processScheduledEmails(): Promise<{
         booking_number,
         check_out,
         total_price,
+        language,
         apartment:apartments!inner(
           id,
           name,
@@ -237,10 +270,9 @@ export async function processScheduledEmails(): Promise<{
         ),
         guest:guests!inner(
           id,
-          name,
+          full_name,
           email,
-          phone,
-          language
+          phone
         )
       `)
       .eq('status', 'checked_out')
@@ -279,7 +311,7 @@ export async function processScheduledEmails(): Promise<{
             full_name: gst.full_name,
             email: gst.email,
             phone: gst.phone,
-            language: (gst.language as EmailLanguage) || 'en',
+            language: ((booking as { language?: string }).language as EmailLanguage) || 'sr',
           }
 
           try {

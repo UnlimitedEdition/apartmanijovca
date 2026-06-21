@@ -28,6 +28,8 @@ export async function POST(request: NextRequest) {
       'check_in_instructions',
       'pre_arrival_reminder',
       'review_request',
+      'request_received',
+      'booking_rejection',
     ]
 
     if (!validTypes.includes(type)) {

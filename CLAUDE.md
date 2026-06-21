@@ -128,6 +128,7 @@ RESEND_WEBHOOK_SECRET                # webhook verifikacija (opcionalno — bez 
 BREVO_API_KEY                        # email (provider: Brevo — alternativa Resend-u)
 EMAIL_PROVIDER                       # 'brevo' | 'resend' (opciono; bez toga auto: Brevo ako ima ključ, pa Resend)
 EMAIL_FROM                           # sender adresa — MORA biti verifikovana kod aktivnog providera
+CRON_SECRET                          # štiti /api/cron/cleanup (Vercel šalje Authorization: Bearer)
 ADMIN_EMAILS                         # TODO: premjestiti emailove ovde iz koda
 ```
 
@@ -144,7 +145,8 @@ ADMIN_EMAILS                         # TODO: premjestiti emailove ovde iz koda
 - **Booking UUID u emailovima**: UUID rezervacije curiti u email konfirmacijama; `/api/booking/[id]` mora imati auth provjeru.
 - **RLS pokriva samo jedan admin email** u migracijama — `apartmanijovca@gmail.com` mora biti dodan ručno ili kroz `ADMIN_EMAILS` pattern.
 - **Deploy = Vercel, ne Firebase**: prod je Vercel (`git push`). `npm run deploy` (firebase) je legacy iz Astro/Firebase ere — ne koristiti.
-- **Dangling cron**: `vercel.json` definiše dnevni cron `/api/cron/cleanup`, ali ruta ne postoji — cron tiho ne radi (napravi rutu ili ukloni cron).
+- **Cron `/api/cron/cleanup`**: dnevni Vercel cron (`vercel.json`, `0 0 * * *`). Radi GDPR cleanup (rate-limit/analytics/booking PII) **i** šalje scheduled guest mejlove (check-in uputstva, podsetnik, recenzija) preko `processScheduledEmails`. Zaštita: `CRON_SECRET` (ako nije setovan — endpoint je nezaštićen).
+- **Email provider**: `getEmailProvider()` u `src/lib/resend.ts` bira Brevo/Resend (`EMAIL_PROVIDER` env ili auto). Telo mejla: `src/emails/TransactionalEmail.tsx` + `EmailLayout.tsx`; tekstovi po jeziku u `emailStrings` (`src/lib/email/templates.ts`). Jezik gosta = `bookings.language` (NE `guests.language`).
 
 ## Sigurnost — kritično
 

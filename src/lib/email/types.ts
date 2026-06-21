@@ -4,12 +4,14 @@ export type EmailLanguage = 'sr' | 'en' | 'de' | 'it'
 
 export type EmailStatus = 'pending' | 'sent' | 'delivered' | 'opened' | 'clicked' | 'bounced' | 'failed'
 
-export type EmailType = 
+export type EmailType =
   | 'booking_confirmation'
   | 'booking_request'
   | 'check_in_instructions'
   | 'pre_arrival_reminder'
   | 'review_request'
+  | 'request_received'
+  | 'booking_rejection'
 
 // Base booking information shared across email types
 export interface BookingEmailData {
