@@ -182,6 +182,9 @@ export default function BookingList({ apartmentId, limit: propLimit, title, init
       }
 
       onStatusChange?.(bookingId, newStatus)
+      // Refetch from the server so the row lands in the correct status section/filter
+      // (e.g. a cancelled booking leaves the "Na čekanju" view instead of lingering there).
+      fetchBookings()
     } catch (err) {
       // Roll back optimistic update on failure
       setBookings(previousBookings)

@@ -39,7 +39,7 @@ const MONTH_NAMES: Record<string, string[]> = {
 
 const DAY_NAMES: Record<string, string[]> = {
   en: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-  sr: ['Ned', 'Pon', 'Uto', 'Sre', 'Pet', 'Sub'],
+  sr: ['Ned', 'Pon', 'Uto', 'Sre', 'Čet', 'Pet', 'Sub'],
   de: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
   it: ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab']
 }
