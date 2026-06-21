@@ -57,7 +57,11 @@ const STATUS_COLORS = {
 
 // Helper functions
 const formatDate = (date: Date): string => {
-  return date.toISOString().split('T')[0]
+  // LOCAL date (YYYY-MM-DD) — toISOString() would shift a day back in UTC+ zones (e.g. Serbia +2).
+  const y = date.getFullYear()
+  const m = String(date.getMonth() + 1).padStart(2, '0')
+  const d = String(date.getDate()).padStart(2, '0')
+  return `${y}-${m}-${d}`
 }
 
 const isSameDay = (date1: Date, date2: Date): boolean => {

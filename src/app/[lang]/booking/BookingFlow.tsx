@@ -121,11 +121,16 @@ export default function BookingFlow() {
     setIsSubmitting(true)
     setSubmitError(null)
 
+    // Serialize as LOCAL date (YYYY-MM-DD). toISOString() converts to UTC and shifts a day
+    // back in UTC+ zones (Serbia +2) → guest picks 11th, gets stored as 10th. This fixes that.
+    const toLocalDateStr = (d: Date) =>
+      `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+
     try {
       trackEvent('booking_submitted', {
         apartmentId: bookingData.apartment.id,
-        checkIn: bookingData.checkIn.toISOString(),
-        checkOut: bookingData.checkOut.toISOString()
+        checkIn: toLocalDateStr(bookingData.checkIn),
+        checkOut: toLocalDateStr(bookingData.checkOut)
       })
 
       // Collect security metadata
@@ -136,8 +141,8 @@ export default function BookingFlow() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           apartmentId: bookingData.apartment.id,
-          checkIn: bookingData.checkIn.toISOString().split('T')[0],
-          checkOut: bookingData.checkOut.toISOString().split('T')[0],
+          checkIn: toLocalDateStr(bookingData.checkIn),
+          checkOut: toLocalDateStr(bookingData.checkOut),
           guest: {
             name: bookingData.contact.name,
             email: bookingData.contact.email,

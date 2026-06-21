@@ -77,6 +77,8 @@ const emailStrings: Record<EmailLanguage, {
   preArrivalLead: string
   preArrivalBody: string
   adminNewBookingLead: string
+  checkInWhen: string
+  checkOutWhen: string
 }> = {
   sr: {
     bookingConfirmed: 'Rezervacija potvrđena!',
@@ -135,6 +137,8 @@ const emailStrings: Record<EmailLanguage, {
     preArrivalLead: 'Poštovani/a {name}, radujemo se vašem skorom dolasku!',
     preArrivalBody: 'Ovo je kratak podsetnik na vašu predstojeću rezervaciju. Detalji su ispod.',
     adminNewBookingLead: 'Stigao je novi zahtev za rezervaciju. Detalji su ispod.',
+    checkInWhen: 'od 14:00 h',
+    checkOutWhen: 'do 10:00 h',
   },
   en: {
     bookingConfirmed: 'Booking Confirmed!',
@@ -193,6 +197,8 @@ const emailStrings: Record<EmailLanguage, {
     preArrivalLead: 'Dear {name}, we look forward to your upcoming stay!',
     preArrivalBody: 'This is a friendly reminder about your upcoming booking. The details are below.',
     adminNewBookingLead: 'A new booking request has arrived. Details below.',
+    checkInWhen: 'from 14:00',
+    checkOutWhen: 'until 10:00',
   },
   de: {
     bookingConfirmed: 'Buchung bestätigt!',
@@ -251,6 +257,8 @@ const emailStrings: Record<EmailLanguage, {
     preArrivalLead: 'Sehr geehrte(r) {name}, wir freuen uns auf Ihren baldigen Aufenthalt!',
     preArrivalBody: 'Dies ist eine kurze Erinnerung an Ihre bevorstehende Buchung. Die Details finden Sie unten.',
     adminNewBookingLead: 'Eine neue Buchungsanfrage ist eingegangen. Details unten.',
+    checkInWhen: 'ab 14:00 Uhr',
+    checkOutWhen: 'bis 10:00 Uhr',
   },
   it: {
     bookingConfirmed: 'Prenotazione confermata!',
@@ -309,6 +317,8 @@ const emailStrings: Record<EmailLanguage, {
     preArrivalLead: 'Gentile {name}, non vediamo l\'ora del tuo prossimo soggiorno!',
     preArrivalBody: 'Questo è un breve promemoria della tua prossima prenotazione. I dettagli sono qui sotto.',
     adminNewBookingLead: 'È arrivata una nuova richiesta di prenotazione. Dettagli sotto.',
+    checkInWhen: 'dalle 14:00',
+    checkOutWhen: 'entro le 10:00',
   },
 }
 
@@ -363,8 +373,8 @@ function bookingRows(
     { label: strings.bookingNumber, value: data.bookingNumber },
     { label: strings.apartment, value: data.apartmentName },
   ]
-  if (data.checkIn) rows.push({ label: strings.checkIn, value: formatDateForEmail(data.checkIn, language) })
-  if (data.checkOut) rows.push({ label: strings.checkOut, value: formatDateForEmail(data.checkOut, language) })
+  if (data.checkIn) rows.push({ label: strings.checkIn, value: `${formatDateForEmail(data.checkIn, language)} · ${strings.checkInWhen}` })
+  if (data.checkOut) rows.push({ label: strings.checkOut, value: `${formatDateForEmail(data.checkOut, language)} · ${strings.checkOutWhen}` })
   if (withPrice && typeof data.totalPrice === 'number') {
     rows.push({ label: strings.totalPrice, value: formatCurrency(data.totalPrice, 'EUR'), highlight: true })
   }
