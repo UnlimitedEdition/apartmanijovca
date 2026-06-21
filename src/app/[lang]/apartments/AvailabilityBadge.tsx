@@ -7,33 +7,16 @@ import { Badge } from '../components/ui/badge'
 // stay statically cached (ISR) while THIS badge reflects real, current occupancy.
 // All instances share a single /api/availability request (today → tomorrow).
 
-let availabilityCache: Promise<Map<string, boolean>> | null = null
+let occupiedCache: Promise<Set<string>> | null = null
 
-function fmt(d: Date): string {
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
-}
-
-function fetchAvailabilityToday(): Promise<Map<string, boolean>> {
-  if (availabilityCache) return availabilityCache
-
-  const today = new Date()
-  today.setHours(0, 0, 0, 0)
-  const tomorrow = new Date(today)
-  tomorrow.setDate(tomorrow.getDate() + 1)
-
-  availabilityCache = fetch(`/api/availability?checkIn=${fmt(today)}&checkOut=${fmt(tomorrow)}`, {
-    cache: 'no-store',
-  })
+// Set of apartment_ids occupied TODAY (night model — checkout day is free).
+function fetchOccupiedToday(): Promise<Set<string>> {
+  if (occupiedCache) return occupiedCache
+  occupiedCache = fetch('/api/availability/today', { cache: 'no-store' })
     .then((r) => r.json())
-    .then((j) => {
-      const map = new Map<string, boolean>()
-      if (j?.success && Array.isArray(j.data?.apartments)) {
-        for (const a of j.data.apartments) map.set(a.id, !!a.available)
-      }
-      return map
-    })
-
-  return availabilityCache
+    .then((j) => new Set<string>(Array.isArray(j?.occupied) ? j.occupied : []))
+    .catch(() => new Set<string>())
+  return occupiedCache
 }
 
 type Status = 'loading' | 'available' | 'booked'
@@ -51,11 +34,10 @@ export function AvailabilityBadge({
 
   useEffect(() => {
     let active = true
-    fetchAvailabilityToday()
-      .then((map) => {
+    fetchOccupiedToday()
+      .then((occupied) => {
         if (!active) return
-        // Default to available unless a booking explicitly occupies today.
-        setStatus(map.get(apartmentId) === false ? 'booked' : 'available')
+        setStatus(occupied.has(apartmentId) ? 'booked' : 'available')
       })
       .catch(() => active && setStatus('available'))
     return () => {
