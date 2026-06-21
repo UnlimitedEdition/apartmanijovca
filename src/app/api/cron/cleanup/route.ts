@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
 import { processScheduledEmails } from '@/lib/email/triggers'
+import { autoCheckoutDueBookings } from '@/lib/bookings/service'
 
 // Daily cleanup cron (configured in vercel.json: "0 7 * * *" = 07:00 UTC ≈ 09:00 CEST / 08:00 CET — jutro po srpskom).
 // Enforces GDPR storage limitation + clears stale operational rows.
@@ -66,6 +67,14 @@ export async function GET(request: NextRequest) {
       .lt('created_at', piiCutoff)
       .not('ip_address', 'is', null)
     result.bookingPii = bError ? `error: ${bError.message}` : 'ok'
+
+    // 3.5) Auto check-out bookings whose checkout date has passed (BEFORE emails so the
+    //      review request picks up freshly checked-out bookings). Skips no_show/cancelled.
+    try {
+      result.autoCheckout = await autoCheckoutDueBookings()
+    } catch (e) {
+      result.autoCheckout = `error: ${e instanceof Error ? e.message : 'unknown'}`
+    }
 
     // 4) Send scheduled guest emails (check-in instructions, pre-arrival reminders, review requests).
     try {

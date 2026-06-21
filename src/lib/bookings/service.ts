@@ -938,3 +938,37 @@ export async function getAvailableApartments(
     return { error: 'An unexpected error occurred' }
   }
 }
+
+/**
+ * Auto check-out: mark bookings whose checkout date has arrived as `checked_out`.
+ * Runs from the daily cron. Only touches `confirmed`/`checked_in` — so admin-marked
+ * `no_show` (and `cancelled`) are preserved and NOT auto-completed. The review request
+ * then goes out ~1 day later via processScheduledEmails (status `checked_out`).
+ */
+export async function autoCheckoutDueBookings(): Promise<{ checkedOut: number; error?: string }> {
+  if (!supabaseAdmin) return { checkedOut: 0, error: 'Database connection not available' }
+
+  const today = new Date().toISOString().slice(0, 10)
+  try {
+    const { data, error } = await supabaseAdmin
+      .from('bookings')
+      .select('id')
+      .lte('check_out', today)
+      .in('status', ['confirmed', 'checked_in'])
+
+    if (error) return { checkedOut: 0, error: error.message }
+
+    const now = new Date().toISOString()
+    let checkedOut = 0
+    for (const b of data || []) {
+      const { error: upErr } = await supabaseAdmin
+        .from('bookings')
+        .update({ status: 'checked_out', checked_out_at: now, completed_at: now, updated_at: now })
+        .eq('id', b.id)
+      if (!upErr) checkedOut++
+    }
+    return { checkedOut }
+  } catch (e) {
+    return { checkedOut: 0, error: e instanceof Error ? e.message : 'Unknown error' }
+  }
+}
