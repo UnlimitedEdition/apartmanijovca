@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { isResendConfigured, logEmailEvent, EMAIL_CONFIG } from '@/lib/resend'
+import { isResendConfigured, logEmailEvent, EMAIL_CONFIG, getEmailProvider } from '@/lib/resend'
 import { sendEmailByType } from '@/lib/email/service'
 import { EmailType } from '@/lib/email/types'
 import { requireAdmin } from '@/lib/auth/require-admin'
@@ -99,6 +99,7 @@ export async function GET(request: NextRequest) {
   if (action === 'status') {
     return NextResponse.json({
       configured: isResendConfigured(),
+      provider: getEmailProvider(),
       fromEmail: EMAIL_CONFIG.fromEmail,
       adminEmail: EMAIL_CONFIG.adminEmail,
       supportPhone: EMAIL_CONFIG.supportPhone,

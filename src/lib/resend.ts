@@ -1,6 +1,7 @@
 import { Resend } from 'resend'
 import type { EmailLanguage, EmailSendResult, EmailContent } from './email/types'
 import { PRODUCTION_URL, CONTACT_PHONE, EMAIL_FROM, EMAIL_ADMIN } from './seo/config'
+import { sendViaBrevo, isBrevoConfigured } from './email/brevo'
 
 // Initialize Resend client with error handling
 const getResendClient = () => {
@@ -26,9 +27,36 @@ export const EMAIL_CONFIG = {
   supportPhone: CONTACT_PHONE,
 } as const
 
-// Check if Resend is properly configured
+// Supported email providers
+export type EmailProvider = 'brevo' | 'resend'
+
+/**
+ * Decide which email provider to use.
+ * - EMAIL_PROVIDER env forces a specific provider (it must also have its key set).
+ * - Otherwise auto-detect: prefer Brevo when its key is present, else Resend.
+ * Returns null when nothing is configured (mock mode).
+ */
+export function getEmailProvider(): EmailProvider | null {
+  const explicit = process?.env?.EMAIL_PROVIDER?.toLowerCase()
+  if (explicit === 'brevo') return isBrevoConfigured() ? 'brevo' : null
+  if (explicit === 'resend') return resend !== null ? 'resend' : null
+
+  if (isBrevoConfigured()) return 'brevo'
+  if (resend !== null) return 'resend'
+  return null
+}
+
+// Check if any email provider (Brevo or Resend) is properly configured
+export function isEmailConfigured(): boolean {
+  return getEmailProvider() !== null
+}
+
+/**
+ * @deprecated Name kept for backward compatibility with existing callers/tests.
+ * Returns true if ANY email provider is configured. Prefer isEmailConfigured().
+ */
 export function isResendConfigured(): boolean {
-  return resend !== null && !!process?.env?.RESEND_API_KEY
+  return isEmailConfigured()
 }
 
 // Interface for email options
@@ -42,19 +70,36 @@ export interface SendEmailOptions {
   headers?: Record<string, string>
 }
 
-// Send email with comprehensive error handling
+/**
+ * Send an email via the configured provider (Brevo or Resend).
+ * Provider is chosen by getEmailProvider(); all callers go through this function.
+ */
 export async function sendEmail(options: SendEmailOptions): Promise<EmailSendResult> {
-  // Check if Resend is configured
-  if (!isResendConfigured()) {
-    console.error('Resend is not configured. Cannot send email.')
+  const provider = getEmailProvider()
+
+  if (!provider) {
+    console.error('No email provider configured. Cannot send email.')
     return {
       success: false,
       error: 'Email service is not configured',
     }
   }
 
+  if (provider === 'brevo') {
+    return sendViaBrevo(options)
+  }
+
+  return sendViaResend(options)
+}
+
+// Send email via Resend with comprehensive error handling
+async function sendViaResend(options: SendEmailOptions): Promise<EmailSendResult> {
+  if (!resend) {
+    return { success: false, error: 'Resend is not configured' }
+  }
+
   try {
-    const { data, error } = await resend!.emails.send({
+    const { data, error } = await resend.emails.send({
       from: EMAIL_CONFIG.fromEmail,
       to: Array.isArray(options.to) ? options.to : [options.to],
       subject: options.subject,

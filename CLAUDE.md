@@ -123,10 +123,15 @@ NEXT_SERVICE_ROLE_KEY                # alternativno ime (legacy)
 CLOUDINARY_CLOUD_NAME                # slike
 CLOUDINARY_API_KEY
 CLOUDINARY_API_SECRET
-RESEND_API_KEY                       # email
+RESEND_API_KEY                       # email (provider: Resend)
 RESEND_WEBHOOK_SECRET                # webhook verifikacija (opcionalno — bez toga skip)
+BREVO_API_KEY                        # email (provider: Brevo — alternativa Resend-u)
+EMAIL_PROVIDER                       # 'brevo' | 'resend' (opciono; bez toga auto: Brevo ako ima ključ, pa Resend)
+EMAIL_FROM                           # sender adresa — MORA biti verifikovana kod aktivnog providera
 ADMIN_EMAILS                         # TODO: premjestiti emailove ovde iz koda
 ```
+
+> Email: vidi `docs/BREVO_SETUP.md`. Provider bira `getEmailProvider()` u `src/lib/resend.ts`; `src/lib/email/brevo.ts` šalje preko Brevo REST API-ja.
 
 ## Gotchas
 

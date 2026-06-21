@@ -19,6 +19,12 @@
 
 ### ✅ Završeno (najnovije gore)
 
+**2026-06-21 (feature — email: dodat Brevo provider uz Resend)**
+- Email sloj sada podržava 2 providera. `sendEmail()` u `src/lib/resend.ts` rutira preko `getEmailProvider()`: poštuje `EMAIL_PROVIDER` env, inače auto-detekcija (Brevo ako postoji `BREVO_API_KEY`, pa Resend). Nov `src/lib/email/brevo.ts` (`sendViaBrevo`/`isBrevoConfigured`) — Brevo REST `v3/smtp/email` preko `fetch`, bez novog npm paketa.
+- `isResendConfigured()` zadržan kao alias za novi `isEmailConfigured()` → `service.ts`/`route.ts`/testovi netaknuti. `/api/email?action=status` sada vraća i aktivni `provider`.
+- ⚠️ Brevo traži verifikovan sender → `EMAIL_FROM` mora biti Brevo-verifikovana adresa (default `onboarding@resend.dev` ne radi za Brevo). Uputstvo za podešavanje: `docs/BREVO_SETUP.md`.
+- `tsc --noEmit` ✅ + 24 email testa ✅.
+
 **2026-06-21 (gramatika/pravopis — sve 4 lokalizacije, 4 agenta)**
 - **SR pluralizacija (glavni bug):** `{apt.capacity} gostiju` je hardkodirao množinu bez obzira na broj (npr. „2 gostiju" umesto „2 gosta", „1 gostiju" umesto „1 gost"). Nov `serbianPlural(n, {one, few, many})` helper u `src/lib/utils.ts` (tačan one/few/many selektor, izuzetak 11–14) + `pluralizeGuests/Beds/Nights/Bathrooms`. Primenjeno u `EnhancedApartmentManager.tsx` (gosti/kreveti/kupatila).
 - **SR ijekavica→ekavica + dijakritici:** `Proljeće→Proleće`, `namijenjen→namenjen`, `mješovite→mešovite` (×2, `guide/sr.ts`), `Smještaj→smeštaj` (`common.json`), `pocetak→početak`, `ukljucen→uključen` (`AvailabilityCalendarView.tsx`), `po noci→po noći` (`ContentEditor.tsx`), ispušteno „utisak" (`email/templates.ts`).
