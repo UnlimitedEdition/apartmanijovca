@@ -16,7 +16,7 @@ export interface Booking {
   guest_id: string
   check_in: string
   check_out: string
-  status: 'pending' | 'confirmed' | 'cancelled' | 'completed'
+  status: 'pending' | 'confirmed' | 'cancelled' | 'completed' | 'no_show' | 'checked_in' | 'checked_out'
   total_price: number | null
 }
 
@@ -150,6 +150,7 @@ export function useAvailability(options: UseAvailabilityOptions = {}): UseAvaila
         .gte('check_in', formatDateForDB(rangeStart))
         .lte('check_out', formatDateForDB(rangeEnd))
         .neq('status', 'cancelled')
+        .neq('status', 'no_show')
 
       if (bookingsError) throw bookingsError
 
@@ -241,8 +242,8 @@ export function useAvailability(options: UseAvailabilityOptions = {}): UseAvaila
           newBookings[index] = newRecord as Booking
         }
 
-        // If booking was cancelled, free up the dates
-        if (newRecord.status === 'cancelled') {
+        // If booking was cancelled or marked no-show, free up the dates
+        if (newRecord.status === 'cancelled' || newRecord.status === 'no_show') {
           const oldDates = getBookingNights(
             new Date(newRecord.check_in),
             new Date(newRecord.check_out)
