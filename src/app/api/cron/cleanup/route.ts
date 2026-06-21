@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
 import { processScheduledEmails } from '@/lib/email/triggers'
 
-// Daily cleanup cron (configured in vercel.json: "0 0 * * *").
+// Daily cleanup cron (configured in vercel.json: "0 7 * * *" = 07:00 UTC ≈ 09:00 CEST / 08:00 CET — jutro po srpskom).
 // Enforces GDPR storage limitation + clears stale operational rows.
 //
 // Auth: when CRON_SECRET is set, Vercel sends `Authorization: Bearer <secret>`.
