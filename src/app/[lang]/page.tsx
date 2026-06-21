@@ -154,8 +154,24 @@ export default async function HomePage({ params: paramsInput }: PageProps) {
   const translateHome = t as unknown as (key: string) => string
   const translateCommon = commonT as unknown as (key: string) => string
   const translateApartments = aptT as unknown as (key: string) => string
-  const homeText = (key: string, fallback?: string) =>
-    getContentText(homeContent, key, fallback ?? translateHome(key))
+  const editableHomeKeys = new Set([
+    'title',
+    'subtitle',
+    'features.title',
+    'features.description',
+    'featured.title',
+    'featured.subtitle',
+    'about.title',
+    'about.content',
+    'cta.ready',
+    'cta.subtitle'
+  ])
+  const homeText = (key: string, fallback?: string) => {
+    const defaultText = fallback ?? translateHome(key)
+    return editableHomeKeys.has(key)
+      ? getContentText(homeContent, key, defaultText)
+      : defaultText
+  }
   const commonText = (key: string) => translateCommon(key)
   const apartmentText = (key: string) => translateApartments(key)
 
