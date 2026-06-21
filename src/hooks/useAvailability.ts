@@ -63,7 +63,20 @@ const getDatesInRange = (startDate: Date, endDate: Date): string[] => {
     dates.push(formatDateForDB(current))
     current.setDate(current.getDate() + 1)
   }
-  
+
+  return dates
+}
+
+// Nights a booking occupies: [check_in, check_out) — checkout day stays FREE for the
+// next guest's check-in (previous guest leaves 10:00, new guest arrives 14:00 same day).
+const getBookingNights = (checkIn: Date, checkOut: Date): string[] => {
+  const dates: string[] = []
+  const current = new Date(checkIn)
+  const end = new Date(checkOut)
+  while (current < end) {
+    dates.push(formatDateForDB(current))
+    current.setDate(current.getDate() + 1)
+  }
   return dates
 }
 
@@ -159,11 +172,11 @@ export function useAvailability(options: UseAvailabilityOptions = {}): UseAvaila
 
       // Mark booked dates
       bookings.forEach((booking) => {
-        const bookingDates = getDatesInRange(
+        const bookingDates = getBookingNights(
           new Date(booking.check_in),
           new Date(booking.check_out)
         )
-        
+
         bookingDates.forEach((date) => {
           const key = `${booking.apartment_id}-${date}`
           const existingStatus = availabilityMap.get(key)
@@ -207,11 +220,11 @@ export function useAvailability(options: UseAvailabilityOptions = {}): UseAvaila
         newBookings.push(newRecord as Booking)
         
         // Mark dates as booked
-        const bookingDates = getDatesInRange(
+        const bookingDates = getBookingNights(
           new Date(newRecord.check_in),
           new Date(newRecord.check_out)
         )
-        
+
         bookingDates.forEach((date) => {
           const key = `${newRecord.apartment_id}-${date}`
           newAvailability.set(key, {
@@ -230,7 +243,7 @@ export function useAvailability(options: UseAvailabilityOptions = {}): UseAvaila
 
         // If booking was cancelled, free up the dates
         if (newRecord.status === 'cancelled') {
-          const oldDates = getDatesInRange(
+          const oldDates = getBookingNights(
             new Date(newRecord.check_in),
             new Date(newRecord.check_out)
           )
@@ -245,7 +258,7 @@ export function useAvailability(options: UseAvailabilityOptions = {}): UseAvaila
           })
         } else {
           // Update dates with new status
-          const newDates = getDatesInRange(
+          const newDates = getBookingNights(
             new Date(newRecord.check_in),
             new Date(newRecord.check_out)
           )
@@ -268,7 +281,7 @@ export function useAvailability(options: UseAvailabilityOptions = {}): UseAvaila
           newBookings.splice(index, 1)
         }
 
-        const oldDates = getDatesInRange(
+        const oldDates = getBookingNights(
           new Date(deletedBooking.check_in),
           new Date(deletedBooking.check_out)
         )
@@ -383,7 +396,9 @@ export function isDateRangeAvailable(
   checkIn: Date,
   checkOut: Date
 ): boolean {
-  const dates = getDatesInRange(checkIn, checkOut)
+  // Half-open: a stay [checkIn, checkOut) occupies nights checkIn..checkOut-1.
+  // The checkout day itself need not be free (guest leaves that morning).
+  const dates = getBookingNights(checkIn, checkOut)
   return dates.every((date) => isDateAvailable(availability, apartmentId, date))
 }
 
