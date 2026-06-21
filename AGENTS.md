@@ -19,6 +19,17 @@
 
 ### ✅ Završeno (najnovije gore)
 
+**2026-06-21 (fix paket — datumi, dostupnost, otkazivanje, cron, Brevo live)**
+- **Datum off-by-one:** `BookingFlow`/`AvailabilityCalendar` slali datum preko `toISOString()` → u UTC+ zoni (Srbija) datum se pomerao DAN UNAZAD (izabereš 11. → sačuva se 10.). Sad lokalni datum (`getFullYear/Month/Date`).
+- **Checkout-dan overlap (half-open `[)`):** rezervacija do 10tog blokirala novu od 10tog. Klijent: nov `getBookingNights()` (`<` umesto `<=`) u `useAvailability` — checkout dan slobodan u kalendaru. **DB: migracija `20260621120000_fix_checkout_day_overlap.sql`** (`check_availability` + `no_overlapping_bookings` na `'[)'`) — **pokreće se RUČNO u Supabase SQL Editor-u** (Vercel ne pokreće migracije).
+- **Vreme u mejlu:** detalji prikazuju „od 14:00 h" / „do 10:00 h" (4 jezika).
+- **Kalendar SR:** dodat „Čet" (`DAY_NAMES.sr` imao 6 dana).
+- **Admin otkazivanje:** lista nije refetch-ovala posle promene statusa → otkazana ostajala u „Na čekanju"; dodato `fetchBookings()`. (Otkaz se uvek upisivao u bazu — provereno.)
+- **Auto check-out u cron-u:** `autoCheckoutDueBookings()` (`confirmed`/`checked_in` sa prošlom odjavom → `checked_out`; preskače `no_show`). Sve u 1 cron (Hobby): GDPR + auto-checkout + scheduled mejlovi.
+- **Brevo live:** `BREVO_API_KEY` ime ispravljeno (bilo `BREVO_APY_KEY`) → `provider: brevo`. **Deliverability:** gmail-pošiljalac → neujednačeno (spam/kašnjenje); trajni fix = sopstveni domen + SPF/DKIM/DMARC u Brevo. Render + Brevo-slanje rade za sva 4 jezika (provereno).
+- **Lokacija:** Čačak → **Bovan** (CLAUDE.md + email footer 4 jezika).
+- **Reset test podataka:** bookings/guests obrisani na 0; `availability` tabela očišćena (83 fantomska bloka) + backfill rupa (22–23.06 i dr.). Napomena: `availability` NIJE auto-sinhronizovana sa `bookings` (admin kalendar ih meša preko `includeBookings`).
+
 **2026-06-21 (feature — kompletan email sistem: svi mejlovi, 4 jezika, prefinjen dizajn + fix dostupnosti)**
 - **Email — jezik gosta:** glavni bug — mejlovi su čitali jezik iz `guests.language` (uvek NULL) umesto `bookings.language` (gde se beleži iz URL locale). Sad svi guest mejlovi idu na jeziku rezervacije; izvor = `bookings.language` u `updateBooking` + `processScheduledEmails` (fallback `sr`).
 - **Dizajn:** nov `EmailLayout.tsx` (brend plava #2563eb, kartica s detaljima, footer NAP, skriveni preheader, table-based/Outlook-safe) + generički `TransactionalEmail.tsx` (blokovi: lead/para/details/list/button/muted). Stari 5 `emails/*Email.tsx` → re-export (bez brisanja). Telo mejla više NIJE hardkodirano englesko.
