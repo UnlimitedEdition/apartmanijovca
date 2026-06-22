@@ -141,6 +141,21 @@ export async function PUT(
       }
     })
 
+    const currentBalcony = body.balcony !== undefined
+      ? body.balcony === true
+      : existingApartment.balcony === true
+    if (body.balcony !== undefined) {
+      updateData.balcony = currentBalcony
+    }
+    if (body.selected_amenities !== undefined || body.balcony !== undefined) {
+      const sourceAmenities = Array.isArray(body.selected_amenities)
+        ? body.selected_amenities
+        : (Array.isArray(existingApartment.selected_amenities) ? existingApartment.selected_amenities : [])
+      updateData.selected_amenities = currentBalcony
+        ? sourceAmenities
+        : sourceAmenities.filter((amenityId: string) => amenityId !== 'balcony')
+    }
+
     // Handle optional multi-language fields
     const optionalMultiLangFields = [
       'view_type', 'kitchen_type', 'house_rules', 'cancellation_policy',

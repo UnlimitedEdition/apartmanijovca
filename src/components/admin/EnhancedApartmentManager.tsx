@@ -218,8 +218,17 @@ export default function EnhancedApartmentManager() {
                     <input
                       type="checkbox"
                       id="balcony"
-                      checked={selectedApartment.balcony || false}
-                      onChange={(e) => setSelectedApartment({ ...selectedApartment, balcony: e.target.checked })}
+                      checked={selectedApartment.balcony === true}
+                      onChange={(e) => {
+                        const hasBalcony = e.target.checked
+                        setSelectedApartment({
+                          ...selectedApartment,
+                          balcony: hasBalcony,
+                          selected_amenities: hasBalcony
+                            ? (selectedApartment.selected_amenities || [])
+                            : (selectedApartment.selected_amenities || []).filter((amenityId) => amenityId !== 'balcony')
+                        })
+                      }}
                       className="w-4 h-4 rounded border-gray-300"
                     />
                     <label htmlFor="balcony" className="text-xs sm:text-sm font-semibold">Ima balkon/terasu</label>
@@ -1080,7 +1089,7 @@ export default function EnhancedApartmentManager() {
                                   <span className="font-medium">Sprat {apt.floor}</span>
                                 </div>
                               )}
-                              {apt.balcony && (
+                              {apt.balcony === true && (
                                 <div className="flex items-center gap-1.5">
                                   <span className="text-gray-500">🌿</span>
                                   <span className="font-medium">Balkon</span>

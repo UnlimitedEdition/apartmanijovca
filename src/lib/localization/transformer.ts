@@ -74,7 +74,7 @@ export function localizeApartment(
     size_sqm: apartment.size_sqm || null,
     floor: apartment.floor || null,
     bathroom_count: apartment.bathroom_count || null,
-    balcony: apartment.balcony || null,
+    balcony: apartment.balcony === true,
     check_in_time: apartment.check_in_time || null,
     check_out_time: apartment.check_out_time || null,
     min_stay_nights: apartment.min_stay_nights || null,

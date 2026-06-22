@@ -27,6 +27,7 @@ export async function GET(request: NextRequest) {
     // Extract locale from request
     const locale = extractLocale(request)
 
+
     const { data, error } = await supabaseAdmin
       .from('apartments')
       .select('*')
@@ -149,6 +150,11 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    const normalizedBalcony = balcony === true
+    const normalizedSelectedAmenities = Array.isArray(selected_amenities)
+      ? selected_amenities.filter((amenityId: string) => normalizedBalcony || amenityId !== 'balcony')
+      : []
+
     const { data, error } = await supabaseAdmin
       .from('apartments')
       .insert({
@@ -164,7 +170,7 @@ export async function POST(request: NextRequest) {
         size_sqm,
         floor,
         bathroom_count,
-        balcony,
+        balcony: normalizedBalcony,
         view_type,
         kitchen_type,
         features,
@@ -186,7 +192,7 @@ export async function POST(request: NextRequest) {
         seasonal_pricing,
         // New checkbox/counter fields
         bed_counts: bed_counts || {},
-        selected_amenities: selected_amenities || [],
+        selected_amenities: normalizedSelectedAmenities,
         selected_rules: selected_rules || [],
         selected_view: selected_view || null,
         // Location fields

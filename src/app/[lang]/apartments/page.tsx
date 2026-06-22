@@ -219,7 +219,7 @@ export default async function ApartmentsPage({ params: paramsInput }: PageProps)
                         <span className="font-semibold">Sprat {apartment.floor}</span>
                       </div>
                     )}
-                    {apartment.balcony && (
+                    {apartment.balcony === true && (
                       <div className="flex items-center gap-1.5">
                         <span className="text-zinc-500">🌿</span>
                         <span className="font-semibold">Balkon</span>

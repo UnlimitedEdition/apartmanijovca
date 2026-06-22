@@ -112,7 +112,7 @@ export default function ApartmentDetailView({ apartment, locale }: Props) {
         : `${t('floor')} ${apartment.floor}`,
       value: apartment.floor
     }] : []),
-    ...(apartment.balcony ? [{ icon: Palmtree, label: t('balcony'), value: true }] : []),
+    ...(apartment.balcony === true ? [{ icon: Palmtree, label: t('balcony'), value: true }] : []),
   ]
 
   const visibleAmenityIds = (apartment.selected_amenities || []).filter((amenityId) => {

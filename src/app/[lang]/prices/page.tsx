@@ -238,7 +238,7 @@ export default async function PricesPage({ params: paramsInput }: PageProps) {
                           <span className="font-semibold">Sprat {apt.floor}</span>
                         </div>
                       )}
-                      {apt.balcony && (
+                      {apt.balcony === true && (
                         <div className="flex items-center gap-1.5">
                           <span className="text-gray-500">🌿</span>
                           <span className="font-semibold">Balkon</span>

@@ -84,7 +84,7 @@ export function transformApartmentRecord(
     size_sqm: record.size_sqm,
     floor: record.floor,
     bathroom_count: record.bathroom_count,
-    balcony: record.balcony,
+    balcony: record.balcony === true,
     check_in_time: record.check_in_time,
     check_out_time: record.check_out_time,
     min_stay_nights: record.min_stay_nights,
