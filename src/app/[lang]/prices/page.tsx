@@ -2,9 +2,8 @@ import { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
 import Link from 'next/link'
 import { supabase } from '../lib/supabase/client'
-import { Badge } from '../components/ui/badge'
 import { getLocalizedValue } from '@/lib/localization/helpers'
-import { Locale, ApartmentRecord, MultiLanguageText } from '@/lib/types/database'
+import { Locale, ApartmentRecord, MultiLanguageText, Json } from '@/lib/types/database'
 import { getBaseUrl } from '@/lib/seo/config'
 import { generateMetaTags } from '@/lib/seo/meta-generator'
 import { generateHreflangTags } from '@/lib/seo/hreflang'
@@ -13,9 +12,34 @@ import { convertTwitterToMetadata } from '@/lib/seo/metadata-adapter'
 import { generateBreadcrumbSchema } from '@/lib/seo/structured-data'
 import { getKeywordsString } from '@/lib/seo/keywords'
 import { getPublishedSectionContent, getContentText } from '@/lib/content/public-content'
+import { AMENITY_OPTIONS } from '@/lib/apartment-options'
+import { pluralizeGuests, pluralizeBeds, pluralizeBathrooms } from '@/lib/utils'
 
 interface PageProps {
   params: Promise<{ lang: string }>
+}
+
+function getApartmentImages(images: Json): string[] {
+  if (!Array.isArray(images)) return []
+
+  return images
+    .map((image) => {
+      if (typeof image === 'string') return image
+      if (image && typeof image === 'object' && 'url' in image) {
+        const url = (image as { url?: unknown }).url
+        return typeof url === 'string' ? url : ''
+      }
+      return ''
+    })
+    .filter(Boolean)
+}
+
+function getTotalBeds(bedCounts: ApartmentRecord['bed_counts']): number {
+  if (!bedCounts || typeof bedCounts !== 'object' || Array.isArray(bedCounts)) return 0
+
+  return Object.values(bedCounts as Record<string, unknown>).reduce<number>((total, value) => {
+    return total + (typeof value === 'number' ? value : 0)
+  }, 0)
 }
 
 export async function generateMetadata({ params: paramsInput }: PageProps): Promise<Metadata> {
@@ -113,7 +137,8 @@ export default async function PricesPage({ params: paramsInput }: PageProps) {
     ...apt,
     name: getLocalizedValue(apt.name as unknown as MultiLanguageText, locale),
     description: getLocalizedValue(apt.description as unknown as MultiLanguageText, locale),
-    bed_type: getLocalizedValue(apt.bed_type as unknown as MultiLanguageText, locale)
+    bed_type: getLocalizedValue(apt.bed_type as unknown as MultiLanguageText, locale),
+    imageUrls: getApartmentImages(apt.images)
   }))
 
   const breadcrumbSchema = generateBreadcrumbSchema('/prices', locale)
@@ -140,86 +165,124 @@ export default async function PricesPage({ params: paramsInput }: PageProps) {
 
       {/* Pricing Cards */}
       <div className="container pb-16 px-4 md:px-6 max-w-7xl">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {localizedApartments?.map((apt, idx) => (
-            <div
-              key={apt.id}
-              className="bg-white/85 backdrop-blur-md rounded-2xl shadow-lg border border-white/40 overflow-hidden flex flex-col hover:-translate-y-2 hover:shadow-2xl transition-all duration-300"
-            >
-              {/* Top accent bar — blue like old Astro card border */}
-              <div className="h-1.5 bg-primary w-full" />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+          {localizedApartments.map((apt) => {
+            const firstImage = apt.imageUrls[0]
+            const totalBeds = getTotalBeds(apt.bed_counts)
 
-              <div className="p-6 sm:p-8 flex flex-col flex-grow">
-                {/* Badge + name */}
-                <div className="flex justify-between items-start mb-4">
-                  <Badge variant="outline" className="border-primary/30 text-primary font-bold text-xs">
-                    {apt.bed_type}
-                  </Badge>
-                  {/* "Recommended" ribbon for middle card */}
-                  {localizedApartments.length >= 3 && idx === 1 && (
-                    <span className="bg-primary text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider">
-                      ★ Popular
-                    </span>
-                  )}
-                </div>
+            return (
+              <div
+                key={apt.id}
+                className="bg-white/85 backdrop-blur-md rounded-2xl shadow-lg border border-white/40 overflow-hidden hover:-translate-y-1 hover:shadow-xl transition-all duration-300"
+              >
+                <div className="flex flex-col md:flex-row">
+                  <Link href={'/' + params.lang + '/apartments/' + apt.slug} className="relative md:w-40 lg:w-48 aspect-[16/10] md:aspect-auto md:min-h-56 flex-shrink-0 bg-gray-100 overflow-hidden">
+                    {firstImage ? (
+                      <img
+                        src={firstImage}
+                        alt={apt.name}
+                        className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center text-xs font-semibold text-gray-400">
+                        Nema slike
+                      </div>
+                    )}
+                  </Link>
 
-                <h2 className="text-xl sm:text-2xl font-black tracking-tight text-foreground mb-2">
-                  {apt.name}
-                </h2>
-                <p className="text-sm text-muted-foreground line-clamp-2 mb-6">
-                  {apt.description || aptT('description')}
-                </p>
+                  <div className="flex-1 p-4 sm:p-5 flex flex-col min-w-0">
+                    <div className="flex items-start justify-between gap-3 mb-3">
+                      <div className="min-w-0">
+                        <Link href={'/' + params.lang + '/apartments/' + apt.slug}>
+                          <h2 className="font-black text-lg sm:text-xl tracking-tight text-foreground hover:text-primary transition-colors truncate">
+                            {apt.name}
+                          </h2>
+                        </Link>
+                        <p className="text-xs text-muted-foreground truncate">/{apt.slug}</p>
+                      </div>
+                      <div className="px-2 py-1 rounded bg-green-100 text-green-800 text-xs font-bold flex-shrink-0">
+                        Aktivno
+                      </div>
+                    </div>
 
-                {/* Price block — Astro style: big amount, subtle label */}
-                <div className="bg-zinc-50 rounded-2xl p-5 mb-6 text-center">
-                  <div className="flex items-baseline justify-center gap-1 mb-1">
-                    <span className="text-5xl font-black tracking-tighter text-foreground">
-                      €{apt.base_price_eur}
-                    </span>
-                    <span className="text-muted-foreground font-semibold text-sm">
-                      {aptT('perNight')}
-                    </span>
+                    <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
+                      {apt.description || aptT('description')}
+                    </p>
+
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-2 mb-4 text-xs">
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-gray-500">👥</span>
+                        <span className="font-semibold">{pluralizeGuests(apt.capacity)}</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-gray-500">📐</span>
+                        <span className="font-semibold">{apt.size_sqm ? apt.size_sqm + 'm²' : 'N/A'}</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-gray-500">🛏️</span>
+                        <span className="font-semibold">{totalBeds > 0 ? pluralizeBeds(totalBeds) : apt.bed_type}</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-gray-500">🚿</span>
+                        <span className="font-semibold">{pluralizeBathrooms(apt.bathroom_count || 1)}</span>
+                      </div>
+                      {apt.floor !== null && apt.floor !== undefined && (
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-gray-500">🏢</span>
+                          <span className="font-semibold">Sprat {apt.floor}</span>
+                        </div>
+                      )}
+                      {apt.balcony && (
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-gray-500">🌿</span>
+                          <span className="font-semibold">Balkon</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {apt.selected_amenities && apt.selected_amenities.length > 0 && (
+                      <div className="mb-4">
+                        <div className="flex flex-wrap gap-1.5">
+                          {apt.selected_amenities.slice(0, 4).map((amenityId) => {
+                            const amenity = AMENITY_OPTIONS.find((item) => item.id === amenityId)
+                            return amenity ? (
+                              <span key={amenityId} className="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded font-semibold">
+                                {amenity.label.sr}
+                              </span>
+                            ) : null
+                          })}
+                          {apt.selected_amenities.length > 4 && (
+                            <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded font-semibold">
+                              +{apt.selected_amenities.length - 4}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mt-auto pt-4 border-t border-white/70">
+                      <div>
+                        <div className="text-2xl font-black text-primary">€{apt.base_price_eur}</div>
+                        <div className="text-xs text-muted-foreground font-semibold">{aptT('perNight')} · {t('allInclusive')}</div>
+                      </div>
+                      <div className="flex gap-2">
+                        <Link href={'/' + params.lang + '/apartments/' + apt.slug} className="flex-1 sm:flex-none">
+                          <button className="w-full px-4 py-2 rounded-full border border-primary text-primary text-xs font-bold hover:bg-primary hover:text-white transition-colors">
+                            {aptT('viewDetails')}
+                          </button>
+                        </Link>
+                        <Link href={'/' + params.lang + '/booking?apartment=' + apt.slug} className="flex-1 sm:flex-none">
+                          <button className="w-full px-4 py-2 rounded-full bg-primary text-white text-xs font-bold hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20">
+                            {aptT('bookNow')}
+                          </button>
+                        </Link>
+                      </div>
+                    </div>
                   </div>
-                  <p className="text-xs text-muted-foreground">{t('allInclusive')}</p>
                 </div>
-
-                {/* Feature list — check icons like Astro */}
-                <ul className="space-y-3 mb-8 flex-grow">
-                  <li className="flex items-center gap-3 text-sm font-semibold text-foreground">
-                    <span className="w-5 h-5 rounded-full bg-green-100 text-green-600 flex items-center justify-center shrink-0">
-                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7"/>
-                      </svg>
-                    </span>
-                    {apt.capacity} {aptT('capacity')}
-                  </li>
-                  <li className="flex items-center gap-3 text-sm font-semibold text-foreground">
-                    <span className="w-5 h-5 rounded-full bg-green-100 text-green-600 flex items-center justify-center shrink-0">
-                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7"/>
-                      </svg>
-                    </span>
-                    {Math.ceil(apt.capacity / 2) || 1} {aptT('bedroomLong')}
-                  </li>
-                  <li className="flex items-center gap-3 text-sm font-semibold text-foreground">
-                    <span className="w-5 h-5 rounded-full bg-green-100 text-green-600 flex items-center justify-center shrink-0">
-                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7"/>
-                      </svg>
-                    </span>
-                    {t('amenitiesWiFi')}
-                  </li>
-                </ul>
-
-                {/* CTA button — Astro: rounded-25px, blue, full width */}
-                <Link href={`/${params.lang}/booking?apartment=${apt.slug}`}>
-                  <button className="w-full px-6 py-3 bg-primary text-white font-bold text-sm rounded-full uppercase tracking-wide hover:bg-primary/90 hover:-translate-y-0.5 active:scale-95 transition-all duration-200 shadow-lg shadow-primary/20">
-                    {aptT('bookNow')}
-                  </button>
-                </Link>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
 
         {/* Guest Reviews Section */}
