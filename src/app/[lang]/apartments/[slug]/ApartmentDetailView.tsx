@@ -115,9 +115,11 @@ export default function ApartmentDetailView({ apartment, locale }: Props) {
     ...(apartment.balcony ? [{ icon: Palmtree, label: t('balcony'), value: true }] : []),
   ]
 
-  const selectedAmenityOptions = apartment.selected_amenities
-    ? getSelectedOptions(AMENITY_OPTIONS, apartment.selected_amenities)
-    : []
+  const visibleAmenityIds = (apartment.selected_amenities || []).filter((amenityId) => {
+    return amenityId !== 'balcony' || apartment.balcony === true
+  })
+
+  const selectedAmenityOptions = getSelectedOptions(AMENITY_OPTIONS, visibleAmenityIds)
 
   const amenityIconMap: Record<string, typeof Wifi> = {
     'wifi': Wifi,
@@ -144,6 +146,7 @@ export default function ApartmentDetailView({ apartment, locale }: Props) {
     'mountain_view': Mountain,
     'city_view': Building2,
     'garden_view': Palmtree,
+    'forest_view': Palmtree,
     'courtyard_view': Building2,
     'street_view': Building2,
   }

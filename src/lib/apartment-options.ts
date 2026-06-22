@@ -524,6 +524,15 @@ export const VIEW_OPTIONS: ApartmentOption[] = [
     }
   },
   {
+    id: 'forest_view',
+    label: {
+      sr: 'Pogled na šumu',
+      en: 'Forest view',
+      de: 'Waldblick',
+      it: 'Vista bosco'
+    }
+  },
+  {
     id: 'courtyard_view',
     label: {
       sr: 'Pogled na dvorište',

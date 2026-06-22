@@ -276,8 +276,9 @@ export default function EnhancedApartmentManager() {
                   </div>
 
                   {/* BEDS WITH COUNTER */}
-                  <div className="border rounded-lg p-3 sm:p-4 bg-blue-50">
-                    <label className="block text-xs sm:text-sm font-bold mb-2 sm:mb-3 text-blue-900">🛏️ Kreveti</label>
+                  <details className="border rounded-lg bg-blue-50" open>
+                    <summary className="cursor-pointer select-none p-3 sm:p-4 text-xs sm:text-sm font-bold text-blue-900">🛏️ Kreveti</summary>
+                    <div className="px-3 sm:px-4 pb-3 sm:pb-4">
                     <div className="grid grid-cols-1 gap-2">
                       {BED_OPTIONS.map((bed) => {
                         const count = (selectedApartment.bed_counts || {})[bed.id] || 0
@@ -308,11 +309,13 @@ export default function EnhancedApartmentManager() {
                         )
                       })}
                     </div>
-                  </div>
+                    </div>
+                  </details>
 
                   {/* AMENITIES CHECKBOX */}
-                  <div className="border rounded-lg p-3 sm:p-4 bg-green-50">
-                    <label className="block text-xs sm:text-sm font-bold mb-2 sm:mb-3 text-green-900">✨ Sadržaj</label>
+                  <details className="border rounded-lg bg-green-50" open>
+                    <summary className="cursor-pointer select-none p-3 sm:p-4 text-xs sm:text-sm font-bold text-green-900">✨ Sadržaj</summary>
+                    <div className="px-3 sm:px-4 pb-3 sm:pb-4">
                     <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-2">
                       {AMENITY_OPTIONS.map((amenity) => (
                         <label key={amenity.id} className="flex items-start gap-2 p-2 bg-white rounded border cursor-pointer hover:bg-green-50 transition">
@@ -329,11 +332,13 @@ export default function EnhancedApartmentManager() {
                         </label>
                       ))}
                     </div>
-                  </div>
+                    </div>
+                  </details>
 
                   {/* RULES CHECKBOX */}
-                  <div className="border rounded-lg p-3 sm:p-4 bg-orange-50">
-                    <label className="block text-xs sm:text-sm font-bold mb-2 sm:mb-3 text-orange-900">📋 Pravila</label>
+                  <details className="border rounded-lg bg-orange-50" open>
+                    <summary className="cursor-pointer select-none p-3 sm:p-4 text-xs sm:text-sm font-bold text-orange-900">📋 Pravila</summary>
+                    <div className="px-3 sm:px-4 pb-3 sm:pb-4">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
                       {RULE_OPTIONS.map((rule) => (
                         <label key={rule.id} className="flex items-start gap-2 p-2 bg-white rounded border cursor-pointer hover:bg-orange-50 transition">
@@ -350,11 +355,13 @@ export default function EnhancedApartmentManager() {
                         </label>
                       ))}
                     </div>
-                  </div>
+                    </div>
+                  </details>
 
                   {/* VIEW TYPE RADIO */}
-                  <div className="border rounded-lg p-3 sm:p-4 bg-purple-50">
-                    <label className="block text-xs sm:text-sm font-bold mb-2 sm:mb-3 text-purple-900">👁️ Pogled</label>
+                  <details className="border rounded-lg bg-purple-50" open>
+                    <summary className="cursor-pointer select-none p-3 sm:p-4 text-xs sm:text-sm font-bold text-purple-900">👁️ Pogled</summary>
+                    <div className="px-3 sm:px-4 pb-3 sm:pb-4">
                     <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-2">
                       {VIEW_OPTIONS.map((view) => (
                         <label key={view.id} className="flex items-start gap-2 p-2 bg-white rounded border cursor-pointer hover:bg-purple-50 transition">
@@ -372,7 +379,8 @@ export default function EnhancedApartmentManager() {
                         </label>
                       ))}
                     </div>
-                  </div>
+                    </div>
+                  </details>
 
                   {/* Kitchen Type - Serbian only */}
                   <div>
@@ -1080,10 +1088,10 @@ export default function EnhancedApartmentManager() {
                             </div>
 
                             {/* Amenities Preview */}
-                            {apt.selected_amenities && apt.selected_amenities.length > 0 && (
+                            {apt.selected_amenities && apt.selected_amenities.filter((amenityId) => amenityId !== "balcony" || apt.balcony === true).length > 0 && (
                               <div className="mb-3">
                                 <div className="flex flex-wrap gap-1">
-                                  {apt.selected_amenities.slice(0, 4).map((amenityId) => {
+                                  {apt.selected_amenities.filter((amenityId) => amenityId !== "balcony" || apt.balcony === true).slice(0, 4).map((amenityId) => {
                                     const amenity = AMENITY_OPTIONS.find(a => a.id === amenityId)
                                     return amenity ? (
                                       <span key={amenityId} className="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded">
@@ -1091,9 +1099,9 @@ export default function EnhancedApartmentManager() {
                                       </span>
                                     ) : null
                                   })}
-                                  {apt.selected_amenities.length > 4 && (
+                                  {apt.selected_amenities.filter((amenityId) => amenityId !== "balcony" || apt.balcony === true).length > 4 && (
                                     <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded">
-                                      +{apt.selected_amenities.length - 4}
+                                      +{apt.selected_amenities.filter((amenityId) => amenityId !== "balcony" || apt.balcony === true).length - 4}
                                     </span>
                                   )}
                                 </div>

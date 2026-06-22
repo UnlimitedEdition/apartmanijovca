@@ -27,6 +27,12 @@ function getTotalBeds(bedCounts: ApartmentRecord['bed_counts']): number {
   }, 0)
 }
 
+function getVisibleAmenityIds(apartment: ApartmentRecord): string[] {
+  return (apartment.selected_amenities || []).filter((amenityId) => {
+    return amenityId !== 'balcony' || apartment.balcony === true
+  })
+}
+
 // ISR — lista apartmana se prerenderuje i kešira na CDN-u (revalidate 1h).
 export const revalidate = 3600
 
@@ -151,6 +157,8 @@ export default async function ApartmentsPage({ params: paramsInput }: PageProps)
               ? apartment.images[0]
               : 'https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=800&q=80'
 
+            const visibleAmenityIds = getVisibleAmenityIds(apartment)
+
             return (
               <div
                 key={apartment.id}
@@ -220,11 +228,11 @@ export default async function ApartmentsPage({ params: paramsInput }: PageProps)
                   </div>
 
                   {/* Amenity badges */}
-                  {apartment.selected_amenities && apartment.selected_amenities.length > 0 && (
+                  {visibleAmenityIds.length > 0 && (
                     <div className="mb-5">
                       <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/70 mb-1.5">{t('amenities')}</p>
                       <div className="flex flex-wrap gap-1.5">
-                        {apartment.selected_amenities.slice(0, 4).map((amenityId) => {
+                        {visibleAmenityIds.slice(0, 4).map((amenityId) => {
                           const amenity = AMENITY_OPTIONS.find((item) => item.id === amenityId)
                           return amenity ? (
                             <span key={amenityId} className="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded font-semibold">
@@ -232,9 +240,9 @@ export default async function ApartmentsPage({ params: paramsInput }: PageProps)
                             </span>
                           ) : null
                         })}
-                        {apartment.selected_amenities.length > 4 && (
+                        {visibleAmenityIds.length > 4 && (
                           <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded font-semibold">
-                            +{apartment.selected_amenities.length - 4}
+                            +{visibleAmenityIds.length - 4}
                           </span>
                         )}
                       </div>

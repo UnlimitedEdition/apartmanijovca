@@ -42,6 +42,12 @@ function getTotalBeds(bedCounts: ApartmentRecord['bed_counts']): number {
   }, 0)
 }
 
+function getVisibleAmenityIds(apartment: ApartmentRecord): string[] {
+  return (apartment.selected_amenities || []).filter((amenityId) => {
+    return amenityId !== 'balcony' || apartment.balcony === true
+  })
+}
+
 export async function generateMetadata({ params: paramsInput }: PageProps): Promise<Metadata> {
   const params = await paramsInput
   const locale = params.lang as Locale
@@ -169,6 +175,7 @@ export default async function PricesPage({ params: paramsInput }: PageProps) {
           {localizedApartments.map((apt) => {
             const firstImage = apt.imageUrls[0]
             const totalBeds = getTotalBeds(apt.bed_counts)
+            const visibleAmenityIds = getVisibleAmenityIds(apt)
 
             return (
               <div
@@ -198,7 +205,6 @@ export default async function PricesPage({ params: paramsInput }: PageProps) {
                             {apt.name}
                           </h2>
                         </Link>
-                        <p className="text-xs text-muted-foreground truncate">/{apt.slug}</p>
                       </div>
                       <div className="px-2 py-1 rounded bg-green-100 text-green-800 text-xs font-bold flex-shrink-0">
                         Aktivno
@@ -240,10 +246,10 @@ export default async function PricesPage({ params: paramsInput }: PageProps) {
                       )}
                     </div>
 
-                    {apt.selected_amenities && apt.selected_amenities.length > 0 && (
+                    {visibleAmenityIds.length > 0 && (
                       <div className="mb-4">
                         <div className="flex flex-wrap gap-1.5">
-                          {apt.selected_amenities.slice(0, 4).map((amenityId) => {
+                          {visibleAmenityIds.slice(0, 4).map((amenityId) => {
                             const amenity = AMENITY_OPTIONS.find((item) => item.id === amenityId)
                             return amenity ? (
                               <span key={amenityId} className="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded font-semibold">
@@ -251,9 +257,9 @@ export default async function PricesPage({ params: paramsInput }: PageProps) {
                               </span>
                             ) : null
                           })}
-                          {apt.selected_amenities.length > 4 && (
+                          {visibleAmenityIds.length > 4 && (
                             <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded font-semibold">
-                              +{apt.selected_amenities.length - 4}
+                              +{visibleAmenityIds.length - 4}
                             </span>
                           )}
                         </div>
