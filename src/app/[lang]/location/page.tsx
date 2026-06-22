@@ -6,6 +6,7 @@ import { generateMetaTags } from '@/lib/seo/meta-generator'
 import { generateHreflangTags } from '@/lib/seo/hreflang'
 import { generateLocalBusinessSchema, generateBreadcrumbSchema } from '@/lib/seo/structured-data'
 import { getKeywordsString } from '@/lib/seo/keywords'
+import { getPublishedSectionContent, getContentText } from '@/lib/content/public-content'
 
 interface PageProps {
   params: Promise<{ lang: string }>
@@ -70,6 +71,8 @@ export default async function LocationPage({ params: paramsInput }: PageProps) {
   const params = await paramsInput
   const locale = params.lang as Locale
   const t = await getTranslations({ locale, namespace: 'location' })
+  const content = await getPublishedSectionContent('location', locale)
+  const pageText = (key: string) => getContentText(content, key, t(key))
 
   const locationSchema = [
     generateLocalBusinessSchema(locale),
@@ -86,10 +89,10 @@ export default async function LocationPage({ params: paramsInput }: PageProps) {
       {/* Hero */}
       <div className="stagger-fade-in text-center py-20 text-white mb-8 3xl:mb-12 4xl:mb-16">
         <h1 className="text-4xl md:text-5xl font-extrabold text-shadow-strong tracking-wide mb-4">
-          {t('title')}
+          {pageText('title')}
         </h1>
         <p className="text-xl text-white/90 text-shadow-medium">
-          {t('description')}
+          {pageText('description')}
         </p>
       </div>
 
@@ -98,13 +101,13 @@ export default async function LocationPage({ params: paramsInput }: PageProps) {
           <div className="bg-white/85 backdrop-blur-md rounded-2xl shadow-lg border border-white/40 p-8">
             <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
               <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-              {t('address')}
+              {pageText('address')}
             </h2>
             <address className="not-italic text-lg text-zinc-700 leading-relaxed mb-6 font-medium">
-              {t('addressName')}<br />
-              {t('addressStreet')}<br />
-              {t('addressLake')}<br />
-              {t('addressCity')}
+              {pageText('addressName')}<br />
+              {pageText('addressStreet')}<br />
+              {pageText('addressLake')}<br />
+              {pageText('addressCity')}
             </address>
             <div className="space-y-4">
               <a
@@ -113,13 +116,13 @@ export default async function LocationPage({ params: paramsInput }: PageProps) {
                 rel="noopener noreferrer"
                 className="cta-pill primary flex items-center justify-center gap-2 w-full"
               >
-                {t('googleMaps')}
+                {pageText('googleMaps')}
               </a>
               <a
                 href="tel:+381652378080"
                 className="cta-pill secondary flex items-center justify-center gap-2 w-full"
               >
-                {t('callDirections')}
+                {pageText('callDirections')}
               </a>
             </div>
           </div>
@@ -127,19 +130,19 @@ export default async function LocationPage({ params: paramsInput }: PageProps) {
           <div className="bg-white/85 backdrop-blur-md rounded-2xl shadow-lg border border-white/40 p-8">
             <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
               <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-              {t('reachTitle')}
+              {pageText('reachTitle')}
             </h2>
             <div className="space-y-6">
               <div>
-                <h3 className="font-bold text-lg mb-2">{t('byCarTitle')}</h3>
+                <h3 className="font-bold text-lg mb-2">{pageText('byCarTitle')}</h3>
                 <p className="text-muted-foreground">
-                  {t('byCarDesc')}
+                  {pageText('byCarDesc')}
                 </p>
               </div>
               <div className="border-t border-white/60 pt-4">
-                <h3 className="font-bold text-lg mb-2">{t('byBusTitle')}</h3>
+                <h3 className="font-bold text-lg mb-2">{pageText('byBusTitle')}</h3>
                 <p className="text-muted-foreground">
-                  {t('byBusDesc')}
+                  {pageText('byBusDesc')}
                 </p>
               </div>
             </div>
@@ -156,31 +159,31 @@ export default async function LocationPage({ params: paramsInput }: PageProps) {
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
-              title={`${t('title')} - Apartmani Jovca`}
+              title={`${pageText('title')} - Apartmani Jovca`}
             />
           </div>
         </div>
       </div>
 
       <div className="mt-12">
-        <h2 className="text-2xl font-semibold text-white text-shadow-medium mb-6">{t('nearbyTitle')}</h2>
+        <h2 className="text-2xl font-semibold text-white text-shadow-medium mb-6">{pageText('nearbyTitle')}</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-white/85 backdrop-blur-md rounded-2xl shadow-lg border border-white/40 p-6">
-            <h3 className="font-semibold mb-2">{t('bovanLake')}</h3>
+            <h3 className="font-semibold mb-2">{pageText('bovanLake')}</h3>
             <p className="text-sm text-muted-foreground">
-              {t('bovanLakeDesc')}
+              {pageText('bovanLakeDesc')}
             </p>
           </div>
           <div className="bg-white/85 backdrop-blur-md rounded-2xl shadow-lg border border-white/40 p-6">
-            <h3 className="font-semibold mb-2">{t('sokolica')}</h3>
+            <h3 className="font-semibold mb-2">{pageText('sokolica')}</h3>
             <p className="text-sm text-muted-foreground">
-              {t('sokolicaDesc')}
+              {pageText('sokolicaDesc')}
             </p>
           </div>
           <div className="bg-white/85 backdrop-blur-md rounded-2xl shadow-lg border border-white/40 p-6">
-            <h3 className="font-semibold mb-2">{t('nis')}</h3>
+            <h3 className="font-semibold mb-2">{pageText('nis')}</h3>
             <p className="text-sm text-muted-foreground">
-              {t('nisDesc')}
+              {pageText('nisDesc')}
             </p>
           </div>
         </div>

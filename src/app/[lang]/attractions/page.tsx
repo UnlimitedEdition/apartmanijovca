@@ -13,6 +13,7 @@ import {
   generateTouristDestinationSchema,
 } from '@/lib/seo/structured-data'
 import { getKeywordsString } from '@/lib/seo/keywords'
+import { getPublishedSectionContent, getContentText } from '@/lib/content/public-content'
 import { STATIC_ATTRACTIONS, AttractionEntry } from '@/data/attractions'
 import { getVisibleAttractions } from '@/lib/attractions/db'
 
@@ -78,6 +79,8 @@ export default async function AttractionsPage({ params: paramsInput }: PageProps
   const params = await paramsInput
   const lang = params.lang
   const locale = lang as Locale
+  const content = await getPublishedSectionContent('attractions', locale)
+  const pageText = (key: string) => getContentText(content, key, t(key))
   const t = await getTranslations({ locale: lang, namespace: 'attractions' })
 
   // Primary source: DB attractions table (admin-managed)
@@ -114,10 +117,10 @@ export default async function AttractionsPage({ params: paramsInput }: PageProps
       {/* Hero */}
       <div className="stagger-fade-in text-center py-20 text-white mb-8 sm:mb-12 3xl:mb-16 4xl:mb-20">
         <h1 className="text-4xl md:text-5xl font-extrabold text-shadow-strong tracking-wide mb-4">
-          {t('title')}
+          {pageText('title')}
         </h1>
         <p className="text-xl text-white/90 text-shadow-medium max-w-2xl mx-auto px-4">
-          {t('description')}
+          {pageText('description')}
         </p>
       </div>
 

@@ -10,6 +10,7 @@ import { convertTwitterToMetadata } from '@/lib/seo/metadata-adapter'
 import { generateBreadcrumbSchema, generateImageSchema } from '@/lib/seo/structured-data'
 import { getKeywordsString } from '@/lib/seo/keywords'
 import { getTranslations } from 'next-intl/server'
+import { getPublishedSectionContent, getContentText } from '@/lib/content/public-content'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -137,6 +138,8 @@ export default async function GalleryPage({
   params: Promise<{ lang: string }>
 }) {
   const { lang } = await params
+  const locale = lang as Locale
+  const galleryContent = await getPublishedSectionContent('gallery', locale)
   const items = await getGalleryItems()
 
   const baseUrl = getBaseUrl()
@@ -184,7 +187,7 @@ export default async function GalleryPage({
       <script
         type="application/ld+json"
         // eslint-disable-next-line react/no-danger
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(generateBreadcrumbSchema('/gallery', lang as Locale)).replace(/</g, '\\u003c') }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(generateBreadcrumbSchema('/gallery', locale)).replace(/</g, '\\u003c') }}
       />
 
       {/* Page Hero */}
@@ -193,10 +196,10 @@ export default async function GalleryPage({
           className="font-extrabold text-white text-shadow-strong uppercase tracking-tight mb-4"
           style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)' }}
         >
-          {title}
+          {getContentText(galleryContent, 'title', title)}
         </h1>
         <p className="text-white/90 text-shadow-medium max-w-2xl mx-auto italic text-lg">
-          {subtitle}
+          {getContentText(galleryContent, 'description', subtitle)}
         </p>
       </div>
 

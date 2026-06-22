@@ -9,6 +9,7 @@ import { generateHreflangTags } from '@/lib/seo/hreflang'
 
 import { generateLocalBusinessSchema, generateBreadcrumbSchema } from '@/lib/seo/structured-data'
 import { getKeywordsString } from '@/lib/seo/keywords'
+import { getPublishedSectionContent, getContentText } from '@/lib/content/public-content'
 
 interface PageProps {
   params: Promise<{ lang: string }>
@@ -74,6 +75,8 @@ export default async function ContactPage({ params: paramsInput }: PageProps) {
   const locale = params.lang as Locale
   const contactT = await getTranslations({ locale, namespace: 'contact' })
   const commonT = await getTranslations({ locale, namespace: 'common' })
+  const content = await getPublishedSectionContent('contact', locale)
+  const pageText = (key: string) => getContentText(content, key, contactT(key))
 
   const contactSchema = [
     generateLocalBusinessSchema(locale),
@@ -90,10 +93,10 @@ export default async function ContactPage({ params: paramsInput }: PageProps) {
       {/* Hero */}
       <div className="stagger-fade-in text-center py-20 text-white mb-10 sm:mb-16">
         <h1 className="text-4xl md:text-5xl font-extrabold text-shadow-strong tracking-wide mb-4">
-          {contactT('title')}
+          {pageText('title')}
         </h1>
         <p className="text-xl text-white/90 text-shadow-medium max-w-2xl mx-auto px-4">
-          {contactT('description')}
+          {pageText('description')}
         </p>
       </div>
 

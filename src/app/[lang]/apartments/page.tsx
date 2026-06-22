@@ -12,6 +12,7 @@ import { generateMetaTags } from '@/lib/seo/meta-generator'
 import { generateHreflangTags } from '@/lib/seo/hreflang'
 import { generateBreadcrumbSchema } from '@/lib/seo/structured-data'
 import { getKeywordsString } from '@/lib/seo/keywords'
+import { getPublishedSectionContent, getContentText } from '@/lib/content/public-content'
 
 interface PageProps {
   params: Promise<{ lang: string }>
@@ -77,6 +78,8 @@ export default async function ApartmentsPage({ params: paramsInput }: PageProps)
   const params = await paramsInput
   const t = await getTranslations({ locale: params.lang, namespace: 'apartments' })
   const locale = params.lang as Locale
+  const content = await getPublishedSectionContent('apartments', locale)
+  const pageText = (key: string) => getContentText(content, key, t(key))
 
   const { data: apartments } = await supabase
     ?.from('apartments')
@@ -124,10 +127,10 @@ export default async function ApartmentsPage({ params: paramsInput }: PageProps)
           className="font-extrabold text-white text-shadow-strong mb-4"
           style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)' }}
         >
-          {t('title')}
+          {pageText('title')}
         </h1>
         <p className="text-white/90 text-shadow-medium text-lg max-w-2xl mx-auto">
-          {t('description')}
+          {pageText('description')}
         </p>
       </div>
 

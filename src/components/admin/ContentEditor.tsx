@@ -54,7 +54,11 @@ const MESSAGES_BY_LANGUAGE: Record<Language, MessagesFile> = {
 }
 
 function getNestedText(source: MessagesFile, key: string): string | undefined {
-  const value = key.split('.').reduce<unknown>((current, part) => {
+  const normalizedKey = key.startsWith('privacy.') || key.startsWith('terms.')
+    ? 'legal.' + key
+    : key
+
+  const value = normalizedKey.split('.').reduce<unknown>((current, part) => {
     if (current && typeof current === 'object' && part in current) {
       return (current as Record<string, unknown>)[part]
     }
@@ -70,6 +74,19 @@ const LANGUAGES: { code: Language; label: string; flag: string }[] = [
   { code: 'de', label: 'Deutsch', flag: '��' },
   { code: 'it', label: 'Italiano', flag: '��' }
 ]
+
+const PRIVACY_TEXT_KEYS = ['privacy.title', 'privacy.intro', 'privacy.lastUpdated', 'privacy.s1.title', 'privacy.s1.content', 'privacy.s1.dataTitle', 'privacy.s1.item1', 'privacy.s1.item2', 'privacy.s1.item3', 'privacy.s1.item4', 'privacy.s1.item5', 'privacy.s2.title', 'privacy.s2.content', 'privacy.s2.item1', 'privacy.s2.item2', 'privacy.s2.item3', 'privacy.s2.item4', 'privacy.s3.title', 'privacy.s3.content', 'privacy.s3.item1', 'privacy.s3.item2', 'privacy.s3.item3', 'privacy.s4.title', 'privacy.s4.content', 'privacy.s4.item1', 'privacy.s4.item2', 'privacy.s4.item3', 'privacy.s5.title', 'privacy.s5.content', 'privacy.s5.item1', 'privacy.s5.item2', 'privacy.s5.item3', 'privacy.s5.item4', 'privacy.s6.title', 'privacy.s6.content', 'privacy.contact.title', 'privacy.contact.content']
+
+const TERMS_TEXT_KEYS = ['terms.title', 'terms.intro', 'terms.lastUpdated', 'terms.s1.title', 'terms.s1.content', 'terms.s1.item1', 'terms.s1.item2', 'terms.s1.item3', 'terms.s1.item4', 'terms.s2.title', 'terms.s2.content', 'terms.s2.item1', 'terms.s2.item2', 'terms.s2.item3', 'terms.s3.title', 'terms.s3.content', 'terms.s3.cancellationTitle', 'terms.s3.item1', 'terms.s3.item2', 'terms.s3.item3', 'terms.s4.title', 'terms.s4.content', 'terms.s4.item1', 'terms.s4.item2', 'terms.s4.item3', 'terms.s4.item4', 'terms.s5.title', 'terms.s5.content', 'terms.s5.item1', 'terms.s5.item2', 'terms.s5.item3', 'terms.s6.title', 'terms.s6.content', 'terms.s7.title', 'terms.s7.content', 'terms.contact.title', 'terms.contact.content']
+
+function createLegalFields(keys: string[]): ContentField[] {
+  return keys.map(key => ({
+    key,
+    label: key,
+    type: key.endsWith('.content') || key.endsWith('.intro') ? 'textarea' : 'text',
+    required: key.endsWith('.title') || key.endsWith('.intro')
+  }))
+}
 
 // ONLY MEANINGFUL TEXTUAL CONTENT - NO button labels, form labels, or UI messages
 export const CONTENT_SECTIONS: ContentSection[] = [
@@ -167,47 +184,13 @@ export const CONTENT_SECTIONS: ContentSection[] = [
     id: 'privacy',
     name: 'Politika privatnosti (GDPR)',
     description: 'Kompletan pravni tekst politike privatnosti',
-    fields: [
-      { key: 'privacy.title', label: 'Naslov stranice', type: 'text', required: true },
-      { key: 'privacy.lastUpdated', label: 'Datum poslednjeg ažuriranja', type: 'text' },
-      { key: 'privacy.intro', label: 'Uvodni tekst', type: 'textarea', required: true },
-      { key: 'privacy.dataCollection.title', label: 'Prikupljanje podataka - naslov', type: 'text' },
-      { key: 'privacy.dataCollection.content', label: 'Prikupljanje podataka - kompletan tekst', type: 'textarea' },
-      { key: 'privacy.dataUsage.title', label: 'Korišćenje podataka - naslov', type: 'text' },
-      { key: 'privacy.dataUsage.content', label: 'Korišćenje podataka - kompletan tekst', type: 'textarea' },
-      { key: 'privacy.dataProtection.title', label: 'Zaštita podataka - naslov', type: 'text' },
-      { key: 'privacy.dataProtection.content', label: 'Zaštita podataka - kompletan tekst', type: 'textarea' },
-      { key: 'privacy.userRights.title', label: 'Prava korisnika - naslov', type: 'text' },
-      { key: 'privacy.userRights.content', label: 'Prava korisnika - kompletan tekst', type: 'textarea' },
-      { key: 'privacy.cookies.title', label: 'Kolačići - naslov', type: 'text' },
-      { key: 'privacy.cookies.content', label: 'Kolačići - kompletan tekst', type: 'textarea' },
-      { key: 'privacy.gdpr.title', label: 'GDPR usklađenost - naslov', type: 'text' },
-      { key: 'privacy.gdpr.content', label: 'GDPR usklađenost - kompletan tekst', type: 'textarea' },
-      { key: 'privacy.contact.title', label: 'Kontakt za pitanja - naslov', type: 'text' },
-      { key: 'privacy.contact.content', label: 'Kontakt za pitanja - tekst', type: 'textarea' },
-    ]
+    fields: createLegalFields(PRIVACY_TEXT_KEYS)
   },
   {
     id: 'terms',
     name: 'Uslovi korišćenja',
     description: 'Kompletan pravni tekst uslova korišćenja',
-    fields: [
-      { key: 'terms.title', label: 'Naslov stranice', type: 'text', required: true },
-      { key: 'terms.lastUpdated', label: 'Datum poslednjeg ažuriranja', type: 'text' },
-      { key: 'terms.intro', label: 'Uvodni tekst', type: 'textarea', required: true },
-      { key: 'terms.booking.title', label: 'Rezervacija - naslov', type: 'text' },
-      { key: 'terms.booking.content', label: 'Rezervacija - kompletan tekst', type: 'textarea' },
-      { key: 'terms.payment.title', label: 'Plaćanje - naslov', type: 'text' },
-      { key: 'terms.payment.content', label: 'Plaćanje - kompletan tekst', type: 'textarea' },
-      { key: 'terms.cancellation.title', label: 'Otkazivanje - naslov', type: 'text' },
-      { key: 'terms.cancellation.content', label: 'Otkazivanje - kompletan tekst', type: 'textarea' },
-      { key: 'terms.houseRules.title', label: 'Kućni red - naslov', type: 'text' },
-      { key: 'terms.houseRules.content', label: 'Kućni red - kompletan tekst', type: 'textarea' },
-      { key: 'terms.liability.title', label: 'Odgovornost - naslov', type: 'text' },
-      { key: 'terms.liability.content', label: 'Odgovornost - kompletan tekst', type: 'textarea' },
-      { key: 'terms.changes.title', label: 'Izmene uslova - naslov', type: 'text' },
-      { key: 'terms.changes.content', label: 'Izmene uslova - tekst', type: 'textarea' },
-    ]
+    fields: createLegalFields(TERMS_TEXT_KEYS)
   },
 ]
 

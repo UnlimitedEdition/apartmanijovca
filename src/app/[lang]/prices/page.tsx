@@ -12,6 +12,7 @@ import { generateOpenGraphTags, generateTwitterCardTags } from '@/lib/seo/social
 import { convertTwitterToMetadata } from '@/lib/seo/metadata-adapter'
 import { generateBreadcrumbSchema } from '@/lib/seo/structured-data'
 import { getKeywordsString } from '@/lib/seo/keywords'
+import { getPublishedSectionContent, getContentText } from '@/lib/content/public-content'
 
 interface PageProps {
   params: Promise<{ lang: string }>
@@ -106,6 +107,8 @@ export default async function PricesPage({ params: paramsInput }: PageProps) {
     .order('base_price_eur', { ascending: true })) as { data: ApartmentRecord[] | null } || { data: [] }
 
   const locale = params.lang as Locale
+  const content = await getPublishedSectionContent('prices', locale)
+  const pageText = (key: string) => getContentText(content, key, t(key))
   const localizedApartments = (apartments || []).map((apt: ApartmentRecord) => ({
     ...apt,
     name: getLocalizedValue(apt.name as unknown as MultiLanguageText, locale),
@@ -128,10 +131,10 @@ export default async function PricesPage({ params: paramsInput }: PageProps) {
           className="font-extrabold text-white text-shadow-strong mb-4"
           style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)' }}
         >
-          {t('title')}
+          {pageText('title')}
         </h1>
         <p className="text-white/90 text-shadow-medium text-lg max-w-2xl mx-auto">
-          {t('description')}
+          {pageText('description')}
         </p>
       </div>
 

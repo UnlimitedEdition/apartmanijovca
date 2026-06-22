@@ -6,6 +6,7 @@ import { generateMetaTags } from '@/lib/seo/meta-generator'
 import { generateHreflangTags } from '@/lib/seo/hreflang'
 import { generateBreadcrumbSchema } from '@/lib/seo/structured-data'
 import { getKeywordsString } from '@/lib/seo/keywords'
+import { getPublishedSectionContent, getContentText } from '@/lib/content/public-content'
 
 interface PageProps {
   params: Promise<{ lang: string }>
@@ -68,6 +69,8 @@ export default async function TermsPage({ params: paramsInput }: PageProps) {
   const params = await paramsInput
   const locale = params.lang as Locale
   const t = await getTranslations({ locale, namespace: 'legal.terms' })
+  const content = await getPublishedSectionContent('terms', locale)
+  const legalText = (key: string) => getContentText(content, key, t(key))
   const breadcrumbSchema = generateBreadcrumbSchema('/terms', locale)
 
   return (
@@ -80,56 +83,56 @@ export default async function TermsPage({ params: paramsInput }: PageProps) {
       {/* Hero */}
       <div className="stagger-fade-in text-center py-20 text-white mb-12">
         <h1 className="text-4xl md:text-5xl font-extrabold text-shadow-strong tracking-wide mb-4">
-          {t('title')}
+          {legalText('title')}
         </h1>
         <p className="text-xl text-white/90 text-shadow-medium max-w-2xl mx-auto">
-          {t('intro')}
+          {legalText('intro')}
         </p>
-        <p className="text-sm text-white/70 text-shadow-light mt-3">{t('lastUpdated')}</p>
+        <p className="text-sm text-white/70 text-shadow-light mt-3">{legalText('lastUpdated')}</p>
       </div>
 
       <div className="max-w-3xl mx-auto space-y-6">
         <div className="bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white/40 overflow-hidden">
           <div className="bg-zinc-950 text-white p-8">
-            <h2 className="text-2xl font-black">{t('s1.title')}</h2>
+            <h2 className="text-2xl font-black">{legalText('s1.title')}</h2>
           </div>
           <div className="p-8 space-y-4">
-            <p className="leading-relaxed text-gray-700">{t('s1.content')}</p>
+            <p className="leading-relaxed text-gray-700">{legalText('s1.content')}</p>
             <ul className="list-disc list-inside space-y-2 ml-4">
-              <li className="leading-relaxed text-gray-700">{t('s1.item1')}</li>
-              <li className="leading-relaxed text-gray-700">{t('s1.item2')}</li>
-              <li className="leading-relaxed text-gray-700">{t('s1.item3')}</li>
-              <li className="leading-relaxed text-gray-700">{t('s1.item4')}</li>
+              <li className="leading-relaxed text-gray-700">{legalText('s1.item1')}</li>
+              <li className="leading-relaxed text-gray-700">{legalText('s1.item2')}</li>
+              <li className="leading-relaxed text-gray-700">{legalText('s1.item3')}</li>
+              <li className="leading-relaxed text-gray-700">{legalText('s1.item4')}</li>
             </ul>
           </div>
         </div>
 
         <div className="bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white/40 overflow-hidden">
           <div className="bg-zinc-950 text-white p-8">
-            <h2 className="text-2xl font-black">{t('s2.title')}</h2>
+            <h2 className="text-2xl font-black">{legalText('s2.title')}</h2>
           </div>
           <div className="p-8 space-y-4">
-            <p className="leading-relaxed text-gray-700">{t('s2.content')}</p>
+            <p className="leading-relaxed text-gray-700">{legalText('s2.content')}</p>
             <ul className="list-disc list-inside space-y-2 ml-4">
-              <li className="leading-relaxed text-gray-700">{t('s2.item1')}</li>
-              <li className="leading-relaxed text-gray-700">{t('s2.item2')}</li>
-              <li className="leading-relaxed text-gray-700">{t('s2.item3')}</li>
+              <li className="leading-relaxed text-gray-700">{legalText('s2.item1')}</li>
+              <li className="leading-relaxed text-gray-700">{legalText('s2.item2')}</li>
+              <li className="leading-relaxed text-gray-700">{legalText('s2.item3')}</li>
             </ul>
           </div>
         </div>
 
         <div className="bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white/40 overflow-hidden">
           <div className="bg-zinc-950 text-white p-8">
-            <h2 className="text-2xl font-black">{t('s3.title')}</h2>
+            <h2 className="text-2xl font-black">{legalText('s3.title')}</h2>
           </div>
           <div className="p-8 space-y-4">
-            <p className="leading-relaxed text-gray-700">{t('s3.content')}</p>
+            <p className="leading-relaxed text-gray-700">{legalText('s3.content')}</p>
             <div className="bg-primary/5 p-6 rounded-xl border border-primary/20">
-              <p className="font-bold mb-2 text-gray-900">{t('s3.cancellationTitle')}</p>
+              <p className="font-bold mb-2 text-gray-900">{legalText('s3.cancellationTitle')}</p>
               <ul className="list-disc list-inside space-y-2 ml-4">
-                <li className="leading-relaxed text-gray-700">{t('s3.item1')}</li>
-                <li className="leading-relaxed text-gray-700">{t('s3.item2')}</li>
-                <li className="leading-relaxed text-gray-700">{t('s3.item3')}</li>
+                <li className="leading-relaxed text-gray-700">{legalText('s3.item1')}</li>
+                <li className="leading-relaxed text-gray-700">{legalText('s3.item2')}</li>
+                <li className="leading-relaxed text-gray-700">{legalText('s3.item3')}</li>
               </ul>
             </div>
           </div>
@@ -137,54 +140,54 @@ export default async function TermsPage({ params: paramsInput }: PageProps) {
 
         <div className="bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white/40 overflow-hidden">
           <div className="bg-zinc-950 text-white p-8">
-            <h2 className="text-2xl font-black">{t('s4.title')}</h2>
+            <h2 className="text-2xl font-black">{legalText('s4.title')}</h2>
           </div>
           <div className="p-8 space-y-4">
-            <p className="leading-relaxed text-gray-700">{t('s4.content')}</p>
+            <p className="leading-relaxed text-gray-700">{legalText('s4.content')}</p>
             <ul className="list-disc list-inside space-y-2 ml-4">
-              <li className="leading-relaxed text-gray-700">{t('s4.item1')}</li>
-              <li className="leading-relaxed text-gray-700">{t('s4.item2')}</li>
-              <li className="leading-relaxed text-gray-700">{t('s4.item3')}</li>
-              <li className="leading-relaxed text-gray-700">{t('s4.item4')}</li>
+              <li className="leading-relaxed text-gray-700">{legalText('s4.item1')}</li>
+              <li className="leading-relaxed text-gray-700">{legalText('s4.item2')}</li>
+              <li className="leading-relaxed text-gray-700">{legalText('s4.item3')}</li>
+              <li className="leading-relaxed text-gray-700">{legalText('s4.item4')}</li>
             </ul>
           </div>
         </div>
 
         <div className="bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white/40 overflow-hidden">
           <div className="bg-zinc-950 text-white p-8">
-            <h2 className="text-2xl font-black">{t('s5.title')}</h2>
+            <h2 className="text-2xl font-black">{legalText('s5.title')}</h2>
           </div>
           <div className="p-8 space-y-4">
-            <p className="leading-relaxed text-gray-700">{t('s5.content')}</p>
+            <p className="leading-relaxed text-gray-700">{legalText('s5.content')}</p>
             <ul className="list-disc list-inside space-y-2 ml-4">
-              <li className="leading-relaxed text-gray-700">{t('s5.item1')}</li>
-              <li className="leading-relaxed text-gray-700">{t('s5.item2')}</li>
-              <li className="leading-relaxed text-gray-700">{t('s5.item3')}</li>
+              <li className="leading-relaxed text-gray-700">{legalText('s5.item1')}</li>
+              <li className="leading-relaxed text-gray-700">{legalText('s5.item2')}</li>
+              <li className="leading-relaxed text-gray-700">{legalText('s5.item3')}</li>
             </ul>
           </div>
         </div>
 
         <div className="bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white/40 overflow-hidden">
           <div className="bg-zinc-950 text-white p-8">
-            <h2 className="text-2xl font-black">{t('s6.title')}</h2>
+            <h2 className="text-2xl font-black">{legalText('s6.title')}</h2>
           </div>
           <div className="p-8 space-y-4">
-            <p className="leading-relaxed text-gray-700">{t('s6.content')}</p>
+            <p className="leading-relaxed text-gray-700">{legalText('s6.content')}</p>
           </div>
         </div>
 
         <div className="bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white/40 overflow-hidden">
           <div className="bg-zinc-950 text-white p-8">
-            <h2 className="text-2xl font-black">{t('s7.title')}</h2>
+            <h2 className="text-2xl font-black">{legalText('s7.title')}</h2>
           </div>
           <div className="p-8 space-y-4">
-            <p className="leading-relaxed text-gray-700">{t('s7.content')}</p>
+            <p className="leading-relaxed text-gray-700">{legalText('s7.content')}</p>
           </div>
         </div>
 
         <div className="bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-white/40 p-8">
-          <h3 className="font-black text-xl mb-4 text-gray-900">{t('contact.title')}</h3>
-          <p className="leading-relaxed mb-4 text-gray-700">{t('contact.content')}</p>
+          <h3 className="font-black text-xl mb-4 text-gray-900">{legalText('contact.title')}</h3>
+          <p className="leading-relaxed mb-4 text-gray-700">{legalText('contact.content')}</p>
           <div className="space-y-2">
             <p className="font-bold text-gray-900">Email: <a href={`mailto:${CONTACT_EMAIL}`} className="text-primary hover:underline">{CONTACT_EMAIL}</a></p>
             <p className="font-bold text-gray-900">Telefon: <a href={`tel:${CONTACT_PHONE.replace(/\s/g, '')}`} className="text-primary hover:underline">{CONTACT_PHONE}</a></p>
