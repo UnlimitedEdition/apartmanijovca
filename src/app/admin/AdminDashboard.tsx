@@ -50,6 +50,19 @@ function getActiveBookingCount(stats: Pick<Stats, 'pendingBookings' | 'confirmed
   return stats.pendingBookings + stats.confirmedBookings
 }
 
+// Validni tabovi — čuvaju se u URL-u (?tab=) da refresh ostane na istoj sekciji
+const VALID_TABS = [
+  'dashboard',
+  'bookings',
+  'apartments',
+  'availability',
+  'content',
+  'messages',
+  'analytics',
+  'gallery',
+  'attractions',
+] as const
+
 export default function AdminDashboard({ stats: initialStats }: AdminDashboardProps) {
   const [activeTab, setActiveTab] = useState('dashboard')
   const [activeContentSection, setActiveContentSection] = useState('home')
@@ -97,6 +110,32 @@ export default function AdminDashboard({ stats: initialStats }: AdminDashboardPr
     fetchMessageCount()
     fetchBookingCount()
   }, [fetchMessageCount, fetchBookingCount])
+
+  // Na učitavanju: pročitaj aktivni tab/sekciju iz URL-a (da refresh ostane na istoj strani)
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const tab = params.get('tab')
+    if (tab && (VALID_TABS as readonly string[]).includes(tab)) {
+      setActiveTab(tab)
+    }
+    const section = params.get('section')
+    if (section) {
+      setActiveContentSection(section)
+    }
+  }, [])
+
+  // Sinhronizuj aktivni tab/sekciju u URL (replaceState — bez reload-a / novog history unosa)
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    params.set('tab', activeTab)
+    if (activeTab === 'content') {
+      params.set('section', activeContentSection)
+    } else {
+      params.delete('section')
+    }
+    const newUrl = `${window.location.pathname}?${params.toString()}`
+    window.history.replaceState(null, '', newUrl)
+  }, [activeTab, activeContentSection])
 
   // Zaključaj scroll pozadine dok je mobilni meni otvoren
   useEffect(() => {
