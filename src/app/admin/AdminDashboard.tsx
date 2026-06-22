@@ -53,6 +53,7 @@ function getActiveBookingCount(stats: Pick<Stats, 'pendingBookings' | 'confirmed
 export default function AdminDashboard({ stats: initialStats }: AdminDashboardProps) {
   const [activeTab, setActiveTab] = useState('dashboard')
   const [activeContentSection, setActiveContentSection] = useState('home')
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [refreshing, setRefreshing] = useState(false)
   const [statsKey, setStatsKey] = useState(0) // Key to force StatsCards refresh
   const [messageCount, setMessageCount] = useState<number | null>(null)
@@ -96,6 +97,17 @@ export default function AdminDashboard({ stats: initialStats }: AdminDashboardPr
     fetchMessageCount()
     fetchBookingCount()
   }, [fetchMessageCount, fetchBookingCount])
+
+  // Zaključaj scroll pozadine dok je mobilni meni otvoren
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      const previousOverflow = document.body.style.overflow
+      document.body.style.overflow = 'hidden'
+      return () => {
+        document.body.style.overflow = previousOverflow
+      }
+    }
+  }, [mobileMenuOpen])
 
   const bookingBadge = bookingCount !== null && (
     <span className="ml-auto min-w-5 rounded-full bg-primary px-1.5 py-0.5 text-center text-[10px] font-bold text-primary-foreground">
@@ -218,26 +230,30 @@ export default function AdminDashboard({ stats: initialStats }: AdminDashboardPr
               variant="ghost"
               size="sm"
               className="md:hidden h-9 w-9 p-0"
-              onClick={() => {
-                const menu = document.getElementById('mobile-menu')
-                if (menu) {
-                  menu.classList.toggle('hidden')
-                }
-              }}
+              aria-expanded={mobileMenuOpen}
+              aria-label={mobileMenuOpen ? 'Zatvori meni' : 'Otvori meni'}
+              onClick={() => setMobileMenuOpen(prev => !prev)}
             >
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                {mobileMenuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                )}
               </svg>
             </Button>
           </div>
 
           {/* Mobile Dropdown Menu */}
-          <div id="mobile-menu" className="hidden md:hidden pb-4 pt-2 border-t mt-2">
+          <div
+            id="mobile-menu"
+            className={`md:hidden pb-4 pt-2 border-t mt-2 ${mobileMenuOpen ? '' : 'hidden'}`}
+          >
             <nav className="flex flex-col gap-2">
               <button
                 onClick={() => {
                   setActiveTab('dashboard')
-                  document.getElementById('mobile-menu')?.classList.add('hidden')
+                  setMobileMenuOpen(false)
                 }}
                 className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                   activeTab === 'dashboard' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted'
@@ -249,7 +265,7 @@ export default function AdminDashboard({ stats: initialStats }: AdminDashboardPr
               <button
                 onClick={() => {
                   openBookingsTab()
-                  document.getElementById('mobile-menu')?.classList.add('hidden')
+                  setMobileMenuOpen(false)
                 }}
                 className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                   activeTab === 'bookings' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted'
@@ -262,7 +278,7 @@ export default function AdminDashboard({ stats: initialStats }: AdminDashboardPr
               <button
                 onClick={() => {
                   setActiveTab('apartments')
-                  document.getElementById('mobile-menu')?.classList.add('hidden')
+                  setMobileMenuOpen(false)
                 }}
                 className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                   activeTab === 'apartments' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted'
@@ -274,7 +290,7 @@ export default function AdminDashboard({ stats: initialStats }: AdminDashboardPr
               <button
                 onClick={() => {
                   setActiveTab('availability')
-                  document.getElementById('mobile-menu')?.classList.add('hidden')
+                  setMobileMenuOpen(false)
                 }}
                 className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                   activeTab === 'availability' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted'
@@ -300,7 +316,7 @@ export default function AdminDashboard({ stats: initialStats }: AdminDashboardPr
                         key={section.id}
                         onClick={() => {
                           openContentSection(section.id)
-                          document.getElementById('mobile-menu')?.classList.add('hidden')
+                          setMobileMenuOpen(false)
                         }}
                         className={`w-full rounded-md px-3 py-1.5 text-left text-xs font-medium transition-colors ${
                           activeContentSection === section.id
@@ -317,7 +333,7 @@ export default function AdminDashboard({ stats: initialStats }: AdminDashboardPr
               <button
                 onClick={() => {
                   setActiveTab('messages')
-                  document.getElementById('mobile-menu')?.classList.add('hidden')
+                  setMobileMenuOpen(false)
                 }}
                 className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                   activeTab === 'messages' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted'
@@ -330,7 +346,7 @@ export default function AdminDashboard({ stats: initialStats }: AdminDashboardPr
               <button
                 onClick={() => {
                   setActiveTab('analytics')
-                  document.getElementById('mobile-menu')?.classList.add('hidden')
+                  setMobileMenuOpen(false)
                 }}
                 className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                   activeTab === 'analytics' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted'
@@ -342,7 +358,7 @@ export default function AdminDashboard({ stats: initialStats }: AdminDashboardPr
               <button
                 onClick={() => {
                   setActiveTab('gallery')
-                  document.getElementById('mobile-menu')?.classList.add('hidden')
+                  setMobileMenuOpen(false)
                 }}
                 className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                   activeTab === 'gallery' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted'
@@ -354,7 +370,7 @@ export default function AdminDashboard({ stats: initialStats }: AdminDashboardPr
               <button
                 onClick={() => {
                   setActiveTab('attractions')
-                  document.getElementById('mobile-menu')?.classList.add('hidden')
+                  setMobileMenuOpen(false)
                 }}
                 className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                   activeTab === 'attractions' ? 'bg-primary text-primary-foreground' : 'hover:bg-muted'
@@ -370,7 +386,7 @@ export default function AdminDashboard({ stats: initialStats }: AdminDashboardPr
                   size="sm" 
                   onClick={() => {
                     refreshStats()
-                    document.getElementById('mobile-menu')?.classList.add('hidden')
+                    setMobileMenuOpen(false)
                   }}
                   disabled={refreshing}
                   className="w-full justify-start"
