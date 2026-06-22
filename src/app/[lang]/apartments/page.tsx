@@ -3,7 +3,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { getTranslations } from 'next-intl/server'
 import { supabase } from '../lib/supabase/client'
-import { Badge } from '../components/ui/badge'
 import { AvailabilityBadge } from './AvailabilityBadge'
 import { getLocalizedValue } from '@/lib/localization/helpers'
 import type { Locale, ApartmentRecord, MultiLanguageText, Json } from '@/lib/types/database'
@@ -13,9 +12,19 @@ import { generateHreflangTags } from '@/lib/seo/hreflang'
 import { generateBreadcrumbSchema } from '@/lib/seo/structured-data'
 import { getKeywordsString } from '@/lib/seo/keywords'
 import { getPublishedSectionContent, getContentText } from '@/lib/content/public-content'
+import { AMENITY_OPTIONS } from '@/lib/apartment-options'
+import { pluralizeGuests, pluralizeBeds, pluralizeBathrooms } from '@/lib/utils'
 
 interface PageProps {
   params: Promise<{ lang: string }>
+}
+
+function getTotalBeds(bedCounts: ApartmentRecord['bed_counts']): number {
+  if (!bedCounts || typeof bedCounts !== 'object' || Array.isArray(bedCounts)) return 0
+
+  return Object.values(bedCounts as Record<string, unknown>).reduce<number>((total, value) => {
+    return total + (typeof value === 'number' ? value : 0)
+  }, 0)
 }
 
 // ISR — lista apartmana se prerenderuje i kešira na CDN-u (revalidate 1h).
@@ -178,43 +187,64 @@ export default async function ApartmentsPage({ params: paramsInput }: PageProps)
                     {apartment.description || t('description')}
                   </p>
 
-                  {/* Quick stats */}
-                  <div className="flex items-center gap-4 text-xs font-bold text-zinc-600 mb-4 bg-zinc-50 p-2.5 rounded-xl">
+                  {/* Detailed stats */}
+                  <div className="grid grid-cols-2 gap-x-4 gap-y-2 mb-4 rounded-xl bg-zinc-50/90 p-2.5 text-xs text-zinc-700">
                     <div className="flex items-center gap-1.5">
-                      <svg className="w-4 h-4 text-primary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                      </svg>
-                      <span>{apartment.capacity} {t('guests')}</span>
+                      <span className="text-zinc-500">👥</span>
+                      <span className="font-semibold">{pluralizeGuests(apartment.capacity)}</span>
                     </div>
-                    <div className="flex items-center gap-1.5 border-l pl-4 border-zinc-200">
-                      <svg className="w-4 h-4 text-primary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                      </svg>
-                      <span>{Math.ceil(apartment.capacity / 2) || 1} {t('bedroomsShort')}</span>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-zinc-500">📐</span>
+                      <span className="font-semibold">{apartment.size_sqm ? apartment.size_sqm + 'm²' : 'N/A'}</span>
                     </div>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-zinc-500">🛏️</span>
+                      <span className="font-semibold">{getTotalBeds(apartment.bed_counts) > 0 ? pluralizeBeds(getTotalBeds(apartment.bed_counts)) : apartment.bed_type}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-zinc-500">🚿</span>
+                      <span className="font-semibold">{pluralizeBathrooms(apartment.bathroom_count || 1)}</span>
+                    </div>
+                    {apartment.floor !== null && apartment.floor !== undefined && (
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-zinc-500">🏢</span>
+                        <span className="font-semibold">Sprat {apartment.floor}</span>
+                      </div>
+                    )}
+                    {apartment.balcony && (
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-zinc-500">🌿</span>
+                        <span className="font-semibold">Balkon</span>
+                      </div>
+                    )}
                   </div>
 
                   {/* Amenity badges */}
-                  <div className="mb-5">
-                    <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/70 mb-1.5">{t('amenities')}</p>
-                    <div className="flex flex-wrap gap-1.5">
-                      {[
-                        { id: 'WiFi', key: 'amenitiesWiFi' },
-                        { id: 'AC', key: 'amenitiesAC' },
-                        { id: 'Kitchen', key: 'amenitiesKitchen' },
-                        { id: 'TV', key: 'amenitiesTV' }
-                      ].map((amenity) => (
-                        <Badge key={amenity.id} variant="secondary" className="px-2 py-0.5 rounded-lg text-[10px] font-bold">
-                          {t(amenity.key)}
-                        </Badge>
-                      ))}
+                  {apartment.selected_amenities && apartment.selected_amenities.length > 0 && (
+                    <div className="mb-5">
+                      <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/70 mb-1.5">{t('amenities')}</p>
+                      <div className="flex flex-wrap gap-1.5">
+                        {apartment.selected_amenities.slice(0, 4).map((amenityId) => {
+                          const amenity = AMENITY_OPTIONS.find((item) => item.id === amenityId)
+                          return amenity ? (
+                            <span key={amenityId} className="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded font-semibold">
+                              {amenity.label.sr}
+                            </span>
+                          ) : null
+                        })}
+                        {apartment.selected_amenities.length > 4 && (
+                          <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded font-semibold">
+                            +{apartment.selected_amenities.length - 4}
+                          </span>
+                        )}
+                      </div>
                     </div>
-                  </div>
+                  )}
 
                   {/* CTAs */}
                   <div className="flex gap-2 mt-auto">
                     <Link href={`/${params.lang}/apartments/${apartment.slug}`} className="flex-1">
-                      <button className="cta-pill secondary w-full text-sm py-2.5">
+                      <button className="w-full rounded-full bg-zinc-700 px-4 py-2.5 text-sm font-bold text-white shadow-sm transition-colors hover:bg-zinc-800">
                         {t('viewDetails') || 'Detalji'}
                       </button>
                     </Link>
