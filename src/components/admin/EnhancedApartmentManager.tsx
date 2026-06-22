@@ -21,7 +21,8 @@ import {
   BED_OPTIONS, 
   AMENITY_OPTIONS, 
   RULE_OPTIONS, 
-  VIEW_OPTIONS
+  VIEW_OPTIONS,
+  getAmenityIconLabel
 } from '../../lib/apartment-options'
 import { pluralizeGuests, pluralizeBeds, pluralizeBathrooms } from '../../lib/utils'
 
@@ -276,7 +277,7 @@ export default function EnhancedApartmentManager() {
                   </div>
 
                   {/* BEDS WITH COUNTER */}
-                  <details className="border rounded-lg bg-blue-50" open>
+                  <details className="border rounded-lg bg-blue-50">
                     <summary className="cursor-pointer select-none p-3 sm:p-4 text-xs sm:text-sm font-bold text-blue-900">🛏️ Kreveti</summary>
                     <div className="px-3 sm:px-4 pb-3 sm:pb-4">
                     <div className="grid grid-cols-1 gap-2">
@@ -313,7 +314,7 @@ export default function EnhancedApartmentManager() {
                   </details>
 
                   {/* AMENITIES CHECKBOX */}
-                  <details className="border rounded-lg bg-green-50" open>
+                  <details className="border rounded-lg bg-green-50">
                     <summary className="cursor-pointer select-none p-3 sm:p-4 text-xs sm:text-sm font-bold text-green-900">✨ Sadržaj</summary>
                     <div className="px-3 sm:px-4 pb-3 sm:pb-4">
                     <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-2">
@@ -336,7 +337,7 @@ export default function EnhancedApartmentManager() {
                   </details>
 
                   {/* RULES CHECKBOX */}
-                  <details className="border rounded-lg bg-orange-50" open>
+                  <details className="border rounded-lg bg-orange-50">
                     <summary className="cursor-pointer select-none p-3 sm:p-4 text-xs sm:text-sm font-bold text-orange-900">📋 Pravila</summary>
                     <div className="px-3 sm:px-4 pb-3 sm:pb-4">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
@@ -359,7 +360,7 @@ export default function EnhancedApartmentManager() {
                   </details>
 
                   {/* VIEW TYPE RADIO */}
-                  <details className="border rounded-lg bg-purple-50" open>
+                  <details className="border rounded-lg bg-purple-50">
                     <summary className="cursor-pointer select-none p-3 sm:p-4 text-xs sm:text-sm font-bold text-purple-900">👁️ Pogled</summary>
                     <div className="px-3 sm:px-4 pb-3 sm:pb-4">
                     <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-2">
@@ -1094,8 +1095,9 @@ export default function EnhancedApartmentManager() {
                                   {apt.selected_amenities.filter((amenityId) => amenityId !== "balcony" || apt.balcony === true).slice(0, 4).map((amenityId) => {
                                     const amenity = AMENITY_OPTIONS.find(a => a.id === amenityId)
                                     return amenity ? (
-                                      <span key={amenityId} className="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded">
-                                        {amenity.label.sr}
+                                      <span key={amenityId} className="inline-flex items-center gap-1 text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded">
+                                        <span aria-hidden="true">{getAmenityIconLabel(amenityId)}</span>
+                                        <span>{amenity.label.sr}</span>
                                       </span>
                                     ) : null
                                   })}

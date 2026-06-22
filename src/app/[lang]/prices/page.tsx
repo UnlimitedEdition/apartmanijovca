@@ -12,7 +12,7 @@ import { convertTwitterToMetadata } from '@/lib/seo/metadata-adapter'
 import { generateBreadcrumbSchema } from '@/lib/seo/structured-data'
 import { getKeywordsString } from '@/lib/seo/keywords'
 import { getPublishedSectionContent, getContentText } from '@/lib/content/public-content'
-import { AMENITY_OPTIONS } from '@/lib/apartment-options'
+import { AMENITY_OPTIONS, getAmenityIconLabel } from '@/lib/apartment-options'
 import { pluralizeGuests, pluralizeBeds, pluralizeBathrooms } from '@/lib/utils'
 
 interface PageProps {
@@ -252,8 +252,9 @@ export default async function PricesPage({ params: paramsInput }: PageProps) {
                           {visibleAmenityIds.slice(0, 4).map((amenityId) => {
                             const amenity = AMENITY_OPTIONS.find((item) => item.id === amenityId)
                             return amenity ? (
-                              <span key={amenityId} className="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded font-semibold">
-                                {amenity.label.sr}
+                              <span key={amenityId} className="inline-flex items-center gap-1 text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded font-semibold">
+                                <span aria-hidden="true">{getAmenityIconLabel(amenityId)}</span>
+                                <span>{amenity.label.sr}</span>
                               </span>
                             ) : null
                           })}

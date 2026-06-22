@@ -561,6 +561,39 @@ export function getSelectedOptions(
 }
 
 // Helper function to get labels in specific language
+export const AMENITY_ICON_LABELS: Record<string, string> = {
+  wifi: '📶',
+  tv: '📺',
+  smart_tv: '📺',
+  ac: '❄️',
+  heating: '🔥',
+  kitchen: '🍳',
+  kitchenette: '🍽️',
+  fridge: '🧊',
+  microwave: '♨️',
+  coffee_maker: '☕',
+  dishwasher: '🧼',
+  washing_machine: '🧺',
+  hair_dryer: '💨',
+  towels: '🧺',
+  balcony: '🌿',
+  terrace: '🌤️',
+  garden: '🌳',
+  parking: '🅿️',
+  garage: '🚗',
+  elevator: '🛗',
+  safe: '🔒',
+  smoke_detector: '🚨',
+  first_aid: '➕',
+  iron: '👕',
+  bed_linen: '🛏️',
+  hangers: '🧥'
+}
+
+export function getAmenityIconLabel(amenityId: string): string {
+  return AMENITY_ICON_LABELS[amenityId] || '✓'
+}
+
 export function getOptionLabels(
   options: ApartmentOption[],
   lang: 'sr' | 'en' | 'de' | 'it'
