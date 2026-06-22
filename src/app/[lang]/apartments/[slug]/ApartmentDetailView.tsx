@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
@@ -95,6 +95,18 @@ export default function ApartmentDetailView({ apartment, locale }: Props) {
   const t = useTranslations('apartments.detail')
   const [selectedImage, setSelectedImage] = useState(0)
   const [showGallery, setShowGallery] = useState(false)
+
+  // Lightbox: zatvaranje na Escape + navigacija strelicama (tastatura)
+  useEffect(() => {
+    if (!showGallery) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setShowGallery(false)
+      else if (e.key === 'ArrowLeft') setSelectedImage((p) => (p - 1 + apartment.images.length) % apartment.images.length)
+      else if (e.key === 'ArrowRight') setSelectedImage((p) => (p + 1) % apartment.images.length)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [showGallery, apartment.images.length])
 
   const features = [
     { icon: Users, label: locale === 'sr' ? pluralizeGuests(apartment.capacity) : `${apartment.capacity} ${t('guests')}`, value: apartment.capacity },
@@ -510,25 +522,33 @@ export default function ApartmentDetailView({ apartment, locale }: Props) {
 
       {/* Gallery Modal (lightbox) */}
       {showGallery && (
-        <div className="fixed inset-0 z-50 bg-black/95">
+        <div
+          className="fixed inset-0 z-50 bg-black/95"
+          onClick={() => setShowGallery(false)}
+          role="dialog"
+          aria-modal="true"
+        >
           <div className="relative h-full flex items-center justify-center">
             <button
-              onClick={() => setShowGallery(false)}
-              className="absolute top-4 right-4 text-white hover:text-gray-300 z-10 w-12 h-12 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition-colors"
+              onClick={(e) => { e.stopPropagation(); setShowGallery(false) }}
+              className="absolute top-4 right-4 text-white hover:text-gray-300 z-20 w-12 h-12 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition-colors"
               aria-label="Close gallery"
             >
               <X className="h-6 w-6" />
             </button>
 
             <button
-              onClick={prevImage}
-              className="absolute left-4 text-white hover:text-gray-300 z-10 w-12 h-12 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition-colors"
+              onClick={(e) => { e.stopPropagation(); prevImage() }}
+              className="absolute left-4 text-white hover:text-gray-300 z-20 w-12 h-12 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition-colors"
               aria-label="Previous image"
             >
               <ChevronLeft className="h-8 w-8" />
             </button>
 
-            <div className="relative w-full h-full max-w-6xl max-h-[90vh] mx-16">
+            <div
+              className="relative w-full h-full max-w-6xl max-h-[90vh] mx-16"
+              onClick={(e) => e.stopPropagation()}
+            >
               <Image
                 src={apartment.images[selectedImage]}
                 alt={`${apartment.name} - ${t('imageAlt')} ${selectedImage + 1}`}
@@ -539,8 +559,8 @@ export default function ApartmentDetailView({ apartment, locale }: Props) {
             </div>
 
             <button
-              onClick={nextImage}
-              className="absolute right-4 text-white hover:text-gray-300 z-10 w-12 h-12 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition-colors"
+              onClick={(e) => { e.stopPropagation(); nextImage() }}
+              className="absolute right-4 text-white hover:text-gray-300 z-20 w-12 h-12 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition-colors"
               aria-label="Next image"
             >
               <ChevronRight className="h-8 w-8" />

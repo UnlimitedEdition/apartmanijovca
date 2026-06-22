@@ -14,6 +14,7 @@ import { getKeywordsString } from '@/lib/seo/keywords'
 import { getPublishedSectionContent, getContentText } from '@/lib/content/public-content'
 import { AMENITY_OPTIONS, getAmenityIconLabel } from '@/lib/apartment-options'
 import { pluralizeGuests, pluralizeBeds, pluralizeBathrooms } from '@/lib/utils'
+import { AvailabilityBadge } from '../apartments/AvailabilityBadge'
 
 interface PageProps {
   params: Promise<{ lang: string }>
@@ -184,6 +185,11 @@ export default async function PricesPage({ params: paramsInput }: PageProps) {
               >
                 <div className="flex flex-col md:flex-row">
                   <Link href={'/' + params.lang + '/apartments/' + apt.slug} className="relative md:w-40 lg:w-48 aspect-[16/10] md:aspect-auto md:min-h-56 flex-shrink-0 bg-gray-100 overflow-hidden">
+                    <AvailabilityBadge
+                      apartmentId={apt.id}
+                      availableLabel={aptT('available')}
+                      bookedLabel={aptT('booked')}
+                    />
                     {firstImage ? (
                       <img
                         src={firstImage}
@@ -205,9 +211,6 @@ export default async function PricesPage({ params: paramsInput }: PageProps) {
                             {apt.name}
                           </h2>
                         </Link>
-                      </div>
-                      <div className="px-2 py-1 rounded bg-green-100 text-green-800 text-xs font-bold flex-shrink-0">
-                        Aktivno
                       </div>
                     </div>
 
