@@ -169,7 +169,7 @@ export function Header({ className }: HeaderProps) {
           <select
             value={currentLang}
             onChange={(e) => handleLanguageChange(e.target.value)}
-            className="rounded-md bg-transparent text-white font-bold focus:outline-none focus:ring-2 focus:ring-white/50 [&>option]:text-foreground [&>option]:bg-background"
+            className="hidden md:block rounded-md bg-transparent text-white font-bold focus:outline-none focus:ring-2 focus:ring-white/50 [&>option]:text-foreground [&>option]:bg-background"
             style={{
               border: '1px solid rgba(255,255,255,0.3)',
               padding: '0.25rem 0.5rem',
@@ -325,6 +325,24 @@ export function Header({ className }: HeaderProps) {
                 >
                   {t('book')}
                 </Link>
+              </li>
+              {/* Language switcher in mobile menu (inline select is hidden on mobile) */}
+              <li className="flex items-center justify-center gap-2 p-4" style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                {languages.map((lang) => (
+                  <button
+                    key={lang.code}
+                    onClick={() => handleLanguageChange(lang.code)}
+                    className={cn(
+                      'rounded-full px-4 py-2 text-sm font-bold transition-colors',
+                      currentLang === lang.code
+                        ? 'bg-primary text-white'
+                        : 'bg-white/10 text-white hover:bg-white/20'
+                    )}
+                    aria-current={currentLang === lang.code ? 'true' : undefined}
+                  >
+                    {lang.code.toUpperCase()}
+                  </button>
+                ))}
               </li>
             </ul>
           </nav>
