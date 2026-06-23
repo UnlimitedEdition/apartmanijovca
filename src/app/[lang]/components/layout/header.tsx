@@ -102,15 +102,15 @@ export function Header({ className }: HeaderProps) {
         style={{ maxWidth: '1200px', padding: '1rem 0' }}
       >
         {/* Logo */}
-        <Link href={`/${currentLang}`} className="flex items-center flex-shrink-0">
+        <Link href={'/' + currentLang} className="flex items-center flex-shrink-0 rounded-xl bg-white/15 px-2.5 py-1.5 backdrop-blur-md ring-1 ring-white/20">
           <Image
             src="/images/logo2.png"
             alt="Apartmani Jovča Logo"
             width={1280}
             height={724}
             priority
-            sizes="72px"
-            className="h-10 w-auto"
+            sizes="88px"
+            className="h-12 w-auto"
             style={{ filter: 'drop-shadow(1px 1px 2px rgba(0,0,0,0.5))' }}
           />
         </Link>
