@@ -334,8 +334,8 @@ export default async function HomePage({ params: paramsInput }: PageProps) {
       {/* Amenities Section */}
       <section className="py-20 bg-transparent">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row gap-16 items-center">
-            <div className="flex-1">
+          <div className="flex flex-col-reverse md:flex-row gap-10 md:gap-16 items-center">
+            <div className="flex-1 w-full">
               <h2
                 className="font-bold mb-6 text-white text-shadow-strong"
                 style={{ fontSize: 'clamp(1.8rem, 3.5vw, 3rem)' }}
@@ -345,7 +345,7 @@ export default async function HomePage({ params: paramsInput }: PageProps) {
               <p className="text-xl text-white/90 text-shadow-medium mb-10 leading-relaxed">
                 {homeText('features.description')}
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="grid grid-cols-2 gap-4 sm:gap-6">
                 {[
                   { name: homeText('features.wiFi'), icon: '📶' },
                   { name: homeText('features.parking'), icon: '🚗' },
@@ -362,7 +362,7 @@ export default async function HomePage({ params: paramsInput }: PageProps) {
                 ))}
               </div>
             </div>
-            <div className="flex-1 relative">
+            <div className="flex-1 relative w-full">
               {/* Removed skew-y-3 for cleaner old-site feel */}
               <div className="relative aspect-square bg-white/30 rounded-3xl overflow-hidden shadow-2xl backdrop-blur-sm">
                 <Image
