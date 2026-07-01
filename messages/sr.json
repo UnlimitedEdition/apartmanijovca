@@ -147,7 +147,7 @@
     },
     "contact": {
       "title": "Kontaktirajte nas",
-      "available": "Dostupni smo 24/7 za sve vaše potrebe."
+      "available": "Dostupni smo svakodnevno za sva vaša pitanja i potrebe."
     },
     "testimonials": {
       "title": "Šta kažu naši gosti",
@@ -256,7 +256,7 @@
       "phone": "Broj telefona",
       "message": "Vaša poruka",
       "submit": "Pošalji poruku",
-      "subtitle": "Popunite formu ispod i javićemo vam se u roku od 30 minuta.",
+      "subtitle": "Popunite formu ispod i javićemo vam se u roku od 24 sata.",
       "success": "Poruka uspešno poslata! Javićemo vam se uskoro.",
       "error": "Greška pri slanju poruke. Molimo pokušajte ponovo."
     },
@@ -272,7 +272,7 @@
     "host": {
       "title": "Jovča",
       "since": "Domaćin od 2015. godine",
-      "available": "Dostupni smo 24/7 za sve vaše potrebe"
+      "available": "Dostupni smo svakodnevno za sva vaša pitanja i potrebe."
     },
     "languages": {
       "title": "Jezici koje govorimo",
