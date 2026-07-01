@@ -19,6 +19,11 @@
 
 ### ✅ Završeno (najnovije gore)
 
+**2026-07-01 (AI-pristupačnost / Agent Experience audit — 2 fixa)**
+- **Link bez dostupnog teksta:** homepage „Featured" sekcija — „Pogledaj sve" pill je `hidden md:inline-flex` (skriven na mobilnom), pa je `<Link href=/apartments>` na mobilnom viewportu ostajao bez ijednog dostupnog naziva → axe `link-name` fail. Dodat `aria-label={homeText('featured.viewAll')}` (`page.tsx:404`).
+- **llms.txt bez linkova:** `/llms.txt` route imao gole URL-ove → audit „fajl ne sadrži nijednu vezu". Konvertovano u Markdown linkove `[tekst](url)` (9 stranica ×4 jezika + sitemap kao markdown link); H1 (`# Apartmani Jovča`) je već postojao.
+- `npm run build` ✅ (strict TS).
+
 **2026-07-01 (domen — prelazak na `apartmanijovca.rs` + Google verifikacija)**
 - **Custom domen live:** `apartmanijovca.rs` (BEZ crtice) povezan na Vercel (apex + `www` + `apartmani-jovca.vercel.app` → 307 na apex). Bulk zamena `apartmani-jovca.vercel.app` → `apartmanijovca.rs` kroz kod+docs (`seo/config.ts` `PRODUCTION_URL`, `proxy.ts` preview redirect, `vercel.json` CORS origin, `security.txt` canonical, jest fixtures, admin SEO preview). Sitemap/robots/OG/canonical/hreflang/schema.org **automatski prate** — centralizovano kroz `PRODUCTION_URL`/`getBaseUrl()`.
 - **Google Search Console:** `verification.google` u `app/layout.tsx` dobio hardcode fallback token (`U2dH…gcU-U`) uz postojeći `NEXT_PUBLIC_GSC_VERIFICATION` env → meta-tag verifikacija radi na sledeći deploy.

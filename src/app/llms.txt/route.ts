@@ -25,7 +25,7 @@ export async function GET() {
 
   // Each page in all 4 languages (sr · en · de · it)
   const pagesBlock = PAGES.map(
-    (p) => `- ${p.en} / ${p.sr}: ${LOCALES.map((l) => `${b}/${l}${p.path}`).join(' · ')}`
+    (p) => `- [${p.en} / ${p.sr}](${b}/sr${p.path}): ${LOCALES.map((l) => `[${l}](${b}/${l}${p.path})`).join(' · ')}`
   ).join('\n')
 
   const body = `# ${c.siteName}
@@ -54,7 +54,7 @@ ${pagesBlock}
 Bovan Lake (Bovansko jezero) is a reservoir on the Moravica river near the village of Bovan, Aleksinac municipality, ${a.region}, Serbia. Surrounded by forested hills; swimming, fishing and nature tourism. ${c.business.name} offers lakeside apartments with a private beach, Wi-Fi, parking and BBQ.
 
 ## Sitemap
-${b}/sitemap.xml
+- [sitemap.xml](${b}/sitemap.xml)
 `
 
   return new Response(body, {

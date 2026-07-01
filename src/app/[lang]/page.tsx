@@ -401,7 +401,7 @@ export default async function HomePage({ params: paramsInput }: PageProps) {
               </h2>
               <p className="text-xl text-white/85 text-shadow-light">{homeText('featured.subtitle')}</p>
             </div>
-            <Link href={`/${params.lang}/apartments`}>
+            <Link href={`/${params.lang}/apartments`} aria-label={homeText('featured.viewAll')}>
               <span className="hidden md:inline-flex cta-pill secondary">
                 {homeText('featured.viewAll')} <ArrowRight className="w-4 h-4 ml-2" />
               </span>
