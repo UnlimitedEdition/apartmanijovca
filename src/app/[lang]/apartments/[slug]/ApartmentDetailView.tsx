@@ -99,13 +99,18 @@ export default function ApartmentDetailView({ apartment, locale }: Props) {
   // Lightbox: zatvaranje na Escape + navigacija strelicama (tastatura)
   useEffect(() => {
     if (!showGallery) return
+    const prevOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden' // zaključaj scroll pozadine dok je lightbox otvoren
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setShowGallery(false)
       else if (e.key === 'ArrowLeft') setSelectedImage((p) => (p - 1 + apartment.images.length) % apartment.images.length)
       else if (e.key === 'ArrowRight') setSelectedImage((p) => (p + 1) % apartment.images.length)
     }
     window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
+    return () => {
+      window.removeEventListener('keydown', onKey)
+      document.body.style.overflow = prevOverflow
+    }
   }, [showGallery, apartment.images.length])
 
   const features = [
@@ -523,7 +528,7 @@ export default function ApartmentDetailView({ apartment, locale }: Props) {
       {/* Gallery Modal (lightbox) */}
       {showGallery && (
         <div
-          className="fixed inset-0 z-50 bg-black/95"
+          className="fixed inset-0 z-[1100] bg-black/95"
           onClick={() => setShowGallery(false)}
           role="dialog"
           aria-modal="true"
@@ -546,7 +551,7 @@ export default function ApartmentDetailView({ apartment, locale }: Props) {
             </button>
 
             <div
-              className="relative w-full h-full max-w-6xl max-h-[90vh] mx-16"
+              className="relative w-[90vw] h-[82vh] max-w-6xl"
               onClick={(e) => e.stopPropagation()}
             >
               <Image

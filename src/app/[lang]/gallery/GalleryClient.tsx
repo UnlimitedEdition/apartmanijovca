@@ -261,7 +261,7 @@ export default function GalleryClient({
       {/* Lightbox with keyboard nav */}
       {lightboxIndex !== null && filteredItems[lightboxIndex] && (
         <div
-          className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center"
+          className="fixed inset-0 z-[1100] bg-black/95 flex items-center justify-center"
           onClick={closeLightbox}
           style={{ animation: 'fadeIn 0.3s ease' }}
         >

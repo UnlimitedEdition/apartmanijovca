@@ -19,6 +19,12 @@
 
 ### ✅ Završeno (najnovije gore)
 
+**2026-07-01 (fix — lightbox: z-index, veličina slike, scroll-lock)**
+- **X/hamburger kolizija + gašenje samo u donjem delu:** oba lightbox overlay-a bila ISPOD headera (`z-[1000]`) — `ApartmentDetailView` `z-50`, `GalleryClient` `z-[100]` → header se probijao iznad, hvatao klikove u gornjem delu i sudarao hamburger sa X. Oba dignuta na **`z-[1100]`**.
+- **Slika sitna/„1:1" (ApartmentDetailView):** lightbox container imao `mx-16` (64px margine ×2 → mobilni pojede ~128px) + nepouzdan `w-full h-full` za `fill`. Sad **`w-[90vw] h-[82vh] max-w-6xl`** (definitna veličina, `object-contain`).
+- **Scroll pozadine:** dodat `body.overflow='hidden'` u postojeći keyboard `useEffect` (restore na cleanup) dok je lightbox otvoren.
+- `npm run build` ✅. `unoptimized` na galerija slici NIJE diran (namerno).
+
 **2026-07-01 (AI-pristupačnost / Agent Experience audit — 2 fixa)**
 - **Link bez dostupnog teksta:** homepage „Featured" sekcija — „Pogledaj sve" pill je `hidden md:inline-flex` (skriven na mobilnom), pa je `<Link href=/apartments>` na mobilnom viewportu ostajao bez ijednog dostupnog naziva → axe `link-name` fail. Dodat `aria-label={homeText('featured.viewAll')}` (`page.tsx:404`).
 - **llms.txt bez linkova:** `/llms.txt` route imao gole URL-ove → audit „fajl ne sadrži nijednu vezu". Konvertovano u Markdown linkove `[tekst](url)` (9 stranica ×4 jezika + sitemap kao markdown link); H1 (`# Apartmani Jovča`) je već postojao.
