@@ -72,7 +72,7 @@ supabase db push
 1. Go to https://resend.com/webhooks
 2. Click "Create Webhook"
 3. Configure:
-   - **Endpoint**: `https://apartmani-jovca.vercel.app/api/webhooks/resend`
+   - **Endpoint**: `https://apartmanijovca.rs/api/webhooks/resend`
    - **Events**: Select all (sent, delivered, opened, bounced, complained, clicked, delivery_delayed)
    - **Status**: Enabled
 4. **IMPORTANT**: Copy the "Signing Secret" (starts with `whsec_...`)
@@ -164,7 +164,7 @@ ORDER BY created_at DESC;
 
 - **Resend Webhooks**: https://resend.com/docs/webhooks
 - **Setup Guide**: See `RESEND_WEBHOOK_SETUP.md`
-- **Webhook Endpoint**: `https://apartmani-jovca.vercel.app/api/webhooks/resend`
+- **Webhook Endpoint**: `https://apartmanijovca.rs/api/webhooks/resend`
 
 ---
 

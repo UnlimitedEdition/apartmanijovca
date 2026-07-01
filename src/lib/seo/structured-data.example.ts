@@ -102,7 +102,7 @@ const apartmentPageSchema = {
   '@type': 'LodgingBusiness',
   name: 'Studio Apartment 1',
   description: 'Cozy studio apartment near Bovan Lake',
-  image: ['https://apartmani-jovca.rs/images/studio-1.jpg'],
+  image: ['https://apartmanijovca.rs/images/studio-1.jpg'],
   address: {
     '@type': 'PostalAddress',
     streetAddress: 'Jovča bb',
@@ -127,19 +127,19 @@ const breadcrumbSchema = {
       '@type': 'ListItem',
       position: 1,
       name: 'Home',
-      item: 'https://apartmani-jovca.rs',
+      item: 'https://apartmanijovca.rs',
     },
     {
       '@type': 'ListItem',
       position: 2,
       name: 'Apartments',
-      item: 'https://apartmani-jovca.rs/apartments',
+      item: 'https://apartmanijovca.rs/apartments',
     },
     {
       '@type': 'ListItem',
       position: 3,
       name: 'Studio 1',
-      item: 'https://apartmani-jovca.rs/apartments/studio-1',
+      item: 'https://apartmanijovca.rs/apartments/studio-1',
     },
   ],
 }
@@ -191,13 +191,13 @@ const mergedSchema = mergeSchemas([
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: 'Apartmani Jovča',
-    url: 'https://apartmani-jovca.rs',
+    url: 'https://apartmanijovca.rs',
   },
   {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     name: 'Apartmani Jovča Website',
-    url: 'https://apartmani-jovca.rs',
+    url: 'https://apartmanijovca.rs',
   },
 ])
 

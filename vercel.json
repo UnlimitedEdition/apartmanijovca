@@ -47,7 +47,7 @@
       "headers": [
         {
           "key": "Access-Control-Allow-Origin",
-          "value": "https://apartmani-jovca.vercel.app"
+          "value": "https://apartmanijovca.rs"
         },
         {
           "key": "Access-Control-Allow-Methods",

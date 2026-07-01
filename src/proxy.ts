@@ -17,7 +17,7 @@ export async function proxy(request: NextRequest) {
   // Redirect preview URLs to production URL
   if (host.includes('milans-projects') || host.includes('-git-')) {
     const productionUrl = new URL(request.url)
-    productionUrl.host = 'apartmani-jovca.vercel.app'
+    productionUrl.host = 'apartmanijovca.rs'
     return NextResponse.redirect(productionUrl, 308) // Permanent redirect
   }
 

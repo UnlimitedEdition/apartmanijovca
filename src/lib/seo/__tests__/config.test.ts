@@ -13,7 +13,7 @@ describe('SEO Config Module', () => {
 
     it('should validate URLs with https protocol', () => {
       expect(validateBaseUrl('https://example.com')).toBe(true)
-      expect(validateBaseUrl('https://apartmani-jovca.vercel.app')).toBe(true)
+      expect(validateBaseUrl('https://apartmanijovca.rs')).toBe(true)
     })
 
     it('should reject URLs without protocol', () => {
@@ -46,13 +46,13 @@ describe('SEO Config Module', () => {
     })
 
     it('should use NEXT_PUBLIC_BASE_URL when set', () => {
-      process.env.NEXT_PUBLIC_BASE_URL = 'https://apartmani-jovca.rs'
-      expect(getBaseUrl()).toBe('https://apartmani-jovca.rs')
+      process.env.NEXT_PUBLIC_BASE_URL = 'https://apartmanijovca.rs'
+      expect(getBaseUrl()).toBe('https://apartmanijovca.rs')
     })
 
     it('should remove trailing slash from NEXT_PUBLIC_BASE_URL', () => {
-      process.env.NEXT_PUBLIC_BASE_URL = 'https://apartmani-jovca.rs/'
-      expect(getBaseUrl()).toBe('https://apartmani-jovca.rs')
+      process.env.NEXT_PUBLIC_BASE_URL = 'https://apartmanijovca.rs/'
+      expect(getBaseUrl()).toBe('https://apartmanijovca.rs')
     })
 
     it('should use NEXT_PUBLIC_VERCEL_URL when NEXT_PUBLIC_BASE_URL is not set', () => {

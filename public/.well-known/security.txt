@@ -1,4 +1,4 @@
 Contact: mailto:apartmanijovca@gmail.com
 Preferred-Languages: sr, en
 Expires: 2027-12-31T23:59:00Z
-Canonical: https://apartmani-jovca.vercel.app/.well-known/security.txt
+Canonical: https://apartmanijovca.rs/.well-known/security.txt

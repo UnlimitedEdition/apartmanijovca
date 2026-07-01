@@ -71,7 +71,7 @@ Ako preferiraš SQL, možeš pokrenuti migraciju direktno:
 ## Provera da li je uspelo:
 
 Posle ažuriranja, proveri:
-1. Otvori sajt: https://apartmani-jovca.vercel.app/sr/contact
+1. Otvori sajt: https://apartmanijovca.rs/sr/contact
 2. Proveri da li se prikazuje: apartmanijovca@gmail.com i +381 65 237 8080
 3. Proveri footer - trebalo bi da ima iste podatke
 

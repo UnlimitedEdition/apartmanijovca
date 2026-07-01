@@ -180,7 +180,7 @@ SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
 - [ ] Povezati GitHub repository
 - [ ] Konfigurisati environment variables
-- [ ] Postaviti custom domain (apartmani-jovca.vercel.app)
+- [ ] Postaviti custom domain (apartmanijovca.rs)
 - [ ] Testirati deployment
 
 #### 1.3 Resend Email Setup
@@ -397,7 +397,7 @@ RESEND_API_KEY=re_xxxxx
 | Supabase Service Role Key | Server-side admin | ⚠️ Potreban |
 | Resend API Key | Email sending | ⚠️ Potreban |
 | Vercel Account | Hosting | ⚠️ Potreban |
-| Domain (apartmani-jovca.vercel.app) | Production URL | ⚠️ Potreban |
+| Domain (apartmanijovca.rs) | Production URL | ⚠️ Potreban |
 | WhatsApp Business | Customer communication | ✅ Postoji |
 
 ### 4.2 Environment Variables
@@ -423,7 +423,7 @@ ADMIN_PASSWORD_HASH=xxxxx
 
 **Vercel Environment Variables:**
 - Sve gore navedene promenljive
-- `NEXT_PUBLIC_APP_URL=https://apartmani-jovca.vercel.app`
+- `NEXT_PUBLIC_APP_URL=https://apartmanijovca.rs`
 
 ### 4.3 External Services Setup
 
@@ -457,7 +457,7 @@ ADMIN_PASSWORD_HASH=xxxxx
    - Verify ownership
 
 2. **Sender Address:**
-   - `bookings@apartmani-jovca.vercel.app`
+   - `bookings@apartmanijovca.rs`
 
 #### Vercel Konfiguracija
 

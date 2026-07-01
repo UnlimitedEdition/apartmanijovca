@@ -50,7 +50,7 @@ email_events (
 
 Your webhook endpoint is:
 ```
-https://apartmani-jovca.vercel.app/api/webhooks/resend
+https://apartmanijovca.rs/api/webhooks/resend
 ```
 
 ### Step 3: Create Webhook in Resend
@@ -58,7 +58,7 @@ https://apartmani-jovca.vercel.app/api/webhooks/resend
 1. Go to [Resend Dashboard](https://resend.com/webhooks)
 2. Click "Create Webhook"
 3. Enter webhook details:
-   - **Endpoint URL**: `https://apartmani-jovca.vercel.app/api/webhooks/resend`
+   - **Endpoint URL**: `https://apartmanijovca.rs/api/webhooks/resend`
    - **Events to track** (select all that apply):
      - ✅ `email.sent` - Email was accepted by Resend
      - ✅ `email.delivered` - Email was delivered to recipient
@@ -98,7 +98,7 @@ RESEND_WEBHOOK_SECRET=whsec_your_signing_secret_here
 ### Test 1: Health Check
 
 ```bash
-curl https://apartmani-jovca.vercel.app/api/webhooks/resend
+curl https://apartmanijovca.rs/api/webhooks/resend
 ```
 
 Expected response:
@@ -219,7 +219,7 @@ The `email_events` table has RLS enabled:
    - Check "Recent deliveries" for errors
 
 2. **Verify endpoint URL**
-   - Must be: `https://apartmani-jovca.vercel.app/api/webhooks/resend`
+   - Must be: `https://apartmanijovca.rs/api/webhooks/resend`
    - Must use HTTPS (not HTTP)
 
 3. **Check Vercel logs**
@@ -229,7 +229,7 @@ The `email_events` table has RLS enabled:
 
 4. **Test endpoint manually**
    ```bash
-   curl https://apartmani-jovca.vercel.app/api/webhooks/resend
+   curl https://apartmanijovca.rs/api/webhooks/resend
    ```
 
 ### Signature Verification Failing

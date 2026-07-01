@@ -19,6 +19,13 @@
 
 ### ✅ Završeno (najnovije gore)
 
+**2026-07-01 (domen — prelazak na `apartmanijovca.rs` + Google verifikacija)**
+- **Custom domen live:** `apartmanijovca.rs` (BEZ crtice) povezan na Vercel (apex + `www` + `apartmani-jovca.vercel.app` → 307 na apex). Bulk zamena `apartmani-jovca.vercel.app` → `apartmanijovca.rs` kroz kod+docs (`seo/config.ts` `PRODUCTION_URL`, `proxy.ts` preview redirect, `vercel.json` CORS origin, `security.txt` canonical, jest fixtures, admin SEO preview). Sitemap/robots/OG/canonical/hreflang/schema.org **automatski prate** — centralizovano kroz `PRODUCTION_URL`/`getBaseUrl()`.
+- **Google Search Console:** `verification.google` u `app/layout.tsx` dobio hardcode fallback token (`U2dH…gcU-U`) uz postojeći `NEXT_PUBLIC_GSC_VERIFICATION` env → meta-tag verifikacija radi na sledeći deploy.
+- **Fix:** `whatsapp/service.ts:353` review URL fallback `apartmanijovca.rs` → `.rs` (pogrešan TLD; bulk ga nije uhvatio jer nije bio `.vercel.app` string).
+- ⚠️ **Vercel env `NEXT_PUBLIC_BASE_URL`** ima NAJVIŠI prioritet u `getBaseUrl()` — mora biti `https://apartmanijovca.rs` (ili obrisan) da ne pregazi kod-fallback. **DNS:** Telekom Srbija resolver keširao NXDOMAIN (stari negativan keš) → lokalno se ne vidi dok TTL ne istekne; `8.8.8.8`/`1.1.1.1` ispravno resolvuju (Vercel IP). Google verifikuje sa svojih resolvera (rade).
+- 86 ciljanih testova ✅ (seo config + email service).
+
 **2026-06-21 (fix paket — datumi, dostupnost, otkazivanje, cron, Brevo live)**
 - **Datum off-by-one:** `BookingFlow`/`AvailabilityCalendar` slali datum preko `toISOString()` → u UTC+ zoni (Srbija) datum se pomerao DAN UNAZAD (izabereš 11. → sačuva se 10.). Sad lokalni datum (`getFullYear/Month/Date`).
 - **Checkout-dan overlap (half-open `[)`):** rezervacija do 10tog blokirala novu od 10tog. Klijent: nov `getBookingNights()` (`<` umesto `<=`) u `useAvailability` — checkout dan slobodan u kalendaru. **DB: migracija `20260621120000_fix_checkout_day_overlap.sql`** (`check_availability` + `no_overlapping_bookings` na `'[)'`) — **pokreće se RUČNO u Supabase SQL Editor-u** (Vercel ne pokreće migracije).
@@ -61,7 +68,7 @@
 - Build `● /[lang]/gallery` prerendered + 379 testova ✅. (AI Lighthouse „image delivery" savet je promašio uzrok — problem je bio KAD slike krenu, ne veličina.)
 
 **2026-06-20 (fix — baseUrl konzistentnost, otkriven proverom prod HTML-a)**
-- BUG (AI SEO analize ga PROMAŠILE — našao se tek `curl`-om produkcije): `og:url`, `og:image` i svih 5 `hrefLang` koristili **deployment URL** (`...1fxfb2xhs-milans-projects.vercel.app`, menja se svakim deploy-om), dok je `canonical` na stabilnom `apartmani-jovca.vercel.app` → nekonzistentni signali zbunjuju Google.
+- BUG (AI SEO analize ga PROMAŠILE — našao se tek `curl`-om produkcije): `og:url`, `og:image` i svih 5 `hrefLang` koristili **deployment URL** (`...1fxfb2xhs-milans-projects.vercel.app`, menja se svakim deploy-om), dok je `canonical` na stabilnom `apartmanijovca.rs` → nekonzistentni signali zbunjuju Google.
 - Uzrok/fix: `getBaseUrl()` (`config.ts`) je na produkciji vraćao `VERCEL_URL`; dodato `VERCEL_ENV==='production' → PRODUCTION_URL` pre `VERCEL_URL`. Preview deploy-ovi i dalje koriste deployment host; `.rs` domen kasnije preko `NEXT_PUBLIC_BASE_URL` (najviši prioritet).
 - Napomena: 2 AI (Gemini) SEO „revizije" tvrdile da nema meta/OG/canonical/alt/sitemap — SVE postoji (provereno prod HTML-om). Pravi preostali levci su EKSTERNI: `.rs` domen, Google Business (Mape) link, GSC sitemap submit.
 

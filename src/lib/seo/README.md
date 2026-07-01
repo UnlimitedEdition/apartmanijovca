@@ -24,7 +24,7 @@ Returns the base URL for the application based on environment detection.
 import { getBaseUrl } from '@/lib/seo/config'
 
 const baseUrl = getBaseUrl()
-// Returns: 'https://apartmani-jovca.rs' (production)
+// Returns: 'https://apartmanijovca.rs' (production)
 // or: 'https://preview-branch.vercel.app' (Vercel preview)
 // or: 'http://localhost:3000' (local development)
 ```
@@ -103,7 +103,7 @@ interface SEOConfig {
 
 ### Required
 
-- `NEXT_PUBLIC_BASE_URL` - The base URL for the application (e.g., `https://apartmani-jovca.rs`)
+- `NEXT_PUBLIC_BASE_URL` - The base URL for the application (e.g., `https://apartmanijovca.rs`)
 
 ### Optional (Auto-detected)
 
@@ -119,7 +119,7 @@ NEXT_PUBLIC_BASE_URL=http://localhost:3000
 
 Add to `.env.production`:
 ```env
-NEXT_PUBLIC_BASE_URL=https://apartmani-jovca.rs
+NEXT_PUBLIC_BASE_URL=https://apartmanijovca.rs
 ```
 
 ## Usage Examples

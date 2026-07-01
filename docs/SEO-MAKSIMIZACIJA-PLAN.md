@@ -12,7 +12,7 @@
 
 ## ✅ Potvrđene odluke (vlasnik, 2026-06-18)
 
-1. **Domen:** Ostajemo na `apartmani-jovca.vercel.app` ZA SAD. Kod centralizovati tako da se ceo URL meња **jednim env var-om** `NEXT_PUBLIC_BASE_URL`. Kad dođe pravi domen (`apartmani-jovca.com` / `apartmanijovca.rs`) → jedna izmena env-a + Vercel domain + DNS, bez diranja koda. Ukloniti SVE hardkodovane `vercel.app` reference (robots.txt, vercel.json CORS).
+1. **Domen:** Ostajemo na `apartmanijovca.rs` ZA SAD. Kod centralizovati tako da se ceo URL meња **jednim env var-om** `NEXT_PUBLIC_BASE_URL`. Kad dođe pravi domen (`apartmanijovca.rs` / `apartmanijovca.rs`) → jedna izmena env-a + Vercel domain + DNS, bez diranja koda. Ukloniti SVE hardkodovane `vercel.app` reference (robots.txt, vercel.json CORS).
 2. **NAP — JEDNA ISTINA SVUDA** (ispravljeno vlasnikom 2026-06-18):
    - Naziv: **Apartmani Jovča**
    - Puna adresa: **Bukovička 125, 18230 Bovan, opština Aleksinac, Nišavski okrug, Srbija**

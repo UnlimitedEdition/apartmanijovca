@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   manifest: '/manifest.json',
   robots: 'index, follow',
   verification: {
-    google: process.env.NEXT_PUBLIC_GSC_VERIFICATION,
+    google: process.env.NEXT_PUBLIC_GSC_VERIFICATION || 'U2dHUuIHtydSsidi8IPlFvYcduPcf2Q09aFK94gcU-U',
   },
   other: {
     'scanner-verify': '2973615e8fe6a66e02ab7c3bc492dff9',

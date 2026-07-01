@@ -350,7 +350,7 @@ export async function sendReviewRequest(booking: BookingWhatsAppData, guest: Gue
   const template = getTemplateMessage('review_request', language, {
     guestName: guest.full_name,
     apartmentName: getApartmentName(booking.apartment, language),
-    reviewUrl: reviewUrl || 'https://apartmanijovca.com/reviews',
+    reviewUrl: reviewUrl || 'https://apartmanijovca.rs/reviews',
   })
   return sendTemplateMessage(guest.phone, template, { bookingId: booking.bookingId, messageType: 'review_request' })
 }

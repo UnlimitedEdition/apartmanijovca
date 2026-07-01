@@ -20,7 +20,7 @@ import { getSEOConfig } from './config'
  *   title: "Studio Apartment 1",
  *   description: "Cozy studio apartment near Bovan Lake",
  *   image: "https://res.cloudinary.com/.../apartment.jpg",
- *   url: "https://apartmani-jovca.rs/en/apartments/studio-1",
+ *   url: "https://apartmanijovca.rs/en/apartments/studio-1",
  *   locale: "en",
  *   type: "website"
  * })
@@ -71,7 +71,7 @@ export function generateOpenGraphTags(input: SocialMediaInput): OpenGraphTags {
  *   title: "Studio Apartment 1",
  *   description: "Cozy studio apartment near Bovan Lake",
  *   image: "https://res.cloudinary.com/.../apartment.jpg",
- *   url: "https://apartmani-jovca.rs/en/apartments/studio-1",
+ *   url: "https://apartmanijovca.rs/en/apartments/studio-1",
  *   locale: "en"
  * })
  */

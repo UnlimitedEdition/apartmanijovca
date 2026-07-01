@@ -246,7 +246,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
 SUPABASE_SERVICE_ROLE_KEY=your-service-role-key-here
 
 # Site
-NEXT_PUBLIC_SITE_URL=https://apartmani-jovca.vercel.app
+NEXT_PUBLIC_SITE_URL=https://apartmanijovca.rs
 ```
 
 **Important**: Never commit the service role key to version control!

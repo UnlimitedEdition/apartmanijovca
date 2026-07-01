@@ -223,7 +223,7 @@ console.log('[Booking API] Received body:', {
 **Fajl:** `vercel.json:48-50`
 **Problem:** `Access-Control-Allow-Origin: *` — cross-site pozivi iz browsera.
 
-**Fix:** `"value": "https://apartmani-jovca.vercel.app"`
+**Fix:** `"value": "https://apartmanijovca.rs"`
 
 ---
 

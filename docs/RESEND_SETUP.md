@@ -46,21 +46,21 @@ Resend zahteva **verifikovan domen** za slanje email-ova u produkciji. Bez domen
 ## 📋 Opcija 2: Custom Domen (Za Produkciju)
 
 ### Prednosti:
-- ✅ Profesionalan izgled (`noreply@apartmani-jovca.com`)
+- ✅ Profesionalan izgled (`noreply@apartmanijovca.rs`)
 - ✅ Neograničeno slanje
 - ✅ Bolja deliverability
 
 ### Koraci:
 
 1. **Kupi Domen:**
-   - Preporučeni: `apartmani-jovca.com` ili `apartmanijovca.rs`
+   - Preporučeni: `apartmanijovca.rs` ili `apartmanijovca.rs`
    - Cena: ~$10-15/godišnje
    - Registrari: Namecheap, GoDaddy, Hostinger
 
 2. **Dodaj Domen u Resend:**
    - Idi na [Resend Domains](https://resend.com/domains)
    - Klikni "Add Domain"
-   - Unesi svoj domen (npr. `apartmani-jovca.com`)
+   - Unesi svoj domen (npr. `apartmanijovca.rs`)
 
 3. **Konfiguriši DNS Zapise:**
    Resend će ti dati DNS zapise koje treba da dodaš:
@@ -82,7 +82,7 @@ Resend zahteva **verifikovan domen** za slanje email-ova u produkciji. Bez domen
 
 5. **Ažuriraj Environment Variables:**
    ```bash
-   EMAIL_FROM=noreply@apartmani-jovca.com
+   EMAIL_FROM=noreply@apartmanijovca.rs
    ```
 
 ---
@@ -136,9 +136,9 @@ Svi email-ovi se šalju kroz `src/lib/resend.ts`. Da promeniš servis:
 - Verifikuj `apartmanijovca@gmail.com` u Resend-u
 
 **Za produkciju (pre launch-a):**
-- Kupi domen (`apartmani-jovca.com`)
+- Kupi domen (`apartmanijovca.rs`)
 - Konfiguriši DNS zapise
-- Promeni `EMAIL_FROM` na `noreply@apartmani-jovca.com`
+- Promeni `EMAIL_FROM` na `noreply@apartmanijovca.rs`
 
 ---
 

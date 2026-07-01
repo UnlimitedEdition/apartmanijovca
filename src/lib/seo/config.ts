@@ -8,13 +8,13 @@
 // ============================================
 // CENTRALIZED CONFIGURATION - EDIT HERE ONLY
 // ============================================
-export const PRODUCTION_URL = (process.env.NEXT_PUBLIC_BASE_URL?.replace(/\/$/, '')) || 'https://apartmani-jovca.vercel.app'
+export const PRODUCTION_URL = (process.env.NEXT_PUBLIC_BASE_URL?.replace(/\/$/, '')) || 'https://apartmanijovca.rs'
 export const CONTACT_EMAIL = 'apartmanijovca@gmail.com'
 export const CONTACT_PHONE = '+381 65 237 8080'
 export const WHATSAPP_NUMBER = '+381 65 237 8080'
 
 // Email sender configuration (for Resend)
-// For production with custom domain: use your domain (e.g., 'noreply@apartmani-jovca.com')
+// For production with custom domain: use your domain (e.g., 'noreply@apartmanijovca.rs')
 // For testing without domain: use 'onboarding@resend.dev' (Resend test mode)
 export const EMAIL_FROM = process.env.EMAIL_FROM || 'onboarding@resend.dev'
 export const EMAIL_ADMIN = CONTACT_EMAIL // Admin email is the same as contact email
