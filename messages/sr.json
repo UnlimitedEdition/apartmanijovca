@@ -14,7 +14,7 @@
     "q4": "Da li dozvoljavate kućne ljubimce?",
     "a4": "Nažalost, kućni ljubimci nisu dozvoljeni u apartmanima.",
     "q5": "Da li je plaža blizu?",
-    "a5": "Da, imamo privatnu plažu za naše goste, samo 2–3 minuta hoda od apartmana."
+    "a5": "Da, imamo privatnu plažu za naše goste."
   },
   "header": {
     "home": "Početna",
@@ -170,13 +170,13 @@
       "q4": "Da li dozvoljavate kućne ljubimce?",
       "a4": "Nažalost, kućni ljubimci nisu dozvoljeni u apartmanima.",
       "q5": "Da li je plaža blizu?",
-      "a5": "Da, imamo privatnu plažu za naše goste, samo 2–3 minuta hoda od apartmana.",
+      "a5": "Da, imamo privatnu plažu za naše goste.",
       "q6": "Da li su apartmani klimatizovani?",
       "a6": "Da, svaki apartman je opremljen modernim, tihim klima uređajima za vaš savršen boravak tokom leta.",
       "q7": "Gde je najbliža prodavnica?",
       "a7": "Najbliža prodavnica je u selu Bovan (500m), a veći supermarketi su u Aleksincu (15km).",
       "q8": "Da li obezbeđujete peškire i posteljinu?",
-      "a8": "Da, sveži peškiri i kvalitetna posteljina su obezbeđeni za svakog gosta i menjaju se nedeljno ili po potrebi.",
+      "a8": "Da, sveži peškiri i kvalitetna posteljina su obezbeđeni za svakog gosta.",
       "q9": "Kakva je politika otkazivanja?",
       "a9": "Nudimo besplatno otkazivanje do 7 dana pre dolaska. Za kasno otkazivanje, depozit za prvu noć je nepovratan.",
       "q10": "Mogu li platiti karticom?",
