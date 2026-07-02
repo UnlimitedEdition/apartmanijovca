@@ -19,6 +19,14 @@
 
 ### ✅ Završeno (najnovije gore)
 
+**2026-07-02 (fix — propalo slanje mejla više nije nemo)**
+- **Uzrok:** neuspešno slanje se samo ispisivalo u efemerni Vercel log (`console.error`), booking API vraćao uspeh → niko ne sazna da mejl nije otišao. Uz to, notifikacije pri kreiranju rezervacije bile fire-and-forget (bez `await`) — serverless funkcija može biti prekinuta pre nego što se slanje završi.
+- **Fix (3 dela):**
+  1. `sendEmail()` (`src/lib/resend.ts`) na SVAKI neuspeh upisuje trajan zapis u postojeću `email_events` tabelu (`event_type: 'send_failure'`, primalac, tip, booking_id, greška) — nova `recordEmailFailure()` u `src/lib/email/failure-log.ts` (nikad ne baca; bez admin klijenta samo loguje). Nema nove migracije — tabela postoji od 2026-03-01.
+  2. `createBooking` (`src/lib/bookings/service.ts`) sada `await Promise.allSettled(...)` obe notifikacije (admin + gost) — slanje se garantovano završi pre response-a; neuspeh i dalje NE obara booking.
+  3. Admin panel: crveni banner na vrhu (svi tabovi) ako ima `send_failure` u poslednjih 7 dana — nova ruta `GET /api/admin/email-failures` (requireAdmin + service role, limit 20) + prikaz u `AdminDashboard.tsx` (tip, primalac, vreme, greška).
+- Testovi: `failure-log.test.ts` (4 testa: insert oblik, UUID validacija booking_id FK, ne baca na DB grešku/reject). 388 testova ✅, TS build ✅.
+
 **2026-07-02 (fix — admin notifikacija o rezervaciji išla samo na JEDNU adresu)**
 - **Uzrok:** `sendBookingRequest` (`src/lib/email/service.ts`) slao owner/admin mejl na `EMAIL_CONFIG.adminEmail` — jedan string iz `ADMIN_EMAIL` env-a (fallback hardkodovano `apartmanijovca@gmail.com` iz `seo/config.ts`). Lista `ADMIN_EMAILS` (koja se koristi za admin PRISTUP) se za notifikacije potpuno ignorisala → drugi admin nikad ne dobija mejl o novoj rezervaciji.
 - **Fix:** nova `getAdminNotificationEmails()` u `src/lib/resend.ts` — unija `ADMIN_EMAILS` (comma-separated) + `ADMIN_EMAIL`/fallback, dedup, lowercase. `sendBookingRequest` sada šalje na ceo niz (`to: recipients`); Brevo i Resend send putanje već ispravno podržavaju niz primalaca. Nije iz baze — u bazi ne postoji tabela za notifikacione primaoce (proveren `supabase/migrations/`), `content.contact_email` je samo za prikaz na sajtu.

@@ -26,7 +26,8 @@ import {
   ImageIcon,
   CalendarCheck,
   Mail,
-  MapPin
+  MapPin,
+  AlertTriangle
 } from 'lucide-react'
 
 interface Stats {
@@ -44,6 +45,14 @@ interface Stats {
 
 interface AdminDashboardProps {
   stats: Stats
+}
+
+interface EmailFailure {
+  id: string
+  emailTo: string
+  emailType: string | null
+  error: string | null
+  createdAt: string
 }
 
 function getActiveBookingCount(stats: Pick<Stats, 'pendingBookings' | 'confirmedBookings'>): number {
@@ -72,6 +81,8 @@ export default function AdminDashboard({ stats: initialStats }: AdminDashboardPr
   const [messageCount, setMessageCount] = useState<number | null>(null)
   const [bookingCount, setBookingCount] = useState<number | null>(getActiveBookingCount(initialStats))
   const [bookingFilter, setBookingFilter] = useState<{ status?: 'pending' | 'confirmed'; arrivalOn?: string; departureOn?: string; title?: string }>({})
+  const [emailFailureCount, setEmailFailureCount] = useState(0)
+  const [emailFailures, setEmailFailures] = useState<EmailFailure[]>([])
 
   // Create Supabase client for logout
   const supabase = createBrowserClient(
@@ -106,10 +117,25 @@ export default function AdminDashboard({ stats: initialStats }: AdminDashboardPr
     }
   }, [])
 
+  const fetchEmailFailures = useCallback(async () => {
+    try {
+      const response = await fetch('/api/admin/email-failures')
+      if (!response.ok) throw new Error('Failed to fetch email failures')
+      const data = await response.json()
+      setEmailFailureCount(typeof data.count === 'number' ? data.count : 0)
+      setEmailFailures(Array.isArray(data.failures) ? data.failures : [])
+    } catch (error) {
+      console.error('Email failures error:', error)
+      setEmailFailureCount(0)
+      setEmailFailures([])
+    }
+  }, [])
+
   useEffect(() => {
     fetchMessageCount()
     fetchBookingCount()
-  }, [fetchMessageCount, fetchBookingCount])
+    fetchEmailFailures()
+  }, [fetchMessageCount, fetchBookingCount, fetchEmailFailures])
 
   // Na učitavanju: pročitaj aktivni tab/sekciju iz URL-a (da refresh ostane na istoj strani)
   useEffect(() => {
@@ -176,8 +202,9 @@ export default function AdminDashboard({ stats: initialStats }: AdminDashboardPr
     setStatsKey(prev => prev + 1) // Force StatsCards to re-mount and re-fetch independently
     fetchMessageCount()
     fetchBookingCount()
+    fetchEmailFailures()
     setRefreshing(false)
-  }, [fetchMessageCount, fetchBookingCount])
+  }, [fetchMessageCount, fetchBookingCount, fetchEmailFailures])
 
   const handleStatusChange = () => {
     // Refresh stats when a booking status changes
@@ -559,6 +586,30 @@ export default function AdminDashboard({ stats: initialStats }: AdminDashboardPr
 
         {/* Main Content */}
         <main className="flex-1 px-4 md:px-6 lg:px-8 py-4 md:py-6">
+          {/* Upozorenje: mejlovi koji NISU poslati (poslednjih 7 dana) — vidljivo na svim tabovima */}
+          {emailFailureCount > 0 && (
+            <div className="mb-6 rounded-lg border border-red-300 bg-red-50 p-4 text-sm text-red-800">
+              <div className="flex items-center gap-2 font-semibold">
+                <AlertTriangle className="h-4 w-4 shrink-0" />
+                {emailFailureCount === 1
+                  ? '1 mejl nije poslat u poslednjih 7 dana'
+                  : `${emailFailureCount} mejlova nije poslato u poslednjih 7 dana`}
+              </div>
+              <ul className="mt-2 space-y-1">
+                {emailFailures.slice(0, 5).map(failure => (
+                  <li key={failure.id} className="truncate">
+                    <span className="font-medium">{failure.emailType || 'email'}</span>
+                    {' → '}{failure.emailTo}
+                    {' — '}{new Date(failure.createdAt).toLocaleString('sr-RS')}
+                    {failure.error ? ` (${failure.error})` : ''}
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-2 text-xs text-red-700">
+                Gost/admin nije dobio ove poruke — pošalji ih ručno ili proveri email podešavanja (EMAIL_FROM, Brevo/Resend ključ).
+              </p>
+            </div>
+          )}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           
           {/* Dashboard Tab */}

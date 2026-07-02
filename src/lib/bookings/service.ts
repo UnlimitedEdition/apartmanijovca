@@ -326,47 +326,54 @@ export async function createBooking(
       return { error: 'Failed to create booking' }
     }
 
-    // Trigger booking request notification to admin
-    // Note: This is async and we don't wait for it
-    triggerBookingRequestNotification(
-      {
-        bookingId: booking.id,
-        bookingNumber,
-        checkIn: input.checkIn,
-        checkOut: input.checkOut,
-        totalPrice,
-        apartment: {
-          id: input.apartmentId,
-          name: apartmentName,
+    // Notifikacije se ČEKAJU (allSettled): fire-and-forget na Vercel-u može
+    // biti prekinut čim se vrati response, pa mejl tiho ne ode. Neuspeh slanja
+    // ne obara booking — beleži se u email_events (vidi sendEmail/failure-log).
+    await Promise.allSettled([
+      // Booking request notification to admin
+      triggerBookingRequestNotification(
+        {
+          bookingId: booking.id,
+          bookingNumber,
+          checkIn: input.checkIn,
+          checkOut: input.checkOut,
+          totalPrice,
+          apartment: {
+            id: input.apartmentId,
+            name: apartmentName,
+          },
         },
-      },
-      {
-        full_name: input.guest.name,
-        email: input.guest.email,
-        phone: input.guest.phone,
-      }
-    ).catch(console.error)
-
-    // Acknowledge the request to the guest, in the language they booked in
-    triggerRequestReceived(
-      {
-        bookingId: booking.id,
-        bookingNumber,
-        checkIn: input.checkIn,
-        checkOut: input.checkOut,
-        totalPrice,
-        apartment: {
-          id: input.apartmentId,
-          name: getLocalizedValue(apartment.name as MultiLanguageText, bookingLanguage as Locale),
+        {
+          full_name: input.guest.name,
+          email: input.guest.email,
+          phone: input.guest.phone,
+        }
+      ),
+      // Acknowledge the request to the guest, in the language they booked in
+      triggerRequestReceived(
+        {
+          bookingId: booking.id,
+          bookingNumber,
+          checkIn: input.checkIn,
+          checkOut: input.checkOut,
+          totalPrice,
+          apartment: {
+            id: input.apartmentId,
+            name: getLocalizedValue(apartment.name as MultiLanguageText, bookingLanguage as Locale),
+          },
         },
-      },
-      {
-        full_name: input.guest.name,
-        email: input.guest.email,
-        phone: input.guest.phone,
-        language: bookingLanguage as EmailLanguage,
-      }
-    ).catch(console.error)
+        {
+          full_name: input.guest.name,
+          email: input.guest.email,
+          phone: input.guest.phone,
+          language: bookingLanguage as EmailLanguage,
+        }
+      ),
+    ]).then((results) => {
+      results.forEach((r) => {
+        if (r.status === 'rejected') console.error('Booking notification error:', r.reason)
+      })
+    })
 
     return {
       booking: {

@@ -2,6 +2,7 @@ import { Resend } from 'resend'
 import type { EmailLanguage, EmailSendResult, EmailContent } from './email/types'
 import { PRODUCTION_URL, CONTACT_PHONE, EMAIL_FROM, EMAIL_ADMIN } from './seo/config'
 import { sendViaBrevo, isBrevoConfigured } from './email/brevo'
+import { recordEmailFailure } from './email/failure-log'
 
 // Initialize Resend client with error handling
 const getResendClient = () => {
@@ -91,19 +92,31 @@ export interface SendEmailOptions {
 export async function sendEmail(options: SendEmailOptions): Promise<EmailSendResult> {
   const provider = getEmailProvider()
 
+  let result: EmailSendResult
   if (!provider) {
     console.error('No email provider configured. Cannot send email.')
-    return {
+    result = {
       success: false,
       error: 'Email service is not configured',
     }
+  } else if (provider === 'brevo') {
+    result = await sendViaBrevo(options)
+  } else {
+    result = await sendViaResend(options)
   }
 
-  if (provider === 'brevo') {
-    return sendViaBrevo(options)
+  if (!result.success) {
+    // Trajni zapis u email_events — Vercel log je efemeran i niko ga ne gleda
+    await recordEmailFailure({
+      emailType: options.tags?.type,
+      recipient: Array.isArray(options.to) ? options.to.join(', ') : options.to,
+      subject: options.subject,
+      bookingId: options.tags?.bookingId,
+      error: result.error ?? 'Unknown error',
+    })
   }
 
-  return sendViaResend(options)
+  return result
 }
 
 // Send email via Resend with comprehensive error handling
