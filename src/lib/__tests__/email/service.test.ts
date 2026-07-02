@@ -14,6 +14,9 @@ jest.mock('../../resend', () => ({
     adminEmail: 'admin@apartmanijovca.rs',
     fromEmail: 'noreply@apartmanijovca.rs',
   },
+  getAdminNotificationEmails: jest
+    .fn()
+    .mockReturnValue(['admin@apartmanijovca.rs', 'drugi-admin@apartmanijovca.rs']),
   logEmailEvent: jest.fn(),
 }))
 
@@ -150,6 +153,18 @@ describe('Email Service', () => {
       const result = await sendBookingRequest(mockBooking, guestWithLanguage)
 
       expect(result.success).toBe(true)
+    })
+
+    it('should send to ALL admin notification recipients', async () => {
+      const { sendEmail } = jest.requireMock('../../resend')
+
+      await sendBookingRequest(mockBooking, mockGuest)
+
+      expect(sendEmail).toHaveBeenCalledWith(
+        expect.objectContaining({
+          to: ['admin@apartmanijovca.rs', 'drugi-admin@apartmanijovca.rs'],
+        })
+      )
     })
   })
 

@@ -27,6 +27,20 @@ export const EMAIL_CONFIG = {
   supportPhone: CONTACT_PHONE,
 } as const
 
+/**
+ * Svi primaoci admin notifikacija o rezervacijama: unija `ADMIN_EMAILS`
+ * (comma-separated — ista env lista koju `require-admin.ts` koristi za admin
+ * pristup) i `ADMIN_EMAIL`/fallback adrese. Time svaki admin nalog dobija
+ * notifikaciju, ne samo jedan.
+ */
+export function getAdminNotificationEmails(): string[] {
+  const list = (process?.env?.ADMIN_EMAILS ?? '')
+    .split(',')
+    .map((e) => e.trim().toLowerCase())
+    .filter(Boolean)
+  return Array.from(new Set([...list, EMAIL_CONFIG.adminEmail.trim().toLowerCase()]))
+}
+
 // Supported email providers
 export type EmailProvider = 'brevo' | 'resend'
 

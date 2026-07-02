@@ -129,7 +129,8 @@ BREVO_API_KEY                        # email (provider: Brevo — alternativa Re
 EMAIL_PROVIDER                       # 'brevo' | 'resend' (opciono; bez toga auto: Brevo ako ima ključ, pa Resend)
 EMAIL_FROM                           # sender adresa — MORA biti verifikovana kod aktivnog providera
 CRON_SECRET                          # štiti /api/cron/cleanup (Vercel šalje Authorization: Bearer)
-ADMIN_EMAILS                         # TODO: premjestiti emailove ovde iz koda
+ADMIN_EMAILS                         # comma-separated: admin pristup + primaoci booking notifikacija (getAdminNotificationEmails)
+ADMIN_EMAIL                          # legacy, jednina — i dalje ulazi u listu primalaca (fallback: apartmanijovca@gmail.com)
 ```
 
 > Email: vidi `docs/BREVO_SETUP.md`. Provider bira `getEmailProvider()` u `src/lib/resend.ts`; `src/lib/email/brevo.ts` šalje preko Brevo REST API-ja.

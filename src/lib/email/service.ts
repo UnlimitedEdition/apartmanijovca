@@ -1,11 +1,11 @@
 // Email Service for Apartmani Jovca
 // Provides functions to send all types of booking-related emails
 
-import { 
-  sendEmail, 
-  isResendConfigured, 
-  EMAIL_CONFIG, 
-  logEmailEvent 
+import {
+  sendEmail,
+  isResendConfigured,
+  getAdminNotificationEmails,
+  logEmailEvent
 } from '../resend'
 import type { 
   EmailLanguage, 
@@ -137,16 +137,17 @@ export async function sendBookingRequest(
   guest: GuestData
 ): Promise<EmailSendResult> {
   const language: EmailLanguage = 'sr' // Admin notifications always in Serbian (owner reads Serbian)
-  
+  const recipients = getAdminNotificationEmails()
+
   logEmailEvent('send_attempt', {
     emailType: 'booking_request',
-    recipient: EMAIL_CONFIG.adminEmail,
+    recipient: recipients.join(', '),
     bookingId: booking.bookingId,
   })
 
   if (!isResendConfigured()) {
     console.log('[Email Mock] Booking Request to Admin:', {
-      to: EMAIL_CONFIG.adminEmail,
+      to: recipients,
       bookingNumber: booking.bookingNumber,
       guestfull_name: guest.full_name,
     })
@@ -171,7 +172,7 @@ export async function sendBookingRequest(
     })
 
     const result = await sendEmail({
-      to: EMAIL_CONFIG.adminEmail,
+      to: recipients,
       subject: emailContent.subject,
       html: emailContent.html,
       text: emailContent.text,
@@ -184,14 +185,14 @@ export async function sendBookingRequest(
     if (result.success) {
       logEmailEvent('send_success', {
         emailType: 'booking_request',
-        recipient: EMAIL_CONFIG.adminEmail,
+        recipient: recipients.join(', '),
         bookingId: booking.bookingId,
         messageId: result.messageId,
       })
     } else {
       logEmailEvent('send_failure', {
         emailType: 'booking_request',
-        recipient: EMAIL_CONFIG.adminEmail,
+        recipient: recipients.join(', '),
         bookingId: booking.bookingId,
         error: result.error,
       })
@@ -202,7 +203,7 @@ export async function sendBookingRequest(
     const errorMessage = error instanceof Error ? error.message : 'Unknown error'
     logEmailEvent('send_failure', {
       emailType: 'booking_request',
-      recipient: EMAIL_CONFIG.adminEmail,
+      recipient: recipients.join(', '),
       bookingId: booking.bookingId,
       error: errorMessage,
     })

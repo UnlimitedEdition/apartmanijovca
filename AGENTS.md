@@ -19,6 +19,13 @@
 
 ### ✅ Završeno (najnovije gore)
 
+**2026-07-02 (fix — admin notifikacija o rezervaciji išla samo na JEDNU adresu)**
+- **Uzrok:** `sendBookingRequest` (`src/lib/email/service.ts`) slao owner/admin mejl na `EMAIL_CONFIG.adminEmail` — jedan string iz `ADMIN_EMAIL` env-a (fallback hardkodovano `apartmanijovca@gmail.com` iz `seo/config.ts`). Lista `ADMIN_EMAILS` (koja se koristi za admin PRISTUP) se za notifikacije potpuno ignorisala → drugi admin nikad ne dobija mejl o novoj rezervaciji.
+- **Fix:** nova `getAdminNotificationEmails()` u `src/lib/resend.ts` — unija `ADMIN_EMAILS` (comma-separated) + `ADMIN_EMAIL`/fallback, dedup, lowercase. `sendBookingRequest` sada šalje na ceo niz (`to: recipients`); Brevo i Resend send putanje već ispravno podržavaju niz primalaca. Nije iz baze — u bazi ne postoji tabela za notifikacione primaoce (proveren `supabase/migrations/`), `content.contact_email` je samo za prikaz na sajtu.
+- **Vercel env:** proveriti da `ADMIN_EMAILS` sadrži OBE adrese (`mtosic0450@gmail.com,apartmanijovca@gmail.com`) — notifikacije sada prate tu listu.
+- Testovi: nov `src/lib/__tests__/email/admin-recipients.test.ts` (4 testa: fallback, unija, dedup, whitespace) + test da `sendBookingRequest` šalje na sve primaoce. 384+ testova ✅.
+- Napomena (nije dirano): slanje je fire-and-forget sa `.catch(console.error)` u `bookings/service.ts` — propalo slanje se vidi samo u Vercel logovima; WhatsApp owner notifikacija postoji u kodu ali se NE poziva automatski pri rezervaciji.
+
 **2026-07-01 (fix — lightbox: z-index, veličina slike, scroll-lock)**
 - **X/hamburger kolizija + gašenje samo u donjem delu:** oba lightbox overlay-a bila ISPOD headera (`z-[1000]`) — `ApartmentDetailView` `z-50`, `GalleryClient` `z-[100]` → header se probijao iznad, hvatao klikove u gornjem delu i sudarao hamburger sa X. Oba dignuta na **`z-[1100]`**.
 - **Slika sitna/„1:1" (ApartmentDetailView):** lightbox container imao `mx-16` (64px margine ×2 → mobilni pojede ~128px) + nepouzdan `w-full h-full` za `fill`. Sad **`w-[90vw] h-[82vh] max-w-6xl`** (definitna veličina, `object-contain`).
