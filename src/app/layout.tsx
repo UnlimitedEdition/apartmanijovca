@@ -21,14 +21,6 @@ export const metadata: Metadata = {
   title: "Apartmani Jovča - Smeštaj na Bovanskom jezeru",
   description: "Rezervišite Apartmane Jovča na Bovanskom jezeru u Bovanu. Udoban smeštaj uz jezero, privatna plaža, WiFi, parking i priroda za porodični odmor.",
   manifest: '/manifest.json',
-  icons: {
-    icon: [
-      { url: '/favicon.svg', type: 'image/svg+xml' },
-      { url: '/icon.png', type: 'image/png', sizes: '512x512' },
-    ],
-    shortcut: '/favicon.svg',
-    apple: { url: '/apple-icon.png', type: 'image/png', sizes: '180x180' },
-  },
   robots: 'index, follow',
   verification: {
     google: process.env.NEXT_PUBLIC_GSC_VERIFICATION || 'U2dHUuIHtydSsidi8IPlFvYcduPcf2Q09aFK94gcU-U',
