@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { requireAdmin } from '@/lib/auth/require-admin'
 import { getBookedDatesForRange } from '@/lib/admin/availability-calendar'
+import { OCCUPYING_BOOKING_STATUSES } from '@/lib/validations/booking'
 
 
 export const dynamic = 'force-dynamic'
@@ -85,7 +86,7 @@ export async function GET(request: NextRequest) {
         .eq('apartment_id', apartmentId)
         .lte('check_in', endDate)
         .gte('check_out', startDate)
-        .neq('status', 'cancelled')
+        .in('status', OCCUPYING_BOOKING_STATUSES as unknown as string[])
 
       if (bookingsError) throw bookingsError
 

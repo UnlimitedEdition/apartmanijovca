@@ -10,6 +10,15 @@ export const BookingStatus = z.enum([
   'no_show'
 ])
 
+// Statusi koji STVARNO zauzimaju sobu (blokiraju dostupnost). Sve ostalo
+// (cancelled/odbijeno, no_show/nedolazak, checked_out/odjavljen, legacy completed)
+// oslobađa datume za nove rezervacije. JEDAN izvor istine za sve availability upite —
+// prati semantiku DB funkcije `check_availability` (blokira confirmed/pending) i dodaje
+// `checked_in` (gost je trenutno u sobi). Bug pre ovoga: upiti su radili samo
+// `.neq('status','cancelled')` pa su odbijene/nedošle/odjavljene rezervacije i dalje
+// prikazivale sobu kao "booked" na sajtu, iako je u adminu status bio drugačiji.
+export const OCCUPYING_BOOKING_STATUSES = ['pending', 'confirmed', 'checked_in'] as const
+
 // Enhanced name validation - accepts both single name and full name
 const nameRegex = /^[A-Za-zÀ-ÿĀ-ɏ\u0400-\u04FF\s'-]{2,}$/
 const phoneRegex = /^[\d\s\-\+\(\)]{8,20}$/

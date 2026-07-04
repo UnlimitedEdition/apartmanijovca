@@ -19,6 +19,12 @@
 
 ### ✅ Završeno (najnovije gore)
 
+**2026-07-04 (fix — soba prikazuje „booked" iako je u adminu odbijena/nedošla/odjavljena)**
+- **Uzrok:** svi availability upiti u aplikaciji filtrirali su samo `.neq('status','cancelled')` (a `useAvailability` još i `no_show`). Statusi `checked_out` (odjavljen), `no_show` (nedolazak) i legacy `completed` su i dalje zauzimali sobu → javni sajt pokazuje „booked", a admin panel za istu rezervaciju pokazuje odbijeno/nedošao/odjavljen. DB funkcija `check_availability` (koju zove kreiranje rezervacije) je bila ispravna (`confirmed`/`pending`), pa je nesklad bio samo u app upitima.
+- **Fix:** nova konstanta **`OCCUPYING_BOOKING_STATUSES = ['pending','confirmed','checked_in']`** (`src/lib/validations/booking.ts`) — jedan izvor istine. Zamenjen `.neq(...)` sa `.in('status', OCCUPYING_BOOKING_STATUSES)` u: `api/availability/today` (badge na listi soba), `api/availability` (GET provera opsega), `api/admin/availability` (admin kalendar) i `useAvailability` hook (kalendar + realtime handler sada oslobađa datume za SVE ne-zauzimajuće statuse, ne samo cancelled/no_show).
+- **DB:** migracija `20260704120000_availability_include_checked_in.sql` — `check_availability` sada blokira i `checked_in` (gost u sobi) da RPC i app dele isti skup. Samo `CREATE OR REPLACE FUNCTION` (bez izmene podataka/constraint-a) — **pokreće se RUČNO u Supabase SQL Editor-u** (Vercel ne pokreće migracije).
+- Testovi: 36 relevantnih ✅, TS build ✅ (pad na „collect page data" je samo zbog nedostatka env varijabli u sandbox-u, ne TS).
+
 **2026-07-02 (fix — propalo slanje mejla više nije nemo)**
 - **Uzrok:** neuspešno slanje se samo ispisivalo u efemerni Vercel log (`console.error`), booking API vraćao uspeh → niko ne sazna da mejl nije otišao. Uz to, notifikacije pri kreiranju rezervacije bile fire-and-forget (bez `await`) — serverless funkcija može biti prekinuta pre nego što se slanje završi.
 - **Fix (3 dela):**
