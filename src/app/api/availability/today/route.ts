@@ -1,9 +1,11 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { OCCUPYING_BOOKING_STATUSES } from '@/lib/validations/booking'
 
 // Lightweight "occupied right now" check for the apartments list badge.
-// Night model: an apartment is occupied TODAY only if a non-cancelled booking
-// has check_in <= today AND check_out > today (the checkout day itself is free).
+// Night model: an apartment is occupied TODAY only if an OCCUPYING booking
+// (pending/confirmed/checked_in) has check_in <= today AND check_out > today
+// (the checkout day itself is free). Cancelled/no_show/checked_out do NOT occupy.
 // Returns just apartment_ids (no PII). Always dynamic (never cached).
 
 export const dynamic = 'force-dynamic'
@@ -23,7 +25,7 @@ export async function GET() {
     const { data, error } = await supabase
       .from('bookings')
       .select('apartment_id')
-      .neq('status', 'cancelled')
+      .in('status', OCCUPYING_BOOKING_STATUSES as unknown as string[])
       .lte('check_in', today)
       .gt('check_out', today)
 

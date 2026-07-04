@@ -6,6 +6,7 @@ import { supabase } from '../app/[lang]/lib/supabase/client'
 import { RealtimeChannel } from '@supabase/supabase-js'
 import { LocalizedApartment, ApartmentRecord, Locale } from '../lib/types/database'
 import { transformApartmentRecord } from '../lib/transformers/database'
+import { OCCUPYING_BOOKING_STATUSES } from '../lib/validations/booking'
 
 // Re-export LocalizedApartment as Apartment for backward compatibility
 export type Apartment = LocalizedApartment
@@ -154,8 +155,7 @@ export function useAvailability(options: UseAvailabilityOptions = {}): UseAvaila
         `)
         .gte('check_in', formatDateForDB(rangeStart))
         .lte('check_out', formatDateForDB(rangeEnd))
-        .neq('status', 'cancelled')
-        .neq('status', 'no_show')
+        .in('status', OCCUPYING_BOOKING_STATUSES as unknown as string[])
 
       if (bookingsError) throw bookingsError
 
@@ -247,8 +247,9 @@ export function useAvailability(options: UseAvailabilityOptions = {}): UseAvaila
           newBookings[index] = newRecord as Booking
         }
 
-        // If booking was cancelled or marked no-show, free up the dates
-        if (newRecord.status === 'cancelled' || newRecord.status === 'no_show') {
+        // If booking no longer occupies the room (cancelled, no_show, checked_out,
+        // completed), free up the dates. Only pending/confirmed/checked_in block.
+        if (!(OCCUPYING_BOOKING_STATUSES as readonly string[]).includes(newRecord.status)) {
           const oldDates = getBookingNights(
             new Date(newRecord.check_in),
             new Date(newRecord.check_out)

@@ -3,6 +3,7 @@ import { createClient } from '@supabase/supabase-js'
 import { extractLocale } from '@/lib/localization/extract'
 import { transformApartmentRecord } from '@/lib/transformers/database'
 import type { ApartmentRecord } from '@/lib/types/database'
+import { OCCUPYING_BOOKING_STATUSES } from '@/lib/validations/booking'
 
 function getSupabase() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
@@ -127,7 +128,7 @@ export async function GET(request: NextRequest): Promise<NextResponse<Availabili
       .select('apartment_id, check_in, check_out, status')
       .gte('check_out', formatDate(checkIn))
       .lte('check_in', formatDate(checkOut))
-      .neq('status', 'cancelled')
+      .in('status', OCCUPYING_BOOKING_STATUSES as unknown as string[])
 
     if (bookingsError) {
       console.error('Error fetching bookings:', bookingsError)
