@@ -9,6 +9,7 @@ import type {
   BookingListResponse,
   BookingOptions
 } from '../validations/booking'
+import { OCCUPYING_BOOKING_STATUSES } from '../validations/booking'
 import type { EmailLanguage } from '../email/types'
 import type { Locale, MultiLanguageText } from '../types/database'
 import { getLocalizedValue } from '../localization/helpers'
@@ -98,7 +99,38 @@ export async function checkAvailability(
   }
 
   try {
-    // Use the database function for availability check
+    // Update path: when editing an existing booking, the DB check_availability()
+    // RPC can't exclude the booking's own row — it would always report a self-overlap
+    // and reject the edit. So we run the overlap query manually and skip that booking.
+    // Two bookings overlap on the half-open range [check_in, check_out) iff
+    //   existing.check_in < newCheckOut  AND  existing.check_out > newCheckIn.
+    // (The `booking_range` generated column the old code referenced does NOT exist in
+    // the DB, so the previous `.overlaps('booking_range', ...)` errored on every edit.)
+    if (excludeBookingId) {
+      const { data: conflicts, error: conflictError } = await supabase
+        .from('bookings')
+        .select('id')
+        .eq('apartment_id', apartmentId)
+        .neq('id', excludeBookingId)
+        .in('status', OCCUPYING_BOOKING_STATUSES as unknown as string[])
+        .lt('check_in', checkOut)
+        .gt('check_out', checkIn)
+
+      if (conflictError) {
+        console.error('Conflict check error:', conflictError)
+        return { available: false, reason: 'Failed to check for conflicts' }
+      }
+
+      if (conflicts && conflicts.length > 0) {
+        return { available: false, reason: 'Dates overlap with existing booking' }
+      }
+
+      return { available: true }
+    }
+
+    // Create path: the DB function is authoritative. After the manual-blocks migration
+    // it rejects dates covered by an occupying booking OR a manual availability block
+    // (e.g. dates sold on Booking.com that the admin blocked by hand).
     const { data, error } = await supabase.rpc('check_availability', {
       p_apartment_id: apartmentId,
       p_check_in: checkIn,
@@ -113,26 +145,6 @@ export async function checkAvailability(
     // data is a boolean - true means available, false means not available
     if (data === false) {
       return { available: false, reason: 'Apartment is not available for selected dates' }
-    }
-
-    // If we're updating an existing booking, we need to check if the only conflict is with itself
-    if (excludeBookingId) {
-      const { data: conflicts, error: conflictError } = await supabase
-        .from('bookings')
-        .select('id')
-        .eq('apartment_id', apartmentId)
-        .neq('id', excludeBookingId)
-        .neq('status', 'cancelled')
-        .overlaps('booking_range', `[${checkIn},${checkOut})`)
-
-      if (conflictError) {
-        console.error('Conflict check error:', conflictError)
-        return { available: false, reason: 'Failed to check for conflicts' }
-      }
-
-      if (conflicts && conflicts.length > 0) {
-        return { available: false, reason: 'Dates overlap with existing booking' }
-      }
     }
 
     return { available: true }

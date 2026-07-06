@@ -159,6 +159,18 @@ export function useAvailability(options: UseAvailabilityOptions = {}): UseAvaila
 
       if (bookingsError) throw bookingsError
 
+      // Fetch manual availability blocks (admin-set: maintenance / blocked / dates
+      // already sold on an external channel like Booking.com). These live ONLY in the
+      // `availability` table with booking_id IS NULL — they are not bookings, so the
+      // public calendar has to read them separately or it would show sold dates as free.
+      const { data: blocksData } = await supabase
+        .from('availability')
+        .select('apartment_id, date')
+        .eq('is_available', false)
+        .is('booking_id', null)
+        .gte('date', formatDateForDB(rangeStart))
+        .lte('date', formatDateForDB(rangeEnd))
+
       // Build availability map
       const availabilityMap = new Map<string, AvailabilityStatus>()
       const bookings = (bookingsData || []) as Booking[]
@@ -196,6 +208,21 @@ export function useAvailability(options: UseAvailabilityOptions = {}): UseAvaila
             })
           }
         })
+      })
+
+      // Mark manually-blocked dates (admin blocks / external channels like Booking.com).
+      // Rendered as 'booked' so the calendar shows them unavailable exactly like a real
+      // booking (and isDateRangeAvailable treats any non-'available' status as taken).
+      const blocks = (blocksData || []) as Array<{ apartment_id: string; date: string }>
+      blocks.forEach((block) => {
+        const key = `${block.apartment_id}-${block.date}`
+        if (availabilityMap.has(key)) {
+          availabilityMap.set(key, {
+            date: block.date,
+            apartmentId: block.apartment_id,
+            status: 'booked'
+          })
+        }
       })
 
       setData({

@@ -39,9 +39,13 @@ interface AvailabilityResponse {
   error?: string
 }
 
-// Helper to format date for DB
+// Helper to format date for DB. Uses LOCAL date parts (never toISOString()) — a Date at
+// local midnight in a UTC+ zone would shift a day back and mark the wrong night taken.
 const formatDate = (date: Date): string => {
-  return date.toISOString().split('T')[0]
+  const y = date.getFullYear()
+  const m = String(date.getMonth() + 1).padStart(2, '0')
+  const d = String(date.getDate()).padStart(2, '0')
+  return `${y}-${m}-${d}`
 }
 
 // GET /api/availability - Check availability for date range
@@ -138,6 +142,17 @@ export async function GET(request: NextRequest): Promise<NextResponse<Availabili
       }, { status: 500 })
     }
 
+    // Manual admin blocks (maintenance / blocked / external channel like Booking.com)
+    // live only in `availability` with booking_id IS NULL — they are not bookings, so we
+    // fetch them separately and treat their dates as unavailable. Half-open [checkIn,checkOut).
+    const { data: manualBlocks } = await supabase
+      .from('availability')
+      .select('apartment_id, date')
+      .eq('is_available', false)
+      .is('booking_id', null)
+      .gte('date', formatDate(checkIn))
+      .lt('date', formatDate(checkOut))
+
     // Process availability for each apartment
     const apartmentsWithAvailability: ApartmentAvailability[] = apartments.map((apartment) => {
       // Get all bookings for this apartment
@@ -150,18 +165,23 @@ export async function GET(request: NextRequest): Promise<NextResponse<Availabili
       apartmentBookings.forEach((booking) => {
         const bookingStart = new Date(booking.check_in)
         const bookingEnd = new Date(booking.check_out)
-        
-        // Add all dates in the booking range
+
+        // Add the booking's nights: half-open [check_in, check_out) — the checkout day
+        // itself stays free for a same-day turnover.
         const current = new Date(bookingStart)
-        while (current <= bookingEnd) {
-          const dateStr = formatDate(current)
-          // Only include dates that overlap with requested range
-          if (current >= checkIn && current <= checkOut) {
-            unavailableDates.push(dateStr)
+        while (current < bookingEnd) {
+          // Only include nights that fall inside the requested stay [checkIn, checkOut).
+          if (current >= checkIn && current < checkOut) {
+            unavailableDates.push(formatDate(current))
           }
           current.setDate(current.getDate() + 1)
         }
       })
+
+      // Add this apartment's manual blocks (already filtered to the requested range).
+      ;(manualBlocks || [])
+        .filter((b) => b.apartment_id === apartment.id)
+        .forEach((b) => unavailableDates.push(b.date as string))
 
       // Check if apartment is available for the entire range
       const isAvailable = unavailableDates.length === 0

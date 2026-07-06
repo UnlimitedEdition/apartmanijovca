@@ -22,19 +22,36 @@ export async function GET() {
     const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
 
     const supabase = getSupabase()
-    const { data, error } = await supabase
-      .from('bookings')
-      .select('apartment_id')
-      .in('status', OCCUPYING_BOOKING_STATUSES as unknown as string[])
-      .lte('check_in', today)
-      .gt('check_out', today)
+    const [bookingsRes, blocksRes] = await Promise.all([
+      supabase
+        .from('bookings')
+        .select('apartment_id')
+        .in('status', OCCUPYING_BOOKING_STATUSES as unknown as string[])
+        .lte('check_in', today)
+        .gt('check_out', today),
+      // Manual admin blocks (e.g. Booking.com dates) live only in `availability`
+      // with booking_id IS NULL — the badge must count them as occupied too.
+      supabase
+        .from('availability')
+        .select('apartment_id')
+        .eq('is_available', false)
+        .is('booking_id', null)
+        .eq('date', today),
+    ])
 
-    if (error) {
-      console.error('[availability/today] query error:', error.message)
+    if (bookingsRes.error) {
+      console.error('[availability/today] bookings query error:', bookingsRes.error.message)
       return NextResponse.json({ occupied: [] })
     }
+    if (blocksRes.error) {
+      // Non-fatal: still return booking-based occupancy if the blocks query fails.
+      console.error('[availability/today] blocks query error:', blocksRes.error.message)
+    }
 
-    const occupied = [...new Set((data || []).map((b) => b.apartment_id).filter(Boolean))]
+    const occupied = [...new Set([
+      ...(bookingsRes.data || []).map((b) => b.apartment_id),
+      ...(blocksRes.data || []).map((b) => b.apartment_id),
+    ].filter(Boolean))]
     return NextResponse.json({ occupied })
   } catch (error) {
     console.error('[availability/today] error:', error)
