@@ -95,6 +95,16 @@ const statusIcons: Record<string, React.ElementType> = {
   no_show: XCircle
 }
 
+// Prijava (check-in) i nedolazak (no-show) su mogući tek OD DANA DOLASKA
+// (lokalni datum >= check_in). Ne može se prijaviti gost pre njegovog datuma.
+const arrivalDayReached = (checkIn: string): boolean => {
+  const [y, m, d] = checkIn.slice(0, 10).split('-').map(Number)
+  const arrival = new Date(y, m - 1, d)
+  const now = new Date()
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+  return today.getTime() >= arrival.getTime()
+}
+
 export default function AdminBookingDetails({ booking, onBack, onStatusChange }: AdminBookingDetailsProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null)
@@ -104,6 +114,9 @@ const [showSecurityDetails, setShowSecurityDetails] = useState(false)
   const checkInDate = parseISO(currentBooking.check_in)
   const checkOutDate = parseISO(currentBooking.check_out)
   const nights = differenceInDays(checkOutDate, checkInDate)
+  // Prijava/nedolazak su mogući tek od dana dolaska.
+  const arrived = arrivalDayReached(currentBooking.check_in)
+  const arrivalLabel = format(checkInDate, 'dd.MM.yyyy')
 
   const formatDate = (date: string) => format(parseISO(date), 'EEEE, d. MMMM yyyy', { locale: sr })
   
@@ -393,16 +406,33 @@ currentBooking.consent_given !== undefined
 
               {currentBooking.status === 'confirmed' && (
                 <>
-                  <Button 
-                    className="w-full bg-blue-600 hover:bg-blue-700"
-                    onClick={() => handleStatusUpdate('checked_in')}
-                    disabled={isLoading}
-                  >
-                    {isLoading && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-                    <LogIn className="h-4 w-4 mr-2" />
-                    Пријави check-in
-                  </Button>
-                  <Button 
+                  {arrived ? (
+                    <>
+                      <Button
+                        className="w-full bg-blue-600 hover:bg-blue-700"
+                        onClick={() => handleStatusUpdate('checked_in')}
+                        disabled={isLoading}
+                      >
+                        {isLoading && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+                        <LogIn className="h-4 w-4 mr-2" />
+                        Пријави check-in
+                      </Button>
+                      <Button
+                        className="w-full bg-red-600 hover:bg-red-700"
+                        onClick={() => handleStatusUpdate('no_show')}
+                        disabled={isLoading}
+                      >
+                        {isLoading && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+                        Гост се није појавио
+                      </Button>
+                    </>
+                  ) : (
+                    <Button className="w-full" variant="outline" disabled>
+                      <Calendar className="h-4 w-4 mr-2" />
+                      Пријава могућа од {arrivalLabel}
+                    </Button>
+                  )}
+                  <Button
                     className="w-full bg-red-600 hover:bg-red-700"
                     onClick={() => handleStatusUpdate('cancelled')}
                     disabled={isLoading}
@@ -414,25 +444,15 @@ currentBooking.consent_given !== undefined
               )}
 
               {currentBooking.status === 'checked_in' && (
-                <>
-                  <Button 
-                    className="w-full bg-gray-600 hover:bg-gray-700"
-                    onClick={() => handleStatusUpdate('checked_out')}
-                    disabled={isLoading}
-                  >
-                    {isLoading && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-                    <LogOut className="h-4 w-4 mr-2" />
-                    Пријави check-out
-                  </Button>
-                  <Button 
-                    className="w-full bg-red-600 hover:bg-red-700"
-                    onClick={() => handleStatusUpdate('no_show')}
-                    disabled={isLoading}
-                  >
-                    {isLoading && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
-                    Гост се није појавио
-                  </Button>
-                </>
+                <Button
+                  className="w-full bg-gray-600 hover:bg-gray-700"
+                  onClick={() => handleStatusUpdate('checked_out')}
+                  disabled={isLoading}
+                >
+                  {isLoading && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Пријави check-out
+                </Button>
               )}
 
               {(currentBooking.status === 'checked_out' || currentBooking.status === 'cancelled' || currentBooking.status === 'no_show') && (

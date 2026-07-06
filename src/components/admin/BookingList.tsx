@@ -17,7 +17,9 @@ import {
   Search, 
   CheckCircle2, 
   XCircle, 
-  UserCheck, 
+  UserCheck,
+  UserX,
+  Clock,
   LogOut,
   ChevronLeft,
   ChevronRight,
@@ -67,6 +69,17 @@ const statusConfig: Record<string, { label: string; variant: 'default' | 'second
 }
 
 const statusOrder: StatusFilter[] = ['pending', 'confirmed', 'checked_in', 'checked_out', 'cancelled']
+
+// True kad je nastupio DAN DOLASKA (lokalni datum >= check_in). Prijava (check-in) i
+// nedolazak (no-show) su dostupni tek od tog dana — ne može se prijaviti gost čiji je
+// dolazak tek za par dana. Poredi lokalne kalendarske dane, bez sata.
+const arrivalDayReached = (checkIn: string): boolean => {
+  const [y, m, d] = checkIn.slice(0, 10).split('-').map(Number)
+  const arrival = new Date(y, m - 1, d)
+  const now = new Date()
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+  return today.getTime() >= arrival.getTime()
+}
 
 export default function BookingList({ apartmentId, limit: propLimit, title, initialStatus, arrivalOn: initialArrivalOn, departureOn: initialDepartureOn, onStatusChange }: BookingListProps) {
   const [bookings, setBookings] = useState<Booking[]>([])
@@ -250,9 +263,10 @@ export default function BookingList({ apartmentId, limit: propLimit, title, init
     )
   }
 
-  const getAvailableActions = (booking: Booking): { label: string; value: string; icon: React.ReactNode }[] => {
-    const actions: { label: string; value: string; icon: React.ReactNode }[] = []
+  const getAvailableActions = (booking: Booking): { label: string; value: string; icon: React.ReactNode; disabled?: boolean }[] => {
+    const actions: { label: string; value: string; icon: React.ReactNode; disabled?: boolean }[] = []
     const currentStatus = booking.status
+    const arrived = arrivalDayReached(booking.checkin)
 
     if (currentStatus === 'pending') {
       actions.push(
@@ -260,10 +274,19 @@ export default function BookingList({ apartmentId, limit: propLimit, title, init
         { label: 'Otkaži', value: 'cancelled', icon: <XCircle className="h-4 w-4 mr-2" /> }
       )
     } else if (currentStatus === 'confirmed') {
-      actions.push(
-        { label: 'Prijavi (Check In)', value: 'checked_in', icon: <UserCheck className="h-4 w-4 mr-2" /> },
-        { label: 'Otkaži', value: 'cancelled', icon: <XCircle className="h-4 w-4 mr-2" /> }
-      )
+      if (arrived) {
+        // Dan dolaska je nastupio → prijava ili nedolazak (gost se nije pojavio).
+        actions.push(
+          { label: 'Prijavi (Check In)', value: 'checked_in', icon: <UserCheck className="h-4 w-4 mr-2" /> },
+          { label: 'Nedolazak', value: 'no_show', icon: <UserX className="h-4 w-4 mr-2" /> }
+        )
+      } else {
+        // Pre dana dolaska: prijava je zaključana (samo info kada postaje moguća).
+        actions.push(
+          { label: `Prijava od ${formatDate(booking.checkin)}`, value: 'checked_in', icon: <Clock className="h-4 w-4 mr-2" />, disabled: true }
+        )
+      }
+      actions.push({ label: 'Otkaži', value: 'cancelled', icon: <XCircle className="h-4 w-4 mr-2" /> })
     } else if (currentStatus === 'checked_in') {
       actions.push(
         { label: 'Odjavi (Check Out)', value: 'checked_out', icon: <LogOut className="h-4 w-4 mr-2" /> }
@@ -453,11 +476,17 @@ export default function BookingList({ apartmentId, limit: propLimit, title, init
                               {getAvailableActions(booking).map((action) => (
                                 <button
                                   key={action.value}
+                                  disabled={action.disabled}
                                   onClick={(e) => {
                                     e.stopPropagation()
+                                    if (action.disabled) return
                                     handleStatusChange(booking.id, action.value)
                                   }}
-                                  className="flex w-full items-center rounded-sm px-3 py-2 text-sm hover:bg-accent transition-colors"
+                                  className={`flex w-full items-center rounded-sm px-3 py-2 text-sm transition-colors ${
+                                    action.disabled
+                                      ? 'cursor-not-allowed text-muted-foreground opacity-70'
+                                      : 'hover:bg-accent'
+                                  }`}
                                 >
                                   {action.icon}
                                   {action.label}
@@ -533,9 +562,10 @@ export default function BookingList({ apartmentId, limit: propLimit, title, init
                           key={action.value}
                           size="sm"
                           variant="outline"
-                          disabled={updatingStatus === booking.id}
+                          disabled={updatingStatus === booking.id || action.disabled}
                           onClick={(e) => {
                             e.stopPropagation()
+                            if (action.disabled) return
                             handleStatusChange(booking.id, action.value)
                           }}
                           className="h-9 px-3"
@@ -545,7 +575,11 @@ export default function BookingList({ apartmentId, limit: propLimit, title, init
                           ) : (
                             <>
                               {action.icon}
-                              <span className="sr-only">{action.label}</span>
+                              {action.disabled ? (
+                                <span className="ml-1 text-xs">{action.label}</span>
+                              ) : (
+                                <span className="sr-only">{action.label}</span>
+                              )}
                             </>
                           )}
                         </Button>

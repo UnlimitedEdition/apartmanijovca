@@ -19,6 +19,14 @@
 
 ### ✅ Završeno (najnovije gore)
 
+**2026-07-06 (fix — prijava/nedolazak vezani za DAN DOLASKA; nedolazak iz confirmed)**
+- **Problem:** admin je mogao da „Prijavi" gosta danima PRE dolaska; „Nedolazak" je bio vezan za `checked_in` (besmisleno — gost je već stigao).
+- **Novo pravilo (odluka korisnika):** Prijava (check-in) i Nedolazak (no-show) mogući SAMO od dana dolaska (lokalni datum ≥ `check_in`, ceo dan od 00:00); pre toga akcija zaključana („Prijava od DD.MM."). Nedolazak sada iz `confirmed` (ne iz `checked_in`).
+- **Server (nezaobilazno):** `src/lib/bookings/service.ts` — `STATUS_TRANSITIONS` (`confirmed`→+`no_show`, `checked_in`→samo `checked_out`); nova `arrivalDayReached()` + vremenska brana u `updateBooking` (odbija `checked_in`/`no_show` pre dana dolaska).
+- **UI:** `BookingList.tsx` (dropdown + mobilni) i `AdminBookingDetails.tsx` (modal) — gejtovane akcije, zaključan prikaz pre dana dolaska.
+- Testovi: `service.test.ts` usklađen (confirmed→no_show ✓, checked_in→no_show ✗), 30 ✅; `tsc` čist. NIJE push-ovano (čeka OK).
+- **Ostaje (paused):** „..." meni — dodati **Pogledaj** + **Obriši** (sa potvrdom) da meni ne bude prazan za terminalne statuse; čeka odluku soft-delete vs trajno + DELETE ruta.
+
 **2026-07-06 (fix — ručne admin blokade se sada VIDE na javnom sajtu + booking_range bug)**
 - **Uzrok (glavni):** ručna blokada iz admin kalendara upisuje SAMO `availability` red (`is_available=false`, `booking_id IS NULL`), a javni sajt (badge/kalendar/RPC) čita SAMO `bookings` → blokada nevidljiva. Nikola blokirao Booking.com termine u adminu, na sajtu i dalje „slobodno". Commit 2026-07-04 je poravnao samo statuse, ne i ovaj most availability→public.
 - **Fix (kod):** javne tačke sada čitaju i ručne blokade (`availability`, `booking_id IS NULL`, prikaz kao 'booked'): `useAvailability` hook, `/api/availability/today` (badge), `/api/availability` GET. `/api/admin/availability` već čita availability tabelu (nedirano).

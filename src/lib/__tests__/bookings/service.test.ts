@@ -176,8 +176,9 @@ describe('Bookings Service', () => {
       expect(isValidStatusTransition('checked_in', 'checked_out')).toBe(true)
     })
 
-    it('should allow checked_in to no_show transition', () => {
-      expect(isValidStatusTransition('checked_in', 'no_show')).toBe(true)
+    it('should allow confirmed to no_show transition', () => {
+      // Nedolazak = gost se nije pojavio → dostupno iz 'confirmed' (nije stigao).
+      expect(isValidStatusTransition('confirmed', 'no_show')).toBe(true)
     })
 
     it('should NOT allow reverse transitions', () => {
@@ -196,6 +197,8 @@ describe('Bookings Service', () => {
       expect(isValidStatusTransition('pending', 'checked_in')).toBe(false)
       expect(isValidStatusTransition('pending', 'no_show')).toBe(false)
       expect(isValidStatusTransition('confirmed', 'checked_out')).toBe(false)
+      // Prijavljen gost je već stigao → ne može biti "nedolazak".
+      expect(isValidStatusTransition('checked_in', 'no_show')).toBe(false)
     })
 
     it('should return false for unknown current status', () => {

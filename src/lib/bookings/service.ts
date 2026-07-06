@@ -31,8 +31,10 @@ const PRICING = {
 // Valid status transitions
 const STATUS_TRANSITIONS: Record<string, string[]> = {
   'pending': ['confirmed', 'cancelled'],
-  'confirmed': ['checked_in', 'cancelled'],
-  'checked_in': ['checked_out', 'no_show'],
+  // no_show = gost se nije pojavio → dostupno iz 'confirmed' (a ne iz checked_in, jer
+  // checked_in znači da je već stigao). Iz checked_in ide samo odjava.
+  'confirmed': ['checked_in', 'no_show', 'cancelled'],
+  'checked_in': ['checked_out'],
   'checked_out': [], // Terminal state
   'cancelled': [], // Terminal state
   'no_show': [] // Terminal state
@@ -163,6 +165,19 @@ export function isValidStatusTransition(
 ): boolean {
   const allowedTransitions = STATUS_TRANSITIONS[currentStatus]
   return allowedTransitions?.includes(newStatus) ?? false
+}
+
+/**
+ * True kad je nastupio DAN DOLASKA (lokalni datum >= check_in datum). Prijava (check-in)
+ * i nedolazak (no-show) su vezani za ovo — gost ne može biti prijavljen (niti označen kao
+ * nedolazak) pre svog dana dolaska. Poredi lokalne kalendarske dane, bez sata.
+ */
+export function arrivalDayReached(checkIn: string): boolean {
+  const [y, m, d] = checkIn.slice(0, 10).split('-').map(Number)
+  const arrival = new Date(y, m - 1, d)
+  const now = new Date()
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate())
+  return today.getTime() >= arrival.getTime()
 }
 
 /**
@@ -636,6 +651,19 @@ export async function updateBooking(
         return { 
           error: `Cannot transition from '${currentBooking.status}' to '${input.status}'` 
         }
+      }
+    }
+
+    // Vremenska brana: prijava (check-in) i nedolazak (no-show) su mogući tek OD DANA
+    // DOLASKA. Gost ne može biti prijavljen (ni označen kao nedolazak) pre svog datuma.
+    if (
+      input.status &&
+      (input.status === 'checked_in' || input.status === 'no_show') &&
+      !arrivalDayReached(currentBooking.check_in)
+    ) {
+      console.error('[updateBooking] Prijava/nedolazak pre dana dolaska — odbijeno')
+      return {
+        error: `Prijava i nedolazak su mogući tek od dana dolaska (${currentBooking.check_in}).`,
       }
     }
 
