@@ -151,9 +151,12 @@ export async function GET(request: NextRequest): Promise<NextResponse<Availabili
         const bookingStart = new Date(booking.check_in)
         const bookingEnd = new Date(booking.check_out)
         
-        // Add all dates in the booking range
+        // Add all NIGHTS in the booking range. Half-open [check_in, check_out):
+        // the checkout day itself stays FREE (guest leaves 10:00, next guest
+        // arrives 14:00 same day) — matches check_availability, useAvailability
+        // and the admin calendar. Using `<=` here wrongly blocked the turnover day.
         const current = new Date(bookingStart)
-        while (current <= bookingEnd) {
+        while (current < bookingEnd) {
           const dateStr = formatDate(current)
           // Only include dates that overlap with requested range
           if (current >= checkIn && current <= checkOut) {
