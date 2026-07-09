@@ -70,7 +70,7 @@ function getStaticPages(): SitemapEntry[] {
 
       entries.push({
         url,
-        lastModified: '2026-06-20',
+        lastModified: '2026-07-09',
         changeFrequency: page.changeFreq,
         priority: page.priority,
         alternates: {

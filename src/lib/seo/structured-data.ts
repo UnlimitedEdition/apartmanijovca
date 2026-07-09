@@ -335,11 +335,24 @@ export function generateLocalBusinessSchema(locale: Locale): LocalBusinessSchema
     }))
   ]
 
+  // Localized short description with the location terms guests actually search for
+  const descriptions: Record<Locale, string> = {
+    sr: 'Apartmani i smeštaj na obali Bovanskog jezera kod Aleksinca, 15 km od Sokobanje. Privatna plaža, besplatan parking, WiFi i roštilj.',
+    en: 'Apartments and accommodation on the shore of Bovan Lake near Aleksinac, Serbia, 15 km from Sokobanja. Private beach, free parking, WiFi and BBQ.',
+    de: 'Ferienwohnungen und Unterkunft am Ufer des Bovan-Sees bei Aleksinac, Serbien, 15 km von Sokobanja. Privatstrand, kostenlose Parkplätze, WLAN und Grill.',
+    it: 'Appartamenti e alloggio sulla riva del Lago Bovan vicino ad Aleksinac, Serbia, a 15 km da Sokobanja. Spiaggia privata, parcheggio gratuito, WiFi e barbecue.'
+  }
+
   const schema: LocalBusinessSchema = {
     '@context': 'https://schema.org',
     '@type': ['LocalBusiness', 'LodgingBusiness'],
     '@id': `${baseUrl}/#business`,
     name: config.business.name,
+    // Spelling variants without diacritics — how guests actually type the brand
+    alternateName: ['Apartmani Jovca', 'Jovča Apartments', 'Apartmani Jovča Bovansko jezero'],
+    description: descriptions[locale],
+    hasMap: `https://www.google.com/maps/search/?api=1&query=${config.business.geo.latitude},${config.business.geo.longitude}`,
+    priceRange: '€€',
     image: [
       makeAbsoluteUrl('/images/background.jpg', baseUrl)
     ],
@@ -720,7 +733,7 @@ export function generateTouristDestinationSchema(
       latitude: 43.64592019,
       longitude: 21.70277774
     },
-    image: makeAbsoluteUrl('/images/og-home.jpg', baseUrl),
+    image: makeAbsoluteUrl('/images/bovansko-jezero.jpg', baseUrl),
     url: makeAbsoluteUrl(`/${locale}/location`, baseUrl),
     containsPlace
   }
@@ -806,6 +819,7 @@ export function generateOrganizationSchema(): OrganizationSchema {
     '@type': 'Organization',
     '@id': `${baseUrl}/#organization`,
     name: config.business.name,
+    alternateName: ['Apartmani Jovca', 'Jovča Apartments'],
     url: baseUrl,
     logo: makeAbsoluteUrl('/images/logo2.png', baseUrl),
     telephone: config.business.phone,

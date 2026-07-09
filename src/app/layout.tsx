@@ -18,8 +18,8 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL(PRODUCTION_URL),
-  title: "Apartmani Jovča - Smeštaj na Bovanskom jezeru",
-  description: "Rezervišite Apartmane Jovča na Bovanskom jezeru u Bovanu. Udoban smeštaj uz jezero, privatna plaža, WiFi, parking i priroda za porodični odmor.",
+  title: "Apartmani i smeštaj na Bovanskom jezeru | Apartmani Jovča",
+  description: "Apartmani na obali Bovanskog jezera, 15 km od Sokobanje. Privatna plaža, besplatan parking, WiFi i roštilj. Porodični odmor na jezeru — rezervišite direktno.",
   manifest: '/manifest.json',
   robots: 'index, follow',
   verification: {
@@ -29,11 +29,11 @@ export const metadata: Metadata = {
     'scanner-verify': '2973615e8fe6a66e02ab7c3bc492dff9',
   },
   openGraph: {
-    title: "Apartmani Jovča - Smeštaj na Bovanskom jezeru",
-    description: "Rezervišite Apartmane Jovča na Bovanskom jezeru u Bovanu. Udoban smeštaj uz jezero, privatna plaža, WiFi, parking i priroda za porodični odmor.",
+    title: "Apartmani i smeštaj na Bovanskom jezeru | Apartmani Jovča",
+    description: "Apartmani na obali Bovanskog jezera, 15 km od Sokobanje. Privatna plaža, besplatan parking, WiFi i roštilj. Porodični odmor na jezeru — rezervišite direktno.",
     type: 'website',
     url: PRODUCTION_URL,
-    images: ['/images/logo2.png'],
+    images: ['/images/background.jpg'],
   },
 };
 

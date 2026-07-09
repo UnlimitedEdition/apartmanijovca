@@ -19,6 +19,16 @@
 
 ### ✅ Završeno (najnovije gore)
 
+**2026-07-09 (SEO — keyword-first naslovi/opisi, ciljanje pravih pojmova za rangiranje)**
+- **Problem:** sajt se u Google-u pojavljivao SAMO na brend „Apartmani Jovča". Uzrok: svi title/description brand-first, H1 „Dobrodošli u Apartmane Jovča" bez ijedne ključne reči, keywords ciljali „Bovan" umesto pojmova koje ljudi kucaju („Bovansko jezero", „Sokobanja", „Aleksinac", „smeštaj na jezeru").
+- **`messages/{sr,en,de,it}.json`:** kompletno prepisan `seo` namespace (home, apartments, contact, location, gallery, attractions, prices) — keyword-first naslovi ≤60 znakova (npr. sr home: „Apartmani i smeštaj na Bovanskom jezeru | Apartmani Jovča"), opisi ≤160 sa Sokobanja/Aleksinac/Niš + CTA. Hero H1/subtitle defaulti sada nose ključne reči („Apartmani Jovča — smeštaj na Bovanskom jezeru"). **Bug fix:** en/de/it nisu imali `seo.apartmentDetail.titleSuffix`/`notFound` → title stranice apartmana bio krnji („Ime - "); dodati na sva 3 jezika.
+- **`src/lib/seo/keywords.ts`:** home + location setovi prepisani na realne fraze pretrage (apartmani/smeštaj Bovansko jezero, apartmani Sokobanja, smeštaj blizu Sokobanje, vikendica na jezeru...).
+- **`src/lib/seo/structured-data.ts` (+ `types/seo.ts`):** LocalBusiness dobio `alternateName` („Apartmani Jovca" bez kvačice — kako ljudi kucaju!), lokalizovan `description`, `hasMap` (Google Maps link), `priceRange`; Organization dobio `alternateName`. TouristDestination slika pokazivala na nepostojeći `/images/og-home.jpg` → `/images/bovansko-jezero.jpg`.
+- **`src/app/layout.tsx`:** default title/desc keyword-first; OG slika logo2.png → background.jpg (logo je loša share kartica). **`src/app/sitemap.ts`:** lastModified 2026-06-20 → 2026-07-09.
+- ⚠️ **CMS napomena:** ako u `content` tabeli postoji OBJAVLJEN `home.title`/`home.subtitle`, on pregazi nove defaulte — proveriti u admin panelu i tamo upisati isti keyword-first H1.
+- Testovi: 388 ✅; build (TS strict) ✅; eslint izmenjenih fajlova čist. Push-ovano na `claude/seo-optimization-ranking-lpg1dm`.
+- **Van koda (korisnik):** Google Business Profile za „Apartmani Jovča" (lokal pack je glavni kanal za smeštaj!), Search Console → Request indexing posle deploy-a, profili na Booking/Airbnb + lokalnim direktorijumima radi linkova.
+
 **2026-07-06 (fix — prijava/nedolazak vezani za DAN DOLASKA; nedolazak iz confirmed)**
 - **Problem:** admin je mogao da „Prijavi" gosta danima PRE dolaska; „Nedolazak" je bio vezan za `checked_in` (besmisleno — gost je već stigao).
 - **Novo pravilo (odluka korisnika):** Prijava (check-in) i Nedolazak (no-show) mogući SAMO od dana dolaska (lokalni datum ≥ `check_in`, ceo dan od 00:00); pre toga akcija zaključana („Prijava od DD.MM."). Nedolazak sada iz `confirmed` (ne iz `checked_in`).

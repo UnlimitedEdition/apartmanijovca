@@ -285,6 +285,14 @@ export interface LocalBusinessSchema {
   '@type': 'LocalBusiness' | ['LocalBusiness', ...string[]]
   '@id': string
   name: string
+  /** Alternate spellings/names (e.g. without diacritics) for entity matching */
+  alternateName?: string[]
+  /** Short localized business description */
+  description?: string
+  /** Link to the business location on Google Maps */
+  hasMap?: string
+  /** Indicative price range (e.g. "€€") */
+  priceRange?: string
   image: string[]
   url: string
   telephone: string
@@ -396,6 +404,8 @@ export interface OrganizationSchema {
   '@type': 'Organization'
   '@id': string
   name: string
+  /** Alternate spellings/names (e.g. without diacritics) for entity matching */
+  alternateName?: string[]
   url: string
   logo: string
   image?: string[]

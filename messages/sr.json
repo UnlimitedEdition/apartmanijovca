@@ -101,9 +101,9 @@
     "needHelp": "Trebate pomoć? Kontaktirajte nas direktno:"
   },
   "home": {
-    "title": "Dobrodošli u Apartmane Jovča",
+    "title": "Apartmani Jovča — smeštaj na Bovanskom jezeru",
     "description": "Uživajte u udobnom smeštaju u prelepom okruženju.",
-    "subtitle": "Vaš savršeni odmor u srcu prirode",
+    "subtitle": "Vaš savršeni odmor na obali jezera, 15 km od Sokobanje",
     "about": {
       "title": "O nama – Dobrodošli kod Apartmana Jovča",
       "content": "Naši apartmani se nalaze na obali prelepo Bovanskog jezera, skrivenog dragulja između tri planine – Bukovika, Ozrena i Rtnja. Jezero je dugačko oko 8 km, a u najširem delu široko 900 metara, okruženo šumama i netaknutom prirodom. Ovo mesto je poznato po ruži vetrova – blagim vazdušnim strujanjima koja osvežavaju i blagotvornodeluju na respiratorni i nervni sistem. Ovde ćete pronaći mir, zdravlje i tišinu koju retko gde možete osetiti. U blizini vas očekuje bogat izbor izleta: Soko Banja (15 km), etno-selo Vrmdža sa malim jezerom (6 km), ergela konja u selu Mozgovo, Akva park u Jagodini (60–70 km) i istorijski spomenici u Nišu – logor Crveni krst, Bubanj, Medijana i Čegar (55 km). Ljubitelji duhovnog mira mogu posetiti crkvu Svetog Romana i brojne manastire na svega 10–15 km odavde. Apartmani Jovča su pravi raj za kupanje, ribolov i vožnju čamcem, a okolna priroda stvara savršenu kulisu za nezaboravne trenutke. Kod nas ćete pronaći idealan spoj odmora, prirode i mogućnosti za istraživanje okoline."
@@ -653,42 +653,42 @@
   },
   "seo": {
     "home": {
-      "title": "Apartmani Jovča - Smeštaj na Bovanskom jezeru | Bovan, Srbija",
-      "description": "Rezervišite luksuzne apartmane na Bovanskom jezeru. Moderno opremljen smeštaj sa WiFi, parkingom i pogledom na jezero. Idealno za porodični odmor u prirodi.",
+      "title": "Apartmani i smeštaj na Bovanskom jezeru | Apartmani Jovča",
+      "description": "Apartmani na obali Bovanskog jezera, 15 km od Sokobanje. Privatna plaža, besplatan parking, WiFi i roštilj. Porodični odmor na jezeru — rezervišite direktno.",
       "ogImageAlt": "Apartmani Jovča - Pogled na Bovansko jezero"
     },
     "apartments": {
-      "title": "Naši Apartmani - Moderni Smeštaj na Bovanskom Jezeru",
-      "description": "Pregledajte naše moderno opremljene apartmane na Bovanskom jezeru. Različiti kapaciteti, svi sa WiFi, klimom i pogledom na jezero. Rezervišite odmah!",
+      "title": "Apartmani na Bovanskom jezeru — ponuda i cene | Jovča",
+      "description": "Studio i porodični apartmani na Bovanskom jezeru kod Sokobanje i Aleksinca. WiFi, klima, parking i pristup jezeru. Proverite dostupnost i rezervišite online.",
       "ogImageAlt": "Apartmani Jovča - Moderni smeštaj"
     },
     "apartmentDetail": {
-      "titleSuffix": "Apartmani Jovča",
+      "titleSuffix": "Apartman na Bovanskom jezeru | Apartmani Jovča",
       "notFound": "Apartman nije pronađen"
     },
     "contact": {
-      "title": "Kontakt - Apartmani Jovča | Bovansko Jezero",
-      "description": "Kontaktirajte nas za rezervaciju apartmana na Bovanskom jezeru. Dostupni 24/7 putem telefona, email-a ili WhatsApp-a. Brz odgovor garantovan.",
+      "title": "Kontakt i rezervacije | Apartmani Jovča — Bovansko jezero",
+      "description": "Rezervišite smeštaj na Bovanskom jezeru telefonom, WhatsApp-om, Viber-om ili emailom. Brz odgovor, direktna rezervacija bez provizije. Bovan kod Aleksinca.",
       "ogImageAlt": "Kontaktirajte Apartmane Jovča"
     },
     "location": {
-      "title": "Lokacija - Kako do Apartmana Jovča | Bovansko Jezero, Bovan",
-      "description": "Pronađite nas na Bovanskom jezeru kod Bovana. Detaljne uputstva za dolazak automobilom ili autobusom. Mapa i GPS koordinate dostupne.",
+      "title": "Lokacija — Bovansko jezero kod Sokobanje | Kako doći",
+      "description": "Apartmani Jovča na Bovanskom jezeru kod Aleksinca: 15 km od Sokobanje, 55 km od Niša. Mapa, GPS koordinate i detaljna uputstva za dolazak automobilom.",
       "ogImageAlt": "Lokacija Apartmana Jovča na Bovanskom jezeru"
     },
     "gallery": {
-      "title": "Galerija - Fotografije Apartmana i Bovanskog Jezera",
-      "description": "Pogledajte fotografije naših apartmana, enterijera, pogleda na Bovansko jezero i okoline. Uverite se u kvalitet našeg smeštaja.",
+      "title": "Galerija — slike apartmana i Bovanskog jezera | Jovča",
+      "description": "Fotografije apartmana, enterijera, privatne plaže i Bovanskog jezera. Pogledajte kako izgleda smeštaj na jezeru pre rezervacije.",
       "ogImageAlt": "Galerija slika Apartmana Jovča"
     },
     "attractions": {
-      "title": "Atrakcije - Šta Posetiti oko Bovanskog Jezera",
-      "description": "Otkrijte atrakcije u okolini Bovanskog jezera: Soko Banja, tvrđava Sokolica, Niš, manastiri. Idealno za izlete i obilazak znamenitosti.",
+      "title": "Šta posetiti — Sokobanja, Rtanj i Bovansko jezero",
+      "description": "Izleti sa Bovanskog jezera: Sokobanja (15 km), etno selo Vrmdža, manastiri, tvrđava Sokolica i Niš. Ideje za aktivnosti i obilazak okoline tokom odmora.",
       "ogImageAlt": "Atrakcije oko Bovanskog jezera"
     },
     "prices": {
-      "title": "Cene - Apartmani Jovča | Najbolje Cene na Bovanskom Jezeru",
-      "description": "Transparentne cene apartmana na Bovanskom jezeru. Bez skrivenih troškova. Popusti za duži boravak. Proverite dostupnost i rezervišite odmah.",
+      "title": "Cene apartmana na Bovanskom jezeru — cenovnik | Jovča",
+      "description": "Cenovnik apartmana na Bovanskom jezeru: transparentne cene po noćenju, bez skrivenih troškova, popusti za duži boravak. Proverite dostupnost i rezervišite.",
       "ogImageAlt": "Cenovnik Apartmana Jovča"
     },
     "privacy": {

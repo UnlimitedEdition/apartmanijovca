@@ -33,59 +33,103 @@ export type KeywordConfig = Record<PageType, Record<Locale, KeywordSet>>;
 export const keywords: KeywordConfig = {
   home: {
     sr: {
-      primary: ['apartmani', 'Jovča', 'Bovan', 'Srbija'],
-      secondary: ['smeštaj', 'jezero', 'odmor', 'vikendica', 'apartman'],
-      longTail: [
-        'apartmani na Bovanu',
-        'smeštaj Bovan jezero',
+      primary: [
+        'apartmani Bovansko jezero',
+        'smeštaj Bovansko jezero',
         'apartmani Bovan',
-        'vikendice Jovča',
-        'odmor na jezeru Bovan',
-        'apartmani pored jezera',
-        'smeštaj Srbija jezero',
-        'apartmani za porodicu Bovan'
+        'apartmani Jovča'
+      ],
+      secondary: [
+        'smeštaj na jezeru',
+        'apartmani Sokobanja',
+        'smeštaj Aleksinac',
+        'privatni smeštaj',
+        'vikendica na jezeru'
+      ],
+      longTail: [
+        'apartmani na Bovanskom jezeru',
+        'smeštaj na Bovanskom jezeru',
+        'privatna plaža Bovansko jezero',
+        'smeštaj blizu Sokobanje',
+        'vikendica Bovansko jezero',
+        'apartmani kod Aleksinca',
+        'odmor na jezeru za porodicu',
+        'Bovansko jezero smeštaj cene'
       ]
     },
     en: {
-      primary: ['apartments', 'Jovča', 'Bovan', 'Serbia'],
-      secondary: ['accommodation', 'lake', 'vacation', 'rental', 'lodging'],
+      primary: [
+        'Bovan Lake apartments',
+        'Bovan Lake accommodation',
+        'lake apartments Serbia',
+        'Jovča Apartments'
+      ],
+      secondary: [
+        'lakeside stay Serbia',
+        'Sokobanja accommodation',
+        'vacation rental Serbia',
+        'private beach lake',
+        'family holiday Serbia'
+      ],
       longTail: [
-        'apartments Bovan Lake',
+        'apartments on Bovan Lake',
         'accommodation Bovan Lake Serbia',
-        'vacation rentals Bovan',
-        'lakeside apartments Serbia',
-        'Bovan Lake lodging',
-        'family apartments Bovan',
-        'holiday rentals Serbia',
-        'apartments near Bovan Lake'
+        'lakeside apartments near Sokobanja',
+        'vacation rentals Bovan Lake',
+        'family apartments Bovan Lake',
+        'lake holiday Serbia',
+        'where to stay Bovan Lake',
+        'apartments near Sokobanja'
       ]
     },
     de: {
-      primary: ['Ferienwohnung', 'Jovča', 'Bovan', 'Serbien'],
-      secondary: ['Unterkunft', 'See', 'Urlaub', 'Vermietung', 'Apartment'],
+      primary: [
+        'Ferienwohnung Bovan-See',
+        'Unterkunft Bovan-See',
+        'Ferienwohnung am See Serbien',
+        'Apartments Jovča'
+      ],
+      secondary: [
+        'Urlaub am See Serbien',
+        'Unterkunft Sokobanja',
+        'Ferienwohnung Serbien',
+        'Privatstrand See',
+        'Familienurlaub Serbien'
+      ],
       longTail: [
-        'Ferienwohnung Bovan See',
-        'Unterkunft Bovan See Serbien',
-        'Urlaub Bovan',
-        'Apartments am See Serbien',
-        'Bovan See Unterkunft',
-        'Familienwohnung Bovan',
-        'Ferienhaus Serbien',
-        'Apartments in der Nähe von Bovan See'
+        'Ferienwohnung am Bovan-See',
+        'Unterkunft Bovan-See Serbien',
+        'Apartments am See bei Sokobanja',
+        'Ferienhaus am See Serbien',
+        'Familienwohnung Bovan-See',
+        'Urlaub am Bovan-See',
+        'wo übernachten Bovan-See',
+        'Ferienwohnung bei Sokobanja'
       ]
     },
     it: {
-      primary: ['appartamenti', 'Jovča', 'Bovan', 'Serbia'],
-      secondary: ['alloggio', 'lago', 'vacanza', 'affitto', 'sistemazione'],
-      longTail: [
+      primary: [
         'appartamenti Lago Bovan',
-        'alloggio Lago Bovan Serbia',
-        'vacanze Bovan',
+        'alloggio Lago Bovan',
         'appartamenti sul lago Serbia',
-        'sistemazione Lago Bovan',
-        'appartamenti per famiglie Bovan',
+        'Appartamenti Jovča'
+      ],
+      secondary: [
+        'vacanze al lago Serbia',
+        'alloggio Sokobanja',
         'case vacanza Serbia',
-        'appartamenti vicino al Lago Bovan'
+        'spiaggia privata lago',
+        'vacanze in famiglia Serbia'
+      ],
+      longTail: [
+        'appartamenti sul Lago Bovan',
+        'alloggio Lago Bovan Serbia',
+        'appartamenti sul lago vicino a Sokobanja',
+        'case vacanza Lago Bovan',
+        'appartamenti per famiglie Lago Bovan',
+        'vacanze al Lago Bovan',
+        'dove dormire Lago Bovan',
+        'appartamenti vicino a Sokobanja'
       ]
     }
   },
@@ -202,16 +246,16 @@ export const keywords: KeywordConfig = {
 
   location: {
     sr: {
-      primary: ['lokacija', 'Bovan', 'Srbija', 'Niš'],
-      secondary: ['jezero', 'priroda', 'plaža', 'pecanje', 'šetnja'],
+      primary: ['Bovansko jezero', 'lokacija', 'Sokobanja', 'Aleksinac'],
+      secondary: ['jezero', 'priroda', 'plaža', 'pecanje', 'Niš'],
       longTail: [
-        'gde se nalazi Bovan',
-        'kako doći do Bovana',
-        'Bovan jezero lokacija',
+        'gde se nalazi Bovansko jezero',
+        'kako doći do Bovanskog jezera',
+        'Bovansko jezero lokacija',
+        'Bovansko jezero udaljenost od Sokobanje',
         'udaljenost od Niša',
-        'Bovan lokacija',
-        'plaže na Bovanu',
-        'aktivnosti Bovan jezero'
+        'plaže na Bovanskom jezeru',
+        'aktivnosti Bovansko jezero'
       ]
     },
     en: {
