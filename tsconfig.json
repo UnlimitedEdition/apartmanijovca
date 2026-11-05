@@ -40,6 +40,11 @@
   "exclude": [
     "node_modules",
     "supabase/functions",
-    ".next"
+    ".next",
+    "**/__tests__/**",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.spec.ts",
+    "**/*.spec.tsx"
   ]
 }
