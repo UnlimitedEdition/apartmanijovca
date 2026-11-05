@@ -86,7 +86,7 @@ export const BookingOptionsSchema = z.object({
 export const SecurityMetadataSchema = z.object({
   fingerprint: z.string().optional(),
   userAgent: z.string().max(500).optional(),
-  ipAddress: z.string().ip().optional(),
+  ipAddress: z.union([z.ipv4(), z.ipv6()]).optional(),
   consentGiven: z.boolean(),
   consentTimestamp: z.string().datetime().optional(),
   deviceInfo: z.object({
@@ -121,7 +121,7 @@ const isValidDateRange = (checkIn: string, checkOut: string): boolean => {
 
 // Create booking schema with security metadata
 export const CreateBookingSchema = z.object({
-  apartmentId: z.string().uuid('Neispravan ID apartmana'),
+  apartmentId: z.string().guid('Neispravan ID apartmana'),
   checkIn: z.string()
     .refine((val) => !isNaN(Date.parse(val)), 'Neispravan datum dolaska'),
   checkOut: z.string()
@@ -131,7 +131,8 @@ export const CreateBookingSchema = z.object({
     crib: false,
     parking: false,
     earlyCheckIn: false,
-    lateCheckOut: false
+    lateCheckOut: false,
+    notes: undefined
   }),
   security: SecurityMetadataSchema,
   preferredLanguage: z.enum(['sr', 'en', 'de', 'it']).optional()
@@ -175,9 +176,9 @@ export const BookingFilterSchema = z.object({
   endDate: z.string()
     .refine((val) => !isNaN(Date.parse(val)), 'Invalid end date')
     .optional(),
-  apartmentId: z.string().uuid('Invalid apartment ID').optional(),
+  apartmentId: z.string().guid('Invalid apartment ID').optional(),
   status: BookingStatus.optional(),
-  guestId: z.string().uuid('Invalid guest ID').optional(),
+  guestId: z.string().guid('Invalid guest ID').optional(),
   guestEmail: z.string().email('Invalid email').optional(),
   page: z.coerce.number().int().min(1).optional().default(1),
   limit: z.coerce.number().int().min(1).max(100).optional().default(20)
@@ -189,7 +190,7 @@ export const AvailabilityCheckSchema = z.object({
     .refine((val) => !isNaN(Date.parse(val)), 'Invalid check-in date'),
   checkOut: z.string()
     .refine((val) => !isNaN(Date.parse(val)), 'Invalid check-out date'),
-  apartmentId: z.string().uuid('Invalid apartment ID').optional()
+  apartmentId: z.string().guid('Invalid apartment ID').optional()
 }).refine(
   (data) => {
     const checkInDate = new Date(data.checkIn)
