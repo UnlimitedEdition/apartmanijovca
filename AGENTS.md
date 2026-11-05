@@ -19,6 +19,11 @@
 
 ### ✅ Završeno (najnovije gore)
 
+**2026-11-05 (bezbednost zavisnosti)**
+- Next.js 16.4.5 i ispravke zavisnosti (zatvorene kritične Next ranjivosti); zod 4.6.7: `SecurityMetadataSchema.ipAddress` ide kroz `z.ipv4()`/`z.ipv6()`, podrazumevane opcije rezervacije imaju `notes`, UUID provere kroz `guid`.
+- `tsconfig.json`: test fajlovi izuzeti iz produkcijske provere tipova, jer ih Next 16.4 sada proverava.
+- Testovi: 388 ✅; tsc ✅; Vercel build ✅. Ostaje: `firebase` visok alarm i na najnovijoj verziji.
+
 **2026-07-09 (SEO — keyword-first naslovi/opisi, ciljanje pravih pojmova za rangiranje)**
 - **Problem:** sajt se u Google-u pojavljivao SAMO na brend „Apartmani Jovča". Uzrok: svi title/description brand-first, H1 „Dobrodošli u Apartmane Jovča" bez ijedne ključne reči, keywords ciljali „Bovan" umesto pojmova koje ljudi kucaju („Bovansko jezero", „Sokobanja", „Aleksinac", „smeštaj na jezeru").
 - **`messages/{sr,en,de,it}.json`:** kompletno prepisan `seo` namespace (home, apartments, contact, location, gallery, attractions, prices) — keyword-first naslovi ≤60 znakova (npr. sr home: „Apartmani i smeštaj na Bovanskom jezeru | Apartmani Jovča"), opisi ≤160 sa Sokobanja/Aleksinac/Niš + CTA. Hero H1/subtitle defaulti sada nose ključne reči („Apartmani Jovča — smeštaj na Bovanskom jezeru"). **Bug fix:** en/de/it nisu imali `seo.apartmentDetail.titleSuffix`/`notFound` → title stranice apartmana bio krnji („Ime - "); dodati na sva 3 jezika.
